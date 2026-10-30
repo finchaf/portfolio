@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+#
+# commit-msg hook: Conventional Commits, a lower-case description, body lines of at most 100
+# characters. CI runs this same file over every commit of a pull request.
+#
+#   <type>(<optional scope>)<optional !>: <description>
+#
+# Enable in a fresh clone with:
+#   git config core.hooksPath .githooks
+#
+set -euo pipefail
+
+commit_msg_file="$1"
+
+# First non-empty, non-comment line is the subject we validate.
+subject="$(awk 'NF && $0 !~ /^#/ { print; exit }' "$commit_msg_file")"
+
+# Machine-generated commits pass untouched.
+if printf '%s' "$subject" | grep -Eq '^(Merge |Revert |fixup!|squash!)'; then
+  exit 0
+fi
+
+# Dependabot capitalises its description and links release notes on long lines, and no setting
+# reaches either. Only a commit with both its subject and its sign-off passes.
+if printf '%s' "$subject" | grep -Eq '^(build|ci): Bump ' &&
+  grep -Fqx 'Signed-off-by: dependabot[bot] <support@github.com>' "$commit_msg_file"; then
+  exit 0
+fi
+
+types='feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert'
+pattern="^(${types})(\([a-z0-9._/ -]+\))?(!)?: .+"
+
+if ! printf '%s' "$subject" | grep -Eq "$pattern"; then
+  cat >&2 <<EOF
+
+  ✖  Commit rejected: the message does not follow Conventional Commits.
+
+     Your subject:
+         ${subject:-<empty>}
+
+     Required format:
+         <type>(<optional scope>): <description>
+
+     Allowed types:
+         feat fix docs style refactor perf test build ci chore revert
+
+EOF
+  exit 1
+fi
+
+description="${subject#*: }"
+if printf '%s' "$description" | grep -Eq '^[A-Z][a-z]'; then
+  cat >&2 <<EOF
+
+  ✖  Commit rejected: the description starts with a capital.
+
+     Your subject:
+         ${subject}
+
+EOF
+  exit 1
+fi
+
+if printf '%s' "$subject" | grep -Eq '\.$'; then
+  printf '\n  ✖  Commit rejected: the subject ends with a period.\n\n' >&2
+  exit 1
+fi
+
+if [ "${#subject}" -gt 72 ]; then
+  printf '\n  ⚠  Subject is %s chars (recommended ≤ 72).\n\n' "${#subject}" >&2
+fi
+
+# Python, not awk: macOS's awk measures bytes, and a Cyrillic letter is two of them.
+long_lines="$(
+  python3 - "$commit_msg_file" <<'PYTHON'
+import sys
+
+with open(sys.argv[1], encoding="utf-8") as handle:
+    for number, line in enumerate(handle, start=1):
+        text = line.rstrip("\n")
+        if number > 1 and not text.startswith("#") and len(text) > 100:
+            print(f"     line {number}: {len(text)} chars")
+PYTHON
+)"
+
+if [ -n "$long_lines" ]; then
+  printf '\n  ✖  Commit rejected: body lines over 100 characters.\n\n%s\n\n' "$long_lines" >&2
+  exit 1
+fi
