@@ -1,15 +1,16 @@
-import { useTranslations } from "next-intl";
+import "./scenes.css";
 
-import { Lead } from "@/ui/lead";
-import { PageTitle } from "@/ui/page-title";
 import { World } from "@/ui/world";
 
+import { Hero } from "./hero";
+import { PersonData } from "./person-data";
+
+/** A scene in which the axis of movement changes: down, sideways, into depth, onto a stack. */
 export function HomePage() {
-  const t = useTranslations("home");
   return (
-    <World name="home">
-      <PageTitle>{t("title")}</PageTitle>
-      <Lead>{t("lead")}</Lead>
+    <World bleed name="home">
+      <PersonData />
+      <Hero />
     </World>
   );
 }

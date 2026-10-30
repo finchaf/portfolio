@@ -1,8 +1,188 @@
 {
   "meta": {
     "title": "Danil Zablotsky, design engineer",
-    "description": "I design interfaces and build them into working products myself."
+    "description": "I design interfaces and build them into working products on iOS, Android and the web myself."
   },
   "title": "Home",
-  "lead": "I design interfaces and build them into working products myself."
+  "hero": {
+    "status": "Open to a conversation",
+    "city": "Omsk",
+    "name": "Danil Zablotsky",
+    "role": "Design engineer",
+    "roleNote": "product design and frontend",
+    "statement": "I design interfaces and build them into working products on iOS, Android and the web myself.",
+    "proofStores": "Apps on the App Store, Google Play and RuStore",
+    "proofPlaceholder": "The exact number of users, dated, goes here",
+    "write": "Write to me",
+    "work": "See the work",
+    "github": "GitHub",
+    "tiles": {
+      "pora": { "title": "Pora na paru", "note": "The site turns into a timetable" },
+      "flow": { "title": "Flow", "note": "A terminal and a vault of notes" },
+      "projects": { "title": "Projects", "note": "A canvas with everything else" }
+    }
+  },
+  "story": {
+    "title": "How I got here",
+    "hint": "Keep scrolling",
+    "steps": {
+      "university": {
+        "date": "2022",
+        "title": "Applied mathematics",
+        "text": "I enter Omsk State University and learn to think in systems."
+      },
+      "idea": {
+        "date": "2023",
+        "title": "The first idea",
+        "text": "Students get lost in timetables, and so do I. I start building VCourse."
+      },
+      "contract": {
+        "date": "Spring 2025",
+        "title": "The first contract",
+        "text": "I design a website to order and deliver it under contract."
+      },
+      "platforms": {
+        "date": "September 2025 — February 2026",
+        "title": "Three platforms",
+        "text": "VCourse ships on iOS, then on Android and the web."
+      },
+      "restart": {
+        "date": "2026",
+        "title": "Starting over",
+        "text": "I pitch to investors at the Tramplin tech park, defend a thesis on my own apps and start building Pora na paru."
+      },
+      "now": {
+        "date": "Now",
+        "title": "A product and a team",
+        "text": "I run Pora na paru and design iOS apps in a team."
+      }
+    }
+  },
+  "build": {
+    "eyebrow": "Design → code",
+    "stages": {
+      "whole": {
+        "title": "One interface",
+        "text": "A lesson card, as a student sees it."
+      },
+      "layers": {
+        "title": "Taken apart",
+        "text": "Surface, shape and text. Those I solve as a designer."
+      },
+      "code": {
+        "title": "And I write the code",
+        "text": "The same layers become a component, with no handoff between people."
+      }
+    },
+    "layers": {
+      "surface": "Surface",
+      "shape": "Shape",
+      "text": "Text"
+    },
+    "lesson": {
+      "subject": "Databases",
+      "time": "10:15",
+      "room": "room 402",
+      "kind": "lecture",
+      "teacher": "I. Ivanov"
+    },
+    "lab": {
+      "title": "Try it: this is a real component of this page, with made-up data.",
+      "radius": "Radius",
+      "density": "Density",
+      "densityCompact": "Compact",
+      "densityRegular": "Roomy",
+      "tone": "Colour",
+      "toneAccent": "Coral",
+      "toneSuccess": "Olive",
+      "toneWarning": "Amber"
+    }
+  },
+  "cases": {
+    "title": "Work",
+    "open": "Open",
+    "pora": {
+      "label": "My own product · since 2023",
+      "stage": "New version in development",
+      "title": "Pora na paru",
+      "text": "A timetable for universities. I began with VCourse, tested the idea on real users and am building the product again from scratch.",
+      "role": "Design, iOS, Android and web: me. Backend: my co-founder.",
+      "stores": "VCourse:",
+      "appStore": "App Store",
+      "appStoreUrl": "https://apps.apple.com/app/id6747290631",
+      "googlePlay": "Google Play",
+      "googlePlayUrl": "https://play.google.com/store/apps/details?id=app.vcourse.vcourse",
+      "ruStore": "RuStore",
+      "ruStoreUrl": "https://www.rustore.ru/catalog/app/app.vcourse.vcourse"
+    },
+    "week": {
+      "days": { "mon": "Mon", "tue": "Tue", "wed": "Wed", "thu": "Thu", "fri": "Fri" },
+      "lessons": { "math": "Calc", "base": "Data", "code": "Code" },
+      "move": "Move the lesson: {lesson}",
+      "conflict": "Conflict: two lessons in one slot",
+      "clear": "No conflicts, ready to publish"
+    },
+    "flow": {
+      "label": "iOS app design · since 2026",
+      "title": "Flow",
+      "text": "A system of my own: agents, a terminal and a Markdown knowledge base carry a task from the brief to finished screens.",
+      "note": "The tasks in the demo are made up."
+    },
+    "terminal": {
+      "line1": "$ claude",
+      "line2": "> /new-task demo-app",
+      "line3": "  brief assembled",
+      "line4": "> /research",
+      "line5": "  screen map ready",
+      "line6": "> /screens",
+      "line7": "  screens in review",
+      "line8": "> /handoff",
+      "line9": "  handed to development"
+    },
+    "projects": {
+      "label": "Everything else",
+      "title": "Projects",
+      "text": "Websites, experiments and my thesis on one canvas."
+    },
+    "canvas": {
+      "site": "client-site/",
+      "thesis": "bachelor-thesis.pdf",
+      "portfolio": "portfolio/",
+      "motion": "logo-animation/"
+    }
+  },
+  "experience": {
+    "title": "Experience",
+    "rows": {
+      "pora": {
+        "years": "since 2026",
+        "place": "Pora na paru",
+        "role": "Co-founder and CEO: design, iOS, Android, web"
+      },
+      "first": {
+        "years": "since 2023",
+        "place": "VCourse",
+        "role": "Creator: design and client development"
+      },
+      "team": { "years": "since 2026", "place": "iOS apps team", "role": "Designer" },
+      "freelance": { "years": "2025", "place": "Freelance", "role": "Web designer, under contract" }
+    },
+    "educationTitle": "Education",
+    "education": "Omsk State University, applied mathematics and computer science, 2022–2026",
+    "notesTitle": "Also",
+    "grant": "Student Startup grant, second stage participant, 2026",
+    "pitch": "Pitch to investors, Tramplin tech park, April 2026",
+    "english": "English B2",
+    "aboutTitle": "About me",
+    "about": "I live in Omsk. I care about where design meets code: one person holding both the decision and how it works.",
+    "portrait": "Portrait of Danil Zablotsky"
+  },
+  "finale": {
+    "title": "Let's talk",
+    "text": "Telegram is the fastest way to reach me.",
+    "write": "Write to me",
+    "github": "GitHub",
+    "code": "The site's code is open",
+    "copyright": "© 2026 Danil Zablotsky"
+  }
 }

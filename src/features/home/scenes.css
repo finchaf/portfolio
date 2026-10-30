@@ -1,0 +1,447 @@
+/*
+ * The layout of the home page's scenes. The plain rules are the page without a script and with
+ * reduced motion: everything in the flow, nothing hidden. What a scene needs sits under
+ * `[data-js]` and the motion query, so it is decided before the first paint and never jumps.
+ */
+[data-world="home"] {
+  --gutter: 1rem;
+  --content: 87.5rem;
+}
+
+@media (min-width: 64rem) {
+  [data-world="home"] {
+    --gutter: 2rem;
+  }
+}
+
+/* First screen. The name is set to span the column: --name-fit is its width in ems. */
+.hero {
+  min-height: calc(100svh - var(--header) - var(--dock));
+}
+
+.hero-name {
+  --name-fit: 9.02;
+  position: relative;
+  z-index: 40;
+  width: fit-content;
+  font-size: min(
+    calc((100vw - 2 * var(--gutter)) / var(--name-fit)),
+    calc((var(--content) - 2 * var(--gutter)) / var(--name-fit)),
+    34svh
+  );
+  letter-spacing: -0.035em;
+  line-height: 1;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.hero-name:lang(en) {
+  --name-fit: 7.33;
+}
+
+/* Story: a plain grid until a scene takes it. */
+.story-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: var(--content);
+  margin-inline: auto;
+  padding: 2.5rem var(--gutter);
+}
+
+.story-hint,
+.story-year,
+.story-wheel,
+.story-rail {
+  display: none;
+}
+
+.story-steps {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+}
+
+/* Design into code: the card, its code and the controls, one under another. */
+.build {
+  /* The one dark sheet of the page: with `data-tint`, the tokens inside answer to this. */
+  color-scheme: dark;
+  background: var(--page);
+  color: var(--ink);
+  border-radius: 2rem;
+}
+
+.build-stage {
+  display: grid;
+  gap: 2rem;
+  max-width: var(--content);
+  margin-inline: auto;
+  padding: 2.5rem var(--gutter);
+}
+
+.build-copy,
+.build-captions,
+.build-lab,
+.build-caption,
+.build-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.build-copy {
+  gap: 1rem;
+}
+
+.build-captions {
+  gap: 1.25rem;
+}
+
+.build-lab {
+  padding-top: 0.5rem;
+}
+
+:root:not([data-js]) .build-lab {
+  display: none;
+}
+
+.build-stack {
+  position: relative;
+  width: min(100%, 34rem);
+}
+
+.build-layer {
+  display: none;
+}
+
+.build-layer-plane {
+  position: absolute;
+  inset: 0;
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.build-layer-label {
+  position: absolute;
+  top: -1.5rem;
+  left: 0;
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+.build-token {
+  animation: token-flash var(--duration-slow) var(--ease-out);
+  border-radius: 0.25rem;
+}
+
+@keyframes token-flash {
+  from {
+    background: var(--accent-strong);
+    color: var(--on-accent);
+  }
+}
+
+/* Cases: sticky is CSS alone, so the stack holds with a script or without. */
+.case {
+  position: relative;
+  display: grid;
+  gap: 1.25rem;
+  padding: 1.25rem;
+  border-radius: 1.5rem;
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+@media (min-width: 64rem) {
+  .case {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    gap: 2rem;
+    padding: 2rem;
+  }
+}
+
+.mini-week {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-rows: repeat(4, minmax(2.5rem, 1fr));
+  gap: 0.25rem;
+}
+
+.mini-week-cell {
+  border-radius: 0.5rem;
+  background: var(--raised);
+}
+
+.mini-week-lesson {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20%;
+  height: 25%;
+  padding: 0.125rem;
+  overflow: hidden;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  background-clip: content-box;
+  cursor: pointer;
+  transform: translate(calc(var(--day) * 100%), calc(var(--slot) * 100%));
+  transition:
+    transform var(--duration-slow) var(--ease-in-out),
+    background-color var(--duration-base) var(--ease-out);
+}
+
+.mini-canvas {
+  --pointer-x: 0;
+  --pointer-y: 0;
+  background-image: radial-gradient(var(--line) 1px, transparent 1px);
+  background-size: 1.25rem 1.25rem;
+}
+
+.mini-canvas-frame {
+  position: absolute;
+  display: block;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background: var(--page);
+  box-shadow: 0 0 0 1px var(--line);
+  transform: translate(
+    calc(var(--pointer-x) * var(--depth) * -1.25rem),
+    calc(var(--pointer-y) * var(--depth) * -1.25rem)
+  );
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.finale-title {
+  font-size: clamp(3rem, 12vw, 11rem);
+  letter-spacing: -0.035em;
+  line-height: 1;
+}
+
+@media (min-height: 40rem) and (prefers-reduced-motion: no-preference) {
+  .case {
+    position: sticky;
+    top: calc(var(--header) + 0.75rem);
+    min-height: min(72svh, 36rem);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-dot {
+    animation: hero-pulse 2.4s var(--ease-in-out) infinite;
+  }
+
+  @keyframes hero-pulse {
+    50% {
+      opacity: 0.35;
+    }
+  }
+
+  /* The name in the header waits for the big one to arrive, then takes over from it. */
+  :root[data-js]:has([data-world="home"]):not([data-docked]) [data-brand-text] {
+    opacity: 0;
+  }
+
+  :root[data-docked] [data-hero-name] {
+    visibility: hidden;
+  }
+
+  :root[data-js] {
+    .story {
+      --wheel: max(136rem, 230vw);
+      --step: min(25rem, 78vw);
+      --hang: clamp(5.5rem, 24svh, 10rem);
+      height: calc(var(--steps) * 110svh);
+    }
+
+    .story-stage {
+      position: sticky;
+      top: var(--header);
+      display: block;
+      height: calc(100svh - var(--header));
+      max-width: none;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .story-head {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      max-width: var(--content);
+      margin-inline: auto;
+      padding: 1rem var(--gutter) 0;
+    }
+
+    @media (min-width: 40rem) {
+      .story-hint {
+        display: block;
+      }
+    }
+
+    .story-year {
+      position: absolute;
+      right: var(--gutter);
+      bottom: calc(var(--dock) + 0.5rem);
+      display: flex;
+      color: var(--surface);
+      font-size: min(34vw, 42svh);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.04em;
+      line-height: 0.9;
+    }
+
+    .story-digit {
+      display: block;
+      height: 1em;
+      overflow: hidden;
+      line-height: 1;
+      margin-top: -0.05em;
+    }
+
+    .story-digit > span,
+    .story-digit > span > span {
+      display: block;
+    }
+
+    .story-wheel {
+      position: absolute;
+      top: var(--hang);
+      left: 50%;
+      display: block;
+      width: var(--wheel);
+      height: var(--wheel);
+      margin-left: calc(var(--wheel) / -2);
+      border: 1px solid var(--line);
+      border-radius: 50%;
+    }
+
+    .story-steps {
+      position: absolute;
+      inset: 0;
+      display: block;
+    }
+
+    .story-step {
+      position: absolute;
+      top: var(--hang);
+      left: 50%;
+      width: var(--step);
+      margin-left: calc(var(--step) / -2);
+      padding-top: 1rem;
+      transform: translateX(calc(var(--i) * var(--step) * 1.14));
+      transform-origin: 50% 0;
+      will-change: transform;
+    }
+
+    .story-step::before {
+      content: "";
+      position: absolute;
+      top: -0.3125rem;
+      left: calc(50% - 0.3125rem);
+      width: 0.625rem;
+      height: 0.625rem;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .story-rail {
+      position: absolute;
+      right: var(--gutter);
+      bottom: calc(var(--dock) + 0.5rem);
+      left: var(--gutter);
+      display: block;
+      height: 2px;
+      background: var(--line);
+    }
+
+    .story-rail i {
+      display: block;
+      height: 100%;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: 0 50%;
+    }
+
+    .build {
+      height: 340svh;
+    }
+
+    .build-stage {
+      position: sticky;
+      top: var(--header);
+      grid-template-rows: auto minmax(0, 1fr);
+      align-content: start;
+      gap: 1rem;
+      height: calc(100svh - var(--header) - var(--dock));
+      padding-block: 1rem;
+      overflow: hidden;
+    }
+
+    .build-captions {
+      display: grid;
+    }
+
+    .build-caption {
+      grid-area: 1 / 1;
+    }
+
+    /* Opacity alone: a keyboard and a screen reader keep what the eye has yet to reach. */
+    .build-caption:not(:first-child),
+    .build-lab,
+    .build-code,
+    .build-whole,
+    [data-layer-part] {
+      opacity: 0;
+    }
+
+    .build-visual {
+      align-items: center;
+    }
+
+    /*
+     * --open goes from 0 to 1 with the scroll. Each layer tilts by itself and lifts along its own
+     * normal, under one perspective: `preserve-3d` flattens these differently from engine to engine.
+     */
+    .build-stack {
+      --open: 0;
+      --lift: min(6rem, 13vw);
+      perspective: 70rem;
+    }
+
+    .build-layer {
+      position: absolute;
+      inset: 0;
+      display: block;
+      transform: rotateX(calc(var(--open) * 54deg)) rotateZ(calc(var(--open) * -24deg))
+        translateZ(calc(var(--open) * var(--height) * var(--lift)));
+      will-change: transform;
+    }
+
+    .build-code {
+      width: min(100%, 34rem);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    :root[data-js] .build-stage {
+      grid-template-rows: minmax(0, 1fr);
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      align-items: center;
+      padding-block: 2rem;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mini-week-lesson,
+  .mini-canvas-frame {
+    transition: none;
+  }
+
+  .build-token {
+    animation: none;
+  }
+}
