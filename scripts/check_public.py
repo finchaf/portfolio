@@ -7,6 +7,8 @@
 2. On a machine with the private part, no tracked file and no commit of the branch holds a word
    from docs/private/forbidden-words.txt, one lower-case word or phrase per line. The list is
    private by nature, so CI, which has no such file, runs only the first rule.
+3. A word that is also in docs/private/allowed-in-messages.txt may stand in messages/, the strings
+   of the site itself, and nowhere else: a commit message or a code file with it still fails.
 """
 
 from __future__ import annotations
@@ -18,6 +20,8 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 WORDS = REPO / "docs/private/forbidden-words.txt"
+ALLOWED_IN_STRINGS = REPO / "docs/private/allowed-in-messages.txt"
+STRINGS = "messages/"
 LINK_INTO_PRIVATE = re.compile(r"\]\([^)]*private/[^)]*\)")
 # This gate quotes the path it looks for, and CLAUDE.md explains the folder without linking it.
 SELF = "scripts/check_public.py"
@@ -41,6 +45,13 @@ def tracked() -> dict[str, str]:
     return texts
 
 
+def word_list(path: Path) -> list[str]:
+    if not path.exists():
+        return []
+    return [line.strip().lower() for line in path.read_text(encoding="utf8").splitlines()
+            if line.strip() and not line.startswith("#")]
+
+
 def main() -> int:
     findings = []
     texts = tracked()
@@ -49,12 +60,12 @@ def main() -> int:
             findings.append(f"{name}: links into the private part")
 
     if WORDS.exists():
-        words = [line.strip().lower() for line in WORDS.read_text(encoding="utf8").splitlines()
-                 if line.strip() and not line.startswith("#")]
+        allowed = word_list(ALLOWED_IN_STRINGS)
         history = git("log", "--format=%H%n%B", "--all")
-        for word in words:
+        for word in word_list(WORDS):
             findings += [f"{name}: holds a forbidden word" for name, text in texts.items()
-                         if word in text.lower()]
+                         if word in text.lower()
+                         and not (word in allowed and name.startswith(STRINGS))]
             if word in history.lower():
                 findings.append("a commit message holds a forbidden word")
     else:
