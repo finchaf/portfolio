@@ -68,6 +68,7 @@ test.describe("the home page in motion", () => {
   test("hands the name over to the header", async ({ page }) => {
     await page.goto(HOME);
     await expect(page.locator("[data-brand-text]")).toHaveCSS("opacity", "0");
+    await expect(page.locator("header svg").first()).toBeVisible();
     await jump(page, 1200);
     await expect(page.locator("html")).toHaveAttribute("data-docked");
     await expect(page.locator("[data-brand-text]")).toHaveCSS("opacity", "1");

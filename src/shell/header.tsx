@@ -6,7 +6,7 @@ import { localizedPath } from "@/i18n/localized-path";
 import { PAGE_PATHS, PAGES } from "@/lib/pages";
 import { TELEGRAM_URL } from "@/lib/site";
 import { ButtonLink } from "@/ui/button-link";
-import { FinchMark } from "@/ui/finch-mark";
+import { Logo } from "@/ui/logo";
 
 import { LanguageLink } from "./language-link";
 import { NavLink } from "./nav-link";
@@ -24,8 +24,8 @@ export function Header() {
   const other = LOCALES.find((each) => each !== locale) ?? locale;
   return (
     <header className="sticky top-0 z-30 flex h-(--header) items-center justify-between gap-3 px-4 before:absolute before:inset-0 before:-z-10 before:bg-page/85 before:backdrop-blur-md lg:grid lg:grid-cols-[1fr_auto_1fr] lg:px-8">
-      <Link className="flex min-w-0 items-center gap-2" data-brand href={localizedPath(locale, "")}>
-        <FinchMark className="size-7 shrink-0" />
+      <Link className="flex min-w-0 items-center gap-2.5" href={localizedPath(locale, "")}>
+        <Logo className="h-[22px] w-auto shrink-0" />
         <span className="flex items-baseline gap-2 whitespace-nowrap" data-brand-text>
           <span
             className="font-display text-[17px] leading-none font-extrabold tracking-[-0.035em]"
