@@ -48,6 +48,7 @@ GATES = (
     Gate("SEO", "browser", (("pnpm", "e2e", "e2e/seo.spec.ts"),), needs="Build"),
     Gate("A11y", "browser", (("pnpm", "e2e", "e2e/a11y.spec.ts"),), needs="Build"),
     Gate("Motion", "browser", (("pnpm", "e2e", "e2e/motion.spec.ts"),), needs="Build"),
+    Gate("Themes", "browser", (("pnpm", "e2e", "e2e/themes.spec.ts"),), needs="Build"),
 )
 GROUPS = tuple(dict.fromkeys(gate.group for gate in GATES))
 # What --fast leaves out: the minutes of a full run are the build and the browser.
