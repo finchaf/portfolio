@@ -1,0 +1,7 @@
+# Prettier owns the code. The knowledge base is hand-wrapped Russian prose, and the rest is generated.
+docs/
+out/
+.next/
+pnpm-lock.yaml
+playwright-report/
+test-results/

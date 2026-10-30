@@ -4,5 +4,8 @@ node_modules/
 .next/
 out/
 public/media/
+playwright-report/
+test-results/
 *.tsbuildinfo
 next-env.d.ts
+__pycache__/

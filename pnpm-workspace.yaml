@@ -1,0 +1,12 @@
+# A version is installed a day after its release at the earliest: a hijacked release is usually
+# caught and pulled within hours. Nothing is excepted — pick the previous version instead.
+minimumReleaseAge: 1440
+
+# Install scripts of dependencies do not run: each of these ships a prebuilt binary for the
+# platform as an optional dependency and needs no script to work.
+allowBuilds:
+  "@parcel/watcher": false
+  "@swc/core": false
+  esbuild: false
+  sharp: false
+  unrs-resolver: false
