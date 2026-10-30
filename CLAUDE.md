@@ -28,6 +28,7 @@ texts, cases or what the site may show. Commit there separately.
 - **Pages are features, and imports only go down** (ADR-0009). A feature never imports another;
   ESLint holds this. Every page is in `src/lib/pages.ts`.
 - **No text in the markup.** Strings live in `messages/`, in both languages.
+- **Only theme tokens** (ADR-0010). Colours and fonts come from `src/themes/`, in both modes.
 - **The first screen never waits for animation.** Content is in the HTML and visible without
   JavaScript; every effect honours `prefers-reduced-motion`.
 - **Fonts and media only with clear rights.** GSAP stays an npm dependency: its files are never

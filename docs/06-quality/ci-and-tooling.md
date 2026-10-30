@@ -22,7 +22,7 @@
 | Format | Prettier |
 | Lint | ESLint, `jsx-a11y`, правила Next.js |
 | Types | `tsc --noEmit`, строгий режим |
-| Unit | Vitest |
+| Unit | Vitest, в том числе контракт тем и контраст |
 | Content | Одинаковые файлы и ключи на обоих языках, ключи в `camelCase`, значения не пусты |
 | Build | Сборка даёт ровно страницы из `expected-build.json`, у каждой есть сжатые копии |
 | Bundle | Бюджеты ниже |
@@ -30,6 +30,7 @@
 | A11y | axe на каждой странице и на 404, ссылка «К содержанию» с клавиатуры |
 | SEO | `title`, `description`, `canonical`, `hreflang`, sitemap, robots |
 | Motion | Без JavaScript и при `prefers-reduced-motion` весь контент виден |
+| Themes | Цвет и шрифт каждой страницы в обоих режимах, выбор режима, нужные шрифты, axe в обоих режимах |
 
 Для браузерных гейтов нужен Docker: `colima start`. Образ Caddy закреплён тем же digest, что на проде, а
 `scripts/serve.py` кладёт сборку туда же, куда на сервере. Colima видит только домашнюю папку.

@@ -15,6 +15,7 @@ portfolio/
 │   ├── features/<страница>/     всё, что нужно одной странице
 │   ├── shell/                   шапка, ссылки, 404, ошибка
 │   ├── ui/                      базовые компоненты без текста
+│   ├── themes/                  контракт токенов, тема на страницу, шрифты, режимы
 │   ├── i18n/                    языки, адреса, каталог, метаданные страниц
 │   └── lib/                     чистый код: реестр страниц, адрес сайта
 ├── messages/<locale>/*.json     строки, файл на область
@@ -36,7 +37,7 @@ portfolio/
 1. Строка в `src/lib/pages.ts`.
 2. `messages/ru/<имя>.json` и `messages/en/<имя>.json` с `meta` и `title`, подключить в
    `src/i18n/catalog.ts`.
-3. Фича в `src/features/<имя>/` и её имя в `FEATURES` в `eslint.config.mjs`.
+3. Фича в `src/features/<имя>/`, её имя в `FEATURES` в `eslint.config.mjs`, разметка в `<World>`.
 4. Маршрут в `src/app/[locale]/<адрес>/page.tsx`.
 5. Страницы в `expected-build.json`.
 
