@@ -1,0 +1,27 @@
+name: Gates
+
+# The gates of scripts/check.py on every pull request: the same command a developer runs before a
+# commit. No secrets here, and no key to the server: deploys start on a laptop (ADR-0005).
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  static:
+    name: Static gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Run the gates
+        run: python3 scripts/check.py --group static

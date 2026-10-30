@@ -1,0 +1,15 @@
+version: 2
+
+# Actions are pinned by commit SHA; Dependabot moves the SHA and the version comment beside it.
+# npm joins when the site's package.json does.
+updates:
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      actions:
+        patterns: ["*"]
+    commit-message:
+      prefix: ci
