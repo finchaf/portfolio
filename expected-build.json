@@ -1,0 +1,16 @@
+{
+  "$comment": "What a build must produce: scripts/check_build.py compares out/ with the pages here, and scripts/check_bundle.py holds each page's first-load JavaScript to the budget (docs/06-quality/ci-and-tooling.md).",
+  "pages": [
+    "404.html",
+    "_not-found.html",
+    "en.html",
+    "en/flow.html",
+    "en/pora-na-paru.html",
+    "en/projects.html",
+    "ru.html",
+    "ru/flow.html",
+    "ru/pora-na-paru.html",
+    "ru/projects.html"
+  ],
+  "firstLoadJsBudgetKb": 280
+}
