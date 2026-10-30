@@ -22,7 +22,7 @@
 
 У каждой страницы:
 
-- свой `title`, `description` и картинка для ссылок;
+- свой `title`, `description` и общая картинка для ссылок `public/og.png`;
 - `canonical` и `hreflang` `ru`, `en`, `x-default` на `/`;
 - место в `sitemap.xml`.
 
