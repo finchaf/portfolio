@@ -40,16 +40,16 @@ gh pr list --state open
 - **The knowledge base decides.** Read `CLAUDE.md`, `docs/README.md`, the ADR journal and the
   documents the task lives in:
 
-  | Task | Read |
-  | --- | --- |
-  | Any decision | `docs/01-architecture/decisions/README.md` |
-  | A page or an address | `docs/05-features/README.md` |
-  | A file, a folder | `docs/02-project-structure/repository.md` |
-  | An animation, an effect | `docs/04-design-system/motion.md` |
-  | An image, a video | `docs/03-data/media.md` |
-  | A gate, CI, a budget | `docs/06-quality/ci-and-tooling.md` |
-  | The server, Caddy, a domain | `docs/01-architecture/infrastructure.md` |
-  | A text, a case, what may be shown | `docs/private/README.md` |
+  | Task                              | Read                                       |
+  | --------------------------------- | ------------------------------------------ |
+  | Any decision                      | `docs/01-architecture/decisions/README.md` |
+  | A page or an address              | `docs/05-features/README.md`               |
+  | A file, a folder                  | `docs/02-project-structure/repository.md`  |
+  | An animation, an effect           | `docs/04-design-system/motion.md`          |
+  | An image, a video                 | `docs/03-data/media.md`                    |
+  | A gate, CI, a budget              | `docs/06-quality/ci-and-tooling.md`        |
+  | The server, Caddy, a domain       | `docs/01-architecture/infrastructure.md`   |
+  | A text, a case, what may be shown | `docs/private/README.md`                   |
 
 - **The code:** find the nearest existing code and read it in full. New work mirrors what shipped.
 - **Verify progress from the repository**, never from a document or a memory. A `**Статус:**` line

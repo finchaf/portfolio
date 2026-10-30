@@ -29,14 +29,14 @@ git log --oneline main..HEAD
 gh pr list --head "$BR" --state all --json number,state,url
 ```
 
-| State | Start at |
-| --- | --- |
-| On `main` with changes | **Stop.** Move the work to a branch first |
-| Dirty tree | 1 |
-| Commits not on `origin/<branch>` | 2 |
-| Pushed, no PR | 3 |
-| PR open | 4 |
-| PR merged | 6 |
+| State                            | Start at                                  |
+| -------------------------------- | ----------------------------------------- |
+| On `main` with changes           | **Stop.** Move the work to a branch first |
+| Dirty tree                       | 1                                         |
+| Commits not on `origin/<branch>` | 2                                         |
+| Pushed, no PR                    | 3                                         |
+| PR open                          | 4                                         |
+| PR merged                        | 6                                         |
 
 ## 1. Commit
 
