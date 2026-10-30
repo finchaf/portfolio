@@ -3,6 +3,7 @@ import "./scenes.css";
 import { World } from "@/ui/world";
 
 import { Build } from "./build";
+import { Cases } from "./cases";
 import { Hero } from "./hero";
 import { PersonData } from "./person-data";
 import { Story } from "./story";
@@ -15,6 +16,7 @@ export function HomePage() {
       <Hero />
       <Story />
       <Build />
+      <Cases />
     </World>
   );
 }
