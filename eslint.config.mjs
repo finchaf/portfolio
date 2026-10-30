@@ -31,7 +31,7 @@ const BOUNDARIES = [
     except: [`./${feature}`],
     message: "A feature does not import another: what they share moves down to ui/ or lib/.",
   })),
-  ...["./src/ui", "./src/lib", "./src/i18n", "./src/themes"].map((target) => ({
+  ...["./src/ui", "./src/motion", "./src/lib", "./src/i18n", "./src/themes"].map((target) => ({
     target,
     from: ["./src/features", "./src/shell", "./src/app"],
     message: "A foundation does not import what is built on it.",
@@ -72,7 +72,7 @@ const config = tseslint.config(
       "import/no-restricted-paths": ["error", { zones: BOUNDARIES }],
       "react/jsx-no-literals": [
         "error",
-        { noStrings: true, ignoreProps: true, allowedStrings: ["·", "—", "©"] },
+        { noStrings: true, ignoreProps: true, allowedStrings: ["·", "—", "©", "→", "↓"] },
       ],
       "no-restricted-syntax": [
         "error",

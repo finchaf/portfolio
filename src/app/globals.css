@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @import "../themes/tokens.css";
+@import "../motion/tokens.css";
 @import "../themes/home.css";
 @import "../themes/pora.css";
 @import "../themes/flow.css";
