@@ -5,28 +5,33 @@
 Personal site of Danil Zablotsky, design engineer. It will live at `finchaf.com`.
 
 This repository is public on purpose: the way a site is built is part of the work. It starts where
-the work started, with decisions. The site's code comes next, and the
-[plan](docs/07-roadmap/README.md) shows what is done.
+the work started, with decisions, and the [plan](docs/07-roadmap/README.md) shows what is done. The
+skeleton stands: four pages in two languages, with every gate in place; the design comes next.
 
 ## Decisions
 
 The reasoning is written down before the code, in [`docs/`](docs/README.md), in Russian. The short
 version:
 
-| Question | Answer | Why |
-| --- | --- | --- |
-| How does it run? | Static export of Next.js, served as plain files by Caddy | Everything rich happens in the browser, so a server would add risk and no ability. [ADR-0002](docs/01-architecture/decisions/0002-static-export-on-caddy.md) |
-| What is it built with? | Next.js, React, TypeScript, Tailwind CSS, next-intl, MDX | Full control, in Russian and English. [ADR-0003](docs/01-architecture/decisions/0003-stack-as-in-the-web.md) |
-| How does it move? | CSS, Motion, GSAP and three.js, each with its own zone | The cheapest tool that can do the job, loaded only where needed. [ADR-0004](docs/01-architecture/decisions/0004-motion-stack.md) |
-| How does it ship? | From a laptop, by switching a symlink | No downtime, instant rollback, no server key in CI. [ADR-0005](docs/01-architecture/decisions/0005-atomic-deploy-from-laptop.md) |
-| How is quality held? | One command runs every gate, in CI too | Budgets and accessibility are checked, not hoped for. [ADR-0007](docs/01-architecture/decisions/0007-process-and-gates.md) |
+| Question               | Answer                                                   | Why                                                                                                                                                          |
+| ---------------------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| How does it run?       | Static export of Next.js, served as plain files by Caddy | Everything rich happens in the browser, so a server would add risk and no ability. [ADR-0002](docs/01-architecture/decisions/0002-static-export-on-caddy.md) |
+| What is it built with? | Next.js, React, TypeScript, Tailwind CSS, next-intl, MDX | Full control, in Russian and English. [ADR-0003](docs/01-architecture/decisions/0003-stack-as-in-the-web.md)                                                 |
+| How does it move?      | CSS, Motion, GSAP and three.js, each with its own zone   | The cheapest tool that can do the job, loaded only where needed. [ADR-0004](docs/01-architecture/decisions/0004-motion-stack.md)                             |
+| How does it ship?      | From a laptop, by switching a symlink                    | No downtime, instant rollback, no server key in CI. [ADR-0005](docs/01-architecture/decisions/0005-atomic-deploy-from-laptop.md)                             |
+| How is quality held?   | One command runs every gate, in CI too                   | Budgets and accessibility are checked, not hoped for. [ADR-0007](docs/01-architecture/decisions/0007-process-and-gates.md)                                   |
 
 ## Working here
 
 ```
 git config core.hooksPath .githooks
-python3 scripts/check.py
+pnpm install
+pnpm dev                    # http://localhost:3000
+python3 scripts/check.py    # every gate
 ```
+
+`pnpm build && pnpm preview` serves the build behind the same Caddy as production, on
+<http://127.0.0.1:8090>; it needs Docker, as do the browser gates.
 
 Commits are signed, atomic [Conventional Commits](https://www.conventionalcommits.org/). `main` is
 linear and moves only by fast-forward after CI, so the commits on it are the ones CI checked. The

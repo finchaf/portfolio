@@ -1,6 +1,6 @@
 # Инфраструктура
 
-**Статус:** спецификация — домена и сайта на сервере нет на 30.10.2026
+**Статус:** спецификация — сайт собирается, домена и сайта на сервере нет на 30.10.2026
 
 > Где живёт сайт, что меняется на общем сервере, в каком порядке всё запускается и как чинить.
 > Открывать перед покупкой домена, первой выкаткой и при любом сбое. Решения —
@@ -38,47 +38,14 @@
 ssh poranaparu-prod 'mkdir -p /opt/poranaparu/portfolio/releases'
 ```
 
-**`deploy/Caddyfile`**, два блока. Основа проверена на Caddy 2.11.4 в прототипе; редирект с косой
-чертой и сохранение строки запроса при выборе языка проверяются гейтом Addresses.
+**`deploy/Caddyfile`**, два блока. Основа блока сайта — `deploy/Caddyfile.test` этого репозитория: он
+проверяется гейтом Addresses на том же образе Caddy, что на проде. В блок сервера он переносится с
+`import edge` вместо заголовков `X-Content-Type-Options` и `-Server`.
 
 ```caddyfile
 finchaf.com {
 	import edge
-	header {
-		Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'"
-		Referrer-Policy "strict-origin-when-cross-origin"
-		Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
-	}
-	root * /srv/portfolio/current
-	@bare path /
-	handle @bare {
-		header Vary Accept-Language
-		@en {
-			header Accept-Language *
-			not header_regexp Accept-Language ^\s*ru
-		}
-		redir @en /en 302
-		redir * /ru 302
-	}
-	handle /_next/static/* {
-		header Cache-Control "public, max-age=31536000, immutable"
-		file_server {
-			precompressed br gzip
-		}
-	}
-	handle {
-		header Cache-Control "public, max-age=0, must-revalidate"
-		try_files {path} {path}.html {path}/index.html
-		file_server {
-			precompressed br gzip
-		}
-	}
-	handle_errors 404 {
-		rewrite * /404.html
-		file_server {
-			status 404
-		}
-	}
+	# заголовки, выбор языка, файлы и 404 — как в deploy/Caddyfile.test
 }
 
 www.finchaf.com, finchaf.ru, www.finchaf.ru {
