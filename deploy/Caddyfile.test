@@ -1,0 +1,58 @@
+# The site's block for the browser gates and `pnpm preview`: production's, on plain HTTP, without
+# the shared `edge` snippet and TLS of the server's Caddyfile. A change here goes to
+# poranaparu/backend, deploy/Caddyfile, in the same task (docs/01-architecture/infrastructure.md).
+{
+	auto_https off
+	admin off
+}
+
+:8080 {
+	header {
+		Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+		X-Content-Type-Options nosniff
+		-Server
+	}
+
+	root * /srv/portfolio/current
+
+	# The language of the bare address: Russian or no header gives ru, anything else en.
+	@bare path /
+	handle @bare {
+		header Vary Accept-Language
+		@english {
+			header_regexp Accept-Language \S
+			not header_regexp Accept-Language ^\s*ru
+		}
+		redir @english /en{?query} 302
+		redir * /ru{?query} 302
+	}
+
+	# One address per page: a trailing slash answers with the address without it.
+	@slash path_regexp slash ^(.+)/$
+	redir @slash {re.slash.1}{?query} 308
+
+	# Names carry a content hash, so a file under one never changes.
+	handle /_next/static/* {
+		header Cache-Control "public, max-age=31536000, immutable"
+		file_server {
+			precompressed br gzip
+		}
+	}
+
+	handle {
+		header Cache-Control "public, max-age=0, must-revalidate"
+		try_files {path} {path}.html {path}/index.html
+		file_server {
+			precompressed br gzip
+		}
+	}
+
+	handle_errors 404 {
+		rewrite * /404.html
+		file_server {
+			status 404
+		}
+	}
+}
