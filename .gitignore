@@ -1,0 +1,8 @@
+.DS_Store
+docs/private/
+node_modules/
+.next/
+out/
+public/media/
+*.tsbuildinfo
+next-env.d.ts
