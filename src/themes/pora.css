@@ -3,7 +3,8 @@
  * (poranaparu/web, packages/ui/tokens), zinc and blue. `accent` is its brand colour; the brand's
  * light value is too pale for text, so `accent-strong` there is its blue-600. Geist.
  */
-:root:has([data-world="pora"]) {
+:root:has([data-world="pora"]),
+[data-tint="pora"] {
   --page: light-dark(#ffffff, #09090b);
   --surface: light-dark(#fafafa, #18181b);
   --raised: light-dark(#f4f4f5, #27272a);
@@ -16,7 +17,9 @@
   --success: light-dark(#16a34a, #4ade80);
   --warning: light-dark(#d97706, #fbbf24);
   --danger: light-dark(#dc2626, #f87171);
+}
 
+:root:has([data-world="pora"]) {
   --sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
   --display: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
   --mono: "Geist Mono Variable", ui-monospace, "SF Mono", Menlo, monospace;

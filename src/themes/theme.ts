@@ -21,8 +21,10 @@ export function applyTheme(theme: Theme, root: HTMLElement = document.documentEl
 
 /**
  * The script for <head>, run before the first paint so that a page in a chosen mode never flashes
- * the other one. It stays standalone: it is inlined as text, and nothing can be imported.
+ * the other one. `data-js` tells the stylesheet that scenes will run, so a page lays them out once:
+ * without a script it never appears, and the page stays the plain one. It stays standalone: it is
+ * inlined as text, and nothing can be imported.
  */
-export const THEME_SCRIPT = `try{var t=localStorage.getItem(${JSON.stringify(
+export const THEME_SCRIPT = `document.documentElement.dataset.js="";try{var t=localStorage.getItem(${JSON.stringify(
   THEME_STORAGE_KEY,
 )});if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}`;

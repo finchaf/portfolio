@@ -3,7 +3,8 @@
  * is a chaffinch, and these are its colours: the slate of the head, the warm breast, the olive back.
  * Geologica and Golos Text.
  */
-:root {
+:root,
+[data-tint="home"] {
   --page: light-dark(#eef1f4, #141b22);
   --surface: light-dark(#dfe5ea, #1f2933);
   --raised: light-dark(#cfd7de, #2c3844);

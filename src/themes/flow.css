@@ -4,7 +4,8 @@
  * Obsidian's own purple there and its lighter accent in the dark. Inter is Figma's default for
  * text; the monospace is the system stack Obsidian itself uses.
  */
-:root:has([data-world="flow"]) {
+:root:has([data-world="flow"]),
+[data-tint="flow"] {
   --page: light-dark(#ffffff, #1c1c1c);
   --surface: light-dark(#f6f6f6, #282828);
   --raised: light-dark(#efefef, #2e2e2e);
@@ -17,7 +18,9 @@
   --success: light-dark(#08b94e, #44cf6e);
   --warning: light-dark(#ec7500, #e9973f);
   --danger: light-dark(#e93147, #fb464c);
+}
 
+:root:has([data-world="flow"]) {
   --sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
   --display: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
   --mono:

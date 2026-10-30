@@ -10,6 +10,9 @@
  * `accent` is the theme's exact brand colour, for fills and indicators. Text and buttons take
  * `accent-strong`, on `page`, with `on-accent` on it: some brand colours are too pale for text.
  * On `raised`, text is `ink`; `muted` is promised only on `page` and `surface`.
+ *
+ * `data-tint` gives a piece of a page the colours of a theme, without its fonts. It also re-reads
+ * the pairs against that element's own `color-scheme`, which a browser may otherwise settle on :root.
  */
 @theme inline {
   /* Only these colours exist: a Tailwind palette class does not compile. */
@@ -44,9 +47,33 @@
   color-scheme: dark;
 }
 
+:root {
+  --header: 3.5rem;
+  /* The bar of sections at the bottom of a phone: what a screen must leave free above it. */
+  --dock: 5rem;
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --dock: 0rem;
+  }
+}
+
+html {
+  scroll-padding-top: calc(var(--header) + 1rem);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 body {
   background: var(--page);
   color: var(--ink);
+  /* Keeps wide scenes from widening the page; unlike `hidden`, it leaves `sticky` working. */
+  overflow-x: clip;
 }
 
 ::selection {
