@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 scripts/check.py)",
+      "Bash(python3 scripts/check.py *)",
+      "Bash(dig *)",
+      "Bash(git merge-base *)",
+      "mcp__plugin_figma_figma__get_screenshot",
+      "mcp__plugin_figma_figma__get_metadata",
+      "mcp__plugin_figma_figma__get_design_context",
+      "mcp__plugin_figma_figma__get_libraries",
+      "mcp__plugin_figma_figma__whoami",
+      "mcp__claude-in-chrome__tabs_context_mcp",
+      "mcp__claude-in-chrome__find",
+      "mcp__claude-in-chrome__get_page_text"
+    ]
+  }
+}
