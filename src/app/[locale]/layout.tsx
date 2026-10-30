@@ -7,7 +7,7 @@ import { getTranslations } from "next-intl/server";
 import { ViewTransition } from "react";
 
 import { DEFAULT_LOCALE, isLocale, LOCALES } from "@/i18n/locales";
-import { SITE_ORIGIN } from "@/lib/site";
+import { SITE_ICONS, SITE_ORIGIN } from "@/lib/site";
 import { Header } from "@/shell/header";
 import { SkipLink } from "@/shell/skip-link";
 import { ThemeScript } from "@/themes/theme-script";
@@ -28,7 +28,11 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
     locale: isLocale(locale) ? locale : DEFAULT_LOCALE,
     namespace: "shell",
   });
-  return { metadataBase: new URL(SITE_ORIGIN), applicationName: t("siteName") };
+  return {
+    metadataBase: new URL(SITE_ORIGIN),
+    applicationName: t("siteName"),
+    icons: SITE_ICONS,
+  };
 }
 
 export default async function LocaleLayout({ children, params }: LayoutProps<"/[locale]">) {
