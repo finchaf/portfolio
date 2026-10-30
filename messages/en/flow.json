@@ -3,5 +3,6 @@
     "title": "Flow — Danil Zablotsky",
     "description": "How I work with agents: a terminal and a knowledge base."
   },
-  "title": "Flow"
+  "title": "Flow",
+  "lead": "How I work with agents: a terminal and a knowledge base."
 }
