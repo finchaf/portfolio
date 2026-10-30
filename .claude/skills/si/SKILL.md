@@ -107,6 +107,8 @@ gh pr view "$BR" --json state,mergedAt
 ```
 
 GitHub marks the PR merged by itself. A refusal from the ruleset is reported, never worked around.
+«Commits must have verified signatures» with a local `G` means the key is not in the account as a
+signing key (`docs/06-quality/ci-and-tooling.md`, «Коммиты»): that is the owner's to fix.
 
 ## 6. Clean up
 
