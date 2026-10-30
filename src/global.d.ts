@@ -8,3 +8,10 @@ declare module "next-intl" {
     Messages: Messages;
   }
 }
+
+// A custom property in a `style` object: a value a stylesheet reads, not a style of its own.
+declare module "react" {
+  interface CSSProperties {
+    [variable: `--${string}`]: string | number;
+  }
+}

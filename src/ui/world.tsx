@@ -2,11 +2,23 @@ import type { ReactNode } from "react";
 
 /**
  * Declares the page's theme. The stylesheet answers on :root with `:has()`, so the header and the
- * background take it too, in the first HTML, with no script and no change to the layout.
+ * background take it too, in the first HTML, with no script and no change to the layout. A page that
+ * draws its sections to the edge of the screen asks for `bleed`.
  */
-export function World({ name, children }: { name: string; children: ReactNode }) {
+export function World({
+  name,
+  bleed = false,
+  children,
+}: {
+  name: string;
+  bleed?: boolean;
+  children: ReactNode;
+}) {
   return (
-    <div className="flex flex-col gap-3" data-world={name}>
+    <div
+      className={bleed ? undefined : "flex flex-col gap-3 p-4 pb-(--dock) lg:p-8"}
+      data-world={name}
+    >
       {children}
     </div>
   );

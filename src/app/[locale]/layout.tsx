@@ -37,14 +37,14 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
 
   return (
     // The theme script sets data-theme before React hydrates: the one attribute that differs.
-    <html lang={locale} suppressHydrationWarning>
+    <html data-scroll-behavior="smooth" lang={locale} suppressHydrationWarning>
       <head>
         <ThemeScript />
       </head>
       <body className="flex min-h-dvh flex-col">
         <SkipLink />
         <Header />
-        <main className="flex flex-1 flex-col gap-4 p-4" id="content" tabIndex={-1}>
+        <main className="flex flex-1 flex-col" id="content" tabIndex={-1}>
           {/* A page change is a cross-fade; pages name their own shared elements as they grow. */}
           <ViewTransition>
             <div>{children}</div>

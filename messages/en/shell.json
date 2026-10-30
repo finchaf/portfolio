@@ -1,5 +1,6 @@
 {
   "siteName": "Danil Zablotsky",
+  "role": "design engineer",
   "skipToContent": "Skip to content",
   "navigation": "Site sections",
   "language": {
@@ -19,5 +20,7 @@
     "system": "System",
     "light": "Light",
     "dark": "Dark"
-  }
+  },
+  "write": "Write to me",
+  "settings": "Theme and language"
 }

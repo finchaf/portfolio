@@ -83,11 +83,12 @@ test("the header moves between pages without a reload and marks the current one"
     (window as unknown as { sameDocument: boolean }).sameDocument = true;
   });
 
-  await page.getByRole("link", { name: "Флоу" }).click();
+  const header = page.getByRole("navigation");
+  await header.getByRole("link", { name: "Флоу" }).click();
   await expect(page).toHaveURL(/\/ru\/flow$/);
   await expect(page.getByRole("heading", { level: 1, name: "Флоу" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Флоу" })).toHaveAttribute("aria-current", "page");
-  await expect(page.getByRole("link", { name: "Главная" })).not.toHaveAttribute("aria-current");
+  await expect(header.getByRole("link", { name: "Флоу" })).toHaveAttribute("aria-current", "page");
+  await expect(header.getByRole("link", { name: "Главная" })).not.toHaveAttribute("aria-current");
 
   const sameDocument = await page.evaluate(
     () => (window as unknown as { sameDocument?: boolean }).sameDocument,

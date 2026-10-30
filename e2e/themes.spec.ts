@@ -74,7 +74,7 @@ test("the default is the system, and a choice beats it and survives a reload", a
   await expect(page.getByRole("radio", { name: "Система" })).toBeChecked();
   await expect(page.locator("html")).not.toHaveAttribute("data-theme");
 
-  await page.getByText("Тёмная", { exact: true }).click();
+  await page.getByTitle("Тёмная", { exact: true }).click();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   expect(await background(page)).toBe(pageColor("flow", "dark"));
 
@@ -86,7 +86,7 @@ test("the default is the system, and a choice beats it and survives a reload", a
   await expect(page).toHaveURL(/\/ru\/projects$/);
   await expect.poll(() => background(page)).toBe(pageColor("projects", "dark"));
 
-  await page.getByText("Система", { exact: true }).click();
+  await page.getByTitle("Система", { exact: true }).click();
   await expect(page.locator("html")).not.toHaveAttribute("data-theme");
   expect(await background(page)).toBe(pageColor("projects", "light"));
 });
