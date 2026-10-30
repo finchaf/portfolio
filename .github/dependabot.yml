@@ -1,7 +1,8 @@
 version: 2
 
 # Actions are pinned by commit SHA; Dependabot moves the SHA and the version comment beside it.
-# npm joins when the site's package.json does.
+# npm in one group, once a month. Major versions are left out: a major of Next.js, React or Node is
+# a task of its own (ADR-0003).
 updates:
   - package-ecosystem: github-actions
     directory: "/"
@@ -13,3 +14,16 @@ updates:
         patterns: ["*"]
     commit-message:
       prefix: ci
+
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: monthly
+    groups:
+      npm:
+        patterns: ["*"]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    commit-message:
+      prefix: build
