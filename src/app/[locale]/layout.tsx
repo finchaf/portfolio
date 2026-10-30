@@ -1,6 +1,7 @@
+import "@/themes/fonts";
 import "../globals.css";
 
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { ViewTransition } from "react";
@@ -9,6 +10,10 @@ import { DEFAULT_LOCALE, isLocale, LOCALES } from "@/i18n/locales";
 import { SITE_ORIGIN } from "@/lib/site";
 import { Header } from "@/shell/header";
 import { SkipLink } from "@/shell/skip-link";
+import { ThemeScript } from "@/themes/theme-script";
+
+// Tells the browser both modes exist before the stylesheet arrives.
+export const viewport: Viewport = { colorScheme: "light dark" };
 
 export function generateStaticParams() {
   return LOCALES.map((locale) => ({ locale }));
@@ -31,7 +36,11 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   if (!isLocale(locale)) notFound();
 
   return (
-    <html lang={locale}>
+    // The theme script sets data-theme before React hydrates: the one attribute that differs.
+    <html lang={locale} suppressHydrationWarning>
+      <head>
+        <ThemeScript />
+      </head>
       <body className="flex min-h-dvh flex-col">
         <SkipLink />
         <Header />

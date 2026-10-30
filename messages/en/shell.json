@@ -13,5 +13,11 @@
   "error": {
     "title": "Something went wrong",
     "retry": "Try again"
+  },
+  "theme": {
+    "label": "Colour theme",
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark"
   }
 }

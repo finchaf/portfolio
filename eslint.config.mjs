@@ -31,7 +31,7 @@ const BOUNDARIES = [
     except: [`./${feature}`],
     message: "A feature does not import another: what they share moves down to ui/ or lib/.",
   })),
-  ...["./src/ui", "./src/lib", "./src/i18n"].map((target) => ({
+  ...["./src/ui", "./src/lib", "./src/i18n", "./src/themes"].map((target) => ({
     target,
     from: ["./src/features", "./src/shell", "./src/app"],
     message: "A foundation does not import what is built on it.",
