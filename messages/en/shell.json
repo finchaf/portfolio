@@ -1,0 +1,17 @@
+{
+  "siteName": "Danil Zablotsky",
+  "skipToContent": "Skip to content",
+  "navigation": "Site sections",
+  "language": {
+    "ru": "Русский",
+    "en": "English"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "home": "Go to the home page"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "retry": "Try again"
+  }
+}
