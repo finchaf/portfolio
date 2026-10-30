@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+/* The white page of the skeleton: the design system's tokens replace this when it exists. */
+:root {
+  color-scheme: light;
+}
+
+body {
+  background: white;
+  color: black;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none;
+  }
+}
