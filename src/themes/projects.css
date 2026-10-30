@@ -1,0 +1,24 @@
+/*
+ * Projects: Catppuccin, Latte in the light and Mocha in the dark, by the roles of its style guide.
+ * Mauve rather than the guide's blue for links, and Subtext 1 rather than 0 for secondary text:
+ * Latte's blue and Subtext 0 fall short of AA on Base, and the guide puts legibility first.
+ * Catppuccin recommends no typeface, so Nunito and JetBrains Mono are this site's choice.
+ */
+:root:has([data-world="projects"]) {
+  --page: light-dark(#eff1f5, #1e1e2e); /* Base */
+  --surface: light-dark(#e6e9ef, #181825); /* Mantle */
+  --raised: light-dark(#ccd0da, #313244); /* Surface 0 */
+  --ink: light-dark(#4c4f69, #cdd6f4); /* Text */
+  --muted: light-dark(#5c5f77, #bac2de); /* Subtext 1 */
+  --line: light-dark(#bcc0cc, #45475a); /* Surface 1 */
+  --accent: light-dark(#8839ef, #cba6f7); /* Mauve */
+  --accent-strong: light-dark(#8839ef, #cba6f7);
+  --on-accent: light-dark(#eff1f5, #1e1e2e); /* Base */
+  --success: light-dark(#40a02b, #a6e3a1); /* Green */
+  --warning: light-dark(#df8e1d, #f9e2af); /* Yellow */
+  --danger: light-dark(#d20f39, #f38ba8); /* Red */
+
+  --sans: "Nunito Variable", ui-sans-serif, system-ui, sans-serif;
+  --display: "Nunito Variable", ui-sans-serif, system-ui, sans-serif;
+  --mono: "JetBrains Mono Variable", ui-monospace, "SF Mono", Menlo, monospace;
+}

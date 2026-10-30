@@ -1,0 +1,67 @@
+/*
+ * The contract of every theme. A theme (home.css, pora.css, flow.css, projects.css) gives each
+ * variable below a value; components use only the utilities made from them, so a page changes
+ * look by the theme it declares, and the same component works in all of them.
+ *
+ * Every colour is one light-dark() pair, so the mode is `color-scheme` alone: the system's by
+ * default, or the reader's choice in `data-theme` on <html>. src/themes/themes.test.ts holds every
+ * theme to this list and to the contrast of its pairs.
+ *
+ * `accent` is the theme's exact brand colour, for fills and indicators. Text and buttons take
+ * `accent-strong`, on `page`, with `on-accent` on it: some brand colours are too pale for text.
+ * On `raised`, text is `ink`; `muted` is promised only on `page` and `surface`.
+ */
+@theme inline {
+  /* Only these colours exist: a Tailwind palette class does not compile. */
+  --color-*: initial;
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-on-accent: var(--on-accent);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+
+  --font-sans: var(--sans);
+  --font-display: var(--display);
+  --font-mono: var(--mono);
+}
+
+:root {
+  color-scheme: light dark;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--page);
+  color: var(--ink);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none;
+  }
+}

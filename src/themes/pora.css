@@ -1,0 +1,23 @@
+/*
+ * «Пора на пару»: the colours and typeface of its site. The values are the design system's
+ * (poranaparu/web, packages/ui/tokens), zinc and blue. `accent` is its brand colour; the brand's
+ * light value is too pale for text, so `accent-strong` there is its blue-600. Geist.
+ */
+:root:has([data-world="pora"]) {
+  --page: light-dark(#ffffff, #09090b);
+  --surface: light-dark(#fafafa, #18181b);
+  --raised: light-dark(#f4f4f5, #27272a);
+  --ink: light-dark(#09090b, #fafafa);
+  --muted: light-dark(#71717a, #a1a1aa);
+  --line: light-dark(#e4e4e7, rgb(255 255 255 / 0.1));
+  --accent: light-dark(#3b82f6, #93c5fd);
+  --accent-strong: light-dark(#2563eb, #93c5fd);
+  --on-accent: light-dark(#ffffff, #09090b);
+  --success: light-dark(#16a34a, #4ade80);
+  --warning: light-dark(#d97706, #fbbf24);
+  --danger: light-dark(#dc2626, #f87171);
+
+  --sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --display: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --mono: "Geist Mono Variable", ui-monospace, "SF Mono", Menlo, monospace;
+}

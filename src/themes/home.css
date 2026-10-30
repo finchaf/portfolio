@@ -1,0 +1,23 @@
+/*
+ * The home page, and the default of whatever declares no theme, such as the 404. «Зяблик»: finchaf
+ * is a chaffinch, and these are its colours: the slate of the head, the warm breast, the olive back.
+ * Geologica and Golos Text.
+ */
+:root {
+  --page: light-dark(#eef1f4, #141b22);
+  --surface: light-dark(#dfe5ea, #1f2933);
+  --raised: light-dark(#cfd7de, #2c3844);
+  --ink: light-dark(#1d2933, #e9eef2);
+  --muted: light-dark(#4f5f6c, #a2b1bd);
+  --line: light-dark(#cfd7de, #2c3844);
+  --accent: light-dark(#b8452c, #f0916f);
+  --accent-strong: light-dark(#a33a23, #f4a488);
+  --on-accent: light-dark(#ffffff, #1b120e);
+  --success: light-dark(#5f6b2f, #b4c077);
+  --warning: light-dark(#a8741c, #e3b45f);
+  --danger: light-dark(#b3261e, #ff8a80);
+
+  --sans: "Golos Text Variable", ui-sans-serif, system-ui, sans-serif;
+  --display: "Geologica Variable", ui-sans-serif, system-ui, sans-serif;
+  --mono: "JetBrains Mono Variable", ui-monospace, "SF Mono", Menlo, monospace;
+}

@@ -1,0 +1,26 @@
+/*
+ * Flow: Obsidian's default theme, read from the variables of its app.css (1.x, 30.10.2026). `accent`
+ * is its default accent, hsl(258 88% 66%), too light for text on white, so `accent-strong` is
+ * Obsidian's own purple there and its lighter accent in the dark. Inter is Figma's default for
+ * text; the monospace is the system stack Obsidian itself uses.
+ */
+:root:has([data-world="flow"]) {
+  --page: light-dark(#ffffff, #1c1c1c);
+  --surface: light-dark(#f6f6f6, #282828);
+  --raised: light-dark(#efefef, #2e2e2e);
+  --ink: light-dark(#222222, #dadada);
+  --muted: light-dark(#5c5c5c, #b3b3b3);
+  --line: light-dark(#e4e4e4, #333333);
+  --accent: light-dark(#8a5cf5, #8a5cf5);
+  --accent-strong: light-dark(#7852ee, #a68af9);
+  --on-accent: light-dark(#ffffff, #1c1c1c);
+  --success: light-dark(#08b94e, #44cf6e);
+  --warning: light-dark(#ec7500, #e9973f);
+  --danger: light-dark(#e93147, #fb464c);
+
+  --sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --display: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --mono:
+    ui-monospace, SFMono-Regular, "Cascadia Mono", "Roboto Mono", "DejaVu Sans Mono",
+    "Liberation Mono", Menlo, Monaco, Consolas, "Source Code Pro", monospace;
+}
