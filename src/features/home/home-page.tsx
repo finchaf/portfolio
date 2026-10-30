@@ -4,6 +4,8 @@ import { World } from "@/ui/world";
 
 import { Build } from "./build";
 import { Cases } from "./cases";
+import { Experience } from "./experience";
+import { Finale } from "./finale";
 import { Hero } from "./hero";
 import { PersonData } from "./person-data";
 import { Story } from "./story";
@@ -17,6 +19,8 @@ export function HomePage() {
       <Story />
       <Build />
       <Cases />
+      <Experience />
+      <Finale />
     </World>
   );
 }
