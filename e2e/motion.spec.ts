@@ -568,7 +568,7 @@ test.describe("the home page in motion", () => {
 
   test("keeps lines going opposite ways inside their column", async ({ page }) => {
     await page.goto(HOME);
-    await expect(page.locator(".story-rent .story-col")).toHaveCSS("overflow-x", "clip");
+    await expect(page.locator(".story-rent .story-col")).toHaveCSS("clip-path", /^inset/);
     await expect(page.locator("#experience-title > span")).not.toHaveCount(0);
   });
 

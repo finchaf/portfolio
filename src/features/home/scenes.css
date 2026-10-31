@@ -1560,8 +1560,7 @@
 
       /* Lines going opposite ways leave from the edge of their column, not over its neighbours. */
       .story-col:has([data-lines-cross]) {
-        overflow-x: clip;
-        overflow-clip-margin: calc(var(--u) * 3);
+        clip-path: inset(-100svh calc(var(--u) * -3));
       }
 
       /* The lines take the whole chapter; the words stand where they end. */
