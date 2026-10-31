@@ -260,6 +260,74 @@ test.describe("the home page in motion", () => {
     await expect(quote).toHaveCSS("opacity", "1");
   });
 
+  test("meets the first screen on one background, and turns to paper once the story holds", async ({
+    page,
+  }) => {
+    await page.emulateMedia({ colorScheme: "light" });
+    await page.goto(HOME);
+    const paper = page.locator(".story-paper");
+    const top = await topOf(page, "#story");
+    await expect(page.locator(".story-stage")).toHaveCSS("background-color", "rgb(238, 241, 244)");
+    await expect(page.locator(".hero")).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+    await jump(page, top - 10);
+    await expect(paper).toHaveCSS("opacity", "0");
+    await jump(page, top + (await height(page)));
+    await expect(paper).toHaveCSS("opacity", "1");
+    await expect(page.locator(".story-ruler")).toHaveCSS("opacity", "1");
+  });
+
+  test("lets the grain run over the whole page and take no pointer", async ({ page }) => {
+    await page.goto(HOME);
+    const grain = page.locator(".home-grain");
+    await expect(grain).toHaveCSS("position", "fixed");
+    await expect(grain).toHaveCSS("pointer-events", "none");
+    await expect(grain).toHaveCSS("animation-name", "home-grain");
+  });
+
+  test("draws the ruler again as the ticks pass the needle", async ({ page }) => {
+    await page.goto(HOME);
+    const picture = () =>
+      page.locator("[data-story-canvas]").evaluate((node: HTMLCanvasElement) => node.toDataURL());
+    const top = await topOf(page, "#story");
+    await jump(page, top + (await height(page)));
+    await expect.poll(picture).not.toBe("data:,");
+    const first = await picture();
+    await jump(page, top + 3 * (await height(page)));
+    await expect.poll(picture).not.toBe(first);
+  });
+
+  for (const [width, viewport] of [
+    [1280, 720],
+    [1440, 900],
+    [1470, 679],
+    [1900, 1266],
+    [2560, 1440],
+  ] as const) {
+    for (const locale of ["ru", "en"]) {
+      test(`fits every chapter on ${String(width)}×${String(viewport)}, ${locale}`, async ({
+        page,
+      }) => {
+        await page.setViewportSize({ width, height: viewport });
+        await page.goto(`/${locale}`);
+        // Offsets, not boxes: a line that drifts or a print that lies at an angle is not out of place.
+        const misfits = await page.locator("#story").evaluate((story) =>
+          [...story.querySelectorAll<HTMLElement>(".story-col")].flatMap((column) =>
+            [...column.querySelectorAll<HTMLElement>(":scope > *")].flatMap((child) => {
+              const tooWide =
+                child.offsetWidth > column.offsetWidth ||
+                [...child.querySelectorAll<HTMLElement>(".story-date")].some(
+                  (date) => date.scrollWidth > column.clientWidth,
+                );
+              const tooLow = child.offsetTop + child.offsetHeight > window.innerHeight;
+              return tooWide || tooLow ? [child.textContent.slice(0, 32)] : [];
+            }),
+          ),
+        );
+        expect(misfits).toEqual([]);
+      });
+    }
+  }
+
   test("keeps the night dark in a light mode", async ({ page }) => {
     await page.emulateMedia({ colorScheme: "light" });
     await page.goto(HOME);
