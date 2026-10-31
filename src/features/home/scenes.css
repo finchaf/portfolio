@@ -390,6 +390,7 @@
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.04em;
   line-height: 1;
+  text-wrap: balance;
 }
 
 .story-name {
@@ -1061,7 +1062,6 @@
 
       .story-date {
         font-size: calc(var(--u) * 5.2);
-        white-space: nowrap;
       }
 
       .story-name {
@@ -1069,7 +1069,7 @@
       }
 
       .story-text {
-        max-width: 25rem;
+        max-width: max(25rem, calc(var(--u) * 30));
         font-size: max(0.9375rem, calc(var(--u) * 1.15));
         line-height: 1.42;
       }
