@@ -744,6 +744,87 @@
   height: auto;
 }
 
+/* The stay is nothing of its own until the ribbon needs it: its columns are the chapter's. */
+.story-stay {
+  display: contents;
+}
+
+/* The week as a score. The still lies in the HTML; a running scene draws on the canvas instead. */
+.story-score {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  aspect-ratio: 1.1;
+}
+
+.story-score-still,
+.story-score canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.story-score canvas {
+  display: none;
+  color: var(--ink);
+  outline-color: var(--accent-strong);
+}
+
+.story[data-live] .story-score canvas {
+  display: block;
+}
+
+.story[data-live] .story-score-still {
+  display: none;
+}
+
+.story[data-live] .story-score-days li {
+  opacity: 0;
+}
+
+.story-score-still line {
+  stroke: var(--muted);
+  stroke-width: 1;
+}
+
+.story-score-still rect {
+  fill: var(--ink);
+}
+
+.story-score-still [data-marked] {
+  stroke: var(--accent-strong);
+  fill: var(--accent-strong);
+}
+
+.story-score-days {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--muted);
+  font: 400 0.6875rem var(--mono);
+}
+
+.story-score-days li {
+  position: relative;
+  padding-left: 0.125rem;
+}
+
+.story-score-days li::after {
+  content: "";
+  position: absolute;
+  top: 8.5%;
+  bottom: 11.5%;
+  left: 0;
+  width: 1px;
+  background: var(--line);
+}
+
 /* A print over the page and the band at once: on the band a shadow is what parts them. */
 .story-launch .story-col:not(.story-spot) .story-print {
   box-shadow: var(--stack-shadow);
@@ -1680,6 +1761,39 @@
 
       .story-launch .story-spot {
         padding-left: calc(var(--u) * 9);
+      }
+
+      /* The chapter holds its screen and the room it stands in; the stay moves over that room. */
+      .story-fork {
+        padding: 0;
+      }
+
+      .story-stay {
+        display: flex;
+        flex: none;
+        gap: calc(var(--u) * 3);
+        width: 100vw;
+        height: 100%;
+        padding: var(--pad-top) calc(var(--u) * 3) var(--pad-bottom);
+        will-change: transform;
+      }
+
+      .story-fork .story-col {
+        flex: none;
+        width: calc(var(--u) * 42);
+      }
+
+      .story-score-days {
+        font-size: max(0.6875rem, calc(var(--u) * 0.8));
+      }
+
+      .story-score {
+        flex: 1 1 0;
+        align-self: stretch;
+        height: auto;
+        margin-block: calc(var(--u) * -1.5);
+        aspect-ratio: auto;
+        touch-action: pan-y;
       }
 
       /* Four lines on any screen: this line stands beside the pair of prints, level with the second. */

@@ -1,10 +1,72 @@
 import { useLocale, useTranslations } from "next-intl";
 
-import { BRANCHES, LAUNCH, LAUNCH_DOWNLOADS } from "./story-data";
+import {
+  BRANCHES,
+  LAUNCH,
+  LAUNCH_DOWNLOADS,
+  SCORE_DAYS,
+  SCORE_MARKED,
+  SCORE_ROWS,
+} from "./story-data";
+import { BEAT_WIDTH, BEATS, beatStart, rowAt } from "./story-score";
 
 /** The first three days and the first two weeks, added up from the export. */
 const FIRST_DAYS = LAUNCH_DOWNLOADS.slice(0, 3).reduce((sum, count) => sum + count, 0);
 const TWO_WEEKS = LAUNCH_DOWNLOADS.reduce((sum, count) => sum + count, 0);
+
+/** What the score comes to, drawn into the HTML: the canvas of the scene takes over from it. */
+function ScoreStill() {
+  const SIZE = 1000;
+  const rows = Array.from({ length: SCORE_ROWS }, (_, row) => row);
+  return (
+    <svg
+      aria-hidden
+      className="story-score-still"
+      preserveAspectRatio="none"
+      viewBox={`0 0 ${String(SIZE)} ${String(SIZE)}`}
+    >
+      {rows.map((row) => (
+        <line
+          data-marked={row === SCORE_MARKED ? "" : undefined}
+          key={row}
+          vectorEffect="non-scaling-stroke"
+          x1="0"
+          x2={SIZE}
+          y1={rowAt(row) * SIZE}
+          y2={rowAt(row) * SIZE}
+        />
+      ))}
+      {BEATS.map((beat) => (
+        <rect
+          data-marked={beat.row === SCORE_MARKED ? "" : undefined}
+          height={13}
+          key={`${String(beat.row)}-${String(beat.day)}-${String(beat.slot)}`}
+          width={BEAT_WIDTH * SIZE}
+          x={beatStart(beat) * SIZE}
+          y={rowAt(beat.row) * SIZE - 6.5}
+        />
+      ))}
+    </svg>
+  );
+}
+
+/** The week as a score: a row to a group, a stroke to a lesson. A picture, not a real timetable. */
+export function StoryScore() {
+  const t = useTranslations("home.story.fork");
+  return (
+    <figure aria-label={t("score")} className="story-score" data-score role="img">
+      <ol aria-hidden className="story-score-days">
+        {SCORE_DAYS.map((day) => (
+          <li data-score-day key={day}>
+            {t(`days.${day}`)}
+          </li>
+        ))}
+      </ol>
+      <ScoreStill />
+      <canvas aria-hidden data-score-canvas />
+    </figure>
+  );
+}
 
 /** The launch as a sheet of real numbers: in two colours, the place, the funnel and the days. */
 export function LaunchSheet() {

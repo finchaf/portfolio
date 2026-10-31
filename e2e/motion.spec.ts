@@ -64,6 +64,17 @@ test.describe("the home page without JavaScript", () => {
   });
 });
 
+test.describe("the fork's score without a running scene", () => {
+  test.use({ javaScriptEnabled: false });
+
+  test("stands finished in the HTML", async ({ page }) => {
+    await page.goto(HOME);
+    await expect(page.locator(".story-score-still")).toBeVisible();
+    await expect(page.locator(".story-score-still rect").first()).toBeAttached();
+    await expect(page.locator("[data-score-canvas]")).toBeHidden();
+  });
+});
+
 test.describe("the home page with reduced motion", () => {
   test.use({ reducedMotion: "reduce" });
 
@@ -635,6 +646,44 @@ test.describe("the home page in motion", () => {
     expect(animation).toBe("story-grain");
     await jump(page, (await topOf(page, "#story")) + (await height(page)));
     await expect(grain).toHaveCSS("opacity", "1");
+  });
+
+  test("stands the fork still while its score combs out, and lets the lines be plucked", async ({
+    page,
+  }) => {
+    await page.goto(HOME);
+    const stay = page.locator("[data-stay]");
+    const canvas = page.locator("[data-score-canvas]");
+    const way = await page.locator("#story").evaluate((story: HTMLElement) => {
+      const track = story.querySelector("[data-story-track]");
+      const chapter = story.querySelector<HTMLElement>(".story-fork");
+      const hold = parseFloat(story.style.getPropertyValue("--hold")) * window.innerHeight;
+      return {
+        top: story.getBoundingClientRect().top + window.scrollY,
+        ride: story.offsetHeight - 2 * window.innerHeight - hold,
+        distance: (track?.scrollWidth ?? 0) - window.innerWidth,
+        left:
+          (chapter?.getBoundingClientRect().left ?? 0) - (track?.getBoundingClientRect().left ?? 0),
+        room: (chapter?.offsetWidth ?? 0) - window.innerWidth,
+      };
+    });
+    const along = (share: number) =>
+      way.top + ((way.left + way.room * share) / way.distance) * way.ride;
+    const left = () => stay.evaluate((node) => Math.round(node.getBoundingClientRect().left));
+    const picture = () => canvas.evaluate((node: HTMLCanvasElement) => node.toDataURL());
+
+    await jump(page, along(0.1));
+    await expect.poll(left).toBe(0);
+    const early = await picture();
+    await jump(page, along(0.8));
+    await expect.poll(left).toBe(0);
+    await expect.poll(picture).not.toBe(early);
+
+    const settled = await picture();
+    const box = await canvas.boundingBox();
+    await page.mouse.move((box?.x ?? 0) + 200, (box?.y ?? 0) + 200);
+    await page.mouse.move((box?.x ?? 0) + 240, (box?.y ?? 0) + 220);
+    await expect.poll(picture).not.toBe(settled);
   });
 
   test("lays the launch's print across the band's edge, clear of its sheet", async ({ page }) => {

@@ -88,7 +88,9 @@
       "title": "The fork",
       "question": "In the semester after the launch came Android and the website, and five more colleges and universities joined. It all worked, and the question came up: what next? We couldn't keep growing it seriously and earn nothing from it.",
       "quote": "Ads in the app, or a service for universities.",
-      "answer": "We really didn't want ads. We took the second road: our own service for building timetables, with the apps as a pleasant extra for students and teachers. We started talking to the people who make the timetables and took apart how it's really done."
+      "answer": "We really didn't want ads. We took the second road: our own service for building timetables, with the apps as a pleasant extra for students and teachers. We started talking to the people who make the timetables and took apart how it's really done.",
+      "score": "A week as a musical score: tangled lines fall into straight rows, with strokes for classes on them",
+      "days": { "mon": "Mon", "tue": "Tue", "wed": "Wed", "thu": "Thu", "fri": "Fri", "sat": "Sat" }
     },
     "night": {
       "mark": "June 2026",
@@ -159,7 +161,6 @@
       "notesNight": "At night: a textbook on the monitor, below it a laptop with notes in LaTeX",
       "notesLecture": "A laptop with topology notes in a lecture, a cap beside it on the desk",
       "stage": "A presentation of VCourse on a big screen in front of a hall",
-      "cafe": "Two friends in a café",
       "room": "A bright empty room with a desk by the window",
       "firstRoom": "A cat on a beanbag beside shelves and boxes",
       "mirror": "A selfie in a mirror",

@@ -59,6 +59,14 @@ export const LAUNCH = { impressions: 2800, pageViews: 1287, total: 3428 } as con
 /** How long the ribbon holds at its end while the branches draw, in screens of scroll. */
 export const RIBBON_HOLD = 1.6;
 
+/** How far the ribbon runs on while the fork stands still for its score, in widths of the screen. */
+export const FORK_HOLD = 1.4;
+
+/** The week of the score: its lines, the one line in the accent, and its days. */
+export const SCORE_ROWS = 8;
+export const SCORE_MARKED = 3;
+export const SCORE_DAYS = ["mon", "tue", "wed", "thu", "fri", "sat"] as const;
+
 /**
  * What goes on from the story, in shares of the chapter: where a line leaves the trunk, the level it
  * settles on, where it stops, and where its words stand. The last one runs off the screen.
@@ -82,7 +90,7 @@ export const SPANS = {
   university: 1.2,
   build: 1.6,
   launch: 1.47,
-  fork: 1,
+  fork: 1 + FORK_HOLD,
   night: 1.05,
   rent: 0.62,
   moscow: 1.4,

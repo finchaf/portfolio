@@ -3,7 +3,6 @@ import { useTranslations } from "next-intl";
 import buildIcon from "./photos/build-icon.webp";
 import buildLayers from "./photos/build-layers.webp";
 import buildUpdate from "./photos/build-update.webp";
-import cafe from "./photos/cafe.webp";
 import firstRoom from "./photos/first-room.webp";
 import hall from "./photos/hall.webp";
 import mirror from "./photos/mirror.webp";
@@ -17,7 +16,7 @@ import stage from "./photos/stage.webp";
 import sunset from "./photos/sunset.webp";
 import { StoryCollage } from "./story-collage";
 import { CHAPTERS, RIBBON_BLEEDS, RIBBON_HOLD, RIBBON_SPANS, SPANS } from "./story-data";
-import { LaunchSheet, NightLog, StoryBranches } from "./story-figures";
+import { LaunchSheet, NightLog, StoryBranches, StoryScore } from "./story-figures";
 import { StoryMenus } from "./story-menus";
 import {
   StoryBleed,
@@ -28,6 +27,7 @@ import {
   StoryPile,
   StoryQuote,
   StoryStack,
+  StoryStay,
   StoryText,
 } from "./story-parts";
 import { StoryScene } from "./story-scene";
@@ -162,20 +162,19 @@ function Launch() {
 
 function Fork() {
   const t = useTranslations("home.story.fork");
-  const photos = useTranslations("home.story.photos");
   return (
-    <StoryChapter id="fork">
-      <StoryCol at="middle" weight={1.15}>
-        <StoryHead date={t("date")} title={t("title")} />
-        <StoryText>{t("question")}</StoryText>
-        <StoryQuote cross depth={55}>
-          {t("quote")}
-        </StoryQuote>
-        <StoryText>{t("answer")}</StoryText>
-      </StoryCol>
-      <StoryCol at="bottom" weight={1}>
-        <StoryPhoto label={photos("cafe")} size={30} src={cafe} tilt={-1.5} />
-      </StoryCol>
+    <StoryChapter id="fork" settles>
+      <StoryStay>
+        <StoryCol at="middle">
+          <StoryHead date={t("date")} title={t("title")} />
+          <StoryText>{t("question")}</StoryText>
+          <StoryQuote cross depth={55}>
+            {t("quote")}
+          </StoryQuote>
+          <StoryText>{t("answer")}</StoryText>
+        </StoryCol>
+        <StoryScore />
+      </StoryStay>
     </StoryChapter>
   );
 }

@@ -7,8 +7,9 @@ import { gsap, MOTION_ALLOWED, ScrollTrigger, useGSAP } from "@/motion/gsap";
 import { DURATION, SCENE } from "@/motion/tokens";
 
 import { branchRoutes, type Line } from "./story-branches";
-import { RIBBON_HOLD } from "./story-data";
+import { FORK_HOLD, RIBBON_HOLD } from "./story-data";
 import { createRuler } from "./story-ruler";
+import { createScore } from "./story-score";
 
 const WIDE = `${MOTION_ALLOWED} and (min-width: 64rem)`;
 const NARROW = `${MOTION_ALLOWED} and (width < 64rem)`;
@@ -49,6 +50,9 @@ const LABEL_RISE = 10;
 
 /** The share of the ribbon's hold the pen spends drawing: the rest is for reading. */
 const DRAWING = 0.78;
+
+/** The share of the fork's stay the score spends on its way: the rest is for looking at it. */
+const SCORING = 0.92;
 
 /** How many screens of the ribbon ahead its pictures are asked for. */
 const AHEAD = 2.5;
@@ -257,6 +261,73 @@ function growTrunk(section: HTMLElement) {
   );
 }
 
+/** Puts the score on its canvas, and keeps it right through a resize and a change of mode. */
+function runScore(section: HTMLElement) {
+  const figure = section.querySelector<HTMLElement>("[data-score]");
+  const canvas = figure?.querySelector<HTMLCanvasElement>("[data-score-canvas]");
+  if (!figure || !canvas) return null;
+  const score = createScore(canvas, gsap.utils.toArray<HTMLElement>("[data-score-day]", figure));
+  if (!score) return null;
+
+  const pluck = (event: PointerEvent) => {
+    const box = canvas.getBoundingClientRect();
+    score.pluck(event.clientX - box.left, event.clientY - box.top);
+  };
+  const scheme = window.matchMedia("(prefers-color-scheme: dark)");
+  const mode = new MutationObserver(score.measure);
+  score.measure();
+  ScrollTrigger.addEventListener("refresh", score.measure);
+  scheme.addEventListener("change", score.measure);
+  mode.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  figure.addEventListener("pointermove", pluck);
+  return {
+    draw: score.draw,
+    figure,
+    stop: () => {
+      ScrollTrigger.removeEventListener("refresh", score.measure);
+      scheme.removeEventListener("change", score.measure);
+      mode.disconnect();
+      figure.removeEventListener("pointermove", pluck);
+      score.stop();
+    },
+  };
+}
+
+/**
+ * The ribbon only ever runs straight on, and everything along it hangs on that. So the fork stands
+ * still another way: its chapter is wider by the length of the stay, and what is in it goes along
+ * with the ribbon by exactly as much, written in the ribbon's own frame so nothing can shake.
+ */
+function holdTheFork(section: HTMLElement, track: HTMLElement) {
+  const stay = section.querySelector<HTMLElement>("[data-stay]");
+  const chapter = stay?.parentElement;
+  const score = runScore(section);
+  if (!stay || !chapter) return { pass: () => undefined, held: () => 0, stop: score?.stop };
+  const place = gsap.quickSetter(stay, "x", "px") as (value: number) => void;
+  let begins = 0;
+  let held = 0;
+  const measure = () => {
+    begins = chapter.getBoundingClientRect().left - track.getBoundingClientRect().left;
+  };
+  measure();
+  ScrollTrigger.addEventListener("refresh", measure);
+  return {
+    /** Where the ribbon has come to, in pixels. */
+    pass: (travelled: number) => {
+      const room = FORK_HOLD * window.innerWidth;
+      held = gsap.utils.clamp(0, room, travelled - begins);
+      place(held);
+      score?.draw(Math.min(held / (room * SCORING), 1));
+    },
+    held: () => held,
+    stop: () => {
+      ScrollTrigger.removeEventListener("refresh", measure);
+      score?.stop();
+      gsap.set(stay, { clearProps: "transform" });
+    },
+  };
+}
+
 /** Over the run of full-screen photographs the capsule and the ruler leave them the screen. */
 function clearTheScreen(section: HTMLElement, scrollTrigger: (run: Element) => ScrollTrigger.Vars) {
   const root = document.documentElement;
@@ -413,7 +484,12 @@ function runRibbon(section: HTMLElement, track: HTMLElement, mark: Mark) {
     scrub: follow(),
     invalidateOnRefresh: true,
   };
+  const fork = holdTheFork(section, track);
+  const travelled = () => move.progress() * distance();
   const move = gsap.to(track, { x: () => -distance(), ease: "none", scrollTrigger: along });
+  move.eventCallback("onUpdate", () => {
+    fork.pass(travelled());
+  });
 
   gsap.utils.toArray<HTMLElement>("[data-reveal]", section).forEach((element) => {
     revealOnce(element, { containerAnimation: move, start: "left 92%" });
@@ -493,9 +569,10 @@ function runRibbon(section: HTMLElement, track: HTMLElement, mark: Mark) {
       end: "left left",
     }),
   );
-  const stopRuler = runRuler(section, () => move.progress() * distance() * RULER_PACE);
+  const stopRuler = runRuler(section, () => (travelled() - fork.held()) * RULER_PACE);
 
   return () => {
+    fork.stop?.();
     stopBranches();
     stopLines();
     stopRuler();
@@ -525,6 +602,18 @@ function runColumn(section: HTMLElement, mark: Mark) {
   const collage = section.querySelector("[data-collage]");
   if (collage) dealScraps(section, { trigger: collage, start: "top 75%", end: "top 25%" });
   growTrunk(section);
+  const score = runScore(section);
+  if (score) {
+    ScrollTrigger.create({
+      trigger: score.figure,
+      start: "top 80%",
+      end: "bottom 55%",
+      scrub: true,
+      onUpdate: ({ progress }) => {
+        score.draw(progress);
+      },
+    });
+  }
   const showShell = clearTheScreen(section, (run) => ({
     trigger: run,
     start: "top 30%",
@@ -539,6 +628,7 @@ function runColumn(section: HTMLElement, mark: Mark) {
   const stopRuler = runRuler(section, () => along.progress * RULER_TRAVEL);
 
   return () => {
+    score?.stop();
     stopLines();
     stopRuler();
     showShell();

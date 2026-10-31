@@ -34,6 +34,15 @@ export function StoryChapter({
   );
 }
 
+/** The part of a chapter that stands still on the screen while the ribbon runs on under it. */
+export function StoryStay({ children }: { children: ReactNode }) {
+  return (
+    <div className="story-stay" data-stay>
+      {children}
+    </div>
+  );
+}
+
 /** A column of a chapter, held to the top, the middle or the bottom of the screen. */
 export function StoryCol({
   at = "top",
