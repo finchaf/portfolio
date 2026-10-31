@@ -79,6 +79,7 @@ test.describe("the home page with reduced motion", () => {
     await expect(page.locator(".story-stage")).toHaveCSS("position", "relative");
     await expect(page.locator(".chapter-stage").first()).toHaveCSS("position", "static");
     await expect(page.locator(".story-quote > span").first()).toHaveCSS("opacity", "1");
+    await expect(page.locator(".story-quote > span > span")).toHaveCount(0);
     for (const chapter of await page.locator(".story-chapter").all()) {
       await expect(chapter).toBeVisible();
     }
@@ -369,6 +370,73 @@ test.describe("the home page in motion", () => {
     await expect.poll(() => photos.some((url) => url.includes("sunset"))).toBe(true);
   });
 
+  test("moves the large lines one by one, and they read straight where they meet", async ({
+    page,
+  }) => {
+    await page.goto(HOME);
+    const lines = page.locator(".story-rent .story-quote [data-reveal] > span");
+    await expect.poll(() => lines.count()).toBeGreaterThan(1);
+    // Where the eye finds a line: a computed transform says nothing about an inline box.
+    const lefts = () =>
+      lines.evaluateAll((all) => all.map((line) => line.getBoundingClientRect().left));
+    const apart = async () => {
+      const [first = 0, second = 0] = await lefts();
+      return Math.abs(first - second);
+    };
+    await expect.poll(apart).toBeGreaterThan(40);
+    const box = await page.locator("#story").evaluate((node) => ({
+      top: node.getBoundingClientRect().top + window.scrollY,
+      span: node.getBoundingClientRect().height - 2 * window.innerHeight,
+    }));
+    const distance = await page
+      .locator("[data-story-track]")
+      .evaluate((node) => node.scrollWidth - window.innerWidth);
+    const middle = await page.locator(".story-rent .story-quote").evaluate((node) => {
+      const place = node.getBoundingClientRect();
+      return place.left + place.width / 2 - window.innerWidth / 2;
+    });
+    await jump(page, box.top + (box.span * middle) / distance);
+    await expect.poll(apart).toBeLessThan(12);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(
+      await page.evaluate(() => document.documentElement.clientWidth),
+    );
+  });
+
+  test("brings the last call together from both sides, and leaves it straight", async ({
+    page,
+  }) => {
+    await page.goto(HOME);
+    const lines = page.locator("#finale-title > span");
+    await expect.poll(() => lines.count()).toBeGreaterThan(0);
+    const lefts = () =>
+      lines.evaluateAll((all) => all.map((line) => Math.round(line.getBoundingClientRect().left)));
+    const top = await topOf(page, "#finale-title");
+    const screen = await height(page);
+    await jump(page, top - screen * 0.9);
+    await expect
+      .poll(async () => {
+        const [first = 0, second = 0] = await lefts();
+        return Math.abs(first - second);
+      })
+      .toBeGreaterThan(50);
+    await jump(page, top - screen * 0.3);
+    await expect.poll(async () => new Set(await lefts()).size).toBe(1);
+  });
+
+  test("keeps lines going opposite ways inside their column", async ({ page }) => {
+    await page.goto(HOME);
+    await expect(page.locator(".story-rent .story-col")).toHaveCSS("overflow-x", "clip");
+    await expect(page.locator("#experience-title > span")).not.toHaveCount(0);
+  });
+
+  test("lays the photographs on the page with nothing around them", async ({ page }) => {
+    await page.goto(HOME);
+    const print = page.locator(".story-print").first();
+    await expect(print).toHaveCSS("box-shadow", "none");
+    await expect(print).toHaveCSS("padding-top", "0px");
+    await expect(print).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+  });
+
   test("brings the story's lines in as they arrive, and keeps them", async ({ page }) => {
     await page.goto(HOME);
     const quote = page.locator(".story-omsk .story-quote > span");
@@ -450,10 +518,16 @@ test.describe("the home page in motion", () => {
           const floor = window.innerHeight - ruler;
           return [...story.querySelectorAll<HTMLElement>(".story-col")].flatMap((column) =>
             [...column.querySelectorAll<HTMLElement>(":scope > *")].flatMap((child) => {
+              // A range measures the text: a line that drifts is moved, not wider.
+              const textWidth = (node: Element) => {
+                const range = document.createRange();
+                range.selectNodeContents(node);
+                return range.getBoundingClientRect().width;
+              };
               const tooWide =
                 child.offsetWidth > column.offsetWidth ||
-                [...child.querySelectorAll<HTMLElement>(".story-date")].some(
-                  (date) => date.scrollWidth > column.clientWidth,
+                [...child.querySelectorAll(".story-date > span")].some(
+                  (line) => textWidth(line) > column.clientWidth,
                 );
               const tooHigh = child.offsetTop < 72;
               const tooLow = child.offsetTop + child.offsetHeight > floor;
