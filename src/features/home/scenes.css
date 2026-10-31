@@ -599,13 +599,13 @@
   border-radius: 1rem;
 }
 
-/*
- * The layers of a screen hang on the page in the dark. Their hairlines are white, so in the light
- * they keep a dark ground of their own.
- */
+/* The layers of a screen hang on the page, in either mode: their hairlines are a grey that reads on both. */
 .story-build .story-col-middle .story-image {
   padding: 1.25rem;
-  background: light-dark(var(--ink), transparent);
+}
+
+.story-build .story-col-middle .story-caption {
+  padding-left: 1.25rem;
 }
 
 /* The second print lies over the first's corner, the first's caption in the room this leaves. */

@@ -700,13 +700,13 @@ test.describe("the home page in motion", () => {
     expect(edges.print).toBeLessThan(edges.sheet);
   });
 
-  test("gives the white hairlines of the layers a ground in the light only", async ({ page }) => {
+  test("hangs the layers on the page with no ground, in either mode", async ({ page }) => {
     await page.goto(HOME);
     const layers = page.locator(".story-build .story-col-middle .story-image");
-    await page.emulateMedia({ colorScheme: "dark" });
-    await expect(layers).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
-    await page.emulateMedia({ colorScheme: "light" });
-    await expect(layers).not.toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+    for (const colorScheme of ["dark", "light"] as const) {
+      await page.emulateMedia({ colorScheme });
+      await expect(layers).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+    }
   });
 
   test("lays one print of the notes over the corner of the other", async ({ page }) => {
