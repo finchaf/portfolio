@@ -860,6 +860,26 @@ test.describe("the home page in motion", () => {
   });
 });
 
+test.describe("the language", () => {
+  test("keeps the scenes and the reader's theme on the other side", async ({ page }) => {
+    await page.goto(HOME);
+    await page.evaluate(() => {
+      localStorage.setItem("theme", "dark");
+    });
+    await page.reload();
+    await page
+      .locator("footer")
+      .getByRole("link", { name: "English" })
+      .evaluate((link: HTMLElement) => {
+        link.click();
+      });
+    await expect(page).toHaveURL(/\/en$/);
+    await expect(page.locator("html")).toHaveAttribute("data-js");
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    await expect(page.locator(".hero-switch")).toBeVisible();
+  });
+});
+
 test.describe("the shell", () => {
   test("carries the logo, the sections and the way to write in one capsule", async ({ page }) => {
     await page.goto(HOME);
