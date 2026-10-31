@@ -67,6 +67,16 @@
 
 [data-capsule] {
   --capsule-gap: 0.125rem;
+  --capsule-away: 200%;
+  transition-duration: var(--duration-slow), var(--duration-base), var(--duration-base);
+  transition-property: color, opacity, translate;
+}
+
+/* A scene clears the screen for its photographs. A key still finds the capsule. */
+:root[data-bare] [data-capsule]:not(:has(:focus-visible)) {
+  --tw-translate-y: var(--capsule-away);
+  opacity: 0;
+  pointer-events: none;
 }
 
 .capsule-items {
@@ -80,6 +90,10 @@
 }
 
 @media (min-width: 64rem) {
+  [data-capsule] {
+    --capsule-away: -200%;
+  }
+
   .capsule-link {
     padding-inline: 0.75rem;
   }

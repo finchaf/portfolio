@@ -137,7 +137,7 @@ export function StoryPile({ children }: { children: ReactNode }) {
   return <div className="story-pile">{children}</div>;
 }
 
-/** The author with the page behind him, standing on the bottom edge of the screen. */
+/** The author with the page behind him: on the bottom edge of the screen, cut off by the right one. */
 export function StoryCutout({ label, src }: { label: string; src: StaticImageData }) {
   return (
     <figure className="story-cutout" data-cutout>

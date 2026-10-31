@@ -13,8 +13,6 @@ import { SCRAPS } from "./story-data";
 
 const PICTURES = { bird, cat, mirror, mountains, neon, pug, sky, snow };
 
-const percent = (share: number) => `${String(share * 100)}%`;
-
 /**
  * Loose photographs across the opening of the story. A scene deals them out of one pile as the story
  * arrives, and each then moves at its own depth; without a scene they simply lie in a row.
@@ -30,8 +28,8 @@ export function StoryCollage() {
           data-tilt={tilt}
           key={key}
           style={{
-            "--left": percent(left),
-            "--top": percent(top),
+            "--left": left,
+            "--top": top,
             "--size": size,
             "--tilt": `${String(tilt)}deg`,
           }}

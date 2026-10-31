@@ -216,9 +216,11 @@ function Rent() {
           {t("quote")}
         </StoryQuote>
       </StoryCol>
-      <StoryBleed label={photos("plane")} src={plane} />
-      <StoryBleed label={photos("room")} src={room} />
-      <StoryBleed label={photos("msu")} src={msu} />
+      <div className="story-run" data-bare-run>
+        <StoryBleed label={photos("plane")} src={plane} />
+        <StoryBleed label={photos("room")} src={room} />
+        <StoryBleed label={photos("msu")} src={msu} />
+      </div>
     </StoryChapter>
   );
 }

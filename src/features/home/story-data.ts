@@ -91,17 +91,17 @@ export const MENUS = FILE.flatMap((frames, row) =>
 
 /**
  * The collage that opens the story, a moment from each stretch of it and no single face to carry it.
- * `left` and `top` are shares of its field on a wide screen, `size` is the width in the ribbon's units.
+ * `left`, `top` and `size` are in the ribbon's units, so it keeps its density on any screen.
  */
 export const SCRAPS = [
-  { key: "snow", left: 0.02, top: 0.03, size: 13, tilt: -3, drift: 40 },
-  { key: "neon", left: 0.17, top: 0.07, size: 20, tilt: 2, drift: 80 },
-  { key: "cat", left: 0.15, top: 0.5, size: 22, tilt: -2, drift: 30 },
-  { key: "mirror", left: 0.39, top: 0, size: 17, tilt: 1.5, drift: 60 },
-  { key: "pug", left: 0.4, top: 0.52, size: 11, tilt: 3, drift: 90 },
-  { key: "sky", left: 0.53, top: 0.6, size: 20, tilt: -1.5, drift: 40 },
-  { key: "bird", left: 0.59, top: 0.05, size: 13, tilt: -2.5, drift: 70 },
-  { key: "mountains", left: 0.76, top: 0.32, size: 21, tilt: 2, drift: 50 },
+  { key: "snow", left: 0, top: 7, size: 14, tilt: -3, drift: 18 },
+  { key: "neon", left: 12.5, top: 2, size: 20, tilt: 2, drift: 30 },
+  { key: "cat", left: 12, top: 13, size: 22, tilt: -2, drift: 14 },
+  { key: "mirror", left: 31, top: 0.5, size: 17, tilt: 1.5, drift: 24 },
+  { key: "pug", left: 33, top: 19.5, size: 11.5, tilt: 3, drift: 32 },
+  { key: "bird", left: 46.5, top: 3, size: 13, tilt: -2.5, drift: 26 },
+  { key: "sky", left: 43, top: 19, size: 20, tilt: -1.5, drift: 16 },
+  { key: "mountains", left: 58, top: 10, size: 20, tilt: 2, drift: 20 },
 ] as const;
 
 /** The launch in the store: the first three days and the whole road, from App Store Connect. */
@@ -109,7 +109,7 @@ export const LAUNCH = { impressions: 2800, pageViews: 1287, total: 3428 } as con
 
 /** How wide each part of the ribbon is, in widths of the screen. */
 export const SPANS = {
-  open: 1.3,
+  open: 1.25,
   omsk: 1.35,
   university: 1.05,
   build: 1.1,
@@ -122,7 +122,7 @@ export const SPANS = {
 } as const;
 
 /** What full-height photographs add to a chapter, in heights of the screen. */
-export const BLEEDS = { rent: 3 / 4 + 4 / 3 + 3 / 4, now: 0.9 } as const;
+export const BLEEDS = { rent: 3 / 4 + 4 / 3 + 3 / 4, now: 0.92 } as const;
 
 /** The chapters in the order of the story. */
 export const CHAPTERS = [

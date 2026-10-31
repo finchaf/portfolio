@@ -12,6 +12,7 @@
   --edge: max(var(--gutter), calc((100% - var(--content)) / 2 + var(--gutter)));
   /* In the light only: over a dark page a light ink glows. */
   --sheet-shadow: 0 -1.5rem 4rem
+    light-dark(color-mix(in srgb, var(--ink) 14%, transparent), transparent);
 }
 
 @media (min-width: 64rem) {
@@ -431,11 +432,12 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 0.875rem 0.75rem;
+  padding: 0.375rem;
 }
 
 .story-scrap {
-  width: calc(var(--size) * 0.56rem);
+  width: calc(var(--size) * 0.66rem);
+  margin: -0.25rem;
   rotate: var(--tilt);
 }
 
@@ -578,16 +580,17 @@
   margin-left: 2.5rem;
 }
 
-/* The portrait stands on what is under it: the edge of its shirt is the edge of the picture. */
+/* The portrait stands on what is under it, and the right edge of the screen cuts its shoulder. */
 .story-cutout {
-  width: min(100%, 26rem);
-  margin: 0 auto -3.5rem;
+  width: calc(100% + var(--gutter));
+  margin: 0 calc(-1 * var(--gutter)) -3.5rem 0;
   overflow: hidden;
 }
 
 .story-cutout-image {
   display: block;
-  width: 100%;
+  width: 126%;
+  max-width: none;
   height: auto;
 }
 
@@ -1137,6 +1140,15 @@
       opacity: 0;
     }
 
+    /* Its parts leave: the ruler's own opacity belongs to the scene that shows it. */
+    .story-ruler > * {
+      transition: opacity var(--duration-base) var(--ease-out);
+    }
+
+    &[data-bare] .story-ruler > * {
+      opacity: 0;
+    }
+
     /* The canvas reads its colours from here: `color` and this one. */
     .story-ruler canvas {
       position: absolute;
@@ -1244,6 +1256,7 @@
         flex-direction: row;
         align-items: center;
         gap: calc(var(--u) * 3);
+        width: calc(var(--u) * 124);
       }
 
       .story-open-copy {
@@ -1255,15 +1268,18 @@
       .story-collage {
         position: relative;
         display: block;
-        flex: 1;
-        align-self: stretch;
+        flex: none;
+        width: calc(var(--u) * 78);
+        height: calc(var(--u) * 40);
+        padding: 0;
       }
 
       .story-scrap {
         position: absolute;
-        top: var(--top);
-        left: var(--left);
+        top: calc(var(--u) * var(--top));
+        left: calc(var(--u) * var(--left));
         width: calc(var(--u) * var(--size));
+        margin: 0;
         rotate: none;
         will-change: transform;
       }
@@ -1359,10 +1375,6 @@
         margin-inline: 0;
       }
 
-      .story-bleed:last-child {
-        margin-right: calc(var(--u) * -3);
-      }
-
       .story-bleed-image {
         width: 100%;
         height: 100%;
@@ -1382,15 +1394,16 @@
       /* Lines going opposite ways leave from the edge of their column, not over its neighbours. */
       .story-col:has([data-lines-cross]) {
         overflow-x: clip;
-        overflow-clip-margin: 0.75rem;
+        overflow-clip-margin: calc(var(--u) * 3);
       }
 
+      /* The head stands above the text beside it. The figure's edge is the screen's at the end. */
       .story-cutout {
         flex: none;
         align-self: flex-end;
-        width: auto;
-        height: 74svh;
-        margin: 0 0 calc(-1 * var(--pad-bottom));
+        width: calc(var(--bleed) * 100svh);
+        height: 88svh;
+        margin: 0 calc(var(--u) * -3) calc(-1 * var(--pad-bottom)) 0;
       }
 
       .story-cutout-image {
@@ -1406,7 +1419,9 @@
         padding-right: calc(var(--u) * 3);
       }
 
-      .story-rent .story-bleed:last-child {
+      .story-run {
+        display: flex;
+        flex: none;
         margin-right: calc(var(--u) * -3);
       }
 

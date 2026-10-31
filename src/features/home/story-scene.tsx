@@ -4,7 +4,7 @@ import { useRef, type ReactNode } from "react";
 
 import { driftLines } from "@/motion/drift-lines";
 import { gsap, MOTION_ALLOWED, ScrollTrigger, useGSAP } from "@/motion/gsap";
-import { SCENE } from "@/motion/tokens";
+import { DURATION, SCENE } from "@/motion/tokens";
 
 import { createRuler } from "./story-ruler";
 
@@ -23,7 +23,7 @@ const RIPPLE_SPEED = 14;
 const RIPPLE_EASE = 0.12;
 
 /** How far the lines of the story's title go when the ribbon starts, in pixels of the wide screen. */
-const TITLE_DEPTH = 150;
+const TITLE_DEPTH = 100;
 
 /** How long the page takes to turn to paper once the story holds, in screens of scroll. */
 const PAPER_SCREENS = 0.4;
@@ -41,8 +41,8 @@ const BLEED_SLIDE = 5.5;
 const PILE_TILT = 2;
 const SCRAP_STAGGER = 0.05;
 
-/** How far below its place the portrait starts, in percent of its height. */
-const CUTOUT_RISE = 14;
+/** How far right of its place the portrait starts, in percent of its width. */
+const CUTOUT_SLIDE = 30;
 
 /** How many screens of the ribbon ahead its pictures are asked for. */
 const AHEAD = 2.5;
@@ -166,15 +166,61 @@ function dealScraps(section: HTMLElement, scrollTrigger: ScrollTrigger.Vars) {
   });
 }
 
-/** The portrait rises the last of the way as the ribbon brings it in. */
-function raiseCutout(section: HTMLElement, scrollTrigger: (view: Element) => ScrollTrigger.Vars) {
+/** The portrait comes in from the right, past the edge that cuts it, as the ribbon brings it. */
+function slideCutout(section: HTMLElement, scrollTrigger: (view: Element) => ScrollTrigger.Vars) {
   const view = section.querySelector("[data-cutout]");
   if (!view) return;
   gsap.fromTo(
     view.children,
-    { yPercent: CUTOUT_RISE },
-    { yPercent: 0, ease: "none", scrollTrigger: { ...scrollTrigger(view), scrub: true } },
+    { xPercent: CUTOUT_SLIDE },
+    { xPercent: 0, ease: "none", scrollTrigger: { ...scrollTrigger(view), scrub: true } },
   );
+}
+
+/** Over the run of full-screen photographs the capsule and the ruler leave them the screen. */
+function clearTheScreen(section: HTMLElement, scrollTrigger: (run: Element) => ScrollTrigger.Vars) {
+  const root = document.documentElement;
+  const run = section.querySelector("[data-bare-run]");
+  if (!run) return () => undefined;
+  ScrollTrigger.create({
+    ...scrollTrigger(run),
+    onToggle: ({ isActive }) => {
+      root.toggleAttribute("data-bare", isActive);
+    },
+  });
+  return () => {
+    root.removeAttribute("data-bare");
+  };
+}
+
+/** The numbers of the launch count up once, as they arrive. What the HTML says is the end of it. */
+function countUp(section: HTMLElement, arriving: (element: Element) => ScrollTrigger.Vars) {
+  const format = new Intl.NumberFormat(document.documentElement.lang);
+  const numbers = gsap.utils.toArray<HTMLElement>("[data-count]", section);
+  numbers.forEach((element) => {
+    const end = Number(element.dataset.count);
+    const shown = { value: 0 };
+    element.textContent = format.format(0);
+    ScrollTrigger.create({
+      ...arriving(element),
+      once: true,
+      onEnter: () => {
+        gsap.to(shown, {
+          value: end,
+          duration: DURATION.slow,
+          ease: "power2.out",
+          onUpdate: () => {
+            element.textContent = format.format(Math.round(shown.value));
+          },
+        });
+      },
+    });
+  });
+  return () => {
+    numbers.forEach((element) => {
+      element.textContent = format.format(Number(element.dataset.count));
+    });
+  };
 }
 
 /** Full-height photographs move a little inside their frames, slower than the ribbon. */
@@ -324,12 +370,23 @@ function runRibbon(section: HTMLElement, track: HTMLElement, mark: Mark) {
     start: "left 88%",
     end: "left 8%",
   }));
-  dealScraps(section, { trigger: section, start: "top 85%", end: "top top" });
-  raiseCutout(section, (view) => ({
+  dealScraps(section, { trigger: section, start: "top 58%", end: "top -14%" });
+  slideCutout(section, (view) => ({
     containerAnimation: move,
     trigger: view,
     start: "left right",
-    end: "left 60%",
+    end: "right right",
+  }));
+  const showShell = clearTheScreen(section, (run) => ({
+    containerAnimation: move,
+    trigger: run,
+    start: "left 35%",
+    end: "right 65%",
+  }));
+  const resetNumbers = countUp(section, (element) => ({
+    containerAnimation: move,
+    trigger: element,
+    start: "left 85%",
   }));
   slideBleeds(section, move);
   wakeAhead(section, track);
@@ -344,6 +401,8 @@ function runRibbon(section: HTMLElement, track: HTMLElement, mark: Mark) {
   return () => {
     stopLines();
     stopRuler();
+    showShell();
+    resetNumbers();
   };
 }
 
@@ -366,9 +425,14 @@ function runColumn(section: HTMLElement, mark: Mark) {
 
   dealMenus(section, (view) => ({ trigger: view, start: "top 85%", end: "top 30%" }));
   const collage = section.querySelector("[data-collage]");
-  if (collage) dealScraps(section, { trigger: collage, start: "top 95%", end: "top 35%" });
-  raiseCutout(section, (view) => ({ trigger: view, start: "top bottom", end: "top 45%" }));
-
+  if (collage) dealScraps(section, { trigger: collage, start: "top 75%", end: "top 25%" });
+  slideCutout(section, (view) => ({ trigger: view, start: "top bottom", end: "top 40%" }));
+  const showShell = clearTheScreen(section, (run) => ({
+    trigger: run,
+    start: "top 30%",
+    end: "bottom 70%",
+  }));
+  const resetNumbers = countUp(section, (element) => ({ trigger: element, start: "top 90%" }));
   const stopLines = moveLines(section, (element) => ({
     trigger: element,
     start: "top bottom",
@@ -379,6 +443,8 @@ function runColumn(section: HTMLElement, mark: Mark) {
   return () => {
     stopLines();
     stopRuler();
+    showShell();
+    resetNumbers();
   };
 }
 
