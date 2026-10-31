@@ -23,7 +23,7 @@
   },
   "story": {
     "title": "How I got here",
-    "lead": "From a menu for a game to a product of my own: eight chapters on how I became a design engineer.",
+    "lead": "From a menu for a game to a product of my own: nine chapters on how I became a design engineer.",
     "hint": "Keep scrolling",
     "omsk": {
       "mark": "School",
@@ -33,9 +33,8 @@
       "game": "In it I built a menu for a game I played all the time and posted it in the game's groups. People asked how to install it. It reached the developers: they offered me work, then opened my file and stopped answering.",
       "quote": "Over a hundred frames. Not one component.",
       "after": "I was furious at the time. Now I understand them.",
-      "canvas": "The Figma file of the game menu from afar: nearly identical screens on a grey canvas",
-      "canvasSize": "1100 × 710",
-      "photo": "Photo: school, Omsk"
+      "menus": "The Figma file of the game menu: dozens of nearly identical screens",
+      "menuName": "menu"
     },
     "university": {
       "mark": "2022",
@@ -44,9 +43,7 @@
       "choice": "I wanted to study product design, but a teacher talked me out of it: get your maths up first. So I ended up at Omsk State University, in applied mathematics and computer science.",
       "roles": "I always had top marks in programming, and in group projects I always ended up as the designer.",
       "quote": "It's a pain to check my own class schedule.",
-      "idea": "Some universities had apps for that. From 2023 Maxim, a classmate of mine, and I kept talking about building one for ours, and kept putting it off: the idea felt too big.",
-      "photo": "Photo: university",
-      "friends": "Photo: Maxim and me"
+      "idea": "Some universities had apps for that. From 2023 Maxim, a classmate of mine, and I kept talking about building one for ours, and kept putting it off: the idea felt too big."
     },
     "build": {
       "mark": "2024",
@@ -57,7 +54,7 @@
       "quote": "By the end of the semester my own app was on my phone.",
       "polish": "The next semester and the summer went on polish. The app was rewritten from scratch several times: I wanted it perfect.",
       "screen": "The university picker in the VCourse app",
-      "photo": "Photo: the first version on a phone"
+      "codeCaption": "4 September 2024, the semester begins"
     },
     "launch": {
       "mark": "1 September 2025",
@@ -70,7 +67,8 @@
       "chart": "App Store downloads per day, 1–14 September 2025",
       "chartSummary": "632 downloads in the first three days, 411 of them on 2 September. Source: App Store Connect.",
       "next": "Over the next semester came Android and the website, and five more colleges and universities joined.",
-      "site": "The VCourse website in a browser"
+      "eveCaption": "31 August 2025. The post goes out tomorrow",
+      "stageCaption": "1 September 2025"
     },
     "fork": {
       "mark": "2026",
@@ -78,8 +76,7 @@
       "title": "The fork",
       "question": "The app worked, and the question came up: what next? We couldn't keep growing it seriously and earn nothing from it.",
       "quote": "Ads in the app, or a service for universities.",
-      "answer": "We really didn't want ads. We took the second road: our own service for building timetables, with the apps as a pleasant extra for students and teachers. We started talking to the people who make the timetables and took apart how it's really done.",
-      "photo": "Photo: working on the service"
+      "answer": "We really didn't want ads. We took the second road: our own service for building timetables, with the apps as a pleasant extra for students and teachers. We started talking to the people who make the timetables and took apart how it's really done."
     },
     "night": {
       "mark": "June 2026",
@@ -108,8 +105,11 @@
       },
       "wait": "The site went up on Vercel and the application went out. Then a call, and several weeks of silence.",
       "grant": "And then a letter: the largest grant they give.",
-      "move": "One letter changed the plan: I was moving to Moscow.",
-      "photo": "Photo: moving from Omsk to Moscow"
+      "move": "One letter changed the plan: I was moving to Moscow."
+    },
+    "rent": {
+      "mark": "August 2026",
+      "quote": "…and now I had to pay for a flat somehow"
     },
     "moscow": {
       "mark": "Moscow",
@@ -118,8 +118,7 @@
       "job": "I moved at the end of the summer and started work: several iOS app designs a week, plus their ASO. Doing that by hand would have driven me mad.",
       "agents": "I tried agents in Figma. That took a whole pipeline, and it worked.",
       "quote": "I got a personal designer, and I became the boss.",
-      "prompts": "I won't claim a complete app, with icons and an App Store page, comes out of one prompt. I will claim it comes out of ten thoughtful, consecutive ones.",
-      "photo": "Photo: Moscow"
+      "prompts": "I won't claim a complete app, with icons and an App Store page, comes out of one prompt. I will claim it comes out of ten thoughtful, consecutive ones."
     },
     "now": {
       "mark": "Now",
@@ -130,6 +129,26 @@
       "next": "The next version is Pora na paru. I wrote new apps from scratch: the old foundation would have broken within a year. Now I'm building the web client and the timetabling service, and doing my master's.",
       "quote": "I have plenty of components now.",
       "portrait": "Portrait of Danil Zablotsky"
+    },
+    "photos": {
+      "corridor": "A silhouette at the window at the end of a green corridor",
+      "newYear": "A New Year photo in the assembly hall, everyone in costume",
+      "pizza": "Two friends with a pizza box",
+      "polaroid": "Friends in a drawn instant photo",
+      "forest": "Two friends in a forest, one waving",
+      "lift": "A big group taking a selfie in a lift",
+      "code": "Lecture notes on a laptop during a lecture",
+      "eve": "A self-portrait the day before the launch",
+      "stage": "A presentation of VCourse on a big screen in front of a hall",
+      "cafe": "Two friends in a café",
+      "friends": "Three friends taking a selfie",
+      "room": "A bright empty room with a desk by the window",
+      "statue": "A golden statue against a cloudy sky",
+      "firstRoom": "A cat on a beanbag beside shelves and boxes",
+      "mirror": "A selfie in a mirror",
+      "hall": "A laptop in a large lecture hall",
+      "sunset": "A red sunset over a street",
+      "portrait": "Danil Zablotsky with a kitten"
     }
   },
   "experience": {

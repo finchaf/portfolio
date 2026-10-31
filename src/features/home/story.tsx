@@ -1,16 +1,34 @@
 import { useTranslations } from "next-intl";
 
+import cafe from "./photos/cafe.webp";
+import code from "./photos/code.webp";
+import corridor from "./photos/corridor.webp";
+import eve from "./photos/eve.webp";
+import firstRoom from "./photos/first-room.webp";
 import firstScreen from "./photos/first-screen.webp";
-import firstSite from "./photos/first-site.webp";
+import forest from "./photos/forest.webp";
+import friends from "./photos/friends.webp";
+import hall from "./photos/hall.webp";
+import lift from "./photos/lift.webp";
+import mirror from "./photos/mirror.webp";
+import newYear from "./photos/new-year.webp";
+import pizza from "./photos/pizza.webp";
+import polaroid from "./photos/polaroid.webp";
 import portrait from "./photos/portrait.webp";
-import { FigmaCanvas } from "./story-canvas";
-import { CHAPTERS, RIBBON_SPANS, SPANS } from "./story-data";
+import room from "./photos/room.webp";
+import stage from "./photos/stage.webp";
+import statue from "./photos/statue.webp";
+import sunset from "./photos/sunset.webp";
+import { CHAPTERS, RIBBON_BLEEDS, RIBBON_SPANS, SPANS } from "./story-data";
 import { LaunchChart, NightLog } from "./story-figures";
+import { StoryMenus } from "./story-menus";
 import {
+  StoryBleed,
   StoryChapter,
   StoryCol,
   StoryHead,
   StoryPhoto,
+  StoryPile,
   StoryQuote,
   StoryText,
 } from "./story-parts";
@@ -34,18 +52,24 @@ function Ruler() {
 
 function Omsk() {
   const t = useTranslations("home.story.omsk");
+  const photos = useTranslations("home.story.photos");
   return (
     <StoryChapter id="omsk">
+      <StoryBleed label={photos("corridor")} src={corridor} />
       <StoryCol weight={1}>
         <StoryHead date={t("date")} title={t("title")} />
         <StoryText>{t("school")}</StoryText>
         <StoryText>{t("game")}</StoryText>
+        <StoryPhoto drift={30} label={photos("polaroid")} size={11} src={polaroid} tilt={-3} />
       </StoryCol>
-      <StoryCol at="middle" weight={1.15}>
-        <FigmaCanvas />
+      <StoryCol at="middle" weight={2}>
+        <StoryMenus />
       </StoryCol>
-      <StoryCol at="bottom" weight={0.95}>
-        <StoryPhoto label={t("photo")} size={21} tilt={-2.5} />
+      <StoryCol at="bottom" weight={1}>
+        <StoryPile>
+          <StoryPhoto label={photos("newYear")} size={20} src={newYear} tilt={-2} />
+          <StoryPhoto drift={90} label={photos("pizza")} size={14} src={pizza} tilt={3} />
+        </StoryPile>
         <StoryQuote>{t("quote")}</StoryQuote>
         <StoryText>{t("after")}</StoryText>
       </StoryCol>
@@ -55,6 +79,7 @@ function Omsk() {
 
 function University() {
   const t = useTranslations("home.story.university");
+  const photos = useTranslations("home.story.photos");
   return (
     <StoryChapter id="university">
       <StoryCol weight={1}>
@@ -62,13 +87,13 @@ function University() {
         <StoryText>{t("choice")}</StoryText>
         <StoryText>{t("roles")}</StoryText>
       </StoryCol>
-      <StoryCol at="middle" weight={0.9}>
-        <StoryPhoto label={t("photo")} ratio={3 / 4} size={20} tilt={1.5} />
+      <StoryCol at="middle" weight={1.15}>
+        <StoryPhoto label={photos("forest")} size={32} src={forest} tilt={1.5} />
       </StoryCol>
       <StoryCol at="bottom" weight={1.1}>
+        <StoryPhoto drift={90} label={photos("lift")} size={24} src={lift} tilt={-2} />
         <StoryQuote drift={60}>{t("quote")}</StoryQuote>
         <StoryText>{t("idea")}</StoryText>
-        <StoryPhoto label={t("friends")} ratio={3 / 2} size={19} tilt={-1.5} />
       </StoryCol>
     </StoryChapter>
   );
@@ -76,6 +101,7 @@ function University() {
 
 function Build() {
   const t = useTranslations("home.story.build");
+  const photos = useTranslations("home.story.photos");
   return (
     <StoryChapter id="build">
       <StoryCol weight={1.1}>
@@ -84,17 +110,16 @@ function Build() {
         <StoryText>{t("learn")}</StoryText>
       </StoryCol>
       <StoryCol at="middle" weight={0.75}>
-        <StoryPhoto
-          drift={90}
-          label={t("screen")}
-          ratio={512 / 1047}
-          size={15}
-          src={firstScreen}
-          tilt={2}
-        />
+        <StoryPhoto drift={90} label={t("screen")} size={15} src={firstScreen} tilt={2} />
       </StoryCol>
-      <StoryCol at="bottom" weight={1}>
-        <StoryPhoto label={t("photo")} ratio={1} size={15} tilt={-2} />
+      <StoryCol at="bottom" weight={1.1}>
+        <StoryPhoto
+          caption={t("codeCaption")}
+          label={photos("code")}
+          size={25}
+          src={code}
+          tilt={-1.5}
+        />
         <StoryQuote>{t("quote")}</StoryQuote>
         <StoryText>{t("polish")}</StoryText>
       </StoryCol>
@@ -104,6 +129,7 @@ function Build() {
 
 function Launch() {
   const t = useTranslations("home.story.launch");
+  const photos = useTranslations("home.story.photos");
   return (
     <StoryChapter id="launch">
       <StoryCol weight={0.9}>
@@ -119,7 +145,23 @@ function Launch() {
         <LaunchChart />
       </StoryCol>
       <StoryCol at="bottom" weight={0.8}>
-        <StoryPhoto label={t("site")} ratio={640 / 600} size={21} src={firstSite} tilt={-1.5} />
+        <StoryPile>
+          <StoryPhoto
+            caption={t("eveCaption")}
+            label={photos("eve")}
+            size={22}
+            src={eve}
+            tilt={-1.5}
+          />
+          <StoryPhoto
+            caption={t("stageCaption")}
+            drift={80}
+            label={photos("stage")}
+            size={14}
+            src={stage}
+            tilt={2}
+          />
+        </StoryPile>
         <StoryText>{t("next")}</StoryText>
       </StoryCol>
     </StoryChapter>
@@ -128,13 +170,17 @@ function Launch() {
 
 function Fork() {
   const t = useTranslations("home.story.fork");
+  const photos = useTranslations("home.story.photos");
   return (
     <StoryChapter id="fork">
-      <StoryCol at="middle">
+      <StoryCol at="middle" weight={1.15}>
         <StoryHead date={t("date")} title={t("title")} />
         <StoryText>{t("question")}</StoryText>
         <StoryQuote drift={60}>{t("quote")}</StoryQuote>
         <StoryText>{t("answer")}</StoryText>
+      </StoryCol>
+      <StoryCol at="bottom" weight={1}>
+        <StoryPhoto label={photos("cafe")} size={30} src={cafe} tilt={-1.5} />
       </StoryCol>
     </StoryChapter>
   );
@@ -153,8 +199,7 @@ function Night() {
         <StoryQuote drift={60}>{t("quote")}</StoryQuote>
         <NightLog />
       </StoryCol>
-      <StoryCol at="bottom" weight={1}>
-        <StoryPhoto drift={80} label={t("photo")} ratio={4 / 5} size={18} tilt={1.5} />
+      <StoryCol at="bottom" weight={0.9}>
         <StoryText>{t("wait")}</StoryText>
         <StoryText>
           <b>{t("grant")}</b> {t("move")}
@@ -164,17 +209,40 @@ function Night() {
   );
 }
 
+function Rent() {
+  const t = useTranslations("home.story.rent");
+  const photos = useTranslations("home.story.photos");
+  return (
+    <StoryChapter id="rent">
+      <StoryCol at="bottom">
+        <StoryQuote drift={50}>{t("quote")}</StoryQuote>
+      </StoryCol>
+      <StoryBleed label={photos("friends")} src={friends} />
+      <StoryBleed label={photos("room")} src={room} />
+      <StoryBleed label={photos("statue")} src={statue} />
+    </StoryChapter>
+  );
+}
+
 function Moscow() {
   const t = useTranslations("home.story.moscow");
+  const photos = useTranslations("home.story.photos");
   return (
     <StoryChapter id="moscow">
       <StoryCol weight={1}>
         <StoryHead date={t("date")} title={t("title")} />
         <StoryText>{t("job")}</StoryText>
         <StoryText>{t("agents")}</StoryText>
+        <StoryPhoto drift={40} label={photos("firstRoom")} size={18} src={firstRoom} tilt={2} />
       </StoryCol>
-      <StoryCol at="bottom" weight={1.05}>
-        <StoryPhoto label={t("photo")} ratio={3 / 2} size={21} tilt={-1.5} />
+      <StoryCol at="middle" weight={0.8}>
+        <StoryPhoto drift={80} label={photos("mirror")} size={25} src={mirror} tilt={-1.5} />
+      </StoryCol>
+      <StoryCol at="bottom" weight={1.25}>
+        <StoryPile>
+          <StoryPhoto label={photos("sunset")} size={25} src={sunset} tilt={1} />
+          <StoryPhoto drift={90} label={photos("hall")} size={12} src={hall} tilt={-2.5} />
+        </StoryPile>
         <StoryQuote>{t("quote")}</StoryQuote>
         <StoryText>{t("prompts")}</StoryText>
       </StoryCol>
@@ -184,9 +252,10 @@ function Moscow() {
 
 function Now() {
   const t = useTranslations("home.story.now");
+  const photos = useTranslations("home.story.photos");
   return (
     <StoryChapter id="now">
-      <StoryCol weight={1}>
+      <StoryCol at="middle" weight={1}>
         <StoryHead date={t("date")} title={t("title")} />
         <StoryText>{t("first")}</StoryText>
         <p className="story-caption" data-reveal>
@@ -195,9 +264,7 @@ function Now() {
         <StoryText>{t("next")}</StoryText>
         <StoryQuote drift={30}>{t("quote")}</StoryQuote>
       </StoryCol>
-      <StoryCol at="middle" weight={0.9}>
-        <StoryPhoto drift={30} label={t("portrait")} ratio={1} size={25} src={portrait} />
-      </StoryCol>
+      <StoryBleed label={photos("portrait")} src={portrait} />
     </StoryChapter>
   );
 }
@@ -214,7 +281,7 @@ export function Story() {
         aria-labelledby="story-title"
         className="story"
         id="story"
-        style={{ "--spans": RIBBON_SPANS }}
+        style={{ "--spans": RIBBON_SPANS, "--bleeds": RIBBON_BLEEDS }}
       >
         <div className="story-stage" data-under>
           <div aria-hidden className="story-paper" data-story-paper />
@@ -234,6 +301,7 @@ export function Story() {
               <Launch />
               <Fork />
               <Night />
+              <Rent />
               <Moscow />
               <Now />
             </ol>

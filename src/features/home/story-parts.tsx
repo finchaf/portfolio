@@ -1,8 +1,9 @@
 import Image, { type StaticImageData } from "next/image";
 import type { ReactNode } from "react";
 
-import { Placeholder } from "./placeholder";
-import { SPANS } from "./story-data";
+import { BLEEDS, SPANS } from "./story-data";
+
+type Part = Exclude<keyof typeof SPANS, "open">;
 
 /** One chapter of the ribbon: on a wide screen a run of columns, on a phone one column. */
 export function StoryChapter({
@@ -10,18 +11,19 @@ export function StoryChapter({
   dark = false,
   children,
 }: {
-  id: Exclude<keyof typeof SPANS, "open">;
+  id: Part;
   /** Wears the theme's dark colours in either mode. */
   dark?: boolean;
   children: ReactNode;
 }) {
+  const bleed = id in BLEEDS ? BLEEDS[id as keyof typeof BLEEDS] : 0;
   return (
     <li
       className={`story-chapter story-${id}`}
       data-chapter-of-story
       data-ruler-band={dark ? "" : undefined}
       data-tint={dark ? "home" : undefined}
-      style={{ "--span": SPANS[id] }}
+      style={{ "--span": SPANS[id], "--bleed": bleed }}
     >
       {children}
     </li>
@@ -79,41 +81,57 @@ export function StoryQuote({ children, drift = 40 }: { children: ReactNode; drif
 }
 
 export interface StoryPhotoProps {
-  /** What the picture shows; until the file exists, what is to stand here. */
+  /** What the picture shows. */
   label: string;
-  src?: StaticImageData;
-  /** Width over height, of the picture or of the place kept for it. */
-  ratio?: number;
+  src: StaticImageData;
   /** Width in the units of the ribbon. */
   size?: number;
   /** Degrees the print lies at when it settles. */
   tilt?: number;
   drift?: number;
+  caption?: string;
 }
 
-/** A print on the page. A file not yet delivered keeps its place, and never ships (placeholder.tsx). */
+/** A print on the page. */
 export function StoryPhoto({
   label,
   src,
-  ratio = 4 / 3,
   size = 22,
   tilt = 0,
   drift = 60,
+  caption,
 }: StoryPhotoProps) {
   return (
     <figure
       className="story-photo"
       data-drift={drift}
       data-tilt={tilt}
-      style={{ "--ratio": ratio, "--size": size, "--tilt": `${String(tilt)}deg` }}
+      style={{ "--size": size, "--tilt": `${String(tilt)}deg` }}
     >
       <div className="story-print" data-reveal>
-        {src ? (
-          <Image alt={label} className="story-image" src={src} unoptimized />
-        ) : (
-          <Placeholder kind="frame" label={label} />
-        )}
+        <Image alt={label} className="story-image" src={src} unoptimized />
+        {caption && <figcaption className="story-caption">{caption}</figcaption>}
       </div>
+    </figure>
+  );
+}
+
+/** Two prints, the second lying over the corner of the first. */
+export function StoryPile({ children }: { children: ReactNode }) {
+  return <div className="story-pile">{children}</div>;
+}
+
+/** A photograph from the top of the screen to the bottom, which the ribbon slides past. */
+export function StoryBleed({ label, src }: { label: string; src: StaticImageData }) {
+  return (
+    <figure
+      className="story-bleed"
+      data-bleed
+      data-ruler-band
+      data-tint="home"
+      style={{ "--ratio": src.width / src.height }}
+    >
+      <Image alt={label} className="story-bleed-image" data-bleed-image src={src} unoptimized />
     </figure>
   );
 }

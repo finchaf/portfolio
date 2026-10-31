@@ -4,35 +4,107 @@
  */
 export const LAUNCH_DOWNLOADS = [160, 411, 61, 38, 25, 14, 13, 28, 18, 20, 11, 7, 8, 9] as const;
 
-/** The Figma file in the first chapter: the picture is the file at the zoom Figma fits it to. */
-export const CANVAS = {
-  /** The zoom of the picture, in percent. */
-  fileZoom: 5,
-  /** How much closer than the picture the camera starts. */
-  close: 12,
-  /** The first frame in the picture, in shares of its width and height. */
-  frame: { left: 274 / 1308, top: 45.2 / 924, width: 88 / 1308, height: 56.8 / 924 },
-} as const;
+/** The file behind the first chapter: rows of `[menu, column]`, where the frames lie in Figma. */
+const FILE: readonly (readonly (readonly [number, number])[])[] = [
+  [
+    [1, 2.5],
+    [2, 4],
+    [3, 5],
+  ],
+  [
+    [4, 0],
+    [6, 1],
+    [7, 2],
+    [8, 3],
+    [9, 4],
+    [10, 5],
+  ],
+  [
+    [5, 0],
+    [11, 1],
+    [12, 2],
+    [13, 3],
+    [14, 4],
+    [15, 5],
+    [16, 6],
+  ],
+  [
+    [38, 0],
+    [17, 2],
+    [18, 3],
+    [19, 4],
+  ],
+  [
+    [39, 0],
+    [20, 2],
+    [21, 3],
+    [22, 4],
+    [23, 5],
+    [24, 6],
+    [25, 7],
+    [26, 8],
+  ],
+  [
+    [40, 0],
+    [41, 4],
+    [27, 6],
+    [28, 7],
+    [29, 8],
+    [30, 9],
+    [31, 10],
+    [32, 11],
+    [33, 12],
+  ],
+  [
+    [42, 4],
+    [34, 6],
+    [35, 7],
+    [36, 8],
+    [37, 9],
+  ],
+  [[43, 4]],
+  [[44, 4]],
+  [[45, 4]],
+  [[46, 4]],
+  [[47, 4]],
+];
 
-/** The point the zoom is about: from there the first frame starts in the middle of the view. */
-export const CANVAS_ORIGIN = (["left", "top"] as const).map((side) => {
-  const size = side === "left" ? CANVAS.frame.width : CANVAS.frame.height;
-  const middle = CANVAS.frame[side] + size / 2;
-  return (middle * CANVAS.close - 0.5) / (CANVAS.close - 1);
-}) as [number, number];
+/** The grid of the file, in widths and heights of a frame. */
+const STEP = { x: 98 / 88, y: 73.2 / 56.8 };
+
+/** The picture all the frames share, one request for 47 elements: columns and rows of its cells. */
+export const SPRITE = { columns: 8, rows: 6 };
+
+/** Where the file lies as a whole, in frames. */
+export const FIELD = { columns: 12 * STEP.x + 1, rows: (FILE.length - 1) * STEP.y + 1 };
+
+export const MENUS = FILE.flatMap((frames, row) =>
+  frames.map(([menu, column]) => ({
+    menu,
+    left: (column * STEP.x) / FIELD.columns,
+    top: (row * STEP.y) / FIELD.rows,
+    /** How far the frame starts from the first one, in its own size, in percent. */
+    fromX: (2.5 - column) * STEP.x * 100,
+    fromY: -row * STEP.y * 100,
+  })),
+).sort((a, b) => b.menu - a.menu);
 
 /** How wide each part of the ribbon is, in widths of the screen. */
 export const SPANS = {
-  open: 0.55,
-  omsk: 1.3,
-  university: 1.1,
-  build: 1,
+  open: 0.5,
+  omsk: 1.35,
+  university: 1.05,
+  build: 1.1,
   launch: 1.3,
-  fork: 0.72,
-  night: 1.25,
-  moscow: 0.88,
-  now: 0.9,
+  fork: 1,
+  night: 1.05,
+  rent: 0.62,
+  moscow: 1.4,
+  now: 0.62,
 } as const;
+
+/** What full-height photographs add to a chapter, in heights of the screen. */
+export const BLEEDS = { omsk: 3 / 4, rent: 4 / 3 + 4 / 3 + 3 / 4, now: 3 / 4 } as const;
 
 /** The chapters in the order of the story. */
 export const CHAPTERS = [
@@ -42,9 +114,11 @@ export const CHAPTERS = [
   "launch",
   "fork",
   "night",
+  "rent",
   "moscow",
   "now",
 ] as const;
 
-/** The ribbon's whole width, which the stylesheet turns into the height of the section. */
+/** The ribbon's whole size, which the stylesheet turns into the height of the section. */
 export const RIBBON_SPANS = Object.values(SPANS).reduce((sum, span) => sum + span, 0);
+export const RIBBON_BLEEDS = Object.values(BLEEDS).reduce((sum, bleed) => sum + bleed, 0);

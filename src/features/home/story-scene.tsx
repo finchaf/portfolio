@@ -5,7 +5,6 @@ import { useRef, type ReactNode } from "react";
 import { gsap, MOTION_ALLOWED, ScrollTrigger, useGSAP } from "@/motion/gsap";
 import { SCENE } from "@/motion/tokens";
 
-import { CANVAS } from "./story-data";
 import { createRuler } from "./story-ruler";
 
 const WIDE = `${MOTION_ALLOWED} and (min-width: 64rem)`;
@@ -28,8 +27,14 @@ const PAPER_SCREENS = 0.4;
 /** Where on the screen a chapter becomes the current one: a share of its width or height, in %. */
 const CURRENT_AT = 58;
 
-/** The share of the camera's move in which the selection leaves. */
-const SELECTION_LEAVES = 0.2;
+/** The share of the scene each frame of the file spends on its way. */
+const DEAL = 0.4;
+
+/** How far a full-height photograph slides inside its frame, in percent of its width. */
+const BLEED_SLIDE = 5.5;
+
+/** How many screens of the ribbon ahead its pictures are asked for. */
+const AHEAD = 2.5;
 
 type Mark = (index: number) => void;
 
@@ -97,32 +102,72 @@ function turnToPaper(section: HTMLElement) {
 }
 
 /**
- * The camera pulls back from one frame of the Figma file to all of it, and the file's zoom counts down
- * with it. The steps of a zoom are equal in ratio, not in size, as they are under a real trackpad.
+ * The frames of the file start as one stack and the scroll deals them to their places, in the order
+ * of their numbers: one screen multiplying into the whole file. Each move lasts `DEAL` of the scene.
  */
-function pullBack(section: HTMLElement, scrollTrigger: (view: Element) => ScrollTrigger.Vars) {
-  const view = section.querySelector("[data-figma-view]");
-  const world = view?.querySelector<HTMLElement>("[data-figma-world]");
-  const zoom = view?.querySelector("[data-figma-zoom]");
-  if (!view || !world || !zoom) return;
-  const camera = { pulled: 0 };
-  const paint = () => {
-    const closer = CANVAS.close ** (1 - camera.pulled);
-    gsap.set(world, { scale: closer });
-    zoom.textContent = String(Math.round(CANVAS.fileZoom * closer));
-  };
-  paint();
-  gsap
-    .timeline({
-      defaults: { ease: "none" },
-      scrollTrigger: { ...scrollTrigger(view), scrub: true },
-    })
-    .to(camera, { pulled: 1, duration: 1, onUpdate: paint }, 0)
-    .to(
-      view.querySelectorAll("[data-figma-select]"),
-      { opacity: 0, duration: SELECTION_LEAVES },
-      0,
+function dealMenus(section: HTMLElement, scrollTrigger: (view: Element) => ScrollTrigger.Vars) {
+  const view = section.querySelector("[data-menus]");
+  const frames = gsap.utils.toArray<HTMLElement>("[data-menu]", view);
+  if (!view || frames.length === 0) return;
+  const last = frames.length - 1;
+  const scene = gsap.timeline({
+    defaults: { ease: "power2.out" },
+    scrollTrigger: { ...scrollTrigger(view), scrub: true },
+  });
+  frames.forEach((frame) => {
+    const { menu, fromX, fromY } = frame.dataset;
+    scene.fromTo(
+      frame,
+      { xPercent: Number(fromX), yPercent: Number(fromY) },
+      { xPercent: 0, yPercent: 0, duration: DEAL },
+      ((Number(menu) - 1) / last) * (1 - DEAL),
     );
+  });
+}
+
+/** Full-height photographs move a little inside their frames, slower than the ribbon. */
+function slideBleeds(section: HTMLElement, move: gsap.core.Tween) {
+  gsap.utils.toArray<HTMLElement>("[data-bleed]", section).forEach((bleed) => {
+    gsap.fromTo(
+      bleed.querySelector("[data-bleed-image]"),
+      { xPercent: -BLEED_SLIDE },
+      {
+        xPercent: 0,
+        ease: "none",
+        scrollTrigger: {
+          containerAnimation: move,
+          trigger: bleed,
+          start: "left right",
+          end: "right left",
+          scrub: true,
+        },
+      },
+    );
+  });
+}
+
+/**
+ * A browser holds a lazy picture until it reaches the screen, and a ribbon clipped by its stage gets
+ * there too late: the chapters ahead are asked for early, and only once the story is near.
+ */
+function wakeAhead(section: HTMLElement, track: HTMLElement) {
+  const chapters = gsap.utils.toArray<HTMLElement>("[data-chapter-of-story]", section);
+  const wake = () => {
+    const reach = AHEAD * window.innerWidth - Number(gsap.getProperty(track, "x"));
+    chapters.forEach((chapter) => {
+      if (chapter.offsetLeft > reach) return;
+      chapter.querySelectorAll("img").forEach((image) => {
+        image.loading = "eager";
+      });
+    });
+  };
+  ScrollTrigger.create({
+    trigger: section,
+    start: "top 200%",
+    end: "bottom top",
+    onUpdate: wake,
+    onToggle: wake,
+  });
 }
 
 /** Shows an element once its trigger has been passed: the stylesheet does the move. */
@@ -188,12 +233,14 @@ function runRibbon(section: HTMLElement, track: HTMLElement, mark: Mark) {
     });
   });
 
-  pullBack(section, (view) => ({
+  dealMenus(section, (view) => ({
     containerAnimation: move,
     trigger: view,
-    start: "left 78%",
-    end: "left 12%",
+    start: "left 88%",
+    end: "left 8%",
   }));
+  slideBleeds(section, move);
+  wakeAhead(section, track);
 
   return runRuler(section, () => move.progress() * distance() * RULER_PACE);
 }
@@ -215,7 +262,7 @@ function runColumn(section: HTMLElement, mark: Mark) {
     });
   });
 
-  pullBack(section, (view) => ({ trigger: view, start: "top 80%", end: "top 25%" }));
+  dealMenus(section, (view) => ({ trigger: view, start: "top 85%", end: "top 30%" }));
 
   return runRuler(section, () => along.progress * RULER_TRAVEL);
 }
