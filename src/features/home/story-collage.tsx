@@ -1,17 +1,28 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
-import bird from "./photos/scrap-bird.webp";
-import cat from "./photos/scrap-cat.webp";
-import mirror from "./photos/scrap-mirror.webp";
-import mountains from "./photos/scrap-mountains.webp";
-import neon from "./photos/scrap-neon.webp";
-import pug from "./photos/scrap-pug.webp";
-import sky from "./photos/scrap-sky.webp";
-import snow from "./photos/scrap-snow.webp";
+import airport from "./photos/scrap-airport.webp";
+import book from "./photos/scrap-book.webp";
+import child from "./photos/scrap-child.webp";
+import desk from "./photos/scrap-desk.webp";
+import forest from "./photos/scrap-forest.webp";
+import hat from "./photos/scrap-hat.webp";
+import moscow from "./photos/scrap-moscow.webp";
+import prom from "./photos/scrap-prom.webp";
+import windowView from "./photos/scrap-window.webp";
 import { SCRAPS } from "./story-data";
 
-const PICTURES = { bird, cat, mirror, mountains, neon, pug, sky, snow };
+const PICTURES = {
+  airport,
+  book,
+  child,
+  desk,
+  forest,
+  hat,
+  moscow,
+  prom,
+  window: windowView,
+};
 
 /**
  * Loose photographs across the opening of the story. A scene deals them out of one pile as the story

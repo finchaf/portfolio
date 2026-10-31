@@ -158,14 +158,15 @@
       "msu": "The main building of Moscow State University under a cloudy sky",
       "me": "Danil Zablotsky in a white shirt",
       "scraps": {
-        "snow": "Three friends walking through snow, from behind",
-        "neon": "Two friends in sunglasses by a neon sign",
-        "cat": "Danil with a kitten",
-        "mirror": "A group of friends in a school mirror",
-        "pug": "A pug asleep on its back",
-        "sky": "Three friends from below against the sky",
-        "bird": "A bird on dark water",
-        "mountains": "A café with panoramic windows on the mountains"
+        "child": "Two children by a radiator, a cat beside them",
+        "forest": "A curly-haired young man in profile among birches",
+        "prom": "Two young men in suits taking a mirror photo",
+        "book": "A selfie with an open student record book",
+        "window": "A view from a window of mountains and snowy roofs",
+        "desk": "A desk with a large monitor and a keyboard",
+        "hat": "A cat in a Santa hat",
+        "moscow": "A street in central Moscow, a building with a globe on its front",
+        "airport": "A laptop with Figma open in an airport lounge"
       }
     }
   },

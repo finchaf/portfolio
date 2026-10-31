@@ -90,18 +90,19 @@ export const MENUS = FILE.flatMap((frames, row) =>
 ).sort((a, b) => b.menu - a.menu);
 
 /**
- * The collage that opens the story, a moment from each stretch of it and no single face to carry it.
- * `left`, `top` and `size` are in the ribbon's units, so it keeps its density on any screen.
+ * The collage that opens the story: nine prints the owner chose, in the order of the years, so it is
+ * the story in short. `left`, `top` and `size` are in the ribbon's units, for one density on any screen.
  */
 export const SCRAPS = [
-  { key: "snow", left: 0, top: 7, size: 14, tilt: -3, drift: 18 },
-  { key: "neon", left: 12.5, top: 2, size: 20, tilt: 2, drift: 30 },
-  { key: "cat", left: 12, top: 13, size: 22, tilt: -2, drift: 14 },
-  { key: "mirror", left: 31, top: 0.5, size: 17, tilt: 1.5, drift: 24 },
-  { key: "pug", left: 33, top: 19.5, size: 11.5, tilt: 3, drift: 32 },
-  { key: "bird", left: 46.5, top: 3, size: 13, tilt: -2.5, drift: 26 },
-  { key: "sky", left: 43, top: 19, size: 20, tilt: -1.5, drift: 16 },
-  { key: "mountains", left: 58, top: 10, size: 20, tilt: 2, drift: 20 },
+  { key: "child", left: 0, top: 4, size: 20, tilt: -2.5, drift: 18 },
+  { key: "forest", left: 0, top: 18, size: 22, tilt: 1.5, drift: 28 },
+  { key: "prom", left: 18.5, top: 0, size: 15, tilt: 2, drift: 22 },
+  { key: "book", left: 32, top: 2, size: 17, tilt: -1.5, drift: 26 },
+  { key: "window", left: 31, top: 23, size: 15, tilt: 2.5, drift: 16 },
+  { key: "desk", left: 47.5, top: 0.5, size: 24, tilt: 1.5, drift: 20 },
+  { key: "hat", left: 44.5, top: 16, size: 15, tilt: -2.5, drift: 30 },
+  { key: "moscow", left: 58, top: 15.5, size: 16, tilt: 1.5, drift: 18 },
+  { key: "airport", left: 70, top: 10, size: 24, tilt: -2, drift: 24 },
 ] as const;
 
 /** The launch in the store: the first three days and the whole road, from App Store Connect. */
@@ -109,7 +110,7 @@ export const LAUNCH = { impressions: 2800, pageViews: 1287, total: 3428 } as con
 
 /** How wide each part of the ribbon is, in widths of the screen. */
 export const SPANS = {
-  open: 1.25,
+  open: 1.4,
   omsk: 1.35,
   university: 1.05,
   build: 1.1,
