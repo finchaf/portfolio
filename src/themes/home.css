@@ -21,4 +21,6 @@
   --sans: "Golos Text Variable", ui-sans-serif, system-ui, sans-serif;
   --display: "Geologica Variable", ui-sans-serif, system-ui, sans-serif;
   --mono: "JetBrains Mono Variable", ui-monospace, "SF Mono", Menlo, monospace;
+  /* Only the large lines of the story, and only here: no other theme sets one. */
+  --serif: "Playfair Display Variable", Georgia, "Times New Roman", serif;
 }

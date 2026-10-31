@@ -8,3 +8,4 @@ import "@fontsource-variable/golos-text/wght.css";
 import "@fontsource-variable/inter/wght.css";
 import "@fontsource-variable/jetbrains-mono/wght.css";
 import "@fontsource-variable/nunito/wght.css";
+import "@fontsource-variable/playfair-display/wght-italic.css";
