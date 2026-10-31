@@ -594,6 +594,20 @@
   height: 600%;
 }
 
+/* Screens are cards, as the file of Omsk is. */
+.story-build .story-image {
+  border-radius: 1rem;
+}
+
+/*
+ * The layers of a screen hang on the page in the dark. Their hairlines are white, so in the light
+ * they keep a dark ground of their own.
+ */
+.story-build .story-col-middle .story-image {
+  padding: 1.25rem;
+  background: light-dark(var(--ink), transparent);
+}
+
 /* The second print lies over the first's corner, the first's caption in the room this leaves. */
 .story-stack {
   display: flex;
@@ -1629,6 +1643,18 @@
 
       .story-stack .story-caption {
         max-width: 56%;
+      }
+
+      .story-build .story-image {
+        border-radius: calc(var(--u) * 1.2);
+      }
+
+      /* The layers run a little past the height the columns keep, and stay clear of the ruler. */
+      .story-build .story-col-middle .story-photo {
+        --width: min(
+          calc((100svh - var(--pad-top) - var(--pad-bottom)) * 0.72),
+          calc(var(--u) * 30)
+        );
       }
 
       /* Four lines on any screen: this line stands beside the pair of prints, level with the second. */

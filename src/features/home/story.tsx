@@ -1,10 +1,11 @@
 import { useTranslations } from "next-intl";
 
+import buildIcon from "./photos/build-icon.webp";
+import buildLayers from "./photos/build-layers.webp";
+import buildUpdate from "./photos/build-update.webp";
 import cafe from "./photos/cafe.webp";
-import code from "./photos/code.webp";
 import eve from "./photos/eve.webp";
 import firstRoom from "./photos/first-room.webp";
-import firstScreen from "./photos/first-screen.webp";
 import hall from "./photos/hall.webp";
 import mirror from "./photos/mirror.webp";
 import msu from "./photos/msu.webp";
@@ -105,26 +106,35 @@ function University() {
 
 function Build() {
   const t = useTranslations("home.story.build");
-  const photos = useTranslations("home.story.photos");
   return (
     <StoryChapter id="build">
-      <StoryCol weight={1.1}>
+      <StoryCol weight={1}>
         <StoryHead date={t("date")} title={t("title")} />
         <StoryText>{t("start")}</StoryText>
         <StoryText>{t("learn")}</StoryText>
       </StoryCol>
-      <StoryCol at="middle" weight={0.75}>
-        <StoryPhoto drift={90} label={t("screen")} size={15} src={firstScreen} tilt={2} />
-      </StoryCol>
-      <StoryCol at="bottom" weight={1.1}>
+      <StoryCol at="middle" weight={1}>
         <StoryPhoto
-          caption={t("codeCaption")}
-          label={photos("code")}
-          size={25}
-          src={code}
-          tilt={-1.5}
+          caption={t("layersCaption")}
+          drift={40}
+          label={t("layers")}
+          size={30}
+          src={buildLayers}
         />
+      </StoryCol>
+      <StoryCol at="bottom" weight={1.15}>
+        <StoryPhoto drift={70} label={t("update")} size={34} src={buildUpdate} tilt={-1.5} />
         <StoryQuote>{t("quote")}</StoryQuote>
+      </StoryCol>
+      <StoryCol weight={1.45}>
+        <StoryPhoto
+          caption={t("iconCaption")}
+          drift={60}
+          label={t("icon")}
+          size={44}
+          src={buildIcon}
+          tilt={1}
+        />
         <StoryText>{t("polish")}</StoryText>
       </StoryCol>
     </StoryChapter>

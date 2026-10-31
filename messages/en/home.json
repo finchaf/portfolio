@@ -56,8 +56,11 @@
       "learn": "I had no experience in mobile development at all. The first semester went on Swift, SwiftUI, Xcode and Apple's guidelines.",
       "quote": "By the end of the semester my own app was on my phone.",
       "polish": "The next semester and the summer went on polish. The app was rewritten from scratch several times: I wanted it perfect.",
-      "screen": "The university picker in the VCourse app",
-      "codeCaption": "4 September 2024, the semester begins"
+      "layers": "The VCourse profile screen in Xcode's view debugger, pulled apart into layers",
+      "layersCaption": "The profile screen in Xcode's view debugger",
+      "update": "A lock screen notification: VCourse updated to version 0.1.0",
+      "icon": "Icon Composer with an icon of two circles on blue",
+      "iconCaption": "The icon in Icon Composer"
     },
     "launch": {
       "mark": "1 September 2025",
@@ -158,7 +161,6 @@
     "photos": {
       "notesNight": "At night: a textbook on the monitor, below it a laptop with notes in LaTeX",
       "notesLecture": "A laptop with topology notes in a lecture, a cap beside it on the desk",
-      "code": "Lecture notes on a laptop during a lecture",
       "eve": "A self-portrait the day before the launch",
       "stage": "A presentation of VCourse on a big screen in front of a hall",
       "cafe": "Two friends in a café",

@@ -637,6 +637,15 @@ test.describe("the home page in motion", () => {
     await expect(grain).toHaveCSS("opacity", "1");
   });
 
+  test("gives the white hairlines of the layers a ground in the light only", async ({ page }) => {
+    await page.goto(HOME);
+    const layers = page.locator(".story-build .story-col-middle .story-image");
+    await page.emulateMedia({ colorScheme: "dark" });
+    await expect(layers).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+    await page.emulateMedia({ colorScheme: "light" });
+    await expect(layers).not.toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+  });
+
   test("lays one print of the notes over the corner of the other", async ({ page }) => {
     await page.goto(HOME);
     const parts = await page
