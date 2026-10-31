@@ -637,6 +637,26 @@ test.describe("the home page in motion", () => {
     await expect(grain).toHaveCSS("opacity", "1");
   });
 
+  test("lays one print of the notes over the corner of the other", async ({ page }) => {
+    await page.goto(HOME);
+    const parts = await page
+      .locator(".story-stack > .story-photo")
+      .evaluateAll((nodes: HTMLElement[]) =>
+        nodes.map((node) => ({
+          left: node.offsetLeft,
+          top: node.offsetTop,
+          right: node.offsetLeft + node.offsetWidth,
+          bottom: node.offsetTop + node.offsetHeight,
+        })),
+      );
+    expect(parts).toHaveLength(2);
+    const [under, over] = parts;
+    expect(over?.left).toBeLessThan(under?.right ?? 0);
+    expect(over?.top).toBeLessThan(under?.bottom ?? 0);
+    expect(over?.right).toBeGreaterThan(under?.right ?? 0);
+    expect(over?.bottom).toBeGreaterThan(under?.bottom ?? 0);
+  });
+
   test("draws the ruler again as the ticks pass the needle", async ({ page }) => {
     await page.goto(HOME);
     const picture = () =>

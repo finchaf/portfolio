@@ -141,6 +141,11 @@ export function StoryPile({ children }: { children: ReactNode }) {
   return <div className="story-pile">{children}</div>;
 }
 
+/** Two prints of one thing, the second lying over the corner of the first. Their drifts part them. */
+export function StoryStack({ children }: { children: ReactNode }) {
+  return <div className="story-stack">{children}</div>;
+}
+
 /** A photograph from the top of the screen to the bottom, which the ribbon slides past. */
 export function StoryBleed({ label, src }: { label: string; src: StaticImageData }) {
   return (

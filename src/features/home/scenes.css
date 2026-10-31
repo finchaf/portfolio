@@ -13,6 +13,12 @@
   /* In the light only: over a dark page a light ink glows. */
   --sheet-shadow: 0 -1.5rem 4rem
     light-dark(color-mix(in srgb, var(--ink) 14%, transparent), transparent);
+  /* One print over another: on a photograph it reads in the dark too. */
+  --stack-shadow: 0 0.75rem 1.75rem
+    light-dark(
+      color-mix(in srgb, var(--ink) 30%, transparent),
+      color-mix(in srgb, var(--paper) 60%, transparent)
+    );
 }
 
 @media (min-width: 64rem) {
@@ -530,7 +536,7 @@
 }
 
 .story-photo {
-  width: min(100%, calc(var(--size) * 1.2rem));
+  width: var(--width, min(100%, calc(var(--size) * 1.2rem)));
   rotate: var(--tilt, 0deg);
 }
 
@@ -586,6 +592,35 @@
   width: 800%;
   max-width: none;
   height: 600%;
+}
+
+/* The second print lies over the first's corner, the first's caption in the room this leaves. */
+.story-stack {
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 40rem);
+  min-width: 0;
+}
+
+.story-stack > :first-child {
+  --width: 66%;
+}
+
+.story-stack > :last-child {
+  --width: 50%;
+  z-index: 1;
+  margin-top: -40%;
+  margin-left: auto;
+}
+
+.story-stack > :last-child .story-print {
+  box-shadow: var(--stack-shadow);
+}
+
+/* Short of the second print, whichever way it lies. */
+.story-stack .story-caption {
+  max-width: 60%;
+  text-wrap: balance;
 }
 
 .story-pile {
@@ -1434,9 +1469,17 @@
       }
 
       .story-photo {
-        width: calc(var(--u) * var(--size));
+        width: var(--width, calc(var(--u) * var(--size)));
         rotate: none;
         will-change: transform;
+      }
+
+      /* The pair takes the height it is given, and leaves its neighbours the width they need. */
+      .story-stack {
+        flex: none;
+        justify-content: center;
+        width: min(calc((100svh - var(--pad-top) - var(--pad-bottom)) * 1.02), calc(var(--u) * 48));
+        height: 100%;
       }
 
       .story-menus {
@@ -1582,6 +1625,15 @@
 
       .story-branch-text {
         font-size: max(0.8125rem, var(--u));
+      }
+
+      .story-stack .story-caption {
+        max-width: 56%;
+      }
+
+      /* Four lines on any screen: this line stands beside the pair of prints, level with the second. */
+      .story-university .story-quote {
+        max-width: 10em;
       }
 
       .story-rent {

@@ -5,11 +5,11 @@ import code from "./photos/code.webp";
 import eve from "./photos/eve.webp";
 import firstRoom from "./photos/first-room.webp";
 import firstScreen from "./photos/first-screen.webp";
-import forest from "./photos/forest.webp";
 import hall from "./photos/hall.webp";
-import lift from "./photos/lift.webp";
 import mirror from "./photos/mirror.webp";
 import msu from "./photos/msu.webp";
+import notesLecture from "./photos/notes-lecture.webp";
+import notesNight from "./photos/notes-night.webp";
 import comments from "./photos/omsk-comments.webp";
 import plane from "./photos/plane.webp";
 import room from "./photos/room.webp";
@@ -27,6 +27,7 @@ import {
   StoryPhoto,
   StoryPile,
   StoryQuote,
+  StoryStack,
   StoryText,
 } from "./story-parts";
 import { StoryScene } from "./story-scene";
@@ -84,11 +85,17 @@ function University() {
         <StoryText>{t("choice")}</StoryText>
         <StoryText>{t("roles")}</StoryText>
       </StoryCol>
-      <StoryCol at="middle" weight={1.15}>
-        <StoryPhoto label={photos("forest")} size={32} src={forest} tilt={1.5} />
-      </StoryCol>
-      <StoryCol at="bottom" weight={1.1}>
-        <StoryPhoto drift={90} label={photos("lift")} size={24} src={lift} tilt={-2} />
+      <StoryStack>
+        <StoryPhoto
+          caption={t("notesCaption")}
+          drift={-30}
+          label={photos("notesNight")}
+          src={notesNight}
+          tilt={-1}
+        />
+        <StoryPhoto drift={70} label={photos("notesLecture")} src={notesLecture} tilt={2} />
+      </StoryStack>
+      <StoryCol at="bottom" weight={1}>
         <StoryQuote depth={60}>{t("quote")}</StoryQuote>
         <StoryText>{t("idea")}</StoryText>
       </StoryCol>

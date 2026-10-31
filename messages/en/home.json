@@ -45,7 +45,8 @@
       "choice": "I wanted to study product design, but a teacher talked me out of it: get your maths up first. So I ended up at Omsk State University, in applied mathematics and computer science.",
       "roles": "I always had top marks in programming, and in group projects I always ended up as the designer.",
       "quote": "It's a pain to check my own class schedule.",
-      "idea": "Some universities had apps for that. From 2023 Maxim, a classmate of mine, and I kept talking about building one for ours, and kept putting it off: the idea felt too big."
+      "idea": "Some universities had apps for that. From 2023 Maxim, a classmate of mine, and I kept talking about building one for ours, and kept putting it off: the idea felt too big.",
+      "notesCaption": "Lecture notes in LaTeX, autumn 2024"
     },
     "build": {
       "mark": "2024",
@@ -155,8 +156,8 @@
       }
     },
     "photos": {
-      "forest": "Two friends in a forest, one waving",
-      "lift": "A big group taking a selfie in a lift",
+      "notesNight": "At night: a textbook on the monitor, below it a laptop with notes in LaTeX",
+      "notesLecture": "A laptop with topology notes in a lecture, a cap beside it on the desk",
       "code": "Lecture notes on a laptop during a lecture",
       "eve": "A self-portrait the day before the launch",
       "stage": "A presentation of VCourse on a big screen in front of a hall",

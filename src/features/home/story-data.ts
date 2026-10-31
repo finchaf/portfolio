@@ -79,7 +79,7 @@ export const BRANCH_RISE = 0.13;
 export const SPANS = {
   open: 1.4,
   omsk: 1.35,
-  university: 1.05,
+  university: 1.2,
   build: 1.1,
   launch: 1.45,
   fork: 1,
