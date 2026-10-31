@@ -158,6 +158,31 @@ test.describe("the home page in motion", () => {
     }
   });
 
+  test("shows the source of the capsule and the switch, and hatches the name exactly", async ({
+    page,
+  }) => {
+    await page.goto(HOME);
+    await expect(page.locator("html")).not.toHaveAttribute("data-intro");
+    await expect(page.locator(".capsule-source")).toContainText("PAGE_PATHS.map");
+    await expect(page.locator(".capsule-code [data-measure]").first()).toHaveAttribute(
+      "data-size",
+      /\d+ × \d+/,
+    );
+    await expect(page.locator(".hero-switch-source")).toContainText("<Segmented");
+    const offset = await page
+      .locator(".hero-outline > span")
+      .first()
+      .evaluate((word) => {
+        const hatch = word.querySelector(".hero-hatch");
+        if (!hatch) return Infinity;
+        const middle = (box: DOMRect) => box.top + box.height / 2;
+        return Math.abs(
+          middle(hatch.getBoundingClientRect()) - middle(word.getBoundingClientRect()),
+        );
+      });
+    expect(offset).toBeLessThan(1);
+  });
+
   test("keeps the status, the capsule and the switch in one row, on the content's edge", async ({
     page,
   }) => {
