@@ -1,6 +1,5 @@
 {
   "siteName": "Danil Zablotsky",
-  "role": "design engineer",
   "skipToContent": "Skip to content",
   "navigation": "Site sections",
   "language": {
@@ -22,5 +21,26 @@
     "dark": "Dark"
   },
   "write": "Write to me",
-  "settings": "Theme and language"
+  "footer": {
+    "status": "Open to a conversation",
+    "city": "Moscow",
+    "reply": "Telegram is the fastest way to reach me.",
+    "sections": "Sections",
+    "contact": "Get in touch",
+    "settings": "Settings",
+    "telegram": "Telegram",
+    "github": "GitHub",
+    "source": "Site source",
+    "theme": "Theme",
+    "language": "Language",
+    "updated": "Updated {date}",
+    "top": "Back to top",
+    "copyright": "© 2026 Danil Zablotsky",
+    "colophon": {
+      "home": "Chaffinch colours, Geologica and Golos Text",
+      "pora": "Colours and Geist from the product's design system",
+      "flow": "Obsidian colours, Inter",
+      "projects": "Catppuccin colours, Nunito and JetBrains Mono"
+    }
+  }
 }

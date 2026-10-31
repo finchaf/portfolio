@@ -20,7 +20,8 @@
   --danger: light-dark(#d20f39, #f38ba8); /* Red */
 }
 
-:root:has([data-world="projects"]) {
+:root:has([data-world="projects"]),
+[data-tint="projects"][data-tint-fonts] {
   --sans: "Nunito Variable", ui-sans-serif, system-ui, sans-serif;
   --display: "Nunito Variable", ui-sans-serif, system-ui, sans-serif;
   --mono: "JetBrains Mono Variable", ui-monospace, "SF Mono", Menlo, monospace;

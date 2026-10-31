@@ -19,7 +19,8 @@
   --danger: light-dark(#dc2626, #f87171);
 }
 
-:root:has([data-world="pora"]) {
+:root:has([data-world="pora"]),
+[data-tint="pora"][data-tint-fonts] {
   --sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
   --display: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
   --mono: "Geist Mono Variable", ui-monospace, "SF Mono", Menlo, monospace;

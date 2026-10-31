@@ -14,8 +14,3 @@ ScrollTrigger.config({ ignoreMobileResize: true });
 export const MOTION_ALLOWED = "(prefers-reduced-motion: no-preference)";
 
 export { gsap, ScrollTrigger, useGSAP };
-
-/** The height of the sticky header, where scenes stop. */
-export function headerHeight(): number {
-  return document.querySelector("header")?.offsetHeight ?? 0;
-}

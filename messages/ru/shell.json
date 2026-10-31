@@ -1,6 +1,5 @@
 {
   "siteName": "Данил Заблоцкий",
-  "role": "дизайн-инженер",
   "skipToContent": "К содержанию",
   "navigation": "Разделы сайта",
   "language": {
@@ -22,5 +21,26 @@
     "dark": "Тёмная"
   },
   "write": "Написать",
-  "settings": "Тема и язык"
+  "footer": {
+    "status": "Открыт к разговору",
+    "city": "Москва",
+    "reply": "Быстрее всего ответ придёт в Telegram.",
+    "sections": "Разделы",
+    "contact": "Связаться",
+    "settings": "Настройки",
+    "telegram": "Telegram",
+    "github": "GitHub",
+    "source": "Код сайта",
+    "theme": "Тема",
+    "language": "Язык",
+    "updated": "Обновлено {date}",
+    "top": "Наверх",
+    "copyright": "© 2026 Данил Заблоцкий",
+    "colophon": {
+      "home": "Цвета зяблика, шрифты Geologica и Golos Text",
+      "pora": "Цвета и шрифт Geist из дизайн-системы продукта",
+      "flow": "Цвета Obsidian, шрифт Inter",
+      "projects": "Цвета Catppuccin, шрифты Nunito и JetBrains Mono"
+    }
+  }
 }

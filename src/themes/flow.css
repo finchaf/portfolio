@@ -20,7 +20,8 @@
   --danger: light-dark(#e93147, #fb464c);
 }
 
-:root:has([data-world="flow"]) {
+:root:has([data-world="flow"]),
+[data-tint="flow"][data-tint-fonts] {
   --sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
   --display: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
   --mono:

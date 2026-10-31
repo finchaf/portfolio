@@ -16,7 +16,11 @@ export function World({
 }) {
   return (
     <div
-      className={bleed ? undefined : "flex flex-col gap-3 p-4 pb-(--dock) lg:p-8"}
+      className={
+        bleed
+          ? undefined
+          : "flex flex-col gap-3 px-4 pt-[calc(var(--header)+1rem)] pb-[calc(var(--dock)+1rem)] lg:px-8"
+      }
       data-world={name}
     >
       {children}

@@ -1,0 +1,56 @@
+/*
+ * A dot in place of the system's arrow, for a mouse or a trackpad alone. Its filter turns what lies
+ * under it from light to dark and keeps the hue, so it needs no colour of its own and fits any
+ * theme. The hairline is what keeps it on the screen where the filter draws nothing: a mid tone,
+ * which inverts into itself, or a browser without it, where the arrow is already gone.
+ * `data-pointer` appears with the first move of a pointer: until then the arrow stays.
+ */
+.dot-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.dot-cursor > i {
+  position: absolute;
+  top: -0.4375rem;
+  left: -0.4375rem;
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 50%;
+  opacity: 0;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 60%, transparent);
+  backdrop-filter: invert(1) hue-rotate(180deg);
+}
+
+:root[data-pointer] .dot-cursor > i {
+  opacity: 1;
+}
+
+:root[data-pointer],
+:root[data-pointer] * {
+  cursor: none;
+}
+
+.dot-cursor[data-over] > i {
+  scale: 2.8;
+}
+
+.dot-cursor[data-pressed] > i {
+  scale: 0.7;
+}
+
+.dot-cursor[data-over][data-pressed] > i {
+  scale: 2.2;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dot-cursor > i {
+    transition:
+      opacity var(--duration-quick) var(--ease-out),
+      scale var(--duration-base) var(--ease-out);
+  }
+}

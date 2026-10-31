@@ -1,0 +1,110 @@
+/*
+ * The capsule. At the top of a page its items lie on the page; once the page moves, its surface
+ * closes in around them and they draw together. Without a script the surface is simply there.
+ */
+.capsule-link {
+  display: grid;
+  place-items: center;
+  height: 2rem;
+  padding-inline: 0.625rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Inside: the row scrolls on a tight screen, and would cut a ring around the link. */
+.capsule-link:focus-visible {
+  outline-offset: -2px;
+}
+
+.capsule-items,
+.capsule-list,
+.capsule-code {
+  display: flex;
+  align-items: center;
+  gap: var(--capsule-gap);
+}
+
+.capsule-code > ul {
+  display: flex;
+  gap: var(--capsule-gap);
+}
+
+[data-capsule] {
+  --capsule-gap: 0.125rem;
+}
+
+.capsule-items {
+  position: relative;
+  min-width: 0;
+}
+
+:root[data-js]:not([data-scrolled]) .capsule-surface {
+  opacity: 0;
+  scale: 1.1 1.5;
+}
+
+@media (min-width: 64rem) {
+  .capsule-link {
+    padding-inline: 0.75rem;
+  }
+
+  :root[data-js]:not([data-scrolled]) [data-capsule] {
+    --capsule-gap: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .capsule-surface {
+    transition:
+      opacity var(--duration-slow) var(--ease-out),
+      scale var(--duration-slow) var(--ease-out);
+  }
+
+  .capsule-items,
+  .capsule-list,
+  .capsule-code,
+  .capsule-code > ul {
+    transition: gap var(--duration-slow) var(--ease-out);
+  }
+}
+
+/*
+ * Over the first screen the lens reaches the capsule too: it cuts the items out and shows their
+ * code view in the same circle. A key's focus always gets the real control back.
+ */
+.capsule-code {
+  display: none;
+}
+
+[data-capsule][data-lens] .capsule-items {
+  mask-image: radial-gradient(
+    circle var(--lens-r, 0) at var(--lens-x, 0) var(--lens-y, 0),
+    transparent 99.5%,
+    var(--ink) 100%
+  );
+}
+
+[data-capsule][data-lens] .capsule-code {
+  color-scheme: dark;
+  position: absolute;
+  inset: 0.25rem;
+  display: flex;
+  overflow: hidden;
+  border-radius: 999px;
+  clip-path: circle(var(--lens-r, 0) at var(--lens-x, 0) var(--lens-y, 0));
+  pointer-events: none;
+}
+
+:root[data-scrolled] [data-capsule][data-lens] .capsule-code {
+  background: var(--page);
+}
+
+[data-capsule]:has(:focus-visible) .capsule-items {
+  mask-image: none;
+}
+
+[data-capsule][data-lens]:has(:focus-visible) .capsule-code {
+  display: none;
+}

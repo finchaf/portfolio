@@ -1,86 +1,117 @@
-import Link from "next/link";
+import "./capsule.css";
+
 import { useLocale, useTranslations } from "next-intl";
 
-import { LOCALES } from "@/i18n/locales";
 import { localizedPath } from "@/i18n/localized-path";
 import { PAGE_PATHS, PAGES } from "@/lib/pages";
 import { TELEGRAM_URL } from "@/lib/site";
-import { ButtonLink } from "@/ui/button-link";
-import { Logo } from "@/ui/logo";
+import { CodeFace } from "@/ui/code-face";
+import { Logo, Wordmark } from "@/ui/logo";
 
-import { LanguageLink } from "./language-link";
 import { NavLink } from "./nav-link";
-import { ThemeSwitcher } from "./theme-switcher";
 
 /**
- * One header for every page. On a wide screen the three groups sit in a row; on a phone the sections
- * become a bar at the bottom, in reach of a thumb, and the settings fold into a popover, which is
- * declarative and needs no script. The blur sits on a pseudo-element: on the header itself it would
- * trap the fixed bar inside.
+ * Both forms of the logo: the full word, and the sign where the word does not fit. The widths are
+ * spelled out: a drawing has none of its own to hold a link open in a tight row.
+ */
+function Mark() {
+  return (
+    <>
+      <Wordmark className="h-[15px] w-[71px] max-[26rem]:hidden" />
+      <Logo className="h-[15px] w-6 min-[26rem]:hidden" />
+    </>
+  );
+}
+
+const WRITE = "grid size-8 place-items-center rounded-full text-sm font-medium whitespace-nowrap";
+const WRITE_WIDE = "lg:block lg:size-auto lg:px-3.5 lg:py-1.5";
+
+/**
+ * One capsule for every page: the sections and the way to write. It floats over the page, at the
+ * top of a wide screen and at the bottom of a phone, in reach of a thumb. At the top of a page it
+ * has no surface, and `capsule.css` closes one around it when the page moves. `data-capsule` lets a
+ * scene of the home page lend it the theme it is showing, and the lens reach it. The name of the
+ * home page is the logo.
  */
 export function Header() {
   const t = useTranslations();
   const locale = useLocale();
-  const other = LOCALES.find((each) => each !== locale) ?? locale;
   return (
-    <header className="sticky top-0 z-30 flex h-(--header) items-center justify-between gap-3 px-4 before:absolute before:inset-0 before:-z-10 before:bg-page/85 before:backdrop-blur-md lg:grid lg:grid-cols-[1fr_auto_1fr] lg:px-8">
-      <Link className="flex min-w-0 items-center gap-2.5" href={localizedPath(locale, "")}>
-        <Logo className="h-[22px] w-auto shrink-0" />
-        <span className="flex items-baseline gap-2 whitespace-nowrap" data-brand-text>
-          <span
-            className="font-display text-[17px] leading-none font-extrabold tracking-[-0.035em]"
-            data-brand-name
+    <header
+      className="fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom))] left-1/2 z-30 flex max-w-[calc(100vw-1rem)] -translate-x-1/2 items-center p-1 text-ink transition-colors duration-(--duration-slow) lg:top-3.5 lg:bottom-auto"
+      data-capsule
+    >
+      <i
+        aria-hidden
+        className="capsule-surface absolute inset-0 rounded-full bg-surface shadow-md ring-1 ring-line"
+      />
+      <div className="capsule-items" data-capsule-items>
+        <nav
+          aria-label={t("shell.navigation")}
+          className="min-w-0 [scrollbar-width:none] overflow-x-auto"
+        >
+          <ul className="capsule-list">
+            {PAGE_PATHS.map((path) => (
+              <li key={path}>
+                <NavLink
+                  href={localizedPath(locale, path)}
+                  label={path === "" ? t("home.title") : undefined}
+                  world={PAGES[path]}
+                >
+                  {path === "" ? <Mark /> : t(`${PAGES[path]}.title`)}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <a
+          aria-label={t("shell.write")}
+          className={`${WRITE} ${WRITE_WIDE} shrink-0 bg-accent-strong text-on-accent transition-transform duration-(--duration-quick) ease-out hover:-translate-y-px active:translate-y-0`}
+          href={TELEGRAM_URL}
+        >
+          <span className="max-lg:sr-only">{t("shell.write")}</span>
+          <svg
+            aria-hidden
+            className="size-[18px] lg:hidden"
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="1.6"
+            viewBox="0 0 20 20"
           >
-            {t("shell.siteName")}
-          </span>
-          <span className="text-sm text-muted max-xl:hidden">{t("shell.role")}</span>
-        </span>
-      </Link>
+            <path d="M17 3 2.8 8.6c-.6.2-.6 1.1 0 1.3l4.7 1.6 1.7 4.7c.2.6 1 .6 1.3 0L17 3ZM7.5 11.5 17 3" />
+          </svg>
+        </a>
+      </div>
 
-      <nav
-        aria-label={t("shell.navigation")}
-        className="fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom))] left-1/2 z-30 max-w-[calc(100vw-1.5rem)] -translate-x-1/2 [scrollbar-width:none] overflow-x-auto rounded-full bg-surface p-1 shadow-lg ring-1 ring-line lg:static lg:translate-x-0 lg:shadow-none lg:ring-0"
-      >
-        <ul className="flex gap-0.5">
+      <div aria-hidden className="capsule-code" data-capsule-code data-tint="home">
+        <ul>
           {PAGE_PATHS.map((path) => (
             <li key={path}>
-              <NavLink href={localizedPath(locale, path)}>{t(`${PAGES[path]}.title`)}</NavLink>
+              <CodeFace
+                className="rounded-full"
+                shape={
+                  <span className="capsule-link">
+                    {path === "" ? <Mark /> : t(`${PAGES[path]}.title`)}
+                  </span>
+                }
+              >
+                {path === "" ? <Wordmark className="h-2.5 w-[47px]" /> : t(`${PAGES[path]}.title`)}
+              </CodeFace>
             </li>
           ))}
         </ul>
-      </nav>
-
-      <div className="flex items-center justify-end gap-2 lg:gap-4">
-        <button
-          aria-label={t("shell.settings")}
-          className="grid size-9 place-items-center rounded-full bg-surface text-ink lg:hidden"
-          popoverTarget="settings"
-          type="button"
+        <CodeFace
+          className="shrink-0 rounded-full"
+          shape={
+            <span className={`${WRITE} ${WRITE_WIDE}`}>
+              <span className="max-lg:hidden">{t("shell.write")}</span>
+            </span>
+          }
         >
-          <svg aria-hidden className="size-5" fill="currentColor" viewBox="0 0 20 20">
-            <circle cx="4" cy="10" r="1.6" />
-            <circle cx="10" cy="10" r="1.6" />
-            <circle cx="16" cy="10" r="1.6" />
-          </svg>
-        </button>
-        <div
-          className="fixed inset-auto top-[calc(var(--header)+0.25rem)] right-3 m-0 flex-col items-end gap-3 rounded-2xl border-0 bg-surface p-3 text-ink shadow-lg ring-1 ring-line open:flex lg:static lg:flex lg:flex-row lg:items-center lg:gap-4 lg:bg-transparent lg:p-0 lg:shadow-none lg:ring-0"
-          id="settings"
-          popover="auto"
-        >
-          <ThemeSwitcher
-            labels={{
-              label: t("shell.theme.label"),
-              system: t("shell.theme.system"),
-              light: t("shell.theme.light"),
-              dark: t("shell.theme.dark"),
-            }}
-          />
-          <LanguageLink label={t(`shell.language.${other}`)} locale={other} />
-        </div>
-        <ButtonLink href={TELEGRAM_URL} size="small">
-          {t("shell.write")}
-        </ButtonLink>
+          <span className="max-lg:hidden">{t("shell.write")}</span>
+        </CodeFace>
       </div>
     </header>
   );

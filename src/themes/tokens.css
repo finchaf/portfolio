@@ -11,8 +11,9 @@
  * `accent-strong`, on `page`, with `on-accent` on it: some brand colours are too pale for text.
  * On `raised`, text is `ink`; `muted` is promised only on `page` and `surface`.
  *
- * `data-tint` gives a piece of a page the colours of a theme, without its fonts. It also re-reads
- * the pairs against that element's own `color-scheme`, which a browser may otherwise settle on :root.
+ * `data-tint` gives a piece of a page the colours of a theme; `data-tint-fonts` beside it adds the
+ * typefaces. It also re-reads the pairs against that element's own `color-scheme`, which a browser
+ * may otherwise settle on :root.
  */
 @theme inline {
   /* Only these colours exist: a Tailwind palette class does not compile. */
@@ -47,14 +48,15 @@
   color-scheme: dark;
 }
 
+/* What a screen must leave free for the capsule: at the bottom of a phone, at the top of a wide screen. */
 :root {
-  --header: 3.5rem;
-  /* The bar of sections at the bottom of a phone: what a screen must leave free above it. */
+  --header: 0.75rem;
   --dock: 5rem;
 }
 
 @media (min-width: 64rem) {
   :root {
+    --header: 4.5rem;
     --dock: 0rem;
   }
 }
@@ -74,6 +76,29 @@ body {
   color: var(--ink);
   /* Keeps wide scenes from widening the page; unlike `hidden`, it leaves `sticky` working. */
   overflow-x: clip;
+}
+
+[data-colophon] {
+  display: none;
+}
+
+:root:has([data-world="home"]) [data-colophon="home"],
+:root:has([data-world="pora"]) [data-colophon="pora"],
+:root:has([data-world="flow"]) [data-colophon="flow"],
+:root:has([data-world="projects"]) [data-colophon="projects"] {
+  display: inline;
+}
+
+/* A scene of the home page lends the capsule the page it is showing. */
+:root[data-scene] [data-capsule] [aria-current="page"] {
+  background: transparent;
+}
+
+:root[data-scene="pora"] [data-capsule] [data-nav="pora"],
+:root[data-scene="flow"] [data-capsule] [data-nav="flow"],
+:root[data-scene="projects"] [data-capsule] [data-nav="projects"] {
+  background: var(--page);
+  color: var(--ink);
 }
 
 ::selection {

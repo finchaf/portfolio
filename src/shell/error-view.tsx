@@ -14,7 +14,7 @@ export function ErrorView({ retry }: { retry: () => void }) {
   const { locale } = useParams<{ locale: string }>();
   const { error } = CATALOG[isLocale(locale) ? locale : DEFAULT_LOCALE].shell;
   return (
-    <div className="flex flex-col items-start gap-3 p-4 pb-(--dock) lg:p-8">
+    <div className="flex flex-col items-start gap-3 px-4 pt-[calc(var(--header)+1rem)] pb-[calc(var(--dock)+1rem)] lg:px-8">
       <PageTitle>{error.title}</PageTitle>
       <button className="underline underline-offset-4" onClick={retry} type="button">
         {error.retry}

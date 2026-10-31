@@ -21,6 +21,9 @@ export const EASE = {
   inOut: "cubic-bezier(0.65, 0, 0.35, 1)",
 } as const;
 
+/** How far a page scrolls, in pixels, before it has left its top. */
+export const PAGE_MOVED = 8;
+
 /** How scenes on the scroll follow it. */
 export const SCENE = {
   /** The curve of a move between two rests of a scene. */

@@ -1,0 +1,26 @@
+/* A control as an inspector sees it: hatching over its padding, a frame around its content. */
+.code-face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: inherit;
+  background: repeating-linear-gradient(
+    -45deg,
+    color-mix(in srgb, var(--accent) 55%, transparent) 0 1px,
+    transparent 1px 5px
+  );
+  outline: 1px solid var(--accent);
+  outline-offset: -1px;
+  color: var(--ink);
+  font: 500 0.75rem/1 var(--mono);
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.code-face > span {
+  display: block;
+  padding: 1px 2px;
+  background: var(--page);
+  outline: 1px solid color-mix(in srgb, var(--accent) 60%, transparent);
+}

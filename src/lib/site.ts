@@ -20,3 +20,12 @@ export const GITHUB_URL = "https://github.com/zibliclub";
 
 /** This site's code: it is part of the portfolio. */
 export const REPOSITORY_URL = "https://github.com/zibliclub/portfolio";
+
+/** The sources of the thesis, a project of its own. */
+export const THESIS_URL = "https://github.com/zibliclub/bachelor-thesis";
+
+/** The commit a build comes from, for the footer: next.config.ts reads it from git. */
+export const SITE_COMMIT = process.env.NEXT_PUBLIC_SITE_COMMIT ?? "";
+
+/** The day of that commit, as YYYY-MM-DD. */
+export const SITE_UPDATED = process.env.NEXT_PUBLIC_SITE_UPDATED ?? "";
