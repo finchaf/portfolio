@@ -941,6 +941,11 @@
   }
 
   :root[data-js] {
+    /* The works rise over one screen after the story: a phone's column has to leave it to them. */
+    .story {
+      padding-bottom: 100svh;
+    }
+
     /* Held on the screen, so a phone's long column keeps one small layer. */
     .story-paper {
       position: sticky;
@@ -1035,6 +1040,7 @@
     @media (min-width: 64rem) {
       /* --u follows the smaller side of the screen: a chapter fits a laptop as it fits a monitor. */
       .story {
+        padding-bottom: 0;
         --u: min(1vw, 1.7svh);
         --ruler: 5.75rem;
         /* Columns keep their tops and bottoms, a little in from the capsule and the ruler. */

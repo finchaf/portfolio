@@ -8,6 +8,8 @@ import { SCENE } from "@/motion/tokens";
 /** The corners of a sheet rising over the page, and how far what it covers sinks. */
 const SHEET = { radius: "2rem", sunk: 0.93, dimmed: 0.55 };
 
+const WIDE_SCREEN = "(min-width: 64rem)";
+
 /** How much of the move between two stops the old stop takes to leave. */
 const LEAVING = 0.65;
 
@@ -301,7 +303,9 @@ export function WorkScene({ children }: { children: ReactNode }) {
 
         const poraStage = stage(pora);
         const flowStage = stage(flow);
-        if (poraStage) rise(pora, poraStage, under);
+        // On a phone the story is a long column: sinking it would throw its end far up the page.
+        const sinking = window.matchMedia(WIDE_SCREEN).matches ? under : null;
+        if (poraStage) rise(pora, poraStage, sinking);
         if (flowStage) rise(flow, flowStage, poraStage);
         rise(after, after, stage(projects));
         return () => {
