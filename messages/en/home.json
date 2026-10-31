@@ -23,38 +23,112 @@
   },
   "story": {
     "title": "How I got here",
+    "lead": "From a menu for a game to a product of my own: eight chapters on how I became a design engineer.",
     "hint": "Keep scrolling",
-    "steps": {
-      "university": {
-        "date": "2022",
-        "title": "Applied mathematics",
-        "text": "I enter Omsk State University and learn to think in systems."
+    "omsk": {
+      "mark": "School",
+      "date": "Omsk",
+      "title": "It started with a menu for a game",
+      "school": "A maths and physics class. We wrote websites in Notepad, in plain HTML, CSS and JS: they taught us the hard way. From the seventh grade I lived in Photoshop, then found Illustrator, and in the eleventh, Figma.",
+      "game": "In it I built a menu for a game I played all the time and posted it in the game's groups. People asked how to install it. It reached the developers: they offered me work, then opened my file and stopped answering.",
+      "quote": "Over a hundred frames. Not one component.",
+      "after": "I was furious at the time. Now I understand them.",
+      "wall": "100+ frames · 0 components",
+      "photo": "Photo: school, Omsk"
+    },
+    "university": {
+      "mark": "2022",
+      "date": "2022",
+      "title": "Maths first",
+      "choice": "I wanted to study product design, but a teacher talked me out of it: get your maths up first. So I ended up at Omsk State University, in applied mathematics and computer science.",
+      "roles": "I always had top marks in programming, and in group projects I always ended up as the designer.",
+      "quote": "It's a pain to check my own class schedule.",
+      "idea": "Some universities had apps for that. From 2023 Maxim, a classmate of mine, and I kept talking about building one for ours, and kept putting it off: the idea felt too big.",
+      "photo": "Photo: university",
+      "friends": "Photo: Maxim and me"
+    },
+    "build": {
+      "mark": "2024",
+      "date": "September 2024",
+      "title": "VCourse",
+      "start": "In our third year we were given a semester to build a product of our own, and neural networks had just grown up enough. We went for it. I took product design and the front end, Maxim the back end and DevOps.",
+      "learn": "I had no experience in mobile development at all. The first semester went on Swift, SwiftUI, Xcode and Apple's guidelines.",
+      "quote": "By the end of the semester my own app was on my phone.",
+      "polish": "The next semester and the summer went on polish. The app was rewritten from scratch several times: I wanted it perfect.",
+      "screen": "The university picker in the VCourse app",
+      "photo": "Photo: the first version on a phone"
+    },
+    "launch": {
+      "mark": "1 September 2025",
+      "date": "1 September 2025",
+      "title": "Launch",
+      "post": "We agreed with the university on a post in its Telegram channel. The post went out, and we sat refreshing the pages, watching the numbers.",
+      "quote": "I had never felt anything that good.",
+      "rank": "57",
+      "rankLabel": "place among education apps on the Russian App Store, September 2025",
+      "chart": "App Store downloads per day, 1–14 September 2025",
+      "chartSummary": "632 downloads in the first three days, 411 of them on 2 September. Source: App Store Connect.",
+      "next": "Over the next semester came Android and the website, and five more colleges and universities joined.",
+      "site": "The VCourse website in a browser"
+    },
+    "fork": {
+      "mark": "2026",
+      "date": "2026",
+      "title": "The fork",
+      "question": "The app worked, and the question came up: what next? We couldn't keep growing it seriously and earn nothing from it.",
+      "quote": "Ads in the app, or a service for universities.",
+      "answer": "We really didn't want ads. We took the second road: our own service for building timetables, with the apps as a pleasant extra for students and teachers. We started talking to the people who make the timetables and took apart how it's really done.",
+      "photo": "Photo: working on the service"
+    },
+    "night": {
+      "mark": "June 2026",
+      "date": "June 2026",
+      "title": "One night",
+      "letter": "My bachelor's was ending and I was looking at master's programmes in Omsk. One night a newsletter from Central University arrived: a programme in Human Experience Design. Literally what I had wanted to study from the start.",
+      "need": "They asked for a portfolio. I didn't have one.",
+      "quote": "I decided not to sleep until I had built something worth sending.",
+      "logLabel": "git log, 23 June 2026, Omsk time",
+      "log": {
+        "first": {
+          "hash": "66f50fd",
+          "time": "06:56",
+          "subject": "Портфолио: первичная сборка на Next.js"
+        },
+        "assets": {
+          "hash": "3b88940",
+          "time": "09:34",
+          "subject": "assets: add portrait and product screenshots"
+        },
+        "build": {
+          "hash": "fb0936a",
+          "time": "09:34",
+          "subject": "feat: build out the portfolio"
+        }
       },
-      "idea": {
-        "date": "2023",
-        "title": "The first idea",
-        "text": "Students get lost in timetables, and so do I. I start building VCourse."
-      },
-      "contract": {
-        "date": "Spring 2025",
-        "title": "The first contract",
-        "text": "I design a website to order and deliver it under contract."
-      },
-      "platforms": {
-        "date": "September 2025 — February 2026",
-        "title": "Three platforms",
-        "text": "VCourse ships on iOS, then on Android and the web."
-      },
-      "restart": {
-        "date": "2026",
-        "title": "Starting over",
-        "text": "I pitch to investors at the Tramplin tech park, defend a thesis on my own apps and start building Pora na paru."
-      },
-      "now": {
-        "date": "Now",
-        "title": "A product and a team",
-        "text": "I run Pora na paru and design iOS apps in a team."
-      }
+      "wait": "The site went up on Vercel and the application went out. Then a call, and several weeks of silence.",
+      "grant": "And then a letter: the largest grant they give.",
+      "move": "One letter changed the plan: I was moving to Moscow.",
+      "photo": "Photo: moving from Omsk to Moscow"
+    },
+    "moscow": {
+      "mark": "Moscow",
+      "date": "Moscow",
+      "title": "Ten prompts",
+      "job": "I moved at the end of the summer and started work: several iOS app designs a week, plus their ASO. Doing that by hand would have driven me mad.",
+      "agents": "I tried agents in Figma. That took a whole pipeline, and it worked.",
+      "quote": "I got a personal designer, and I became the boss.",
+      "prompts": "I won't claim a complete app, with icons and an App Store page, comes out of one prompt. I will claim it comes out of ten thoughtful, consecutive ones.",
+      "photo": "Photo: Moscow"
+    },
+    "now": {
+      "mark": "Now",
+      "date": "Now",
+      "title": "Still going",
+      "first": "VCourse keeps running: in September 2026 an average of 1,049 people a day used it, and new installs come by word of mouth.",
+      "firstSource": "The app's API log, as of 4 October 2026",
+      "next": "The next version is Pora na paru. I wrote new apps from scratch: the old foundation would have broken within a year. Now I'm building the web client and the timetabling service, and doing my master's.",
+      "quote": "I have plenty of components now.",
+      "portrait": "Portrait of Danil Zablotsky"
     }
   },
   "experience": {
