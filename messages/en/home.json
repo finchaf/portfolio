@@ -34,7 +34,9 @@
       "quote": "Over a hundred frames. Not one component.",
       "after": "I was furious at the time. Now I understand them.",
       "menus": "The Figma file of the game menu: dozens of nearly identical screens",
-      "menuName": "menu"
+      "menuName": "menu",
+      "comments": "The menu's video on YouTube and comments under it, in Russian: “If they really made one like this, it'd be a great update”, “Damn, cool”",
+      "commentsCaption": "The menu's video on YouTube, with the comments under it"
     },
     "university": {
       "mark": "2022",
@@ -140,9 +142,6 @@
       "portrait": "Portrait of Danil Zablotsky"
     },
     "photos": {
-      "newYear": "A New Year photo in the assembly hall, everyone in costume",
-      "pizza": "Two friends with a pizza box",
-      "polaroid": "Friends in a drawn instant photo",
       "forest": "Two friends in a forest, one waving",
       "lift": "A big group taking a selfie in a lift",
       "code": "Lecture notes on a laptop during a lecture",

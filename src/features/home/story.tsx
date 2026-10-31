@@ -11,10 +11,8 @@ import lift from "./photos/lift.webp";
 import me from "./photos/me.webp";
 import mirror from "./photos/mirror.webp";
 import msu from "./photos/msu.webp";
-import newYear from "./photos/new-year.webp";
+import comments from "./photos/omsk-comments.webp";
 import plane from "./photos/plane.webp";
-import pizza from "./photos/pizza.webp";
-import polaroid from "./photos/polaroid.webp";
 import room from "./photos/room.webp";
 import stage from "./photos/stage.webp";
 import sunset from "./photos/sunset.webp";
@@ -53,25 +51,26 @@ function Ruler() {
 
 function Omsk() {
   const t = useTranslations("home.story.omsk");
-  const photos = useTranslations("home.story.photos");
   return (
     <StoryChapter id="omsk">
       <StoryCol weight={1}>
         <StoryHead date={t("date")} title={t("title")} />
         <StoryText>{t("school")}</StoryText>
         <StoryText>{t("game")}</StoryText>
-        <StoryPhoto drift={30} label={photos("polaroid")} size={11} src={polaroid} tilt={-3} />
       </StoryCol>
       <StoryCol at="middle" weight={2}>
         <StoryMenus />
-      </StoryCol>
-      <StoryCol at="bottom" weight={1}>
-        <StoryPile>
-          <StoryPhoto label={photos("newYear")} size={17} src={newYear} tilt={-2} />
-          <StoryPhoto drift={90} label={photos("pizza")} size={12.5} src={pizza} tilt={3} />
-        </StoryPile>
         <StoryQuote>{t("quote")}</StoryQuote>
         <StoryText>{t("after")}</StoryText>
+      </StoryCol>
+      <StoryCol at="middle" weight={1}>
+        <StoryPhoto
+          caption={t("commentsCaption")}
+          drift={30}
+          label={t("comments")}
+          size={30}
+          src={comments}
+        />
       </StoryCol>
     </StoryChapter>
   );
