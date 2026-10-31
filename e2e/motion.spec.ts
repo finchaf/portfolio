@@ -35,7 +35,7 @@ const topOf = (page: Page, selector: string) =>
   page.locator(selector).evaluate((node) => node.getBoundingClientRect().top + window.scrollY);
 
 const HOME = "/ru";
-const CHAPTERS = 8;
+const CHAPTERS = 9;
 const STOPS = 8;
 const PANELS = 6;
 
@@ -49,8 +49,8 @@ test.describe("the home page without JavaScript", () => {
       await expect(chapter).toBeVisible();
     }
     await expect(page.locator(".story-ruler")).toBeHidden();
-    await expect(page.locator(".story-canvas-size")).toBeHidden();
-    await expect(page.locator("[data-figma-zoom]")).toHaveText("5");
+    await expect(page.locator(".story-menu")).toHaveCount(47);
+    await expect(page.locator(".story-photo img").first()).toHaveAttribute("loading", "lazy");
     await expect(page.locator(".stop")).toHaveCount(STOPS);
     for (const stop of await page.locator(".stop").all()) await expect(stop).toBeVisible();
     await expect(page.locator(".flow-panel")).toHaveCount(PANELS);
@@ -331,22 +331,42 @@ test.describe("the home page in motion", () => {
     );
   });
 
-  test("pulls back from one frame of the Figma file to the whole file", async ({ page }) => {
+  test("deals the frames of the file out of one stack, with one picture for all", async ({
+    page,
+  }) => {
+    const pictures: string[] = [];
+    page.on("response", (response) => {
+      if (response.url().includes("menus")) pictures.push(response.url());
+    });
     await page.goto(HOME);
-    const world = page.locator("[data-figma-world]");
-    const zoom = page.locator("[data-figma-zoom]");
-    const width = () => world.evaluate((node) => node.getBoundingClientRect().width);
-    const view = await page.locator("[data-figma-view]").evaluate((node) => node.clientWidth);
-    await expect(zoom).toHaveText("60");
-    expect(await width()).toBeGreaterThan(view * 11);
+    const last = page.locator('[data-menu="47"]');
+    const first = page.locator('[data-menu="1"]');
+    const left = (node: typeof last) => node.evaluate((frame) => frame.getBoundingClientRect().top);
+    expect(Math.abs((await left(last)) - (await left(first)))).toBeLessThan(2);
     const box = await page.locator("#story").evaluate((node) => ({
       top: node.getBoundingClientRect().top + window.scrollY,
       height: node.getBoundingClientRect().height,
     }));
     await jump(page, box.top + box.height - 2 * (await height(page)));
-    await expect(zoom).toHaveText("5");
-    expect(await width()).toBeCloseTo(view, 0);
-    await expect(page.locator(".story-canvas-size")).toHaveCSS("opacity", "0");
+    await expect.poll(async () => (await left(last)) - (await left(first))).toBeGreaterThan(200);
+    expect(new Set(pictures).size).toBe(1);
+  });
+
+  test("asks for the pictures only when the story is near", async ({ page }) => {
+    const photos: string[] = [];
+    page.on("response", (response) => {
+      if (response.url().endsWith(".webp")) photos.push(response.url());
+    });
+    await page.goto(HOME);
+    await page.waitForLoadState("networkidle");
+    // A browser takes what is close on its own; the far end of the ribbon must wait.
+    expect(photos.filter((url) => /sunset|statue|portrait/.test(url))).toEqual([]);
+    const box = await page.locator("#story").evaluate((node) => ({
+      top: node.getBoundingClientRect().top + window.scrollY,
+      height: node.getBoundingClientRect().height,
+    }));
+    await jump(page, box.top + box.height - 2 * (await height(page)));
+    await expect.poll(() => photos.some((url) => url.includes("sunset"))).toBe(true);
   });
 
   test("brings the story's lines in as they arrive, and keeps them", async ({ page }) => {
