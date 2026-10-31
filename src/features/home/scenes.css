@@ -10,7 +10,8 @@
   --row-top: 0.75rem;
   /* Where the content starts on either side, however wide the screen. */
   --edge: max(var(--gutter), calc((100% - var(--content)) / 2 + var(--gutter)));
-  --sheet-shadow: 0 -1.5rem 4rem color-mix(in srgb, var(--ink) 14%, transparent);
+  /* In the light only: over a dark page a light ink glows. */
+  --sheet-shadow: 0 -1.5rem 4rem
 }
 
 @media (min-width: 64rem) {
@@ -980,6 +981,29 @@
   }
 
   :root[data-js] {
+    /*
+     * A stage sinks as the next sheet covers it: its own colour lies behind it, or the page's would
+     * show around it as a frame. Two screens: the last of them is under the sheet to begin with.
+     */
+    .story,
+    .chapter {
+      isolation: isolate;
+    }
+
+    .story::after,
+    .chapter::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: auto 0 0;
+      height: 200svh;
+      background: var(--page);
+    }
+
+    .story::after {
+      background: var(--paper);
+    }
+
     /* The works rise over one screen after the story: a phone's column has to leave it to them. */
     .story {
       padding-bottom: 100svh;

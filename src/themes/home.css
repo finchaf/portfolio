@@ -42,7 +42,9 @@
   --control-thumb: transparent;
   --control-line: var(--accent);
   --control-surface: var(--page);
-  --control-raise: 0 0.75rem 1.25rem -0.75rem color-mix(in srgb, var(--ink) 35%, transparent);
+  /* A shadow in the light only: over a dark page a light ink glows. */
+  --control-raise: 0 0.75rem 1.25rem -0.75rem
+    light-dark(color-mix(in srgb, var(--ink) 35%, transparent), transparent);
   --control-current: transparent;
   --control-current-line: inset 0 -2px 0 var(--accent);
 }

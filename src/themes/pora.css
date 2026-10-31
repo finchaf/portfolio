@@ -35,8 +35,9 @@
   --control-line: transparent;
   --control-surface: var(--surface);
   --control-raise:
-    0 0 0 1px var(--line), 0 4px 6px -1px color-mix(in srgb, var(--ink) 10%, transparent),
-    0 2px 4px -2px color-mix(in srgb, var(--ink) 10%, transparent);
+    0 0 0 1px var(--line),
+    0 4px 6px -1px light-dark(color-mix(in srgb, var(--ink) 10%, transparent), transparent),
+    0 2px 4px -2px light-dark(color-mix(in srgb, var(--ink) 10%, transparent), transparent);
   --control-current: var(--page);
   --control-current-line: 0 0 transparent;
 }
