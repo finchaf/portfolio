@@ -20,7 +20,7 @@ import stage from "./photos/stage.webp";
 import sunset from "./photos/sunset.webp";
 import { StoryCollage } from "./story-collage";
 import { CHAPTERS, RIBBON_BLEEDS, RIBBON_SPANS, SPANS } from "./story-data";
-import { LaunchChart, NightLog } from "./story-figures";
+import { LaunchSheet, NightLog } from "./story-figures";
 import { StoryMenus } from "./story-menus";
 import {
   StoryBleed,
@@ -138,13 +138,7 @@ function Launch() {
         <StoryQuote>{t("quote")}</StoryQuote>
       </StoryCol>
       <StoryCol at="middle" spot weight={1.3}>
-        <p className="story-rank" data-reveal>
-          <span className="story-rank-number font-display" data-lines={28}>
-            {t("rank")}
-          </span>
-          <span className="story-rank-label">{t("rankLabel")}</span>
-        </p>
-        <LaunchChart />
+        <LaunchSheet />
       </StoryCol>
       <StoryCol at="bottom" weight={0.8}>
         <StoryPile>

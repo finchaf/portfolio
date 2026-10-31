@@ -104,6 +104,9 @@ export const SCRAPS = [
   { key: "mountains", left: 0.76, top: 0.32, size: 21, tilt: 2, drift: 50 },
 ] as const;
 
+/** The launch in the store: the first three days and the whole road, from App Store Connect. */
+export const LAUNCH = { impressions: 2800, pageViews: 1287, total: 3428 } as const;
+
 /** How wide each part of the ribbon is, in widths of the screen. */
 export const SPANS = {
   open: 1.3,
