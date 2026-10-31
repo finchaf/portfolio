@@ -8,7 +8,6 @@ import firstScreen from "./photos/first-screen.webp";
 import forest from "./photos/forest.webp";
 import hall from "./photos/hall.webp";
 import lift from "./photos/lift.webp";
-import me from "./photos/me.webp";
 import mirror from "./photos/mirror.webp";
 import msu from "./photos/msu.webp";
 import comments from "./photos/omsk-comments.webp";
@@ -17,14 +16,13 @@ import room from "./photos/room.webp";
 import stage from "./photos/stage.webp";
 import sunset from "./photos/sunset.webp";
 import { StoryCollage } from "./story-collage";
-import { CHAPTERS, RIBBON_BLEEDS, RIBBON_SPANS, SPANS } from "./story-data";
-import { LaunchSheet, NightLog } from "./story-figures";
+import { CHAPTERS, RIBBON_BLEEDS, RIBBON_HOLD, RIBBON_SPANS, SPANS } from "./story-data";
+import { LaunchSheet, NightLog, StoryBranches } from "./story-figures";
 import { StoryMenus } from "./story-menus";
 import {
   StoryBleed,
   StoryChapter,
   StoryCol,
-  StoryCutout,
   StoryHead,
   StoryPhoto,
   StoryPile,
@@ -252,19 +250,13 @@ function Moscow() {
 
 function Now() {
   const t = useTranslations("home.story.now");
-  const photos = useTranslations("home.story.photos");
   return (
-    <StoryChapter id="now">
-      <StoryCol at="middle" weight={1}>
+    <StoryChapter id="now" settles>
+      <StoryCol>
         <StoryHead date={t("date")} title={t("title")} />
-        <StoryText>{t("first")}</StoryText>
-        <p className="story-caption" data-reveal>
-          {t("firstSource")}
-        </p>
-        <StoryText>{t("next")}</StoryText>
         <StoryQuote depth={40}>{t("quote")}</StoryQuote>
       </StoryCol>
-      <StoryCutout label={photos("me")} src={me} />
+      <StoryBranches />
     </StoryChapter>
   );
 }
@@ -281,7 +273,7 @@ export function Story() {
         aria-labelledby="story-title"
         className="story"
         id="story"
-        style={{ "--spans": RIBBON_SPANS, "--bleeds": RIBBON_BLEEDS }}
+        style={{ "--spans": RIBBON_SPANS, "--bleeds": RIBBON_BLEEDS, "--hold": RIBBON_HOLD }}
       >
         <div className="story-stage" data-under>
           <div aria-hidden className="story-paper" data-story-paper />

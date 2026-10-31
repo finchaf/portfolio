@@ -6,6 +6,8 @@ import { driftLines } from "@/motion/drift-lines";
 import { gsap, MOTION_ALLOWED, ScrollTrigger, useGSAP } from "@/motion/gsap";
 import { DURATION, SCENE } from "@/motion/tokens";
 
+import { branchRoutes, type Line } from "./story-branches";
+import { RIBBON_HOLD } from "./story-data";
 import { createRuler } from "./story-ruler";
 
 const WIDE = `${MOTION_ALLOWED} and (min-width: 64rem)`;
@@ -41,8 +43,12 @@ const BLEED_SLIDE = 5.5;
 const PILE_TILT = 2;
 const SCRAP_STAGGER = 0.05;
 
-/** How far right of its place the portrait starts, in percent of its width. */
-const CUTOUT_SLIDE = 30;
+/** The share of a line the pen has drawn when its words start to arrive, and how far they rise, px. */
+const LABEL_ARRIVES = 0.86;
+const LABEL_RISE = 10;
+
+/** The share of the ribbon's hold the pen spends drawing: the rest is for reading. */
+const DRAWING = 0.78;
 
 /** How many screens of the ribbon ahead its pictures are asked for. */
 const AHEAD = 2.5;
@@ -166,14 +172,88 @@ function dealScraps(section: HTMLElement, scrollTrigger: ScrollTrigger.Vars) {
   });
 }
 
-/** The portrait comes in from the right, past the edge that cuts it, as the ribbon brings it. */
-function slideCutout(section: HTMLElement, scrollTrigger: (view: Element) => ScrollTrigger.Vars) {
-  const view = section.querySelector("[data-cutout]");
-  if (!view) return;
+/**
+ * One pen draws every line of the last chapter at one speed: the trunk comes in from the left, and a
+ * line starts when the pen reaches its fork. So nothing fades in, and the lines grow out of each other.
+ */
+function drawBranches(section: HTMLElement, scrollTrigger: ScrollTrigger.Vars) {
+  const graph = section.querySelector<SVGSVGElement>("[data-graph]");
+  if (!graph) return () => undefined;
+  const circle = (name: string) => graph.querySelector(`[data-node="${name}"]`);
+  const label = (name: string) => section.querySelector<HTMLElement>(`[data-branch="${name}"]`);
+
+  let lines: { path: SVGPathElement; length: number; from: number; line: Line }[] = [];
+  let reach = 1;
+  const pen = { done: 0 };
+
+  const show = (node: Element | null, shown: boolean) => {
+    node?.setAttribute("opacity", shown ? "1" : "0");
+  };
+  const draw = () => {
+    const at = pen.done * reach;
+    lines.forEach(({ path, length, from, line }) => {
+      const drawn = gsap.utils.clamp(0, length, at - from);
+      path.style.strokeDashoffset = String(length - drawn);
+      if (line === "trunk") return;
+      const near = gsap.utils.clamp(0, 1, (drawn / length - LABEL_ARRIVES) / (1 - LABEL_ARRIVES));
+      const words = label(line);
+      if (words) {
+        words.style.opacity = String(near);
+        words.style.transform = `translateY(${String((1 - near) * LABEL_RISE)}px)`;
+      }
+      show(circle(`fork-${line}`), drawn > 0);
+      show(circle(`tip-${line}`), drawn >= length);
+    });
+  };
+  const layout = () => {
+    const { routes, forks, tips } = branchRoutes(graph.clientWidth, graph.clientHeight);
+    lines = routes.flatMap(({ line, d, from }) => {
+      const path = graph.querySelector<SVGPathElement>(`[data-line="${line}"]`);
+      if (!path) return [];
+      path.setAttribute("d", d);
+      const length = path.getTotalLength();
+      path.style.strokeDasharray = `${String(length)} ${String(length + 2)}`;
+      return [{ path, length, from, line }];
+    });
+    reach = Math.max(...lines.map(({ from, length }) => from + length));
+    (["first", "masters"] as const).forEach((line) => {
+      circle(`fork-${line}`)?.setAttribute("cx", String(forks[line].x));
+      circle(`fork-${line}`)?.setAttribute("cy", String(forks[line].y));
+      circle(`tip-${line}`)?.setAttribute("cx", String(tips[line].x));
+      circle(`tip-${line}`)?.setAttribute("cy", String(tips[line].y));
+    });
+    draw();
+  };
+
+  layout();
+  ScrollTrigger.addEventListener("refresh", layout);
+  gsap.to(pen, {
+    done: 1,
+    ease: "none",
+    onUpdate: draw,
+    scrollTrigger: { ...scrollTrigger, scrub: follow(), invalidateOnRefresh: true },
+  });
+  return () => {
+    ScrollTrigger.removeEventListener("refresh", layout);
+    gsap.utils.toArray<HTMLElement>("[data-branch]", section).forEach((words) => {
+      words.style.removeProperty("opacity");
+      words.style.removeProperty("transform");
+    });
+  };
+}
+
+/** On a phone the branches are a list, and the line down it follows the reader. */
+function growTrunk(section: HTMLElement) {
+  const list = section.querySelector("[data-branch-list]");
+  if (!list) return;
   gsap.fromTo(
-    view.children,
-    { xPercent: CUTOUT_SLIDE },
-    { xPercent: 0, ease: "none", scrollTrigger: { ...scrollTrigger(view), scrub: true } },
+    list,
+    { "--drawn": 0 },
+    {
+      "--drawn": 1,
+      ease: "none",
+      scrollTrigger: { trigger: list, start: "top 85%", end: "bottom 60%", scrub: true },
+    },
   );
 }
 
@@ -272,14 +352,20 @@ function wakeAhead(section: HTMLElement, track: HTMLElement) {
 }
 
 /** The large lines of the story move line by line, on whichever axis the page goes along. */
-function moveLines(section: HTMLElement, passing: (element: Element) => ScrollTrigger.Vars) {
-  const stops = gsap.utils.toArray<HTMLElement>("[data-lines]", section).map((element) =>
-    driftLines(element.querySelector("[data-reveal]") ?? element, {
+function moveLines(
+  section: HTMLElement,
+  passing: (element: Element) => ScrollTrigger.Vars,
+  settling: (element: Element) => ScrollTrigger.Vars,
+) {
+  const stops = gsap.utils.toArray<HTMLElement>("[data-lines]", section).map((element) => {
+    const settles = element.closest("[data-settle]");
+    return driftLines(element.querySelector("[data-reveal]") ?? element, {
       depth: Number(element.dataset.lines),
       cross: element.hasAttribute("data-lines-cross"),
-      scrollTrigger: passing(element),
-    }),
-  );
+      path: settles ? "arrive" : "through",
+      scrollTrigger: settles ? settling(settles) : passing(element),
+    });
+  });
   const title = section.querySelector("[data-title]");
   if (title) {
     stops.push(
@@ -316,11 +402,14 @@ function revealOnce(element: Element, vars: ScrollTrigger.Vars) {
 /** The page scrolls down and the ribbon goes left, one pixel of ribbon to a fixed share of scroll. */
 function runRibbon(section: HTMLElement, track: HTMLElement, mark: Mark) {
   const distance = () => track.scrollWidth - window.innerWidth;
+  const hold = () => RIBBON_HOLD * window.innerHeight;
+  // The last screen of the section stays behind the works rising over it, and the ribbon stops
+  // a hold before that, for the branches.
+  const ride = () => section.offsetHeight - 2 * window.innerHeight - hold();
   const along = {
     trigger: section,
     start: "top top",
-    // The last screen of the section stays behind the works rising over it.
-    end: () => `+=${String(section.offsetHeight - 2 * window.innerHeight)}`,
+    end: () => `+=${String(ride())}`,
     scrub: follow(),
     invalidateOnRefresh: true,
   };
@@ -371,12 +460,11 @@ function runRibbon(section: HTMLElement, track: HTMLElement, mark: Mark) {
     end: "left 8%",
   }));
   dealScraps(section, { trigger: section, start: "top 58%", end: "top -14%" });
-  slideCutout(section, (view) => ({
-    containerAnimation: move,
-    trigger: view,
-    start: "left right",
-    end: "right right",
-  }));
+  const stopBranches = drawBranches(section, {
+    trigger: section,
+    start: () => `top top-=${String(ride())}`,
+    end: () => `top top-=${String(ride() + hold() * DRAWING)}`,
+  });
   const showShell = clearTheScreen(section, (run) => ({
     containerAnimation: move,
     trigger: run,
@@ -390,15 +478,25 @@ function runRibbon(section: HTMLElement, track: HTMLElement, mark: Mark) {
   }));
   slideBleeds(section, move);
   wakeAhead(section, track);
-  const stopLines = moveLines(section, (element) => ({
-    containerAnimation: move,
-    trigger: element,
-    start: "left right",
-    end: "right left",
-  }));
+  const stopLines = moveLines(
+    section,
+    (element) => ({
+      containerAnimation: move,
+      trigger: element,
+      start: "left right",
+      end: "right left",
+    }),
+    (chapter) => ({
+      containerAnimation: move,
+      trigger: chapter,
+      start: "left right",
+      end: "left left",
+    }),
+  );
   const stopRuler = runRuler(section, () => move.progress() * distance() * RULER_PACE);
 
   return () => {
+    stopBranches();
     stopLines();
     stopRuler();
     showShell();
@@ -426,18 +524,18 @@ function runColumn(section: HTMLElement, mark: Mark) {
   dealMenus(section, (view) => ({ trigger: view, start: "top 85%", end: "top 30%" }));
   const collage = section.querySelector("[data-collage]");
   if (collage) dealScraps(section, { trigger: collage, start: "top 75%", end: "top 25%" });
-  slideCutout(section, (view) => ({ trigger: view, start: "top bottom", end: "top 40%" }));
+  growTrunk(section);
   const showShell = clearTheScreen(section, (run) => ({
     trigger: run,
     start: "top 30%",
     end: "bottom 70%",
   }));
   const resetNumbers = countUp(section, (element) => ({ trigger: element, start: "top 90%" }));
-  const stopLines = moveLines(section, (element) => ({
-    trigger: element,
-    start: "top bottom",
-    end: "bottom top",
-  }));
+  const stopLines = moveLines(
+    section,
+    (element) => ({ trigger: element, start: "top bottom", end: "bottom top" }),
+    (chapter) => ({ trigger: chapter, start: "top bottom", end: "top 55%" }),
+  );
   const stopRuler = runRuler(section, () => along.progress * RULER_TRAVEL);
 
   return () => {

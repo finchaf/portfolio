@@ -9,11 +9,14 @@ type Part = Exclude<keyof typeof SPANS, "open">;
 export function StoryChapter({
   id,
   dark = false,
+  settles = false,
   children,
 }: {
   id: Part;
   /** Wears the theme's dark colours in either mode. */
   dark?: boolean;
+  /** The ribbon stops here, so its moving lines come to rest instead of passing. */
+  settles?: boolean;
   children: ReactNode;
 }) {
   const bleed = id in BLEEDS ? BLEEDS[id as keyof typeof BLEEDS] : 0;
@@ -22,6 +25,7 @@ export function StoryChapter({
       className={`story-chapter story-${id}`}
       data-chapter-of-story
       data-ruler-band={dark ? "" : undefined}
+      data-settle={settles ? "" : undefined}
       data-tint={dark ? "home" : undefined}
       style={{ "--span": SPANS[id], "--bleed": bleed }}
     >
@@ -135,15 +139,6 @@ export function StoryPhoto({
 /** Two prints side by side, on one line at the bottom. */
 export function StoryPile({ children }: { children: ReactNode }) {
   return <div className="story-pile">{children}</div>;
-}
-
-/** The author with the page behind him: on the bottom edge of the screen, cut off by the right one. */
-export function StoryCutout({ label, src }: { label: string; src: StaticImageData }) {
-  return (
-    <figure className="story-cutout" data-cutout>
-      <Image alt={label} className="story-cutout-image" src={src} unoptimized />
-    </figure>
-  );
 }
 
 /** A photograph from the top of the screen to the bottom, which the ribbon slides past. */

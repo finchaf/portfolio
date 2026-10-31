@@ -135,11 +135,24 @@
       "mark": "Now",
       "date": "Now",
       "title": "Still going",
-      "first": "VCourse keeps running: in September 2026 an average of 1,049 people a day used it, and new installs come by word of mouth.",
-      "firstSource": "The app's API log, as of 4 October 2026",
-      "next": "The next version is Pora na paru. I wrote new apps from scratch: the old foundation would have broken within a year. Now I'm building the web client and the timetabling service, and doing my master's.",
       "quote": "I have plenty of components now.",
-      "portrait": "Portrait of Danil Zablotsky"
+      "branches": {
+        "first": {
+          "tag": "vcourse",
+          "name": "VCourse",
+          "text": "Running: 1,049 people a day on average, September 2026"
+        },
+        "masters": {
+          "tag": "masters",
+          "name": "Master's",
+          "text": "Central University, since 2026"
+        },
+        "next": {
+          "tag": "pora-na-paru",
+          "name": "Pora na paru",
+          "text": "The web client and the timetabling service. 2,642 commits across three clients, 2 June to 31 October 2026"
+        }
+      }
     },
     "photos": {
       "forest": "Two friends in a forest, one waving",
@@ -155,7 +168,6 @@
       "sunset": "A red sunset over a street",
       "plane": "A plane's cabin: seat backs and the aisle",
       "msu": "The main building of Moscow State University under a cloudy sky",
-      "me": "Danil Zablotsky in a white shirt",
       "scraps": {
         "child": "Two children by a radiator, a cat beside them",
         "forest": "A curly-haired young man in profile among birches",

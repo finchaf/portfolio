@@ -1,6 +1,6 @@
 import { useLocale, useTranslations } from "next-intl";
 
-import { LAUNCH, LAUNCH_DOWNLOADS } from "./story-data";
+import { BRANCHES, LAUNCH, LAUNCH_DOWNLOADS } from "./story-data";
 
 /** The first three days and the first two weeks, added up from the export. */
 const FIRST_DAYS = LAUNCH_DOWNLOADS.slice(0, 3).reduce((sum, count) => sum + count, 0);
@@ -99,5 +99,45 @@ export function NightLog() {
         ))}
       </ol>
     </figure>
+  );
+}
+
+/**
+ * What goes on from the story. In the HTML a list; on a wide screen the scene draws the lines around
+ * it, and the last line, in the colours of the next chapter, leaves the screen towards it.
+ */
+export function StoryBranches() {
+  const t = useTranslations("home.story.now.branches");
+  return (
+    <div className="story-branches">
+      <svg aria-hidden className="story-graph" data-graph>
+        <path className="story-line" data-line="trunk" />
+        <path className="story-line story-line-lit" data-line="first" />
+        <path className="story-line" data-line="masters" />
+        <g data-tint="pora">
+          <path className="story-line story-line-lit" data-line="next" />
+        </g>
+        <circle className="story-node" data-node="fork-first" r="3.5" />
+        <circle className="story-node" data-node="fork-masters" r="3.5" />
+        <circle className="story-node story-node-lit" data-node="tip-first" r="5" />
+        <circle className="story-node" data-node="tip-masters" r="5" />
+      </svg>
+      <ul className="story-branch-list" data-branch-list>
+        {BRANCHES.map(({ key, label, y, below }) => (
+          <li
+            className={`story-branch ${below ? "story-branch-below" : ""}`}
+            data-branch={key}
+            data-reveal
+            data-tint={key === "next" ? "pora" : undefined}
+            key={key}
+            style={{ "--x": label, "--y": y }}
+          >
+            <code className="story-branch-tag">{t(`${key}.tag`)}</code>
+            <h4 className="story-branch-name font-display">{t(`${key}.name`)}</h4>
+            <p className="story-branch-text">{t(`${key}.text`)}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

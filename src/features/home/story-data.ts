@@ -56,6 +56,25 @@ export const SCRAPS = [
 /** The launch in the store: the first three days and the whole road, from App Store Connect. */
 export const LAUNCH = { impressions: 2800, pageViews: 1287, total: 3428 } as const;
 
+/** How long the ribbon holds at its end while the branches draw, in screens of scroll. */
+export const RIBBON_HOLD = 1.6;
+
+/**
+ * What goes on from the story, in shares of the chapter: where a line leaves the trunk, the level it
+ * settles on, where it stops, and where its words stand. The last one runs off the screen.
+ */
+export const BRANCHES = [
+  { key: "first", fork: 0.3, y: 0.24, end: 0.66, label: 0.676, below: false },
+  { key: "masters", fork: 0.355, y: 0.46, end: 0.56, label: 0.576, below: false },
+  { key: "next", fork: 0.4, y: 0.68, end: 1.02, label: 0.56, below: true },
+] as const;
+
+/** How far above the bottom of the screen the trunk runs, clear of the ruler, in pixels. */
+export const BRANCH_BASELINE = 118;
+
+/** How long a line takes to rise from the trunk to its level, in shares of the chapter's width. */
+export const BRANCH_RISE = 0.13;
+
 /** How wide each part of the ribbon is, in widths of the screen. */
 export const SPANS = {
   open: 1.4,
@@ -67,11 +86,11 @@ export const SPANS = {
   night: 1.05,
   rent: 0.62,
   moscow: 1.4,
-  now: 0.42,
+  now: 1,
 } as const;
 
 /** What full-height photographs add to a chapter, in heights of the screen. */
-export const BLEEDS = { rent: 3 / 4 + 4 / 3 + 3 / 4, now: 0.92 } as const;
+export const BLEEDS = { rent: 3 / 4 + 4 / 3 + 3 / 4 } as const;
 
 /** The chapters in the order of the story. */
 export const CHAPTERS = [

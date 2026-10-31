@@ -586,18 +586,85 @@
   margin-left: 2.5rem;
 }
 
-/* The portrait stands on what is under it, and the right edge of the screen cuts its shoulder. */
-.story-cutout {
-  width: calc(100% + var(--gutter));
-  margin: 0 calc(-1 * var(--gutter)) -3.5rem 0;
-  overflow: hidden;
+/*
+ * What goes on from the story: a list with one line down it, the last part in the next chapter's
+ * colours and running on towards it. A wide screen's scene turns it into lines around the words.
+ */
+.story-graph {
+  display: none;
 }
 
-.story-cutout-image {
-  display: block;
-  width: 126%;
-  max-width: none;
-  height: auto;
+.story-branch-list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding-left: 1.75rem;
+}
+
+.story-branch-list::before {
+  content: "";
+  position: absolute;
+  inset: 0.5rem auto 0 0.3125rem;
+  width: 2px;
+  background: var(--muted);
+  transform: scaleY(var(--drawn, 1));
+  transform-origin: 50% 0;
+}
+
+.story-branch {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.story-branch::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: 0.25rem;
+  left: -1.75rem;
+  width: 0.75rem;
+  height: 0.75rem;
+  border: 2px solid var(--muted);
+  border-radius: 50%;
+  background: var(--page);
+}
+
+.story-branch:first-child::before {
+  border-color: var(--accent);
+}
+
+/* The next chapter's colour, from its dot down and on past the end of the list. */
+.story-branch:last-child::before {
+  border-color: var(--accent);
+}
+
+.story-branch:last-child::after {
+  content: "";
+  position: absolute;
+  inset: 0.5rem auto -3.5rem -1.4375rem;
+  width: 2px;
+  background: var(--accent);
+}
+
+.story-branch-tag {
+  color: var(--accent-strong);
+  font: 400 0.75rem/1.4 var(--mono);
+}
+
+.story-branch-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.story-branch-text {
+  margin-top: 0.125rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.35;
 }
 
 /* A photograph without its frame: to the edges of a phone, from top to bottom of a wide screen. */
@@ -1195,8 +1262,13 @@
         /* Columns keep their tops and bottoms, a little in from the capsule and the ruler. */
         --pad-top: calc(var(--header) + 6.5svh);
         --pad-bottom: calc(var(--ruler) + 3.5svh);
-        /* One pixel of ribbon takes 0.72 of a pixel of scroll, and the works rise over the last screen. */
-        height: calc((var(--spans) - 1) * 72vw + var(--bleeds) * 72svh + 200svh);
+        /*
+         * One pixel of ribbon takes 0.72 of a pixel of scroll, the ribbon then holds for the branches,
+         * and the works rise over the last screen.
+         */
+        height: calc(
+          (var(--spans) - 1) * 72vw + var(--bleeds) * 72svh + (var(--hold) + 2) * 100svh
+        );
       }
 
       .story-stage {
@@ -1412,18 +1484,86 @@
         overflow-clip-margin: calc(var(--u) * 3);
       }
 
-      /* The head stands above the text beside it. The figure's edge is the screen's at the end. */
-      .story-cutout {
-        flex: none;
-        align-self: flex-end;
-        width: calc(var(--bleed) * 100svh);
-        height: 88svh;
-        margin: 0 calc(var(--u) * -3) calc(-1 * var(--pad-bottom)) 0;
+      /* The lines take the whole chapter; the words stand where they end. */
+      .story-now {
+        position: relative;
       }
 
-      .story-cutout-image {
-        width: auto;
+      .story-now .story-col {
+        flex: none;
+        width: calc(var(--u) * 31);
+      }
+
+      .story-now .story-quote {
+        margin-top: calc(var(--u) * 1.4);
+      }
+
+      .story-branches {
+        position: absolute;
+        inset: 0;
+      }
+
+      .story-graph {
+        position: absolute;
+        inset: 0;
+        display: block;
+        width: 100%;
         height: 100%;
+        overflow: visible;
+        pointer-events: none;
+      }
+
+      .story-line {
+        fill: none;
+        stroke: var(--muted);
+        stroke-width: 2;
+      }
+
+      .story-line-lit {
+        stroke: var(--accent);
+      }
+
+      .story-node {
+        fill: var(--paper);
+        stroke: var(--muted);
+        stroke-width: 2;
+      }
+
+      .story-node-lit {
+        stroke: var(--accent);
+      }
+
+      .story-branch-list {
+        position: static;
+        display: block;
+        padding: 0;
+      }
+
+      .story-branch-list::before,
+      .story-branch::before,
+      .story-branch:last-child::after {
+        display: none;
+      }
+
+      /* The pen brings the words: a scrubbed value, which a transition would only trail behind. */
+      .story[data-live] .story-branch[data-reveal] {
+        position: absolute;
+        top: calc(var(--y) * 100% - 1.25rem);
+        left: calc(var(--x) * 100%);
+        max-width: calc(var(--u) * 27);
+        transition: none;
+      }
+
+      .story[data-live] .story-branch-below[data-reveal] {
+        top: calc(var(--y) * 100% + 0.75rem);
+      }
+
+      .story-branch-name {
+        font-size: calc(var(--u) * 2.3);
+      }
+
+      .story-branch-text {
+        font-size: max(0.8125rem, var(--u));
       }
 
       .story-rent {
