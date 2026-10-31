@@ -40,7 +40,10 @@ export function Experience() {
         <div className="grid gap-6 sm:grid-cols-2">
           <div className="flex flex-col gap-1">
             <h3 className="font-display font-semibold">{t("educationTitle")}</h3>
-            <p className="text-muted">{t("education")}</p>
+            <ul className="flex flex-col gap-1 text-muted">
+              <li>{t("educationMasters")}</li>
+              <li>{t("educationBachelors")}</li>
+            </ul>
           </div>
           <div className="flex flex-col gap-1">
             <h3 className="font-display font-semibold">{t("notesTitle")}</h3>

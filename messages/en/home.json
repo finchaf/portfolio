@@ -66,7 +66,7 @@
         "role": "Co-founder and CEO: design, iOS, Android, web"
       },
       "first": {
-        "years": "since 2023",
+        "years": "since 2024",
         "place": "VCourse",
         "role": "Creator: design and client development"
       },
@@ -82,7 +82,8 @@
       }
     },
     "educationTitle": "Education",
-    "education": "Omsk State University, applied mathematics and computer science, 2022–2026",
+    "educationMasters": "Central University, master's in Human Experience Design, since 2026",
+    "educationBachelors": "Omsk State University, applied mathematics and computer science, 2022–2026",
     "notesTitle": "Also",
     "grant": "Student Startup grant, second stage participant, 2026",
     "pitch": "Pitch to investors, Tramplin tech park, April 2026",
@@ -106,7 +107,7 @@
     },
     "pora": {
       "name": "Pora na paru",
-      "label": "My own product · since 2023",
+      "label": "My own product · since 2024",
       "stage": "New version in development",
       "text": "A timetable for universities. I began with VCourse, tested the idea on real users and am building the product again from scratch.",
       "role": "Design, iOS, Android and web: me. Backend: my co-founder.",
