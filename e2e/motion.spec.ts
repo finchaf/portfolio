@@ -361,7 +361,7 @@ test.describe("the home page in motion", () => {
     await page.goto(HOME);
     await page.waitForLoadState("networkidle");
     // A browser takes what is close on its own; the far end of the ribbon must wait.
-    expect(photos.filter((url) => /sunset|statue|portrait/.test(url))).toEqual([]);
+    expect(photos.filter((url) => /sunset|plane|msu/.test(url))).toEqual([]);
     const box = await page.locator("#story").evaluate((node) => ({
       top: node.getBoundingClientRect().top + window.scrollY,
       height: node.getBoundingClientRect().height,
@@ -421,6 +421,37 @@ test.describe("the home page in motion", () => {
       .toBeGreaterThan(50);
     await jump(page, top - screen * 0.3);
     await expect.poll(async () => new Set(await lefts()).size).toBe(1);
+  });
+
+  test("deals the opening's photographs out of one pile", async ({ page }) => {
+    await page.goto(HOME);
+    // Centres, since the photographs differ in width; each also keeps its own depth around the pile.
+    const spread = () =>
+      page.locator("[data-scrap]").evaluateAll((all) => {
+        const centres = all.map((scrap) => {
+          const { left, width } = scrap.getBoundingClientRect();
+          return left + width / 2;
+        });
+        return Math.max(...centres) - Math.min(...centres);
+      });
+    await expect(page.locator("[data-scrap]")).toHaveCount(8);
+    await expect.poll(spread).toBeLessThan(320);
+    await jump(page, await topOf(page, "#story"));
+    await expect.poll(spread).toBeGreaterThan(800);
+  });
+
+  test("ends the story with the portrait standing on the screen's edge", async ({ page }) => {
+    await page.goto(HOME);
+    const box = await page.locator("#story").evaluate((node) => ({
+      top: node.getBoundingClientRect().top + window.scrollY,
+      height: node.getBoundingClientRect().height,
+    }));
+    await jump(page, box.top + box.height - 2 * (await height(page)));
+    const cutout = page.locator(".story-cutout");
+    await expect(cutout).toBeInViewport({ ratio: 0.9 });
+    await expect.poll(async () => (await cutout.boundingBox())?.y ?? 0).toBeGreaterThan(0);
+    const place = await cutout.boundingBox();
+    expect((place?.y ?? 0) + (place?.height ?? 0)).toBeCloseTo(await height(page), -1);
   });
 
   test("keeps lines going opposite ways inside their column", async ({ page }) => {
@@ -651,6 +682,15 @@ test.describe("the home page on a phone", () => {
     const box = await link.boundingBox();
     const drawing = await link.locator("svg:visible").boundingBox();
     expect(box?.width).toBeGreaterThanOrEqual(drawing?.width ?? Infinity);
+  });
+
+  test("shows the end of the story before the works rise over it", async ({ page }) => {
+    await page.goto(HOME);
+    const bottom = await page
+      .locator(".story-cutout")
+      .evaluate((node) => node.getBoundingClientRect().bottom + window.scrollY);
+    const works = await topOf(page, "#work-pora");
+    expect(bottom).toBeLessThanOrEqual(works + 1);
   });
 
   test("keeps the story a column that comes up as it is read", async ({ page }) => {
