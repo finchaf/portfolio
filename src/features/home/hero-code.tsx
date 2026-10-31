@@ -43,6 +43,7 @@ export function HeroCode({ words, status, copy, proof, work, github, labels }: H
             <span key={word}>
               {word}
               {index < words.length - 1 && " "}
+              <span className="hero-hatch code-hatch">{word}</span>
             </span>
           ))}
         </p>

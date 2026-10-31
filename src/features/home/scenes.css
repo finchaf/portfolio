@@ -191,6 +191,23 @@
   paint-order: stroke fill;
 }
 
+/* The hatching lies over the fill as its own layer: on a transparent fill the contours would show. */
+.hero-outline > span {
+  position: relative;
+}
+
+/* Centred, not stretched: a word's box is taller than its line. The padding keeps the tails in. */
+.hero-hatch {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  padding-block: 0.2em;
+  background-clip: text;
+  translate: 0 -50%;
+  color: transparent;
+  -webkit-text-stroke: 0;
+}
+
 .hero-box {
   position: absolute;
   inset: 0;

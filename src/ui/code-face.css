@@ -5,8 +5,9 @@
   white-space: pre-wrap;
 }
 
-/* The hatching of the code layer. */
-.code-face {
+/* The hatching of the code layer, on a control and on the name alike. */
+.code-face,
+.code-hatch {
   background-image: repeating-linear-gradient(
     -45deg,
     color-mix(in srgb, var(--accent) 55%, transparent) 0 1px,
