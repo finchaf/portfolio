@@ -12,7 +12,7 @@
 
 | Страница | Файл | Цвет | Шрифт | Моноширинный |
 | --- | --- | --- | --- | --- |
-| Главная и 404 | `src/themes/home.css` | «Зяблик»: сланец, коралл и олива из расцветки птицы | Geologica, Golos Text | JetBrains Mono |
+| Главная и 404 | `src/themes/home.css` | «Зяблик»: сланец, коралл и олива из расцветки птицы | Geologica, Golos Text, Playfair Display для крупных строк истории | JetBrains Mono |
 | Пора на пару | `src/themes/pora.css` | Токены продукта: zinc и blue | Geist | Geist Mono |
 | Флоу | `src/themes/flow.css` | Стандартная тема Obsidian | Inter | Системный, как в Obsidian |
 | Проекты | `src/themes/projects.css` | Catppuccin: Latte и Mocha | Nunito | JetBrains Mono |
@@ -25,6 +25,8 @@
 - **Catppuccin:** пакет `@catppuccin/palette` 1.8.0, роли — по разделу General Usage его гайда.
 - **Figma:** шрифт новых текстовых слоёв по умолчанию — Inter, это написано в её справке. Какой
   моноширинный считать стандартным, справка не говорит.
+- **Playfair Display:** лицензия OFL-1.1, курсив с кириллицей. Шрифт референса истории кириллицы не имеет, поэтому
+  этот — наш выбор. Токен `--serif` есть только у темы «Зяблик» и в контракт тем не входит: другим темам он не нужен.
 - **Шрифты Catppuccin:** их нет. В гайде шрифты не упоминаются, а `catppuccin.com` использует системный
   стек. Nunito и JetBrains Mono — наш выбор.
 
