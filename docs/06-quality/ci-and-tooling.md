@@ -76,7 +76,7 @@ Chromium 111+, Safari 16.4+, Firefox 128+. Гейты идут в Chromium. Safa
 Conventional Commits, тема до 72 знаков, тело до 100, подпись SSH-ключом. Как код попадает в `main` —
 [ADR-0007](../01-architecture/decisions/0007-process-and-gates.md). Правила `main` требуют подписи, которую подтвердил GitHub. Локальная буква `G` в `git log --format=%G?`
 этого не доказывает: ключ должен быть добавлен в аккаунт именно как ключ подписи, а ключ для входа не
-считается. Проверка — `gh api users/zibliclub/ssh_signing_keys`. Хук включается один раз на клон:
+считается. Проверка — `gh api users/finchaf/ssh_signing_keys`. Хук включается один раз на клон:
 
 ```
 git config core.hooksPath .githooks

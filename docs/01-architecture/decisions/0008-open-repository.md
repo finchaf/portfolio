@@ -60,6 +60,6 @@
 операции по спасению.
 
 **Плохое:** приватные документы коммитятся отдельно. Новый клон требует второго шага:
-`git clone git@github.com:zibliclub/portfolio-private.git docs/private`.
+`git clone git@github.com:finchaf/portfolio-private.git docs/private`.
 
 **Триггер пересмотра:** англоязычные читатели заметно спрашивают про базу — перевести ключевые ADR.

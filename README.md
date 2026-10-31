@@ -1,6 +1,6 @@
 # Portfolio
 
-[![Gates](https://github.com/zibliclub/portfolio/actions/workflows/gates.yml/badge.svg)](https://github.com/zibliclub/portfolio/actions/workflows/gates.yml)
+[![Gates](https://github.com/finchaf/portfolio/actions/workflows/gates.yml/badge.svg)](https://github.com/finchaf/portfolio/actions/workflows/gates.yml)
 
 Personal site of Danil Zablotsky, design engineer. It will live at `finchaf.com`.
 
