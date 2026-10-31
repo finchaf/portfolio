@@ -81,7 +81,7 @@ export const SPANS = {
   omsk: 1.35,
   university: 1.2,
   build: 1.6,
-  launch: 1.45,
+  launch: 1.47,
   fork: 1,
   night: 1.05,
   rent: 0.62,

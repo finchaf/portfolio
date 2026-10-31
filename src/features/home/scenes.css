@@ -744,6 +744,11 @@
   height: auto;
 }
 
+/* A print over the page and the band at once: on the band a shadow is what parts them. */
+.story-launch .story-col:not(.story-spot) .story-print {
+  box-shadow: var(--stack-shadow);
+}
+
 /* The band of the launch: every colour in it reads on the accent. */
 .story-spot {
   --ink: var(--on-accent);
@@ -1655,6 +1660,27 @@
           calc((100svh - var(--pad-top) - var(--pad-bottom)) * 0.72),
           calc(var(--u) * 30)
         );
+      }
+
+      /*
+       * The stage's print lies across the edge of the band: the story goes over into its numbers. Its
+       * column takes the height the others keep, and the band moves its sheet clear of it.
+       */
+      .story-launch .story-col-middle:not(.story-spot) {
+        flex: none;
+        width: min(calc((100svh - var(--pad-top) - var(--pad-bottom)) * 0.75), calc(var(--u) * 34));
+      }
+
+      /* Moved by `left`: the scene's own transforms take over `translate`. */
+      .story-launch .story-col-middle:not(.story-spot) .story-photo {
+        --width: 100%;
+        position: relative;
+        z-index: 1;
+        left: calc(var(--u) * 6);
+      }
+
+      .story-launch .story-spot {
+        padding-left: calc(var(--u) * 9);
       }
 
       /* Four lines on any screen: this line stands beside the pair of prints, level with the second. */

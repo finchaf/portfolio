@@ -637,6 +637,20 @@ test.describe("the home page in motion", () => {
     await expect(grain).toHaveCSS("opacity", "1");
   });
 
+  test("lays the launch's print across the band's edge, clear of its sheet", async ({ page }) => {
+    await page.goto(HOME);
+    const edges = await page.locator(".story-launch").evaluate((chapter) => {
+      const right = (selector: string) => chapter.querySelector(selector)?.getBoundingClientRect();
+      return {
+        print: right(".story-photo")?.right ?? 0,
+        band: right(".story-spot")?.left ?? 0,
+        sheet: right(".story-sheet")?.left ?? 0,
+      };
+    });
+    expect(edges.print - edges.band).toBeGreaterThan(30);
+    expect(edges.print).toBeLessThan(edges.sheet);
+  });
+
   test("gives the white hairlines of the layers a ground in the light only", async ({ page }) => {
     await page.goto(HOME);
     const layers = page.locator(".story-build .story-col-middle .story-image");

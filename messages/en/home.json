@@ -72,9 +72,6 @@
       "rankLabel": "place among education apps on the Russian App Store at launch",
       "chart": "Downloads per day, 1–14 September 2025",
       "chartSummary": "632 downloads in the first three days, 411 of them on 2 September.",
-      "next": "Over the next semester came Android and the website, and five more colleges and universities joined.",
-      "eveCaption": "31 August 2025. The post goes out tomorrow",
-      "stageCaption": "1 September 2025",
       "sheetTitle": "The launch in numbers",
       "sheetDates": "September 2025",
       "funnelTitle": "The first three days, 1–3 September",
@@ -89,7 +86,7 @@
       "mark": "2026",
       "date": "2026",
       "title": "The fork",
-      "question": "The app worked, and the question came up: what next? We couldn't keep growing it seriously and earn nothing from it.",
+      "question": "In the semester after the launch came Android and the website, and five more colleges and universities joined. It all worked, and the question came up: what next? We couldn't keep growing it seriously and earn nothing from it.",
       "quote": "Ads in the app, or a service for universities.",
       "answer": "We really didn't want ads. We took the second road: our own service for building timetables, with the apps as a pleasant extra for students and teachers. We started talking to the people who make the timetables and took apart how it's really done."
     },
@@ -161,7 +158,6 @@
     "photos": {
       "notesNight": "At night: a textbook on the monitor, below it a laptop with notes in LaTeX",
       "notesLecture": "A laptop with topology notes in a lecture, a cap beside it on the desk",
-      "eve": "A self-portrait the day before the launch",
       "stage": "A presentation of VCourse on a big screen in front of a hall",
       "cafe": "Two friends in a café",
       "room": "A bright empty room with a desk by the window",

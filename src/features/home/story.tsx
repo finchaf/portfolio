@@ -4,7 +4,6 @@ import buildIcon from "./photos/build-icon.webp";
 import buildLayers from "./photos/build-layers.webp";
 import buildUpdate from "./photos/build-update.webp";
 import cafe from "./photos/cafe.webp";
-import eve from "./photos/eve.webp";
 import firstRoom from "./photos/first-room.webp";
 import hall from "./photos/hall.webp";
 import mirror from "./photos/mirror.webp";
@@ -146,33 +145,16 @@ function Launch() {
   const photos = useTranslations("home.story.photos");
   return (
     <StoryChapter id="launch">
-      <StoryCol weight={0.9}>
+      <StoryCol weight={0.7}>
         <StoryHead date={t("date")} title={t("title")} />
         <StoryText>{t("post")}</StoryText>
         <StoryQuote>{t("quote")}</StoryQuote>
       </StoryCol>
-      <StoryCol at="middle" spot weight={1.3}>
-        <LaunchSheet />
+      <StoryCol at="middle" weight={0.7}>
+        <StoryPhoto drift={20} label={photos("stage")} size={34} src={stage} tilt={1.5} />
       </StoryCol>
-      <StoryCol at="bottom" weight={0.8}>
-        <StoryPile>
-          <StoryPhoto
-            caption={t("eveCaption")}
-            label={photos("eve")}
-            size={19}
-            src={eve}
-            tilt={-1.5}
-          />
-          <StoryPhoto
-            caption={t("stageCaption")}
-            drift={80}
-            label={photos("stage")}
-            size={13}
-            src={stage}
-            tilt={2}
-          />
-        </StoryPile>
-        <StoryText>{t("next")}</StoryText>
+      <StoryCol at="middle" spot weight={1.5}>
+        <LaunchSheet />
       </StoryCol>
     </StoryChapter>
   );
