@@ -6,20 +6,19 @@
   "title": "Home",
   "hero": {
     "status": "Open to a conversation",
-    "city": "Omsk",
+    "city": "Moscow",
     "name": "Danil Zablotsky",
     "role": "Design engineer",
     "roleNote": "product design and frontend",
     "statement": "I design interfaces and build them into working products on iOS, Android and the web myself.",
     "proofStores": "Apps on the App Store, Google Play and RuStore",
     "proofPlaceholder": "The exact number of users, dated, goes here",
-    "write": "Write to me",
     "work": "See the work",
     "github": "GitHub",
-    "tiles": {
-      "pora": { "title": "Pora na paru", "note": "The site turns into a timetable" },
-      "flow": { "title": "Flow", "note": "A terminal and a vault of notes" },
-      "projects": { "title": "Projects", "note": "A canvas with everything else" }
+    "lens": {
+      "label": "Layer of the first screen",
+      "design": "Design",
+      "code": "Code"
     }
   },
   "story": {
@@ -58,99 +57,6 @@
       }
     }
   },
-  "build": {
-    "eyebrow": "Design → code",
-    "stages": {
-      "whole": {
-        "title": "One interface",
-        "text": "A lesson card, as a student sees it."
-      },
-      "layers": {
-        "title": "Taken apart",
-        "text": "Surface, shape and text. Those I solve as a designer."
-      },
-      "code": {
-        "title": "And I write the code",
-        "text": "The same layers become a component, with no handoff between people."
-      }
-    },
-    "layers": {
-      "surface": "Surface",
-      "shape": "Shape",
-      "text": "Text"
-    },
-    "lesson": {
-      "subject": "Databases",
-      "time": "10:15",
-      "room": "room 402",
-      "kind": "lecture",
-      "teacher": "I. Ivanov"
-    },
-    "lab": {
-      "title": "Try it: this is a real component of this page, with made-up data.",
-      "radius": "Radius",
-      "density": "Density",
-      "densityCompact": "Compact",
-      "densityRegular": "Roomy",
-      "tone": "Colour",
-      "toneAccent": "Coral",
-      "toneSuccess": "Olive",
-      "toneWarning": "Amber"
-    }
-  },
-  "cases": {
-    "title": "Work",
-    "open": "Open",
-    "pora": {
-      "label": "My own product · since 2023",
-      "stage": "New version in development",
-      "title": "Pora na paru",
-      "text": "A timetable for universities. I began with VCourse, tested the idea on real users and am building the product again from scratch.",
-      "role": "Design, iOS, Android and web: me. Backend: my co-founder.",
-      "stores": "VCourse:",
-      "appStore": "App Store",
-      "appStoreUrl": "https://apps.apple.com/app/id6747290631",
-      "googlePlay": "Google Play",
-      "googlePlayUrl": "https://play.google.com/store/apps/details?id=app.vcourse.vcourse",
-      "ruStore": "RuStore",
-      "ruStoreUrl": "https://www.rustore.ru/catalog/app/app.vcourse.vcourse"
-    },
-    "week": {
-      "days": { "mon": "Mon", "tue": "Tue", "wed": "Wed", "thu": "Thu", "fri": "Fri" },
-      "lessons": { "math": "Calc", "base": "Data", "code": "Code" },
-      "move": "Move the lesson: {lesson}",
-      "conflict": "Conflict: two lessons in one slot",
-      "clear": "No conflicts, ready to publish"
-    },
-    "flow": {
-      "label": "iOS app design · since 2026",
-      "title": "Flow",
-      "text": "A system of my own: agents, a terminal and a Markdown knowledge base carry a task from the brief to finished screens.",
-      "note": "The tasks in the demo are made up."
-    },
-    "terminal": {
-      "line1": "$ claude",
-      "line2": "> /new-task demo-app",
-      "line3": "  brief assembled",
-      "line4": "> /research",
-      "line5": "  screen map ready",
-      "line6": "> /screens",
-      "line7": "  screens in review",
-      "line8": "> /handoff",
-      "line9": "  handed to development"
-    },
-    "projects": {
-      "label": "Everything else",
-      "title": "Projects",
-      "text": "Websites, experiments and my thesis on one canvas."
-    },
-    "canvas": {
-      "site": "client-site/",
-      "thesis": "bachelor-thesis.pdf",
-      "portfolio": "portfolio/",
-      "motion": "logo-animation/"
-    }
-  },
   "experience": {
     "title": "Experience",
     "rows": {
@@ -164,8 +70,16 @@
         "place": "VCourse",
         "role": "Creator: design and client development"
       },
-      "team": { "years": "since 2026", "place": "iOS apps team", "role": "Designer" },
-      "freelance": { "years": "2025", "place": "Freelance", "role": "Web designer, under contract" }
+      "team": {
+        "years": "since 2026",
+        "place": "iOS apps team",
+        "role": "Designer"
+      },
+      "freelance": {
+        "years": "2025",
+        "place": "Freelance",
+        "role": "Web designer, under contract"
+      }
     },
     "educationTitle": "Education",
     "education": "Omsk State University, applied mathematics and computer science, 2022–2026",
@@ -174,15 +88,172 @@
     "pitch": "Pitch to investors, Tramplin tech park, April 2026",
     "english": "English B2",
     "aboutTitle": "About me",
-    "about": "I live in Omsk. I care about where design meets code: one person holding both the decision and how it works.",
+    "about": "I live in Moscow. I care about where design meets code: one person holding both the decision and how it works.",
     "portrait": "Portrait of Danil Zablotsky"
   },
   "finale": {
     "title": "Let's talk",
     "text": "Telegram is the fastest way to reach me.",
-    "write": "Write to me",
-    "github": "GitHub",
-    "code": "The site's code is open",
-    "copyright": "© 2026 Danil Zablotsky"
+    "write": "Write to me"
+  },
+  "work": {
+    "title": "Work",
+    "open": "Open the page",
+    "next": {
+      "flow": "To Flow",
+      "projects": "To Projects",
+      "experience": "To experience"
+    },
+    "pora": {
+      "name": "Pora na paru",
+      "label": "My own product · since 2023",
+      "stage": "New version in development",
+      "text": "A timetable for universities. I began with VCourse, tested the idea on real users and am building the product again from scratch.",
+      "role": "Design, iOS, Android and web: me. Backend: my co-founder.",
+      "ticks": {
+        "intro": "Product",
+        "service": "Service",
+        "apps": "Apps",
+        "editor": "Editor",
+        "origin": "Origins"
+      },
+      "service": {
+        "title": "One service for a whole university",
+        "text": "A university keeps its timetable in one place, and students and teachers see changes in every app at once."
+      },
+      "apps": {
+        "title": "Native on iOS and on Android",
+        "text": "Not one layout for two platforms: each has its own gestures, widgets and system features."
+      },
+      "editor": {
+        "title": "Publishing without conflicts",
+        "text": "The editor catches clashes before anything is published. Move a lesson yourself: the rule is real, the data is made up."
+      },
+      "origin": {
+        "title": "It began with VCourse",
+        "text": "The first version shipped on iOS, Android and the web and was tested by real users.",
+        "proof": "The exact number of users, dated, goes here",
+        "stores": "VCourse:"
+      },
+      "appStore": "App Store",
+      "appStoreUrl": "https://apps.apple.com/app/id6747290631",
+      "googlePlay": "Google Play",
+      "googlePlayUrl": "https://play.google.com/store/apps/details?id=app.vcourse.vcourse",
+      "ruStore": "RuStore",
+      "ruStoreUrl": "https://www.rustore.ru/catalog/app/app.vcourse.vcourse",
+      "mock": {
+        "site": "Mockup: website",
+        "iphone": "Mockup: iPhone",
+        "android": "Mockup: Android",
+        "service": "Mockup: service",
+        "first": "Screen recording: VCourse"
+      },
+      "week": {
+        "days": {
+          "mon": "Mon",
+          "tue": "Tue",
+          "wed": "Wed",
+          "thu": "Thu",
+          "fri": "Fri"
+        },
+        "lessons": {
+          "math": "Calc",
+          "base": "Data",
+          "code": "Code"
+        },
+        "move": "Move the lesson: {lesson}",
+        "conflict": "Conflict: two lessons in one slot",
+        "clear": "No conflicts, ready to publish"
+      }
+    },
+    "flow": {
+      "name": "Flow",
+      "label": "iOS app design · since 2026",
+      "text": "A system of my own: agents, a terminal and a Markdown knowledge base carry a task from the brief to finished screens.",
+      "note": "The tasks in the demo are made up.",
+      "ticks": {
+        "intro": "The system",
+        "brief": "Brief",
+        "research": "Research",
+        "screens": "Screens",
+        "handoff": "Handoff",
+        "base": "Base"
+      },
+      "steps": {
+        "brief": {
+          "title": "Brief",
+          "text": "A task becomes a short brief and a list of questions.",
+          "command": "> /new-task demo-app",
+          "mock": "Screenshot: brief"
+        },
+        "research": {
+          "title": "Research",
+          "text": "References from real apps, a breakdown of patterns and a map of screens.",
+          "command": "> /research",
+          "mock": "Screenshot: screen map"
+        },
+        "screens": {
+          "title": "Screens",
+          "text": "An agent assembles screens from base tokens and components, and I make the decisions.",
+          "command": "> /screens",
+          "mock": "Screenshot: screens in Figma"
+        },
+        "handoff": {
+          "title": "Handoff",
+          "text": "The finished file goes to development.",
+          "command": "> /handoff",
+          "mock": "Screenshot: handoff"
+        },
+        "base": {
+          "title": "Back to the base",
+          "text": "Review notes become rules in the knowledge base, and the next task starts from them.",
+          "command": "> git commit rules.md"
+        }
+      },
+      "graph": {
+        "brief": "brief.md",
+        "research": "research.md",
+        "screens": "screens.md",
+        "handoff": "handoff.md",
+        "base": "rules.md"
+      },
+      "terminal": {
+        "line1": "$ claude",
+        "line2": "> /new-task demo-app",
+        "line3": "  brief assembled",
+        "line4": "> /research",
+        "line5": "  screen map ready",
+        "line6": "> /screens",
+        "line7": "  screens in review",
+        "line8": "> /handoff",
+        "line9": "  handed to development"
+      }
+    },
+    "projects": {
+      "name": "Projects",
+      "label": "Everything else",
+      "text": "What I make beside the product and the job: one screen for each project.",
+      "ticks": {
+        "intro": "About",
+        "site": "This site",
+        "thesis": "LaTeX thesis"
+      },
+      "site": {
+        "title": "This site",
+        "state": "In progress",
+        "text": "A portfolio built like a product: Next.js, GSAP, a theme system of its own, strict checks before every commit.",
+        "link": "Code on GitHub",
+        "file": "portfolio/",
+        "mock": "Screen recording: site"
+      },
+      "thesis": {
+        "title": "A thesis in LaTeX",
+        "state": "Defended, 2026",
+        "text": "A bachelor's thesis as a code project: LuaLaTeX, GOST formatting, PDF builds and releases through GitHub Actions.",
+        "link": "Sources on GitHub",
+        "file": "bachelor-thesis/",
+        "mock": "Pages of the thesis"
+      }
+    }
   }
 }

@@ -2,7 +2,7 @@
 
 import { useRef, type ReactNode } from "react";
 
-import { gsap, headerHeight, MOTION_ALLOWED, ScrollTrigger, useGSAP } from "@/motion/gsap";
+import { gsap, MOTION_ALLOWED, ScrollTrigger, useGSAP } from "@/motion/gsap";
 import { SCENE } from "@/motion/tokens";
 
 type Setter = (value: number) => void;
@@ -50,8 +50,9 @@ export function StoryScene({ digits, children }: { digits: number[]; children: R
           onUpdate: place,
           scrollTrigger: {
             trigger: section,
-            start: () => `top top+=${headerHeight()}`,
-            end: "bottom bottom",
+            start: "top top",
+            // The last screen of the section stays behind the works rising over it.
+            end: () => `+=${section.offsetHeight - 2 * window.innerHeight}`,
             scrub: ScrollTrigger.isTouch === 1 ? true : SCENE.catchUp,
             onRefresh: place,
           },

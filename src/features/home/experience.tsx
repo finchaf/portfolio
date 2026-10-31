@@ -12,7 +12,8 @@ export function Experience() {
   return (
     <section
       aria-labelledby="experience-title"
-      className="mx-auto grid w-full max-w-(--content) gap-10 px-(--gutter) py-10 lg:grid-cols-[3fr_2fr] lg:gap-16 lg:py-16"
+      className="mx-auto grid w-full max-w-(--content) gap-10 px-(--gutter) py-10 lg:grid-cols-[3fr_2fr] lg:gap-16 lg:pt-24 lg:pb-16"
+      id="experience"
     >
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-4">

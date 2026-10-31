@@ -27,7 +27,7 @@ export function Story() {
         id="story"
         style={{ "--steps": STEPS.length }}
       >
-        <div className="story-stage">
+        <div className="story-stage" data-under>
           <div className="story-head">
             <h2 className="font-display text-2xl font-bold lg:text-4xl" id="story-title">
               {t("title")}

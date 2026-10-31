@@ -6,37 +6,315 @@
 [data-world="home"] {
   --gutter: 1rem;
   --content: 87.5rem;
+  --row: 2.5rem;
+  --row-top: 0.75rem;
+  /* Where the content starts on either side, however wide the screen. */
+  --edge: max(var(--gutter), calc((100% - var(--content)) / 2 + var(--gutter)));
+  --sheet-shadow: 0 -1.5rem 4rem color-mix(in srgb, var(--ink) 14%, transparent);
 }
 
 @media (min-width: 64rem) {
   [data-world="home"] {
     --gutter: 2rem;
+    --row-top: 0.875rem;
   }
 }
 
-/* First screen. The name is set to span the column: --name-fit is its width in ems. */
+/* First screen: the design, and over it the same screen as source, uncovered by the lens. */
 .hero {
-  min-height: calc(100svh - var(--header) - var(--dock));
+  position: relative;
+  display: grid;
+  min-height: 100svh;
+  overflow: hidden;
+  touch-action: pan-y;
 }
 
+.hero-layer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.25rem;
+  width: 100%;
+  padding: var(--row-top) var(--edge) calc(var(--dock) + 1rem);
+  grid-area: 1 / 1;
+}
+
+/* The row of the status and the switch: on a wide screen, the row of the capsule between them. */
+.hero-top {
+  display: flex;
+  align-items: center;
+  min-height: var(--row);
+}
+
+/* Where and when: the footer has it too, and these widths have no room for it beside the capsule. */
+@media (width < 40rem), (64rem <= width < 72rem) {
+  .hero-where {
+    display: none;
+  }
+}
+
+/* --name-fit is the name's width in ems, on one line or on two. */
 .hero-name {
-  --name-fit: 9.02;
+  --name-fit: 5.55;
   position: relative;
-  z-index: 40;
   width: fit-content;
-  font-size: min(
-    calc((100vw - 2 * var(--gutter)) / var(--name-fit)),
-    calc((var(--content) - 2 * var(--gutter)) / var(--name-fit)),
-    34svh
-  );
+  font-size: min(calc((100vw - 2 * var(--gutter)) / var(--name-fit)), 34svh);
   letter-spacing: -0.035em;
   line-height: 1;
-  white-space: nowrap;
-  will-change: transform;
+}
+
+.hero-name > span {
+  display: block;
 }
 
 .hero-name:lang(en) {
-  --name-fit: 7.33;
+  --name-fit: 4.6;
+}
+
+.hero-foot {
+  display: grid;
+  gap: 1rem;
+}
+
+.hero-side {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.hero-actions {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hero-statement {
+  line-height: 1.35;
+}
+
+@media (min-width: 64rem) {
+  .hero-layer {
+    padding-bottom: 2rem;
+  }
+
+  .hero-name {
+    --name-fit: 9.02;
+    font-size: min(
+      calc((100vw - 2 * var(--gutter)) / var(--name-fit)),
+      calc((var(--content) - 2 * var(--gutter)) / var(--name-fit)),
+      34svh
+    );
+    white-space: nowrap;
+  }
+
+  .hero-name > span {
+    display: inline;
+  }
+
+  .hero-name:lang(en) {
+    --name-fit: 7.33;
+  }
+
+  .hero-foot {
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    gap: 2rem;
+  }
+
+  .hero-side {
+    align-items: end;
+  }
+
+  .hero-statement {
+    font-size: 1.25rem;
+  }
+}
+
+/* Code is dark in either mode. The plan is not: it is drawn on the page itself. */
+:root:not([data-intro]) .hero-code {
+  color-scheme: dark;
+}
+
+.hero-code {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-color: var(--page);
+  color: var(--muted);
+  clip-path: circle(var(--lens-r, 0) at var(--lens-x, 50%) var(--lens-y, 50%));
+  pointer-events: none;
+}
+
+.hero-code::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 4rem 4rem;
+}
+
+.hero-twin {
+  position: relative;
+  min-width: 0;
+}
+
+.hero-twin > .hero-source {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.hero-top .hero-twin > .hero-source {
+  top: 0;
+  display: flex;
+  align-items: center;
+  white-space: pre;
+}
+
+.hero-frame {
+  position: relative;
+  width: fit-content;
+}
+
+/*
+ * The fill covers the inner half of the stroke, and with it the contours a variable font lets
+ * cross inside a letter: a stroke alone draws each of them.
+ */
+.hero-outline {
+  color: var(--page);
+  -webkit-text-stroke: 3px var(--accent);
+  paint-order: stroke fill;
+}
+
+.hero-box {
+  position: absolute;
+  inset: 0;
+  outline: 1px solid var(--accent);
+}
+
+.hero-box::before {
+  content: attr(data-size);
+  position: absolute;
+  top: -1.625rem;
+  right: 0;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  background: var(--accent);
+  color: var(--on-accent);
+  font: 500 0.75rem/1.3 var(--mono);
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.hero-source {
+  overflow: hidden;
+  font: 400 clamp(0.6875rem, 1vw, 0.875rem) / 1.55 var(--mono);
+  white-space: pre-wrap;
+}
+
+/* The source of a button stands next to it; on a phone, under it, above the capsule. */
+.hero-near {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  font-size: 0.6875rem;
+  white-space: pre;
+}
+
+.hero-control {
+  position: relative;
+  display: inline-flex;
+}
+
+.hero-control::before {
+  content: attr(data-size);
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  left: 50%;
+  display: none;
+  color: var(--accent);
+  font: 500 0.625rem/1 var(--mono);
+  translate: -50% 0;
+  white-space: nowrap;
+}
+
+.hero-switch-twin .hero-control::before {
+  display: none;
+}
+
+.hero[data-layer="design"] [data-tab="design"] .code-face > span,
+.hero[data-layer="code"] [data-tab="code"] .code-face > span {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.hero-ring,
+.hero-switch,
+.hero-switch-twin {
+  display: none;
+}
+
+:root:not([data-js]) .hero-code {
+  display: none;
+}
+
+:root[data-js] .hero-switch,
+:root[data-js] .hero-switch-twin {
+  position: absolute;
+  top: var(--row-top);
+  right: var(--edge);
+  display: flex;
+  align-items: center;
+  height: var(--row);
+}
+
+:root[data-js] .hero-switch legend {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+/* A key's focus lifts the real control through the layer of pictures over it. */
+.hero-switch:has(:focus-visible),
+.hero-layer a:focus-visible {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-switch:has(:focus-visible) {
+  position: absolute;
+}
+
+@media (min-width: 64rem) {
+  .hero-twin > .hero-source {
+    right: auto;
+  }
+
+  .hero-side .hero-twin > .hero-source {
+    right: 0;
+    left: auto;
+    text-align: right;
+    white-space: pre;
+  }
+
+  .hero-near {
+    top: 50%;
+    right: calc(100% + 1rem);
+    left: auto;
+    translate: 0 -50%;
+    font-size: 0.75rem;
+  }
+
+  .hero-control::before {
+    display: block;
+  }
 }
 
 /* Story: a plain grid until a scene takes it. */
@@ -62,100 +340,178 @@
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
 }
 
-/* Design into code: the card, its code and the controls, one under another. */
-.build {
-  /* The one dark sheet of the page: with `data-tint`, the tokens inside answer to this. */
-  color-scheme: dark;
+/*
+ * Works. In the plain flow a chapter is a section in its theme: its stops one under another, Flow's
+ * panels too. Everything a scene needs is further down, under `[data-js]`.
+ */
+.work {
+  scroll-margin-top: calc(-1 * (var(--header) + 1rem));
+}
+
+.chapter {
+  --bar: 4rem;
   background: var(--page);
   color: var(--ink);
-  border-radius: 2rem;
+  font-family: var(--sans);
+  scroll-margin-top: calc(-1 * (var(--header) + 1rem));
 }
 
-.build-stage {
-  display: grid;
-  gap: 2rem;
-  max-width: var(--content);
-  margin-inline: auto;
-  padding: 2.5rem var(--gutter);
-}
-
-.build-copy,
-.build-captions,
-.build-lab,
-.build-caption,
-.build-visual {
+.chapter-stage {
   display: flex;
   flex-direction: column;
+  gap: 2.5rem;
+  max-width: var(--content);
+  margin-inline: auto;
+  padding: 3rem var(--gutter);
+}
+
+.chapter-stops,
+.flow-track {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+}
+
+.chapter-bar {
+  order: -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+}
+
+.chapter-name,
+.chapter-actions {
+  display: flex;
+  align-items: center;
   gap: 0.75rem;
 }
 
-.build-copy {
-  gap: 1rem;
+.chapter-name {
+  gap: 0.5rem;
 }
 
-.build-captions {
-  gap: 1.25rem;
-}
-
-.build-lab {
-  padding-top: 0.5rem;
-}
-
-:root:not([data-js]) .build-lab {
+.chapter-rail,
+.chapter-progress,
+.flow-line,
+.flow-node {
   display: none;
 }
 
-.build-stack {
-  position: relative;
-  width: min(100%, 34rem);
-}
-
-.build-layer {
-  display: none;
-}
-
-.build-layer-plane {
-  position: absolute;
-  inset: 0;
-  box-shadow: 0 0 0 1px var(--accent);
-}
-
-.build-layer-label {
-  position: absolute;
-  top: -1.5rem;
-  left: 0;
-  white-space: nowrap;
-  color: var(--muted);
-}
-
-.build-token {
-  animation: token-flash var(--duration-slow) var(--ease-out);
-  border-radius: 0.25rem;
-}
-
-@keyframes token-flash {
-  from {
-    background: var(--accent-strong);
-    color: var(--on-accent);
-  }
-}
-
-/* Cases: sticky is CSS alone, so the stack holds with a script or without. */
-.case {
-  position: relative;
+.stop,
+.flow-panel {
   display: grid;
-  gap: 1.25rem;
-  padding: 1.25rem;
-  border-radius: 1.5rem;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.stop-copy,
+.flow-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.stop-visual,
+[data-panel-visual] {
+  min-width: 0;
+}
+
+.stop-title {
+  font-family: var(--display);
+  font-size: clamp(2rem, 4.6vw, 4.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+.stop-title-large {
+  font-size: clamp(3rem, 8.6vw, 8.5rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+}
+
+.stop-text {
+  max-width: 34rem;
+  font-size: clamp(1.0625rem, 1.5vw, 1.375rem);
+  line-height: 1.35;
+}
+
+.placeholder {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px dashed var(--muted);
   background: var(--surface);
+  text-align: center;
+}
+
+.placeholder-phone {
+  aspect-ratio: 9 / 19.5;
+  max-height: 100%;
+  border-radius: 2.25rem;
+}
+
+.placeholder-browser {
+  aspect-ratio: 16 / 10;
+  border-radius: 1rem;
+}
+
+.placeholder-frame {
+  aspect-ratio: 4 / 3;
+  border-radius: 1rem;
+}
+
+.devices {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 1.3fr);
+  align-items: end;
+  gap: 1rem;
+  width: min(100%, 42rem);
+  margin-inline: auto;
+}
+
+.devices-pair {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: min(100%, 24rem);
+}
+
+.devices-one {
+  grid-template-columns: minmax(0, 1fr);
+  width: min(100%, 13rem);
+}
+
+.flow-graph {
+  width: 100%;
+  max-width: 32rem;
+}
+
+.flow-graph text {
+  letter-spacing: 0;
+}
+
+.project-frame {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  width: min(100%, 40rem);
+  margin-inline: auto;
+  padding: 0.75rem;
+  border-radius: 1.25rem;
+  background: var(--page);
   box-shadow: 0 0 0 1px var(--line);
 }
 
 @media (min-width: 64rem) {
-  .case {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
-    gap: 2rem;
-    padding: 2rem;
+  .stop,
+  .flow-panel {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: 3rem;
   }
 }
 
@@ -190,39 +546,10 @@
     background-color var(--duration-base) var(--ease-out);
 }
 
-.mini-canvas {
-  --pointer-x: 0;
-  --pointer-y: 0;
-  background-image: radial-gradient(var(--line) 1px, transparent 1px);
-  background-size: 1.25rem 1.25rem;
-}
-
-.mini-canvas-frame {
-  position: absolute;
-  display: block;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  background: var(--page);
-  box-shadow: 0 0 0 1px var(--line);
-  transform: translate(
-    calc(var(--pointer-x) * var(--depth) * -1.25rem),
-    calc(var(--pointer-y) * var(--depth) * -1.25rem)
-  );
-  transition: transform var(--duration-base) var(--ease-out);
-}
-
 .finale-title {
   font-size: clamp(3rem, 12vw, 11rem);
   letter-spacing: -0.035em;
   line-height: 1;
-}
-
-@media (min-height: 40rem) and (prefers-reduced-motion: no-preference) {
-  .case {
-    position: sticky;
-    top: calc(var(--header) + 0.75rem);
-    min-height: min(72svh, 36rem);
-  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -236,30 +563,21 @@
     }
   }
 
-  /* The name in the header waits for the big one to arrive, then takes over from it. */
-  :root[data-js]:has([data-world="home"]):not([data-docked]) [data-brand-text] {
-    opacity: 0;
-  }
-
-  :root[data-docked] [data-hero-name] {
-    visibility: hidden;
-  }
-
   :root[data-js] {
     .story {
       --wheel: max(136rem, 230vw);
       --step: min(25rem, 78vw);
       --hang: clamp(5.5rem, 24svh, 10rem);
-      height: calc(var(--steps) * 110svh);
+      height: calc(var(--steps) * 110svh + 100svh);
     }
 
     .story-stage {
       position: sticky;
-      top: var(--header);
+      top: 0;
       display: block;
-      height: calc(100svh - var(--header));
+      height: 100svh;
       max-width: none;
-      padding: 0;
+      padding: var(--header) 0 0;
       overflow: hidden;
     }
 
@@ -308,7 +626,7 @@
 
     .story-wheel {
       position: absolute;
-      top: var(--hang);
+      top: calc(var(--header) + var(--hang));
       left: 50%;
       display: block;
       width: var(--wheel);
@@ -326,7 +644,7 @@
 
     .story-step {
       position: absolute;
-      top: var(--hang);
+      top: calc(var(--header) + var(--hang));
       left: 50%;
       width: var(--step);
       margin-left: calc(var(--step) / -2);
@@ -365,83 +683,440 @@
       transform-origin: 0 50%;
     }
 
-    .build {
-      height: 340svh;
-    }
-
-    .build-stage {
-      position: sticky;
-      top: var(--header);
-      grid-template-rows: auto minmax(0, 1fr);
-      align-content: start;
-      gap: 1rem;
-      height: calc(100svh - var(--header) - var(--dock));
-      padding-block: 1rem;
-      overflow: hidden;
-    }
-
-    .build-captions {
-      display: grid;
-    }
-
-    .build-caption {
-      grid-area: 1 / 1;
-    }
-
-    /* Opacity alone: a keyboard and a screen reader keep what the eye has yet to reach. */
-    .build-caption:not(:first-child),
-    .build-lab,
-    .build-code,
-    .build-whole,
-    [data-layer-part] {
-      opacity: 0;
-    }
-
-    .build-visual {
-      align-items: center;
-    }
-
     /*
-     * --open goes from 0 to 1 with the scroll. Each layer tilts by itself and lifts along its own
-     * normal, under one perspective: `preserve-3d` flattens these differently from engine to engine.
+     * A chapter is as long as its stops, plus the screen on which it sits and the one on which the
+     * next sheet covers it: the next one is pulled up by that much. --length is the scroll of its
+     * own timeline. The chapter after Flow also waits behind it for one screen, off to the right.
      */
-    .build-stack {
-      --open: 0;
-      --lift: min(6rem, 13vw);
-      perspective: 70rem;
+    .work {
+      position: relative;
+      z-index: 2;
+      margin-top: -100svh;
+      overflow-x: clip;
     }
 
-    .build-layer {
-      position: absolute;
-      inset: 0;
+    .chapter {
+      --stop: 90svh;
+      --length: calc((var(--stops) - 1) * var(--stop) + 40svh);
+      position: relative;
+      height: calc(var(--length) + 200svh);
+      background: none;
+    }
+
+    .chapter + .chapter {
+      margin-top: -100svh;
+    }
+
+    .chapter[data-axis="x"] + .chapter {
+      height: calc(var(--length) + 300svh);
+      margin-top: -200svh;
+      scroll-margin-top: calc(-1 * (var(--header) + 1rem) - 100svh);
+    }
+
+    .chapter-stage {
+      position: sticky;
+      top: 0;
       display: block;
-      transform: rotateX(calc(var(--open) * 54deg)) rotateZ(calc(var(--open) * -24deg))
-        translateZ(calc(var(--open) * var(--height) * var(--lift)));
+      height: 100svh;
+      max-width: none;
+      padding: 0;
+      overflow: hidden;
+      background: var(--page);
+      box-shadow: var(--sheet-shadow);
       will-change: transform;
     }
 
-    .build-code {
-      width: min(100%, 34rem);
+    .chapter[data-chapter="projects"] .chapter-stage {
+      background-image: radial-gradient(var(--line) 1px, transparent 1px);
+      background-size: 1.5rem 1.5rem;
+    }
+
+    .chapter-stops {
+      position: absolute;
+      inset: 0;
+      display: block;
+    }
+
+    /* The bar holds at the top of a phone, where it is clear of the capsule. */
+    .chapter-bar {
+      position: absolute;
+      z-index: 3;
+      inset: 0 0 auto;
+      flex-wrap: nowrap;
+      height: var(--bar);
+      padding-inline: var(--gutter);
+      background: var(--page);
+    }
+
+    .chapter-progress {
+      position: absolute;
+      inset: auto 0 0;
+      display: block;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: 0 50%;
+    }
+
+    .chapter-next {
+      display: none;
+    }
+
+    .stop {
+      position: absolute;
+      inset: calc(var(--bar) + 1rem) 0 calc(var(--dock) + 0.5rem);
+      grid-template-rows: auto minmax(0, 1fr);
+      align-items: start;
+      gap: 1.25rem;
+      max-width: var(--content);
+      margin-inline: auto;
+      padding-inline: var(--gutter);
+    }
+
+    .stop:not([data-active]) {
+      pointer-events: none;
+    }
+
+    /* Opacity alone: a keyboard and a screen reader keep what the eye has yet to reach. */
+    .stop:not(:first-child) [data-stop-copy],
+    .stop:not(:first-child) [data-stop-visual] {
+      opacity: 0;
+    }
+
+    .stop-visual {
+      display: grid;
+      align-content: center;
+      height: 100%;
+      min-height: 0;
+    }
+
+    .stop-title {
+      font-size: clamp(1.875rem, 4.6vw, 4.5rem);
+    }
+
+    .stop-title-large {
+      font-size: clamp(2.75rem, 8.6vw, 8.5rem);
+    }
+
+    .placeholder-phone {
+      max-height: 44svh;
+      width: auto;
+      margin-inline: auto;
+    }
+
+    .devices,
+    .devices-pair,
+    .devices-one {
+      align-items: center;
+      justify-items: center;
+    }
+
+    .flow-track {
+      position: absolute;
+      inset: var(--bar) auto calc(var(--dock) + 0.5rem) 0;
+      flex-direction: row;
+      gap: 0;
+      width: max-content;
+      padding-inline: var(--gutter);
+      will-change: transform;
+    }
+
+    .flow-line {
+      position: absolute;
+      top: 1.5rem;
+      left: 0;
+      right: 0;
+      display: block;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: 0 50%;
+    }
+
+    .flow-panel {
+      --panel: 84vw;
+      position: relative;
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto minmax(0, 1fr);
+      align-items: start;
+      gap: 1rem;
+      flex: none;
+      width: var(--panel);
+      padding: 3.25rem 1.5rem 0 0;
+    }
+
+    .flow-node {
+      position: absolute;
+      top: 1rem;
+      left: 0;
+      display: block;
+      width: 1.125rem;
+      height: 1.125rem;
+      border-radius: 50%;
+      background: var(--raised);
+      box-shadow: 0 0 0 4px var(--page);
+      transition:
+        background-color var(--duration-base) var(--ease-out),
+        scale var(--duration-base) var(--ease-out);
+    }
+
+    .flow-node[data-reached] {
+      background: var(--accent);
+      scale: 1.25;
+    }
+
+    .after-work {
+      position: relative;
+      z-index: 3;
+      margin-top: -100svh;
+      overflow: hidden;
+      background: var(--page);
+      box-shadow: var(--sheet-shadow);
     }
   }
 
   @media (min-width: 64rem) {
-    :root[data-js] .build-stage {
-      grid-template-rows: minmax(0, 1fr);
-      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-      align-items: center;
-      padding-block: 2rem;
+    :root[data-js] {
+      .chapter-bar {
+        inset: auto 0 0;
+      }
+
+      .chapter-progress {
+        inset: 0 0 auto;
+      }
+
+      .chapter-rail {
+        display: flex;
+        gap: 1.25rem;
+        font-size: 0.875rem;
+        color: var(--muted);
+      }
+
+      .chapter-rail li {
+        transition: color var(--duration-base) var(--ease-out);
+      }
+
+      .chapter-rail li[data-active] {
+        color: var(--ink);
+      }
+
+      .chapter-next {
+        display: inline;
+      }
+
+      .stop {
+        inset: var(--header) 0 var(--bar);
+        grid-template-rows: minmax(0, 1fr);
+        align-items: center;
+        gap: 3rem;
+      }
+
+      .placeholder-phone {
+        max-height: 62svh;
+      }
+
+      .flow-track {
+        inset: calc(var(--header) + 1rem) auto var(--bar) 0;
+      }
+
+      .flow-line {
+        top: 2rem;
+      }
+
+      .flow-panel {
+        --panel: min(58rem, 68vw);
+        grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+        grid-template-rows: minmax(0, 1fr);
+        align-items: center;
+        gap: 2.5rem;
+        padding: 4rem 4rem 2rem 0;
+      }
+
+      .flow-panel-intro {
+        --panel: min(72rem, 82vw);
+      }
+
+      .flow-node {
+        top: 1.5rem;
+      }
     }
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .mini-week-lesson,
-  .mini-canvas-frame {
-    transition: none;
+/*
+ * The first screen assembles on its plan when a page opens: a grid, frames with their sizes, then
+ * the content into them. All of it is the stylesheet's, so it never waits for a script. The name
+ * never waits at all: the real heading is painted from the first frame, under the outline that
+ * reads the same, and the outline is wiped off it. `data-intro` comes from the script in <head>.
+ */
+@property --plan-r {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :root[data-intro] {
+    --plan-step: calc(var(--duration-quick) / 3);
+    --plan-fill: var(--duration-slow);
+    --plan-out: calc(2 * var(--duration-slow));
   }
 
-  .build-token {
-    animation: none;
+  :root[data-intro] .hero-code {
+    background: none;
+    clip-path: none;
+    animation: plan-out var(--duration-base) var(--ease-out) var(--plan-out) both;
+  }
+
+  :root[data-intro] .hero-code::before {
+    mask-image: radial-gradient(circle var(--plan-r) at 50% 50%, var(--ink) 70%, transparent);
+    animation: plan-grid var(--duration-slow) var(--ease-out) both;
+  }
+
+  :root[data-intro] :is(.hero-twin > .hero-source, .hero-near, .hero-code .code-face) {
+    visibility: hidden;
+  }
+
+  :root[data-intro] :is([data-plan], .hero-box) {
+    --plan-delay: calc(var(--duration-quick) + var(--order, 0) * var(--plan-step));
+    outline: 1px dashed var(--accent);
+    animation: plan-frame var(--duration-slow) var(--ease-in-out) var(--plan-delay) both;
+  }
+
+  :root[data-intro] .hero-twin::before,
+  :root[data-intro] .hero-control::before,
+  :root[data-intro] .hero-box::before,
+  :root[data-intro] [data-capsule]::before {
+    content: attr(data-size);
+    position: absolute;
+    inset: -1.125rem auto auto 0;
+    display: block;
+    padding: 0;
+    background: none;
+    color: var(--accent);
+    font: 500 0.6875rem/1 var(--mono);
+    letter-spacing: 0;
+    translate: none;
+    white-space: nowrap;
+  }
+
+  :root[data-intro] [data-capsule]::after,
+  :root[data-intro] [data-capsule]::before {
+    --plan-delay: var(--duration-quick);
+    animation:
+      plan-frame var(--duration-slow) var(--ease-in-out) var(--plan-delay) both,
+      plan-out var(--duration-base) var(--ease-out) var(--plan-out) both;
+  }
+
+  :root[data-intro] [data-capsule]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    outline: 1px dashed var(--accent);
+  }
+
+  :root[data-intro] .hero-outline {
+    animation: plan-fill var(--duration-slow) var(--ease-in-out) var(--plan-fill) both;
+  }
+
+  :root[data-intro]
+    :is(
+      .hero-status,
+      .capsule-items,
+      .hero-switch,
+      .hero-copy,
+      .hero-proof,
+      .hero-layer:not(.hero-code) .hero-actions
+    ) {
+    animation: plan-arrive var(--duration-slow) var(--ease-out)
+      calc(var(--plan-fill) + var(--order, 0) * var(--plan-step)) both;
+  }
+
+  .hero-box,
+  .capsule-items {
+    --order: 1;
+  }
+
+  .hero-switch {
+    --order: 2;
+  }
+
+  .hero-copy,
+  .hero-foot > .hero-twin {
+    --order: 3;
+  }
+
+  .hero-proof,
+  .hero-side > .hero-twin {
+    --order: 4;
+  }
+
+  .hero-actions {
+    --order: 5;
+  }
+
+  @keyframes plan-grid {
+    to {
+      --plan-r: 150vmax;
+    }
+  }
+
+  @keyframes plan-frame {
+    from {
+      clip-path: inset(-2rem 100% 100% 0);
+    }
+
+    to {
+      clip-path: inset(-2rem -1rem -1rem 0);
+    }
+  }
+
+  @keyframes plan-fill {
+    from {
+      clip-path: inset(-0.2em -0.02em -0.2em 0);
+    }
+
+    to {
+      clip-path: inset(-0.2em -0.02em -0.2em 101%);
+    }
+  }
+
+  @keyframes plan-arrive {
+    from {
+      opacity: 0;
+      translate: 0 0.5rem;
+    }
+  }
+
+  @keyframes plan-out {
+    to {
+      opacity: 0;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :root[data-js] .hero[data-layer="design"] .hero-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    display: block;
+    width: calc(2 * var(--lens-r, 0));
+    height: calc(2 * var(--lens-r, 0));
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px var(--accent);
+    opacity: var(--lens-seen, 0);
+    pointer-events: none;
+    transform: translate(
+      calc(var(--lens-x, 0) - var(--lens-r, 0)),
+      calc(var(--lens-y, 0) - var(--lens-r, 0))
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mini-week-lesson {
+    transition: none;
   }
 }
