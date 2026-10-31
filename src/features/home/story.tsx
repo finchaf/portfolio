@@ -92,7 +92,7 @@ function University() {
       </StoryCol>
       <StoryCol at="bottom" weight={1.1}>
         <StoryPhoto drift={90} label={photos("lift")} size={24} src={lift} tilt={-2} />
-        <StoryQuote depth={120}>{t("quote")}</StoryQuote>
+        <StoryQuote depth={60}>{t("quote")}</StoryQuote>
         <StoryText>{t("idea")}</StoryText>
       </StoryCol>
     </StoryChapter>
@@ -178,7 +178,7 @@ function Fork() {
       <StoryCol at="middle" weight={1.15}>
         <StoryHead date={t("date")} title={t("title")} />
         <StoryText>{t("question")}</StoryText>
-        <StoryQuote cross depth={150}>
+        <StoryQuote cross depth={55}>
           {t("quote")}
         </StoryQuote>
         <StoryText>{t("answer")}</StoryText>
@@ -200,12 +200,12 @@ function Night() {
         <StoryText>{t("need")}</StoryText>
       </StoryCol>
       <StoryCol at="middle" weight={1.15}>
-        <StoryQuote depth={120}>{t("quote")}</StoryQuote>
+        <StoryQuote depth={60}>{t("quote")}</StoryQuote>
         <NightLog />
       </StoryCol>
       <StoryCol at="bottom" weight={0.9}>
         <StoryText>{t("wait")}</StoryText>
-        <StoryQuote depth={110}>{t("grant")}</StoryQuote>
+        <StoryQuote depth={55}>{t("grant")}</StoryQuote>
         <StoryText>{t("move")}</StoryText>
       </StoryCol>
     </StoryChapter>
@@ -218,7 +218,7 @@ function Rent() {
   return (
     <StoryChapter id="rent">
       <StoryCol at="bottom">
-        <StoryQuote cross depth={190}>
+        <StoryQuote cross depth={60}>
           {t("quote")}
         </StoryQuote>
       </StoryCol>
@@ -267,7 +267,7 @@ function Now() {
           {t("firstSource")}
         </p>
         <StoryText>{t("next")}</StoryText>
-        <StoryQuote depth={70}>{t("quote")}</StoryQuote>
+        <StoryQuote depth={40}>{t("quote")}</StoryQuote>
       </StoryCol>
       <StoryCutout label={photos("me")} src={me} />
     </StoryChapter>

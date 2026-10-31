@@ -55,7 +55,7 @@ export function StoryCol({
 }
 
 /** How far a chapter's date goes against the ribbon: less than a large line, it stands on its own. */
-const DATE_DEPTH = 36;
+const DATE_DEPTH = 20;
 
 export function StoryHead({ date, title }: { date: string; title: string }) {
   return (
@@ -82,7 +82,7 @@ export function StoryText({ children }: { children: ReactNode }) {
  */
 export function StoryQuote({
   children,
-  depth = 90,
+  depth = 50,
   cross = false,
 }: {
   children: ReactNode;

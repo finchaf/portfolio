@@ -6,8 +6,8 @@ const DESIGN_WIDTH = 1440;
 /** How little of a depth a narrow screen keeps. */
 const NARROW_DEPTH = 0.3;
 
-/** How much further each next line goes than the one above it. */
-const LINE_SPREAD = 0.45;
+/** How much further the last line goes than the first, however many lie between them. */
+const LINE_SPREAD = 0.6;
 
 export interface DriftOptions {
   /** How far the first line goes either way, in pixels of the wide screen. */
@@ -42,8 +42,9 @@ export function driftLines(
       // A browser draws no transform on an inline box, though it reports one.
       gsap.set(lines, { display: "block" });
       const reach = Math.max(window.innerWidth / DESIGN_WIDTH, NARROW_DEPTH);
+      const place = (index: number) => index / Math.max(lines.length - 1, 1);
       const far = (index: number) =>
-        depth * reach * (1 + index * LINE_SPREAD) * (cross && index % 2 === 1 ? -1 : 1);
+        depth * reach * (1 + place(index) * LINE_SPREAD) * (cross && index % 2 === 1 ? -1 : 1);
       moving = gsap.fromTo(
         lines,
         { x: path === "leave" ? 0 : far },
