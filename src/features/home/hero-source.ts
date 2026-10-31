@@ -10,7 +10,6 @@ export const HERO_SOURCE = {
     "</p>",
     '<p className="hero-statement">{t("statement")}</p>',
   ],
-  proof: ['{t("proofPlaceholder")}', '<li className="text-muted">{t("proofStores")}</li>'],
   action: ['<ButtonLink href="#work">{t("work")}</ButtonLink>'],
 } as const;
 

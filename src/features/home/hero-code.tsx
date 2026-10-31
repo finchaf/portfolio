@@ -19,7 +19,6 @@ export interface HeroCodeProps {
   words: readonly string[];
   status: ReactNode;
   copy: ReactNode;
-  proof: ReactNode;
   work: ReactNode;
   github: ReactNode;
   labels: Record<"design" | "code" | "work" | "github", string>;
@@ -30,7 +29,7 @@ export interface HeroCodeProps {
  * plan the first screen assembles on when a page opens. A decoration for the eye, since the source
  * says nothing the text does not. Its controls are only pictures: the real ones lie under it.
  */
-export function HeroCode({ words, status, copy, proof, work, github, labels }: HeroCodeProps) {
+export function HeroCode({ words, status, copy, work, github, labels }: HeroCodeProps) {
   return (
     <div aria-hidden className="hero-layer hero-code" data-hero-code data-tint="home">
       <div className="hero-top">
@@ -52,19 +51,16 @@ export function HeroCode({ words, status, copy, proof, work, github, labels }: H
 
       <div className="hero-foot">
         <Twin lines={HERO_SOURCE.copy} shape={copy} />
-        <div className="hero-side">
-          <Twin lines={HERO_SOURCE.proof} shape={proof} />
-          <div className="hero-actions">
-            <CodeSource className="hero-near" lines={HERO_SOURCE.action} />
-            <span className="hero-control" data-plan>
-              <CodeFace className="control-shape" shape={work}>
-                {labels.work}
-              </CodeFace>
-            </span>
-            <span className="hero-control" data-plan>
-              <CodeFace shape={github}>{labels.github}</CodeFace>
-            </span>
-          </div>
+        <div className="hero-actions">
+          <CodeSource className="hero-near" lines={HERO_SOURCE.action} />
+          <span className="hero-control" data-plan>
+            <CodeFace className="control-shape" shape={work}>
+              {labels.work}
+            </CodeFace>
+          </span>
+          <span className="hero-control" data-plan>
+            <CodeFace shape={github}>{labels.github}</CodeFace>
+          </span>
         </div>
       </div>
 

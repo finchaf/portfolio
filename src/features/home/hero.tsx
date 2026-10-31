@@ -34,17 +34,6 @@ export function Hero() {
       <p className="hero-statement">{t("statement")}</p>
     </div>
   );
-  const proof = (
-    <ul className="hero-proof flex flex-col gap-1.5 text-sm lg:items-end">
-      <li
-        className="w-fit rounded-md border border-dashed border-warning px-2 py-0.5 text-ink"
-        data-placeholder
-      >
-        {t("proofPlaceholder")}
-      </li>
-      <li className="text-muted">{t("proofStores")}</li>
-    </ul>
-  );
   const work = <ButtonLink href="#work">{t("work")}</ButtonLink>;
   const github = (
     <a className="control-link px-1 py-2" href={GITHUB_URL}>
@@ -66,12 +55,9 @@ export function Hero() {
         </h1>
         <div className="hero-foot">
           {copy}
-          <div className="hero-side">
-            {proof}
-            <div className="hero-actions">
-              {work}
-              {github}
-            </div>
+          <div className="hero-actions">
+            {work}
+            {github}
           </div>
         </div>
       </div>
@@ -84,7 +70,6 @@ export function Hero() {
           github: t("github"),
           work: t("work"),
         }}
-        proof={proof}
         status={status}
         words={words}
         work={work}

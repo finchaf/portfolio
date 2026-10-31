@@ -84,12 +84,6 @@
   gap: 1rem;
 }
 
-.hero-side {
-  display: flex;
-  flex-direction: column;
-  gap: 0.625rem;
-}
-
 .hero-actions {
   position: relative;
   display: flex;
@@ -131,8 +125,8 @@
     gap: 2rem;
   }
 
-  .hero-side {
-    align-items: end;
+  .hero-actions {
+    justify-self: end;
   }
 
   .hero-statement {
@@ -314,13 +308,6 @@
 @media (min-width: 64rem) {
   .hero-twin > .hero-source {
     right: auto;
-  }
-
-  .hero-side .hero-twin > .hero-source {
-    right: 0;
-    left: auto;
-    text-align: right;
-    white-space: pre;
   }
 
   .hero-near {
@@ -2209,7 +2196,6 @@
       .capsule-items,
       .hero-switch,
       .hero-copy,
-      .hero-proof,
       .hero-layer:not(.hero-code) .hero-actions
     ) {
     animation: plan-arrive var(--duration-slow) var(--ease-out)
@@ -2230,13 +2216,8 @@
     --order: 3;
   }
 
-  .hero-proof,
-  .hero-side > .hero-twin {
-    --order: 4;
-  }
-
   .hero-actions {
-    --order: 5;
+    --order: 4;
   }
 
   @keyframes plan-grid {
