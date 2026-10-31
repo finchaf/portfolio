@@ -49,6 +49,8 @@ test.describe("the home page without JavaScript", () => {
       await expect(chapter).toBeVisible();
     }
     await expect(page.locator(".story-ruler")).toBeHidden();
+    await expect(page.locator(".story-canvas-size")).toBeHidden();
+    await expect(page.locator("[data-figma-zoom]")).toHaveText("5");
     await expect(page.locator(".stop")).toHaveCount(STOPS);
     for (const stop of await page.locator(".stop").all()) await expect(stop).toBeVisible();
     await expect(page.locator(".flow-panel")).toHaveCount(PANELS);
@@ -327,6 +329,24 @@ test.describe("the home page in motion", () => {
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(
       await page.evaluate(() => document.documentElement.clientWidth),
     );
+  });
+
+  test("pulls back from one frame of the Figma file to the whole file", async ({ page }) => {
+    await page.goto(HOME);
+    const world = page.locator("[data-figma-world]");
+    const zoom = page.locator("[data-figma-zoom]");
+    const width = () => world.evaluate((node) => node.getBoundingClientRect().width);
+    const view = await page.locator("[data-figma-view]").evaluate((node) => node.clientWidth);
+    await expect(zoom).toHaveText("60");
+    expect(await width()).toBeGreaterThan(view * 11);
+    const box = await page.locator("#story").evaluate((node) => ({
+      top: node.getBoundingClientRect().top + window.scrollY,
+      height: node.getBoundingClientRect().height,
+    }));
+    await jump(page, box.top + box.height - 2 * (await height(page)));
+    await expect(zoom).toHaveText("5");
+    expect(await width()).toBeCloseTo(view, 0);
+    await expect(page.locator(".story-canvas-size")).toHaveCSS("opacity", "0");
   });
 
   test("brings the story's lines in as they arrive, and keeps them", async ({ page }) => {
