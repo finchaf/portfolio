@@ -968,6 +968,10 @@
       /* --u follows the smaller side of the screen: a chapter fits a laptop as it fits a monitor. */
       .story {
         --u: min(1vw, 1.7svh);
+        --ruler: 5.75rem;
+        /* Columns keep their tops and bottoms, a little in from the capsule and the ruler. */
+        --pad-top: calc(var(--header) + 6.5svh);
+        --pad-bottom: calc(var(--ruler) + 3.5svh);
         /* One pixel of ribbon takes 0.8 of a pixel of scroll, and the works rise over the last screen. */
         height: calc((var(--spans) - 1) * 80vw + 200svh);
       }
@@ -978,19 +982,27 @@
         height: 100svh;
       }
 
+      /* On a wide screen the ruler stands on the bottom edge, and its picture turns over with it. */
       .story-ruler {
         position: absolute;
-        inset: 0 0 auto;
-        height: 5.75rem;
+        inset: auto 0 0;
+        height: var(--ruler);
         background: none;
       }
 
+      .story-ruler canvas {
+        transform: scaleY(-1);
+      }
+
       .story-marks {
-        top: 4.25rem;
+        top: auto;
+        bottom: 4.25rem;
         left: 12%;
       }
 
       .story-marks span {
+        top: auto;
+        bottom: 0;
         left: 0;
         translate: -50% 0;
       }
@@ -1020,7 +1032,7 @@
       .story-chapter {
         width: calc(var(--span) * 100vw);
         height: 100%;
-        padding: calc(var(--header) + 1.5rem) calc(var(--u) * 3) 2.5rem;
+        padding: var(--pad-top) calc(var(--u) * 3) var(--pad-bottom);
       }
 
       .story-open {
@@ -1046,13 +1058,13 @@
 
       .story-spot {
         height: 100svh;
-        margin-block: calc(-1 * (var(--header) + 1.5rem)) -2.5rem;
-        padding: calc(var(--header) + 1.5rem) calc(var(--u) * 3) 2.5rem;
+        margin-block: calc(-1 * var(--pad-top)) calc(-1 * var(--pad-bottom));
+        padding: var(--pad-top) calc(var(--u) * 3) var(--pad-bottom);
       }
 
       .story-night {
         margin-inline: 0;
-        padding: calc(var(--header) + 1.5rem) calc(var(--u) * 3) 2.5rem;
+        padding: var(--pad-top) calc(var(--u) * 3) var(--pad-bottom);
       }
 
       .story-col-bottom {
