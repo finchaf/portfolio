@@ -27,6 +27,10 @@ const PLUCK_FADE = 0.93;
 const PLUCK_STILL = 0.004;
 const PLUCK_GAIN = 0.18;
 
+/** How far the knot reaches from the middle of the picture, clear of a pluck at the edges, and how finely it is measured. */
+const KNOT_REACH = 0.46;
+const SAMPLES = 400;
+
 /** When the score reads as one: the rows thin out and the days arrive. */
 const SETTLES_AT = 0.5;
 
@@ -82,14 +86,26 @@ export function combed(progress: number, along: number) {
   return inOut(clamp((progress * COMB_TRAVEL - COMB - along) / COMB));
 }
 
-/** Where a line runs in the knot, in shares of the height. */
-function knotAt(row: number, along: number) {
+/** How a line strays from the middle of the knot, before it is fitted to the picture. */
+function strayAt(row: number, along: number) {
   const body = Math.sin(Math.PI * clamp(along * 0.92 + 0.06)) ** 0.7;
   const waves = (WAVES[row] ?? []).reduce(
     (sum, { size, pace, phase }) => sum + size * Math.sin(pace * along * Math.PI * 2 + phase),
     0,
   );
-  return 0.46 + waves * 0.62 * body;
+  return waves * body;
+}
+
+/** The furthest any line strays: the knot is scaled by it, so no peak leaves the canvas. */
+const WIDEST = Math.max(
+  ...Array.from({ length: SCORE_ROWS }, (_, row) =>
+    Array.from({ length: SAMPLES + 1 }, (_sample, at) => Math.abs(strayAt(row, at / SAMPLES))),
+  ).flat(),
+);
+
+/** Where a line runs in the knot, in shares of the height. */
+function knotAt(row: number, along: number) {
+  return 0.5 + (strayAt(row, along) / WIDEST) * KNOT_REACH;
 }
 
 /** Where a line runs at a point along it, in shares of the height. */
@@ -144,7 +160,7 @@ export function createScore(canvas: HTMLCanvasElement, days: HTMLElement[]): Sco
             Math.exp(-(((y - pluckY) / PLUCK_HEIGHT) ** 2));
           y += Math.sign(y - pluckY || 1) * PLUCK_PUSH * force * reach;
         }
-        pen.lineTo(x, y);
+        pen.lineTo(x, Math.min(height - 1, Math.max(1, y)));
       }
       pen.strokeStyle = marked ? accent : ink;
       pen.globalAlpha = marked ? 1 : mix(0.75, 0.45, settled);

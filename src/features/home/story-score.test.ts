@@ -11,6 +11,18 @@ describe("the score", () => {
     expect(Math.max(...off)).toBeGreaterThan(0.2);
   });
 
+  it("keeps the whole knot inside the picture, however far it is combed", () => {
+    for (let row = 0; row < SCORE_ROWS; row += 1) {
+      for (let at = 0; at <= 200; at += 1) {
+        for (const progress of [0, 0.3, 0.6, 1]) {
+          const y = lineAt(row, at / 200, progress);
+          expect(y).toBeGreaterThan(0.02);
+          expect(y).toBeLessThan(0.98);
+        }
+      }
+    }
+  });
+
   it("ends with every line straight on its row, all the way along", () => {
     for (let row = 0; row < SCORE_ROWS; row += 1) {
       for (const along of [0, 0.25, 0.5, 0.75, 1]) {
