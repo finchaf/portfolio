@@ -6,8 +6,10 @@ import { localizedPath } from "@/i18n/localized-path";
 import { PAGE_PATHS, PAGES } from "@/lib/pages";
 import { TELEGRAM_URL } from "@/lib/site";
 import { CodeFace } from "@/ui/code-face";
+import { CodeSource } from "@/ui/code-source";
 import { Logo, Wordmark } from "@/ui/logo";
 
+import { CAPSULE_SOURCE } from "./capsule-source";
 import { NavLink } from "./nav-link";
 
 /**
@@ -88,7 +90,7 @@ export function Header() {
       <div aria-hidden className="capsule-code" data-capsule-code data-tint="home">
         <ul>
           {PAGE_PATHS.map((path) => (
-            <li key={path}>
+            <li data-measure key={path}>
               <CodeFace
                 className="rounded-full"
                 shape={
@@ -112,6 +114,7 @@ export function Header() {
         >
           <span className="max-lg:hidden">{t("shell.write")}</span>
         </CodeFace>
+        <CodeSource className="capsule-source" lines={CAPSULE_SOURCE} />
       </div>
     </header>
   );

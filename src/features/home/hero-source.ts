@@ -14,5 +14,15 @@ export const HERO_SOURCE = {
   action: ['<ButtonLink href="#work">{t("work")}</ButtonLink>'],
 } as const;
 
+/** The switch of the layers: real lines of hero-lens.tsx, where it lives. */
+export const SWITCH_SOURCE = [
+  "<Segmented",
+  "  label={labels.label}",
+  '  name="hero-layer"',
+  "  onChange={choose}",
+  "  value={layer}",
+  "/>",
+] as const;
+
 /** The face of the name, for the measure beside it. */
 export const HERO_FACE = "Geologica 800";

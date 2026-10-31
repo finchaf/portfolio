@@ -113,7 +113,12 @@ export function HeroLens({ labels, children }: HeroLensProps) {
         for (const plan of hero.querySelectorAll<HTMLElement>("[data-plan]")) {
           plan.dataset.size = size(plan);
         }
-        if (capsule) capsule.dataset.size = size(capsule);
+        if (capsule) {
+          capsule.dataset.size = size(capsule);
+          for (const item of capsule.querySelectorAll<HTMLElement>("[data-measure]")) {
+            item.dataset.size = size(item);
+          }
+        }
       };
       measure();
       ScrollTrigger.addEventListener("refresh", measure);

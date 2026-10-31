@@ -91,10 +91,40 @@
   position: absolute;
   inset: 0.25rem;
   display: flex;
-  overflow: hidden;
   border-radius: 999px;
   clip-path: circle(var(--lens-r, 0) at var(--lens-x, 0) var(--lens-y, 0));
   pointer-events: none;
+}
+
+/* An item's size under it, and under them all the one line of source that makes them. */
+.capsule-code [data-measure] {
+  position: relative;
+}
+
+.capsule-source {
+  display: none;
+}
+
+@media (min-width: 64rem) {
+  .capsule-code [data-measure]::after {
+    content: attr(data-size);
+    position: absolute;
+    top: calc(100% + 0.25rem);
+    left: 50%;
+    color: var(--accent);
+    font: 500 0.625rem/1 var(--mono);
+    translate: -50% 0;
+    white-space: nowrap;
+  }
+
+  .capsule-source {
+    position: absolute;
+    top: calc(100% + 1.5rem);
+    left: 0;
+    display: block;
+    color: var(--muted);
+    white-space: pre;
+  }
 }
 
 :root[data-scrolled] [data-capsule][data-lens] .capsule-code {

@@ -1,3 +1,19 @@
+/* Lines of source. */
+.code-source {
+  overflow: hidden;
+  font: 400 clamp(0.6875rem, 1vw, 0.875rem) / 1.55 var(--mono);
+  white-space: pre-wrap;
+}
+
+/* The hatching of the code layer. */
+.code-face {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    color-mix(in srgb, var(--accent) 55%, transparent) 0 1px,
+    transparent 1px 5px
+  );
+}
+
 /* A control as an inspector sees it: hatching over its padding, a frame around its content. */
 .code-face {
   position: absolute;
@@ -5,11 +21,6 @@
   display: grid;
   place-items: center;
   border-radius: inherit;
-  background: repeating-linear-gradient(
-    -45deg,
-    color-mix(in srgb, var(--accent) 55%, transparent) 0 1px,
-    transparent 1px 5px
-  );
   outline: 1px solid var(--accent);
   outline-offset: -1px;
   color: var(--ink);

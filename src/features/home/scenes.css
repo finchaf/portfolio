@@ -211,12 +211,6 @@
   white-space: nowrap;
 }
 
-.hero-source {
-  overflow: hidden;
-  font: 400 clamp(0.6875rem, 1vw, 0.875rem) / 1.55 var(--mono);
-  white-space: pre-wrap;
-}
-
 /* The source of a button stands next to it; on a phone, under it, above the capsule. */
 .hero-near {
   position: absolute;
@@ -243,7 +237,7 @@
   white-space: nowrap;
 }
 
-.hero-switch-twin .hero-control::before {
+.hero-switch-source {
   display: none;
 }
 
@@ -314,6 +308,15 @@
 
   .hero-control::before {
     display: block;
+  }
+
+  /* The switch's source hangs under it: the row has no room beside it. */
+  .hero-switch-source {
+    position: absolute;
+    top: calc(100% + 1.25rem);
+    right: 0;
+    display: block;
+    white-space: pre;
   }
 }
 
@@ -1411,7 +1414,8 @@
     animation: plan-grid var(--duration-slow) var(--ease-out) both;
   }
 
-  :root[data-intro] :is(.hero-twin > .hero-source, .hero-near, .hero-code .code-face) {
+  :root[data-intro]
+    :is(.hero-twin > .hero-source, .hero-near, .hero-switch-source, .hero-code .code-face) {
     visibility: hidden;
   }
 

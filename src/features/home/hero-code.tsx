@@ -1,41 +1,16 @@
 import type { ReactNode } from "react";
 
 import { CodeFace } from "@/ui/code-face";
+import { CodeSource } from "@/ui/code-source";
 
-import { HERO_SOURCE } from "./hero-source";
-
-/** What in a line of source is a tag, a string, an expression or a variable. */
-const TOKEN = /(<\/?\w+|\/?>|"[^"]*"|\{[^}]*\}|--[\w-]+)/;
-
-function tone(part: string): string | undefined {
-  if (part.startsWith("<") || part.endsWith(">") || part.startsWith("--")) return "text-accent";
-  if (part.startsWith('"')) return "text-success";
-  if (part.startsWith("{")) return "text-ink";
-  return undefined;
-}
-
-function Source({ lines, className = "" }: { lines: readonly string[]; className?: string }) {
-  return (
-    <pre className={`hero-source ${className}`}>
-      {lines.map((line) => (
-        <code className="block" key={line}>
-          {line.split(TOKEN).map((part, index) => (
-            <span className={tone(part)} key={index}>
-              {part}
-            </span>
-          ))}
-        </code>
-      ))}
-    </pre>
-  );
-}
+import { HERO_SOURCE, SWITCH_SOURCE } from "./hero-source";
 
 /** A block's source in the block's own place: the block itself, hidden, gives it the room. */
 function Twin({ shape, lines }: { shape: ReactNode; lines: readonly string[] }) {
   return (
     <div className="hero-twin" data-plan>
       <div className="invisible">{shape}</div>
-      <Source lines={lines} />
+      <CodeSource className="hero-source" lines={lines} />
     </div>
   );
 }
@@ -79,7 +54,7 @@ export function HeroCode({ words, status, copy, proof, work, github, labels }: H
         <div className="hero-side">
           <Twin lines={HERO_SOURCE.proof} shape={proof} />
           <div className="hero-actions">
-            <Source className="hero-near" lines={HERO_SOURCE.action} />
+            <CodeSource className="hero-near" lines={HERO_SOURCE.action} />
             <span className="hero-control" data-plan>
               <CodeFace className="rounded-full" shape={work}>
                 {labels.work}
@@ -105,6 +80,7 @@ export function HeroCode({ words, status, copy, proof, work, github, labels }: H
             </span>
           ))}
         </div>
+        <CodeSource className="hero-switch-source" lines={SWITCH_SOURCE} />
       </div>
     </div>
   );
