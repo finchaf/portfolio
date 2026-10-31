@@ -415,7 +415,33 @@
 }
 
 .story-open {
+  gap: 2.5rem;
+}
+
+.story-open-copy {
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
+}
+
+/* A loose row of photographs, until a wide screen spreads them over the opening. */
+.story-collage {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.875rem 0.75rem;
+}
+
+.story-scrap {
+  width: calc(var(--size) * 0.56rem);
+  rotate: var(--tilt);
+}
+
+@media (min-width: 40rem) {
+  .story-scrap {
+    width: calc(var(--size) * 0.9rem);
+  }
 }
 
 .story-chapter {
@@ -549,6 +575,19 @@
 .story-pile > :nth-child(2) {
   max-width: calc(100% - 2.5rem);
   margin-left: 2.5rem;
+}
+
+/* The portrait stands on what is under it: the edge of its shirt is the edge of the picture. */
+.story-cutout {
+  width: min(100%, 26rem);
+  margin: 0 auto -3.5rem;
+  overflow: hidden;
+}
+
+.story-cutout-image {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 /* A photograph without its frame: to the edges of a phone, from top to bottom of a wide screen. */
@@ -1110,8 +1149,31 @@
       }
 
       .story-open {
-        justify-content: center;
+        flex-direction: row;
+        align-items: center;
+        gap: calc(var(--u) * 3);
+      }
+
+      .story-open-copy {
+        flex: none;
         gap: calc(var(--u) * 1.5);
+        width: calc(var(--u) * 36);
+      }
+
+      .story-collage {
+        position: relative;
+        display: block;
+        flex: 1;
+        align-self: stretch;
+      }
+
+      .story-scrap {
+        position: absolute;
+        top: var(--top);
+        left: var(--left);
+        width: calc(var(--u) * var(--size));
+        rotate: none;
+        will-change: transform;
       }
 
       .story-chapter {
@@ -1205,10 +1267,6 @@
         margin-inline: 0;
       }
 
-      .story-bleed:first-child {
-        margin-left: calc(var(--u) * -3);
-      }
-
       .story-bleed:last-child {
         margin-right: calc(var(--u) * -3);
       }
@@ -1233,6 +1291,19 @@
       .story-col:has([data-lines-cross]) {
         overflow-x: clip;
         overflow-clip-margin: 0.75rem;
+      }
+
+      .story-cutout {
+        flex: none;
+        align-self: flex-end;
+        width: auto;
+        height: 74svh;
+        margin: 0 0 calc(-1 * var(--pad-bottom));
+      }
+
+      .story-cutout-image {
+        width: auto;
+        height: 100%;
       }
 
       .story-rent {

@@ -2,23 +2,23 @@ import { useTranslations } from "next-intl";
 
 import cafe from "./photos/cafe.webp";
 import code from "./photos/code.webp";
-import corridor from "./photos/corridor.webp";
 import eve from "./photos/eve.webp";
 import firstRoom from "./photos/first-room.webp";
 import firstScreen from "./photos/first-screen.webp";
 import forest from "./photos/forest.webp";
-import friends from "./photos/friends.webp";
 import hall from "./photos/hall.webp";
 import lift from "./photos/lift.webp";
+import me from "./photos/me.webp";
 import mirror from "./photos/mirror.webp";
+import msu from "./photos/msu.webp";
 import newYear from "./photos/new-year.webp";
+import plane from "./photos/plane.webp";
 import pizza from "./photos/pizza.webp";
 import polaroid from "./photos/polaroid.webp";
-import portrait from "./photos/portrait.webp";
 import room from "./photos/room.webp";
 import stage from "./photos/stage.webp";
-import statue from "./photos/statue.webp";
 import sunset from "./photos/sunset.webp";
+import { StoryCollage } from "./story-collage";
 import { CHAPTERS, RIBBON_BLEEDS, RIBBON_SPANS, SPANS } from "./story-data";
 import { LaunchChart, NightLog } from "./story-figures";
 import { StoryMenus } from "./story-menus";
@@ -26,6 +26,7 @@ import {
   StoryBleed,
   StoryChapter,
   StoryCol,
+  StoryCutout,
   StoryHead,
   StoryPhoto,
   StoryPile,
@@ -55,7 +56,6 @@ function Omsk() {
   const photos = useTranslations("home.story.photos");
   return (
     <StoryChapter id="omsk">
-      <StoryBleed label={photos("corridor")} src={corridor} />
       <StoryCol weight={1}>
         <StoryHead date={t("date")} title={t("title")} />
         <StoryText>{t("school")}</StoryText>
@@ -222,9 +222,9 @@ function Rent() {
           {t("quote")}
         </StoryQuote>
       </StoryCol>
-      <StoryBleed label={photos("friends")} src={friends} />
+      <StoryBleed label={photos("plane")} src={plane} />
       <StoryBleed label={photos("room")} src={room} />
-      <StoryBleed label={photos("statue")} src={statue} />
+      <StoryBleed label={photos("msu")} src={msu} />
     </StoryChapter>
   );
 }
@@ -269,7 +269,7 @@ function Now() {
         <StoryText>{t("next")}</StoryText>
         <StoryQuote depth={70}>{t("quote")}</StoryQuote>
       </StoryCol>
-      <StoryBleed label={photos("portrait")} src={portrait} />
+      <StoryCutout label={photos("me")} src={me} />
     </StoryChapter>
   );
 }
@@ -293,11 +293,14 @@ export function Story() {
           <Ruler />
           <div className="story-track" data-story-track>
             <div className="story-open" style={{ "--span": SPANS.open }}>
-              <h2 className="story-title font-display" data-title id="story-title">
-                {t("title")}
-              </h2>
-              <p className="story-text">{t("lead")}</p>
-              <p className="story-hint text-sm text-muted">{t("hint")}</p>
+              <div className="story-open-copy">
+                <h2 className="story-title font-display" data-title id="story-title">
+                  {t("title")}
+                </h2>
+                <p className="story-text">{t("lead")}</p>
+                <p className="story-hint text-sm text-muted">{t("hint")}</p>
+              </div>
+              <StoryCollage />
             </div>
             <ol className="story-chapters">
               <Omsk />

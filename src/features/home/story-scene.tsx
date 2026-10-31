@@ -37,6 +37,13 @@ const DEAL = 0.4;
 /** How far a full-height photograph slides inside its frame, in percent of its width. */
 const BLEED_SLIDE = 5.5;
 
+/** How far apart the photographs of the opening lie in their pile, in degrees and in the scene's time. */
+const PILE_TILT = 2;
+const SCRAP_STAGGER = 0.05;
+
+/** How far below its place the portrait starts, in percent of its height. */
+const CUTOUT_RISE = 14;
+
 /** How many screens of the ribbon ahead its pictures are asked for. */
 const AHEAD = 2.5;
 
@@ -129,6 +136,47 @@ function dealMenus(section: HTMLElement, scrollTrigger: (view: Element) => Scrol
   });
 }
 
+/** The photographs of the opening leave one pile as the story arrives, each to its own place. */
+function dealScraps(section: HTMLElement, scrollTrigger: ScrollTrigger.Vars) {
+  const view = section.querySelector<HTMLElement>("[data-collage]");
+  const scraps = gsap.utils.toArray<HTMLElement>("[data-scrap]", view);
+  if (!view || scraps.length === 0) return;
+  const toPile = (axis: "Left" | "Top", scrap: HTMLElement) => {
+    const size = axis === "Left" ? "Width" : "Height";
+    const place = scrap.parentElement;
+    if (!place) return 0;
+    return view[`offset${size}`] / 2 - place[`offset${axis}`] - place[`offset${size}`] / 2;
+  };
+  // A timeline, as for the menus: a staggered tween would put only the first one in the pile.
+  const scene = gsap.timeline({
+    defaults: { ease: "power2.out" },
+    scrollTrigger: { ...scrollTrigger, scrub: true, invalidateOnRefresh: true },
+  });
+  scraps.forEach((scrap, index) => {
+    scene.fromTo(
+      scrap,
+      {
+        x: () => toPile("Left", scrap),
+        y: () => toPile("Top", scrap),
+        rotation: (index % 2 ? -1 : 1) * PILE_TILT * (index + 1),
+      },
+      { x: 0, y: 0, rotation: 0, duration: 1 },
+      index * SCRAP_STAGGER,
+    );
+  });
+}
+
+/** The portrait rises the last of the way as the ribbon brings it in. */
+function raiseCutout(section: HTMLElement, scrollTrigger: (view: Element) => ScrollTrigger.Vars) {
+  const view = section.querySelector("[data-cutout]");
+  if (!view) return;
+  gsap.fromTo(
+    view.children,
+    { yPercent: CUTOUT_RISE },
+    { yPercent: 0, ease: "none", scrollTrigger: { ...scrollTrigger(view), scrub: true } },
+  );
+}
+
 /** Full-height photographs move a little inside their frames, slower than the ribbon. */
 function slideBleeds(section: HTMLElement, move: gsap.core.Tween) {
   gsap.utils.toArray<HTMLElement>("[data-bleed]", section).forEach((bleed) => {
@@ -155,7 +203,10 @@ function slideBleeds(section: HTMLElement, move: gsap.core.Tween) {
  * there too late: the chapters ahead are asked for early, and only once the story is near.
  */
 function wakeAhead(section: HTMLElement, track: HTMLElement) {
-  const chapters = gsap.utils.toArray<HTMLElement>("[data-chapter-of-story]", section);
+  const chapters = gsap.utils.toArray<HTMLElement>(
+    "[data-collage], [data-chapter-of-story]",
+    section,
+  );
   const wake = () => {
     const reach = AHEAD * window.innerWidth - Number(gsap.getProperty(track, "x"));
     chapters.forEach((chapter) => {
@@ -273,6 +324,13 @@ function runRibbon(section: HTMLElement, track: HTMLElement, mark: Mark) {
     start: "left 88%",
     end: "left 8%",
   }));
+  dealScraps(section, { trigger: section, start: "top 85%", end: "top top" });
+  raiseCutout(section, (view) => ({
+    containerAnimation: move,
+    trigger: view,
+    start: "left right",
+    end: "left 60%",
+  }));
   slideBleeds(section, move);
   wakeAhead(section, track);
   const stopLines = moveLines(section, (element) => ({
@@ -307,6 +365,9 @@ function runColumn(section: HTMLElement, mark: Mark) {
   });
 
   dealMenus(section, (view) => ({ trigger: view, start: "top 85%", end: "top 30%" }));
+  const collage = section.querySelector("[data-collage]");
+  if (collage) dealScraps(section, { trigger: collage, start: "top 95%", end: "top 35%" });
+  raiseCutout(section, (view) => ({ trigger: view, start: "top bottom", end: "top 45%" }));
 
   const stopLines = moveLines(section, (element) => ({
     trigger: element,

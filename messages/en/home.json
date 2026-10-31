@@ -131,7 +131,6 @@
       "portrait": "Portrait of Danil Zablotsky"
     },
     "photos": {
-      "corridor": "A silhouette at the window at the end of a green corridor",
       "newYear": "A New Year photo in the assembly hall, everyone in costume",
       "pizza": "Two friends with a pizza box",
       "polaroid": "Friends in a drawn instant photo",
@@ -141,14 +140,24 @@
       "eve": "A self-portrait the day before the launch",
       "stage": "A presentation of VCourse on a big screen in front of a hall",
       "cafe": "Two friends in a café",
-      "friends": "Three friends taking a selfie",
       "room": "A bright empty room with a desk by the window",
-      "statue": "A golden statue against a cloudy sky",
       "firstRoom": "A cat on a beanbag beside shelves and boxes",
       "mirror": "A selfie in a mirror",
       "hall": "A laptop in a large lecture hall",
       "sunset": "A red sunset over a street",
-      "portrait": "Danil Zablotsky with a kitten"
+      "plane": "A plane's cabin: seat backs and the aisle",
+      "msu": "The main building of Moscow State University under a cloudy sky",
+      "me": "Danil Zablotsky in a white shirt",
+      "scraps": {
+        "snow": "Three friends walking through snow, from behind",
+        "neon": "Two friends in sunglasses by a neon sign",
+        "cat": "Danil with a kitten",
+        "mirror": "A group of friends in a school mirror",
+        "pug": "A pug asleep on its back",
+        "sky": "Three friends from below against the sky",
+        "bird": "A bird on dark water",
+        "mountains": "A café with panoramic windows on the mountains"
+      }
     }
   },
   "experience": {

@@ -137,6 +137,15 @@ export function StoryPile({ children }: { children: ReactNode }) {
   return <div className="story-pile">{children}</div>;
 }
 
+/** The author with the page behind him, standing on the bottom edge of the screen. */
+export function StoryCutout({ label, src }: { label: string; src: StaticImageData }) {
+  return (
+    <figure className="story-cutout" data-cutout>
+      <Image alt={label} className="story-cutout-image" src={src} unoptimized />
+    </figure>
+  );
+}
+
 /** A photograph from the top of the screen to the bottom, which the ribbon slides past. */
 export function StoryBleed({ label, src }: { label: string; src: StaticImageData }) {
   return (
