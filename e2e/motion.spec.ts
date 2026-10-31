@@ -436,8 +436,83 @@ test.describe("the home page in motion", () => {
       });
     await expect(page.locator("[data-scrap]")).toHaveCount(8);
     await expect.poll(spread).toBeLessThan(320);
-    await jump(page, await topOf(page, "#story"));
-    await expect.poll(spread).toBeGreaterThan(800);
+    await jump(page, (await topOf(page, "#story")) + 0.2 * (await height(page)));
+    await expect.poll(spread).toBeGreaterThan(700);
+  });
+
+  test("keeps the opening's pile together until the story is nearly there", async ({ page }) => {
+    await page.goto(HOME);
+    const top = await topOf(page, "#story");
+    const offset = () =>
+      page
+        .locator("[data-scrap]")
+        .first()
+        .evaluate((scrap) => new DOMMatrix(getComputedStyle(scrap).transform).m41);
+    const pile = await offset();
+    await jump(page, top - 0.7 * (await height(page)));
+    await expect.poll(offset).toBeCloseTo(pile, 0);
+  });
+
+  test("clears the screen over the run of photographs, and gives it back", async ({ page }) => {
+    await page.goto(HOME);
+    const root = page.locator("html");
+    const capsule = page.locator("[data-capsule]");
+    const canvas = page.locator("[data-story-canvas]");
+    const { top, span } = await page.locator("#story").evaluate((node) => ({
+      top: node.getBoundingClientRect().top + window.scrollY,
+      span: node.getBoundingClientRect().height - 2 * window.innerHeight,
+    }));
+    const distance = await page
+      .locator("[data-story-track]")
+      .evaluate((node) => node.scrollWidth - window.innerWidth);
+    const run = await page.locator("[data-bare-run]").evaluate((node) => {
+      const box = node.getBoundingClientRect();
+      return { left: box.left, width: box.width };
+    });
+    const at = (x: number) => top + (span * (run.left + x)) / distance;
+    await jump(page, at(run.width / 2 - 720));
+    await expect(root).toHaveAttribute("data-bare");
+    await expect(capsule).toHaveCSS("opacity", "0");
+    await expect(canvas).toHaveCSS("opacity", "0");
+    await page.keyboard.press("Tab");
+    await expect(capsule).toHaveCSS("opacity", "1");
+    await page.locator("body").evaluate(() => {
+      (document.activeElement as HTMLElement).blur();
+    });
+    await jump(page, at(run.width + 400));
+    await expect(root).not.toHaveAttribute("data-bare");
+    await expect(capsule).toHaveCSS("opacity", "1");
+    await jump(page, at(run.width / 2 - 720));
+    await expect(root).toHaveAttribute("data-bare");
+    await jump(page, at(-1200));
+    await expect(root).not.toHaveAttribute("data-bare");
+  });
+
+  test("casts no shadow in the dark, and keeps it in the light", async ({ page }) => {
+    const none = "rgba(0, 0, 0, 0)";
+    const shadows = () =>
+      page.evaluate(() =>
+        [".chapter-stage", ".capsule-surface"].map(
+          (selector) => getComputedStyle(document.querySelector(selector) as Element).boxShadow,
+        ),
+      );
+    await page.emulateMedia({ colorScheme: "dark" });
+    await page.goto(HOME);
+    for (const shadow of await shadows()) expect(shadow).toContain(none);
+    await page.emulateMedia({ colorScheme: "light" });
+    for (const shadow of await shadows()) expect(shadow).not.toContain(none);
+  });
+
+  test("counts the launch's numbers up to what the HTML says", async ({ page }) => {
+    await page.goto(HOME);
+    const number = page.locator(".story-funnel [data-count='632']");
+    await expect(number).toHaveText("0");
+    const box = await page.locator("#story").evaluate((node) => ({
+      top: node.getBoundingClientRect().top + window.scrollY,
+      height: node.getBoundingClientRect().height,
+    }));
+    await jump(page, box.top + box.height - 2 * (await height(page)));
+    await expect(number).toHaveText("632");
   });
 
   test("ends the story with the portrait standing on the screen's edge", async ({ page }) => {
@@ -449,9 +524,14 @@ test.describe("the home page in motion", () => {
     await jump(page, box.top + box.height - 2 * (await height(page)));
     const cutout = page.locator(".story-cutout");
     await expect(cutout).toBeInViewport({ ratio: 0.9 });
-    await expect.poll(async () => (await cutout.boundingBox())?.y ?? 0).toBeGreaterThan(0);
+    const screen = await height(page);
     const place = await cutout.boundingBox();
-    expect((place?.y ?? 0) + (place?.height ?? 0)).toBeCloseTo(await height(page), -1);
+    expect((place?.y ?? 0) + (place?.height ?? 0)).toBeCloseTo(screen, -1);
+    expect((place?.x ?? 0) + (place?.width ?? 0)).toBeCloseTo(page.viewportSize()?.width ?? 0, -1);
+    const image = await cutout.locator("img").boundingBox();
+    expect((image?.x ?? 0) + (image?.width ?? 0)).toBeGreaterThan(page.viewportSize()?.width ?? 0);
+    const date = await page.locator(".story-now .story-date").boundingBox();
+    expect(place?.y ?? 0).toBeLessThan(date?.y ?? 0);
   });
 
   test("keeps lines going opposite ways inside their column", async ({ page }) => {
