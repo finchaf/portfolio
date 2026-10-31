@@ -386,7 +386,9 @@ test.describe("the home page in motion", () => {
     await expect.poll(apart).toBeGreaterThan(40);
     const box = await page.locator("#story").evaluate((node) => ({
       top: node.getBoundingClientRect().top + window.scrollY,
-      span: node.getBoundingClientRect().height - 2 * window.innerHeight,
+      span:
+        node.getBoundingClientRect().height -
+        (2 + parseFloat(node.style.getPropertyValue("--hold"))) * window.innerHeight,
     }));
     const distance = await page
       .locator("[data-story-track]")
@@ -460,7 +462,9 @@ test.describe("the home page in motion", () => {
     const canvas = page.locator("[data-story-canvas]");
     const { top, span } = await page.locator("#story").evaluate((node) => ({
       top: node.getBoundingClientRect().top + window.scrollY,
-      span: node.getBoundingClientRect().height - 2 * window.innerHeight,
+      span:
+        node.getBoundingClientRect().height -
+        (2 + parseFloat(node.style.getPropertyValue("--hold"))) * window.innerHeight,
     }));
     const distance = await page
       .locator("[data-story-track]")
@@ -515,23 +519,51 @@ test.describe("the home page in motion", () => {
     await expect(number).toHaveText("632");
   });
 
-  test("ends the story with the portrait standing on the screen's edge", async ({ page }) => {
+  test("grows one trunk from the left and branches off it, every line the same weight", async ({
+    page,
+  }) => {
     await page.goto(HOME);
+    const drawn = (line: string) =>
+      page.locator(`[data-line="${line}"]`).evaluate((node) => {
+        const path = node as SVGPathElement;
+        return 1 - parseFloat(getComputedStyle(path).strokeDashoffset) / path.getTotalLength();
+      });
+    const { end, hold } = await page.locator("#story").evaluate((node) => {
+      const hold = parseFloat(node.style.getPropertyValue("--hold")) * window.innerHeight;
+      const top = node.getBoundingClientRect().top + window.scrollY;
+      return { end: top + node.getBoundingClientRect().height - 2 * window.innerHeight, hold };
+    });
+    await jump(page, end - hold - 40);
+    await expect.poll(() => drawn("trunk")).toBeLessThan(0.02);
+    await expect(page.locator('[data-branch="first"]')).toHaveCSS("opacity", "0");
+    await jump(page, end - hold * 0.75);
+    await expect.poll(() => drawn("trunk")).toBeGreaterThan(0.2);
+    expect(await drawn("next")).toBeLessThan(0.05);
+    await jump(page, end);
+    for (const line of ["trunk", "first", "masters", "next"]) {
+      await expect.poll(() => drawn(line)).toBeGreaterThan(0.99);
+    }
+    await expect(page.locator('[data-branch="first"]')).toHaveCSS("opacity", "1");
+    await expect(page.locator('[data-branch="first"] code')).toHaveText(/^[a-z]+$/);
+    const weights = await page
+      .locator("[data-line]")
+      .evaluateAll((all) => all.map((path) => getComputedStyle(path).strokeWidth));
+    expect(new Set(weights).size).toBe(1);
+  });
+
+  test("brings the last chapter's lines to rest straight", async ({ page }) => {
+    await page.goto(HOME);
+    const lefts = () =>
+      page
+        .locator(".story-now .story-quote [data-reveal] > span")
+        .evaluateAll((all) => all.map((line) => Math.round(line.getBoundingClientRect().left)));
+    await expect.poll(async () => (await lefts()).length).toBeGreaterThan(1);
     const box = await page.locator("#story").evaluate((node) => ({
       top: node.getBoundingClientRect().top + window.scrollY,
       height: node.getBoundingClientRect().height,
     }));
     await jump(page, box.top + box.height - 2 * (await height(page)));
-    const cutout = page.locator(".story-cutout");
-    await expect(cutout).toBeInViewport({ ratio: 0.9 });
-    const screen = await height(page);
-    const place = await cutout.boundingBox();
-    expect((place?.y ?? 0) + (place?.height ?? 0)).toBeCloseTo(screen, -1);
-    expect((place?.x ?? 0) + (place?.width ?? 0)).toBeCloseTo(page.viewportSize()?.width ?? 0, -1);
-    const image = await cutout.locator("img").boundingBox();
-    expect((image?.x ?? 0) + (image?.width ?? 0)).toBeGreaterThan(page.viewportSize()?.width ?? 0);
-    const date = await page.locator(".story-now .story-date").boundingBox();
-    expect(place?.y ?? 0).toBeLessThan(date?.y ?? 0);
+    await expect.poll(async () => new Set(await lefts()).size).toBe(1);
   });
 
   test("keeps lines going opposite ways inside their column", async ({ page }) => {
@@ -767,7 +799,7 @@ test.describe("the home page on a phone", () => {
   test("shows the end of the story before the works rise over it", async ({ page }) => {
     await page.goto(HOME);
     const bottom = await page
-      .locator(".story-cutout")
+      .locator("[data-branch-list]")
       .evaluate((node) => node.getBoundingClientRect().bottom + window.scrollY);
     const works = await topOf(page, "#work-pora");
     expect(bottom).toBeLessThanOrEqual(works + 1);
