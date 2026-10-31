@@ -26,8 +26,16 @@ test.describe("with reduced motion", () => {
   }
 });
 
+const jump = (page: Page, top: number) =>
+  page.evaluate((y) => {
+    window.scrollTo({ top: y, behavior: "instant" });
+  }, top);
+
+const topOf = (page: Page, selector: string) =>
+  page.locator(selector).evaluate((node) => node.getBoundingClientRect().top + window.scrollY);
+
 const HOME = "/ru";
-const STEPS = 6;
+const CHAPTERS = 8;
 const STOPS = 8;
 const PANELS = 6;
 
@@ -36,8 +44,11 @@ test.describe("the home page without JavaScript", () => {
 
   test("shows every step, stop and panel, and no dead controls", async ({ page }) => {
     await page.goto(HOME);
-    await expect(page.locator(".story-step")).toHaveCount(STEPS);
-    for (const step of await page.locator(".story-step").all()) await expect(step).toBeVisible();
+    await expect(page.locator(".story-chapter")).toHaveCount(CHAPTERS);
+    for (const chapter of await page.locator(".story-chapter").all()) {
+      await expect(chapter).toBeVisible();
+    }
+    await expect(page.locator(".story-ruler")).toBeHidden();
     await expect(page.locator(".stop")).toHaveCount(STOPS);
     for (const stop of await page.locator(".stop").all()) await expect(stop).toBeVisible();
     await expect(page.locator(".flow-panel")).toHaveCount(PANELS);
@@ -63,9 +74,12 @@ test.describe("the home page with reduced motion", () => {
 
   test("stays a plain page: nothing is pinned, nothing hidden", async ({ page }) => {
     await page.goto(HOME);
-    await expect(page.locator(".story-stage")).toHaveCSS("position", "static");
+    await expect(page.locator(".story-stage")).toHaveCSS("position", "relative");
     await expect(page.locator(".chapter-stage").first()).toHaveCSS("position", "static");
-    for (const step of await page.locator(".story-step").all()) await expect(step).toBeVisible();
+    await expect(page.locator(".story-quote > span").first()).toHaveCSS("opacity", "1");
+    for (const chapter of await page.locator(".story-chapter").all()) {
+      await expect(chapter).toBeVisible();
+    }
     for (const stop of await page.locator(".stop").all()) await expect(stop).toBeVisible();
     await expect(page.locator(".hero-ring")).toBeHidden();
   });
@@ -84,15 +98,7 @@ test.describe("the home page with reduced motion", () => {
 });
 
 test.describe("the home page in motion", () => {
-  const jump = (page: Page, top: number) =>
-    page.evaluate((y) => {
-      window.scrollTo({ top: y, behavior: "instant" });
-    }, top);
-
   const height = (page: Page) => page.evaluate(() => window.innerHeight);
-
-  const topOf = (page: Page, selector: string) =>
-    page.locator(selector).evaluate((node) => node.getBoundingClientRect().top + window.scrollY);
 
   const lens = (page: Page, name: string) =>
     page.locator(".hero").evaluate((hero, variable) => {
@@ -213,21 +219,52 @@ test.describe("the home page in motion", () => {
     await expect(dot).toHaveAttribute("data-over");
   });
 
-  test("turns the story with the scroll, and never widens the page", async ({ page }) => {
+  test("carries the story sideways with the scroll, and never widens the page", async ({
+    page,
+  }) => {
     await page.goto(HOME);
     const box = await page.locator("#story").evaluate((node) => ({
       top: node.getBoundingClientRect().top + window.scrollY,
       height: node.getBoundingClientRect().height,
     }));
-    const last = page.locator(".story-step").last();
-    const start = await last.evaluate((node) => node.getBoundingClientRect().left);
-    await jump(page, box.top + box.height - 2 * (await height(page)));
-    await expect
-      .poll(() => last.evaluate((node) => node.getBoundingClientRect().left))
-      .toBeLessThan(start - 500);
+    const viewport = await height(page);
+    const last = page.locator(".story-chapter").last();
+    const left = () => last.evaluate((node) => node.getBoundingClientRect().left);
+    const right = () => last.evaluate((node) => node.getBoundingClientRect().right);
+    const mark = page.locator("[data-story-mark][data-active]");
+    const start = await left();
+    await expect(mark).toHaveText("Школа");
+    await jump(page, box.top + box.height - 2 * viewport);
+    await expect.poll(right).toBeCloseTo(page.viewportSize()?.width ?? 0, 0);
+    expect(await left()).toBeLessThan(start - 5000);
+    await expect(mark).toHaveText("Сейчас");
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(
       await page.evaluate(() => document.documentElement.clientWidth),
     );
+  });
+
+  test("brings the story's lines in as they arrive, and keeps them", async ({ page }) => {
+    await page.goto(HOME);
+    const quote = page.locator(".story-omsk .story-quote > span");
+    const bars = page.locator(".story-launch .story-chart");
+    await expect(quote).toHaveCSS("opacity", "0");
+    await expect(bars).not.toHaveAttribute("data-seen");
+    const box = await page.locator("#story").evaluate((node) => ({
+      top: node.getBoundingClientRect().top + window.scrollY,
+      height: node.getBoundingClientRect().height,
+    }));
+    await jump(page, box.top + box.height - 2 * (await height(page)));
+    await expect(quote).toHaveCSS("opacity", "1");
+    await expect(bars).toHaveAttribute("data-seen");
+    await jump(page, box.top);
+    await expect(quote).toHaveCSS("opacity", "1");
+  });
+
+  test("keeps the night dark in a light mode", async ({ page }) => {
+    await page.emulateMedia({ colorScheme: "light" });
+    await page.goto(HOME);
+    await expect(page.locator(".story-night")).toHaveCSS("color-scheme", "dark");
+    await expect(page.locator(".story-night")).toHaveCSS("background-color", "rgb(20, 27, 34)");
   });
 
   test("gives the capsule the theme of the work on the screen, and takes it back", async ({
@@ -334,6 +371,17 @@ test.describe("the home page on a phone", () => {
     const box = await link.boundingBox();
     const drawing = await link.locator("svg:visible").boundingBox();
     expect(box?.width).toBeGreaterThanOrEqual(drawing?.width ?? Infinity);
+  });
+
+  test("keeps the story a column that comes up as it is read", async ({ page }) => {
+    await page.goto(HOME);
+    await expect(page.locator(".story-stage")).toHaveCSS("position", "relative");
+    const quote = page.locator(".story-launch .story-quote > span");
+    await expect(quote).toHaveCSS("opacity", "0");
+    await jump(page, await topOf(page, ".story-launch"));
+    await expect(quote).toHaveCSS("opacity", "1");
+    await expect(page.locator("[data-story-mark][data-active]")).toHaveText("1 сентября 2025");
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
   });
 
   test("moves the capsule to the bottom and fits the width", async ({ page }) => {
