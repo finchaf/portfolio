@@ -19,6 +19,7 @@ export function StoryChapter({
     <li
       className={`story-chapter story-${id}`}
       data-chapter-of-story
+      data-ruler-band={dark ? "" : undefined}
       data-tint={dark ? "home" : undefined}
       style={{ "--span": SPANS[id] }}
     >
@@ -43,6 +44,7 @@ export function StoryCol({
   return (
     <div
       className={`story-col story-col-${at} ${spot ? "story-spot" : ""}`}
+      data-ruler-band={spot ? "" : undefined}
       style={{ "--weight": weight }}
     >
       {children}

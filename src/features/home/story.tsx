@@ -15,20 +15,12 @@ import {
 } from "./story-parts";
 import { StoryScene } from "./story-scene";
 
-/** Heights of the short ticks around the needle, in rem: a ripple where the reader stands. */
-const RIPPLE = [0.5, 0.75, 1, 1.35, 1.75, 1.35, 1, 0.75, 0.5];
-
 function Ruler() {
   const t = useTranslations("home.story");
   return (
-    <div aria-hidden className="story-ruler">
-      <div className="story-ticks" data-story-ticks />
-      <div className="story-needle">
-        {RIPPLE.map((height, index) => (
-          <i key={index} style={{ "--h": height, "--i": index - (RIPPLE.length - 1) / 2 }} />
-        ))}
-      </div>
-      <div className="story-marks">
+    <div aria-hidden className="story-ruler" data-story-paper>
+      <canvas data-story-canvas />
+      <div className="story-marks" data-story-marks>
         {CHAPTERS.map((chapter) => (
           <span data-story-mark key={chapter}>
             {t(`${chapter}.mark`)}
@@ -224,7 +216,7 @@ export function Story() {
         style={{ "--spans": RIBBON_SPANS }}
       >
         <div className="story-stage" data-under>
-          <div aria-hidden className="story-grain" />
+          <div aria-hidden className="story-paper" data-story-paper />
           <Ruler />
           <div className="story-track" data-story-track>
             <div className="story-open" style={{ "--span": SPANS.open }}>
