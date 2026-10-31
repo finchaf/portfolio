@@ -537,7 +537,13 @@
 .story-menus {
   position: relative;
   width: 100%;
-  aspect-ratio: 1264 / 862;
+  margin-top: 0.75rem;
+  aspect-ratio: var(--field);
+}
+
+/* The screenshot is a dark card of its own: on a dark page its corners keep it a card. */
+.story-omsk .story-image {
+  border-radius: 1rem;
 }
 
 .story-menu {
@@ -1346,6 +1352,15 @@
       .story-menus {
         width: calc(var(--u) * 60);
         max-width: 100%;
+        margin-top: 0;
+      }
+
+      .story-omsk .story-quote {
+        max-width: none;
+      }
+
+      .story-omsk .story-image {
+        border-radius: calc(var(--u) * 1.4);
       }
 
       .story-pile {

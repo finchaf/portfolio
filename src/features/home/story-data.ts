@@ -4,90 +4,38 @@
  */
 export const LAUNCH_DOWNLOADS = [160, 411, 61, 38, 25, 14, 13, 28, 18, 20, 11, 7, 8, 9] as const;
 
-/** The file behind the first chapter: rows of `[menu, column]`, where the frames lie in Figma. */
-const FILE: readonly (readonly (readonly [number, number])[])[] = [
-  [
-    [1, 2.5],
-    [2, 4],
-    [3, 5],
-  ],
-  [
-    [4, 0],
-    [6, 1],
-    [7, 2],
-    [8, 3],
-    [9, 4],
-    [10, 5],
-  ],
-  [
-    [5, 0],
-    [11, 1],
-    [12, 2],
-    [13, 3],
-    [14, 4],
-    [15, 5],
-    [16, 6],
-  ],
-  [
-    [38, 0],
-    [17, 2],
-    [18, 3],
-    [19, 4],
-  ],
-  [
-    [39, 0],
-    [20, 2],
-    [21, 3],
-    [22, 4],
-    [23, 5],
-    [24, 6],
-    [25, 7],
-    [26, 8],
-  ],
-  [
-    [40, 0],
-    [41, 4],
-    [27, 6],
-    [28, 7],
-    [29, 8],
-    [30, 9],
-    [31, 10],
-    [32, 11],
-    [33, 12],
-  ],
-  [
-    [42, 4],
-    [34, 6],
-    [35, 7],
-    [36, 8],
-    [37, 9],
-  ],
-  [[43, 4]],
-  [[44, 4]],
-  [[45, 4]],
-  [[46, 4]],
-  [[47, 4]],
-];
+/** The file behind the first chapter as one wall: how many frames stand in each row of it. */
+const WALL = [10, 10, 10, 10, 7];
 
-/** The grid of the file, in widths and heights of a frame. */
+/** The grid of the wall, in widths and heights of a frame. */
 const STEP = { x: 98 / 88, y: 73.2 / 56.8 };
+
+/** A frame's own width over its height. */
+const FRAME = 110 / 71;
 
 /** The picture all the frames share, one request for 47 elements: columns and rows of its cells. */
 export const SPRITE = { columns: 8, rows: 6 };
 
-/** Where the file lies as a whole, in frames. */
-export const FIELD = { columns: 12 * STEP.x + 1, rows: (FILE.length - 1) * STEP.y + 1 };
+/** Where the wall lies as a whole, in frames. */
+export const FIELD = {
+  columns: (Math.max(...WALL) - 1) * STEP.x + 1,
+  rows: (WALL.length - 1) * STEP.y + 1,
+};
 
-export const MENUS = FILE.flatMap((frames, row) =>
-  frames.map(([menu, column]) => ({
-    menu,
+/** The wall's width over its height. */
+export const FIELD_RATIO = (FIELD.columns * FRAME) / FIELD.rows;
+
+export const MENUS = WALL.flatMap((frames, row) => {
+  const before = WALL.slice(0, row).reduce((sum, count) => sum + count, 0);
+  return Array.from({ length: frames }, (_, column) => ({
+    menu: before + column + 1,
     left: (column * STEP.x) / FIELD.columns,
     top: (row * STEP.y) / FIELD.rows,
     /** How far the frame starts from the first one, in its own size, in percent. */
-    fromX: (2.5 - column) * STEP.x * 100,
-    fromY: -row * STEP.y * 100,
-  })),
-).sort((a, b) => b.menu - a.menu);
+    fromX: (0 - column) * STEP.x * 100,
+    fromY: (0 - row) * STEP.y * 100,
+  }));
+}).sort((a, b) => b.menu - a.menu);
 
 /**
  * The collage that opens the story: nine prints the owner chose, in the order of the years, so it is

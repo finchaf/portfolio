@@ -43,7 +43,7 @@ describe("the file of menus", () => {
   });
 
   it("starts them all from the first frame, which lies on top", () => {
-    expect(MENUS.at(-1)).toMatchObject({ menu: 1, fromX: 0, fromY: -0 });
+    expect(MENUS.at(-1)).toMatchObject({ menu: 1, fromX: 0, fromY: 0 });
   });
 });
 
