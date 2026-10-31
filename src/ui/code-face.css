@@ -5,14 +5,16 @@
   white-space: pre-wrap;
 }
 
-/* The hatching of the code layer, on a control and on the name alike. */
-.code-face,
+/*
+ * The hatching of the code layer, on a control and on the name alike: a tile used as a mask over a
+ * flat colour, so the colour stays a token. Not a repeating gradient: Gecko loses most of a thin
+ * diagonal one, at random.
+ */
+.code-face::before,
 .code-hatch {
-  background-image: repeating-linear-gradient(
-    -45deg,
-    color-mix(in srgb, var(--accent) 55%, transparent) 0 1px,
-    transparent 1px 5px
-  );
+  background-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7'%3E%3Cpath d='M-1 8 8-1M-1 1 1-1M6 8 8 6' stroke='%23000' fill='none'/%3E%3C/svg%3E")
+    0 0 / 7px 7px;
 }
 
 /* A control as an inspector sees it: hatching over its padding, a frame around its content. */
@@ -30,7 +32,15 @@
   white-space: nowrap;
 }
 
+.code-face::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
 .code-face > span {
+  position: relative;
   display: block;
   padding: 1px 2px;
   background: var(--page);
