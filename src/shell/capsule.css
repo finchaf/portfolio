@@ -138,3 +138,36 @@
 [data-capsule][data-lens]:has(:focus-visible) .capsule-code {
   display: none;
 }
+
+/*
+ * A low screen has no room for the whole map above the name: the block closes up around what it
+ * cuts, and on a very low one only the sizes stay.
+ */
+@media (min-width: 64rem) and (height < 52rem) {
+  .capsule-source code:nth-child(n + 3):nth-child(-n + 7) {
+    display: none;
+  }
+
+  .capsule-source code:nth-child(2)::after {
+    content: " … />" / "";
+    color: var(--accent);
+  }
+}
+
+@media (min-width: 64rem) and (height < 37.5rem) {
+  .capsule-source {
+    display: none;
+  }
+}
+
+:root[data-scrolled] [data-capsule][data-lens] .capsule-code {
+  background: var(--page);
+}
+
+[data-capsule]:has(:focus-visible) .capsule-items {
+  mask-image: none;
+}
+
+[data-capsule][data-lens]:has(:focus-visible) .capsule-code {
+  display: none;
+}

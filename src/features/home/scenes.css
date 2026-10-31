@@ -337,6 +337,24 @@
   }
 }
 
+/* On a low screen the switch's source closes up, as the capsule's does, or leaves. */
+@media (min-width: 64rem) and (height < 52rem) {
+  .hero-switch-source code:not(:first-child) {
+    display: none;
+  }
+
+  .hero-switch-source code:first-child::after {
+    content: " … />" / "";
+    color: var(--accent);
+  }
+}
+
+@media (min-width: 64rem) and (height < 37.5rem) {
+  .hero-switch-source {
+    display: none;
+  }
+}
+
 /* Film grain over the whole page, faint enough to feel rather than see. Its tile is plain noise. */
 .home-grain {
   position: fixed;
