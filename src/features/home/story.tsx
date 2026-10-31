@@ -3,8 +3,9 @@ import { useTranslations } from "next-intl";
 import firstScreen from "./photos/first-screen.webp";
 import firstSite from "./photos/first-site.webp";
 import portrait from "./photos/portrait.webp";
+import { FigmaCanvas } from "./story-canvas";
 import { CHAPTERS, RIBBON_SPANS, SPANS } from "./story-data";
-import { FrameWall, LaunchChart, NightLog } from "./story-figures";
+import { LaunchChart, NightLog } from "./story-figures";
 import {
   StoryChapter,
   StoryCol,
@@ -41,7 +42,7 @@ function Omsk() {
         <StoryText>{t("game")}</StoryText>
       </StoryCol>
       <StoryCol at="middle" weight={1.15}>
-        <FrameWall />
+        <FigmaCanvas />
       </StoryCol>
       <StoryCol at="bottom" weight={0.95}>
         <StoryPhoto label={t("photo")} size={21} tilt={-2.5} />

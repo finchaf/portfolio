@@ -2,27 +2,6 @@ import { useTranslations } from "next-intl";
 
 import { LAUNCH_DOWNLOADS } from "./story-data";
 
-/** Frames on the wall: as many as «100+» asks for, drawn rather than shown. */
-const FRAMES = Array.from({ length: 104 }, (_, index) => index);
-
-/** The one a reader's eye lands on, picked out the way Figma picks a frame. */
-const PICKED = 44;
-
-/** The file behind the story, as a pattern: the file itself stays private. */
-export function FrameWall() {
-  const t = useTranslations("home.story.omsk");
-  return (
-    <figure className="story-wall" data-reveal="stagger">
-      <div aria-hidden className="story-wall-frames">
-        {FRAMES.map((frame) => (
-          <i data-picked={frame === PICKED ? "" : undefined} key={frame} style={{ "--i": frame }} />
-        ))}
-      </div>
-      <figcaption className="story-caption">{t("wall")}</figcaption>
-    </figure>
-  );
-}
-
 const LABELLED = 3;
 
 /** The first two weeks in the store, from the export in story-data.ts. */

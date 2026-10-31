@@ -5,6 +5,7 @@ import { useRef, type ReactNode } from "react";
 import { gsap, MOTION_ALLOWED, ScrollTrigger, useGSAP } from "@/motion/gsap";
 import { SCENE } from "@/motion/tokens";
 
+import { CANVAS } from "./story-data";
 import { createRuler } from "./story-ruler";
 
 const WIDE = `${MOTION_ALLOWED} and (min-width: 64rem)`;
@@ -26,6 +27,9 @@ const PAPER_SCREENS = 0.4;
 
 /** Where on the screen a chapter becomes the current one: a share of its width or height, in %. */
 const CURRENT_AT = 58;
+
+/** The share of the camera's move in which the selection leaves. */
+const SELECTION_LEAVES = 0.2;
 
 type Mark = (index: number) => void;
 
@@ -92,6 +96,35 @@ function turnToPaper(section: HTMLElement) {
   );
 }
 
+/**
+ * The camera pulls back from one frame of the Figma file to all of it, and the file's zoom counts down
+ * with it. The steps of a zoom are equal in ratio, not in size, as they are under a real trackpad.
+ */
+function pullBack(section: HTMLElement, scrollTrigger: (view: Element) => ScrollTrigger.Vars) {
+  const view = section.querySelector("[data-figma-view]");
+  const world = view?.querySelector<HTMLElement>("[data-figma-world]");
+  const zoom = view?.querySelector("[data-figma-zoom]");
+  if (!view || !world || !zoom) return;
+  const camera = { pulled: 0 };
+  const paint = () => {
+    const closer = CANVAS.close ** (1 - camera.pulled);
+    gsap.set(world, { scale: closer });
+    zoom.textContent = String(Math.round(CANVAS.fileZoom * closer));
+  };
+  paint();
+  gsap
+    .timeline({
+      defaults: { ease: "none" },
+      scrollTrigger: { ...scrollTrigger(view), scrub: true },
+    })
+    .to(camera, { pulled: 1, duration: 1, onUpdate: paint }, 0)
+    .to(
+      view.querySelectorAll("[data-figma-select]"),
+      { opacity: 0, duration: SELECTION_LEAVES },
+      0,
+    );
+}
+
 /** Shows an element once its trigger has been passed: the stylesheet does the move. */
 function revealOnce(element: Element, vars: ScrollTrigger.Vars) {
   ScrollTrigger.create({
@@ -155,6 +188,13 @@ function runRibbon(section: HTMLElement, track: HTMLElement, mark: Mark) {
     });
   });
 
+  pullBack(section, (view) => ({
+    containerAnimation: move,
+    trigger: view,
+    start: "left 78%",
+    end: "left 12%",
+  }));
+
   return runRuler(section, () => move.progress() * distance() * RULER_PACE);
 }
 
@@ -174,6 +214,8 @@ function runColumn(section: HTMLElement, mark: Mark) {
       },
     });
   });
+
+  pullBack(section, (view) => ({ trigger: view, start: "top 80%", end: "top 25%" }));
 
   return runRuler(section, () => along.progress * RULER_TRAVEL);
 }
