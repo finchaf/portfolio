@@ -621,12 +621,20 @@ test.describe("the home page in motion", () => {
     expect((ruler?.y ?? 0) + (ruler?.height ?? 0)).toBeCloseTo(await height(page), 0);
   });
 
-  test("lets the grain run over the whole page and take no pointer", async ({ page }) => {
+  test("keeps the grain to the story, arriving with the paper and taking no pointer", async ({
+    page,
+  }) => {
     await page.goto(HOME);
-    const grain = page.locator(".home-grain");
-    await expect(grain).toHaveCSS("position", "fixed");
+    await expect(page.locator(".story-grain")).toHaveCount(1);
+    const grain = page.locator("#story .story-grain");
+    await expect(grain).toHaveCSS("opacity", "0");
     await expect(grain).toHaveCSS("pointer-events", "none");
-    await expect(grain).toHaveCSS("animation-name", "home-grain");
+    const animation = await grain.evaluate(
+      (node) => getComputedStyle(node, "::before").animationName,
+    );
+    expect(animation).toBe("story-grain");
+    await jump(page, (await topOf(page, "#story")) + (await height(page)));
+    await expect(grain).toHaveCSS("opacity", "1");
   });
 
   test("draws the ruler again as the ticks pass the needle", async ({ page }) => {

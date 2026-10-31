@@ -13,7 +13,6 @@ import { Work } from "./work";
 export function HomePage() {
   return (
     <World bleed name="home">
-      <div aria-hidden className="home-grain" />
       <PersonData />
       <Hero />
       <Story />

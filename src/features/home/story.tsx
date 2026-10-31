@@ -277,6 +277,7 @@ export function Story() {
       >
         <div className="story-stage" data-under>
           <div aria-hidden className="story-paper" data-story-paper />
+          <div aria-hidden className="story-grain" data-story-paper />
           <Ruler />
           <div className="story-track" data-story-track>
             <div className="story-open" style={{ "--span": SPANS.open }}>

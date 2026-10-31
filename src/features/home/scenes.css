@@ -363,16 +363,6 @@
   box-shadow: none;
 }
 
-/* Film grain over the whole page, faint enough to feel rather than see. Its tile is plain noise. */
-.home-grain {
-  position: fixed;
-  z-index: 20;
-  inset: -1rem;
-  background: url("./grain.png") 0 0 / 8rem;
-  opacity: 0.035;
-  pointer-events: none;
-}
-
 /* Story: chapters one under another until a scene takes them. */
 .story {
   position: relative;
@@ -386,6 +376,29 @@
 
 .story-paper {
   display: none;
+}
+
+/*
+ * Film grain over the story and nowhere else, faint enough to feel rather than see. Its tile is plain
+ * noise. Held on the screen, so a phone's long column keeps one small layer; the tile overhangs it
+ * to jump without showing an edge.
+ */
+.story-grain {
+  position: sticky;
+  z-index: 3;
+  top: 0;
+  overflow: clip;
+  height: 100lvh;
+  margin-bottom: -100lvh;
+  pointer-events: none;
+}
+
+.story-grain::before {
+  content: "";
+  position: absolute;
+  inset: -1rem;
+  background: url("./grain.png") 0 0 / 8rem;
+  opacity: 0.035;
 }
 
 /* Ticks of a band take its colours from here: `color` and this one. */
@@ -1085,7 +1098,7 @@
   }
 
   /* Jumps, not a drift: a new frame of film eight times a round. */
-  @keyframes home-grain {
+  @keyframes story-grain {
     0%,
     100% {
       transform: none;
@@ -1120,8 +1133,8 @@
     }
   }
 
-  .home-grain {
-    animation: home-grain var(--duration-grain) steps(1) infinite;
+  .story-grain::before {
+    animation: story-grain var(--duration-grain) steps(1) infinite;
   }
 
   :root[data-js] {
@@ -1161,6 +1174,11 @@
       height: 100lvh;
       margin-bottom: -100lvh;
       background: var(--paper);
+      opacity: 0;
+    }
+
+    /* It arrives with the paper: the first screen has none, and no line shows where they meet. */
+    .story-grain {
       opacity: 0;
     }
 
