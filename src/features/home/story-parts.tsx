@@ -116,7 +116,7 @@ export function StoryPhoto({
   );
 }
 
-/** Two prints, the second lying over the corner of the first. */
+/** Two prints side by side, on one line at the bottom. */
 export function StoryPile({ children }: { children: ReactNode }) {
   return <div className="story-pile">{children}</div>;
 }

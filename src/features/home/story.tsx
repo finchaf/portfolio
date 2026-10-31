@@ -67,8 +67,8 @@ function Omsk() {
       </StoryCol>
       <StoryCol at="bottom" weight={1}>
         <StoryPile>
-          <StoryPhoto label={photos("newYear")} size={20} src={newYear} tilt={-2} />
-          <StoryPhoto drift={90} label={photos("pizza")} size={14} src={pizza} tilt={3} />
+          <StoryPhoto label={photos("newYear")} size={17} src={newYear} tilt={-2} />
+          <StoryPhoto drift={90} label={photos("pizza")} size={12.5} src={pizza} tilt={3} />
         </StoryPile>
         <StoryQuote>{t("quote")}</StoryQuote>
         <StoryText>{t("after")}</StoryText>
@@ -149,7 +149,7 @@ function Launch() {
           <StoryPhoto
             caption={t("eveCaption")}
             label={photos("eve")}
-            size={22}
+            size={19}
             src={eve}
             tilt={-1.5}
           />
@@ -157,7 +157,7 @@ function Launch() {
             caption={t("stageCaption")}
             drift={80}
             label={photos("stage")}
-            size={14}
+            size={13}
             src={stage}
             tilt={2}
           />
@@ -240,8 +240,8 @@ function Moscow() {
       </StoryCol>
       <StoryCol at="bottom" weight={1.25}>
         <StoryPile>
-          <StoryPhoto label={photos("sunset")} size={25} src={sunset} tilt={1} />
-          <StoryPhoto drift={90} label={photos("hall")} size={12} src={hall} tilt={-2.5} />
+          <StoryPhoto label={photos("sunset")} size={31} src={sunset} tilt={1} />
+          <StoryPhoto drift={90} label={photos("hall")} size={17} src={hall} tilt={-2.5} />
         </StoryPile>
         <StoryQuote>{t("quote")}</StoryQuote>
         <StoryText>{t("prompts")}</StoryText>
