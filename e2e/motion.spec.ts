@@ -276,6 +276,14 @@ test.describe("the home page in motion", () => {
     await expect(page.locator(".story-ruler")).toHaveCSS("opacity", "1");
   });
 
+  test("stands the ruler on the bottom edge of a wide screen", async ({ page }) => {
+    await page.goto(HOME);
+    await jump(page, (await topOf(page, "#story")) + (await height(page)));
+    await expect(page.locator(".story-ruler")).toHaveCSS("opacity", "1");
+    const ruler = await page.locator(".story-ruler").boundingBox();
+    expect((ruler?.y ?? 0) + (ruler?.height ?? 0)).toBeCloseTo(await height(page), 0);
+  });
+
   test("lets the grain run over the whole page and take no pointer", async ({ page }) => {
     await page.goto(HOME);
     const grain = page.locator(".home-grain");
@@ -310,19 +318,23 @@ test.describe("the home page in motion", () => {
         await page.setViewportSize({ width, height: viewport });
         await page.goto(`/${locale}`);
         // Offsets, not boxes: a line that drifts or a print that lies at an angle is not out of place.
-        const misfits = await page.locator("#story").evaluate((story) =>
-          [...story.querySelectorAll<HTMLElement>(".story-col")].flatMap((column) =>
+        // A chapter keeps clear of the capsule above it and the ruler below.
+        const misfits = await page.locator("#story").evaluate((story) => {
+          const ruler = story.querySelector<HTMLElement>(".story-ruler")?.offsetHeight ?? 0;
+          const floor = window.innerHeight - ruler;
+          return [...story.querySelectorAll<HTMLElement>(".story-col")].flatMap((column) =>
             [...column.querySelectorAll<HTMLElement>(":scope > *")].flatMap((child) => {
               const tooWide =
                 child.offsetWidth > column.offsetWidth ||
                 [...child.querySelectorAll<HTMLElement>(".story-date")].some(
                   (date) => date.scrollWidth > column.clientWidth,
                 );
-              const tooLow = child.offsetTop + child.offsetHeight > window.innerHeight;
-              return tooWide || tooLow ? [child.textContent.slice(0, 32)] : [];
+              const tooHigh = child.offsetTop < 72;
+              const tooLow = child.offsetTop + child.offsetHeight > floor;
+              return tooWide || tooHigh || tooLow ? [child.textContent.slice(0, 32)] : [];
             }),
-          ),
-        );
+          );
+        });
         expect(misfits).toEqual([]);
       });
     }
@@ -444,6 +456,7 @@ test.describe("the home page on a phone", () => {
   test("keeps the story a column that comes up as it is read", async ({ page }) => {
     await page.goto(HOME);
     await expect(page.locator(".story-stage")).toHaveCSS("position", "relative");
+    await expect(page.locator(".story-ruler")).toHaveCSS("position", "sticky");
     const quote = page.locator(".story-launch .story-quote > span");
     await expect(quote).toHaveCSS("opacity", "0");
     await jump(page, await topOf(page, ".story-launch"));
