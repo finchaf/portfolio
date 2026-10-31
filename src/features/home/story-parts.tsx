@@ -54,10 +54,15 @@ export function StoryCol({
   );
 }
 
+/** How far a chapter's date goes against the ribbon: less than a large line, it stands on its own. */
+const DATE_DEPTH = 36;
+
 export function StoryHead({ date, title }: { date: string; title: string }) {
   return (
     <header className="story-head" data-reveal>
-      <p className="story-date font-display">{date}</p>
+      <p className="story-date font-display" data-lines={DATE_DEPTH}>
+        {date}
+      </p>
       <h3 className="story-name font-display">{title}</h3>
     </header>
   );
@@ -71,10 +76,21 @@ export function StoryText({ children }: { children: ReactNode }) {
   );
 }
 
-/** A line of the story set large, that drifts against the ribbon on a wide screen. */
-export function StoryQuote({ children, drift = 40 }: { children: ReactNode; drift?: number }) {
+/**
+ * A line of the story set large. Its lines of text move against the scroll at their own speeds and
+ * read straight where they meet; `cross` sends them to opposite sides, for a turn in the story.
+ */
+export function StoryQuote({
+  children,
+  depth = 90,
+  cross = false,
+}: {
+  children: ReactNode;
+  depth?: number;
+  cross?: boolean;
+}) {
   return (
-    <p className="story-quote" data-drift={drift}>
+    <p className="story-quote" data-lines={depth} data-lines-cross={cross ? "" : undefined}>
       <span data-reveal>{children}</span>
     </p>
   );

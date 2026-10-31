@@ -92,7 +92,7 @@ function University() {
       </StoryCol>
       <StoryCol at="bottom" weight={1.1}>
         <StoryPhoto drift={90} label={photos("lift")} size={24} src={lift} tilt={-2} />
-        <StoryQuote drift={60}>{t("quote")}</StoryQuote>
+        <StoryQuote depth={120}>{t("quote")}</StoryQuote>
         <StoryText>{t("idea")}</StoryText>
       </StoryCol>
     </StoryChapter>
@@ -139,7 +139,9 @@ function Launch() {
       </StoryCol>
       <StoryCol at="middle" spot weight={1.3}>
         <p className="story-rank" data-reveal>
-          <span className="story-rank-number font-display">{t("rank")}</span>
+          <span className="story-rank-number font-display" data-lines={28}>
+            {t("rank")}
+          </span>
           <span className="story-rank-label">{t("rankLabel")}</span>
         </p>
         <LaunchChart />
@@ -176,7 +178,9 @@ function Fork() {
       <StoryCol at="middle" weight={1.15}>
         <StoryHead date={t("date")} title={t("title")} />
         <StoryText>{t("question")}</StoryText>
-        <StoryQuote drift={60}>{t("quote")}</StoryQuote>
+        <StoryQuote cross depth={150}>
+          {t("quote")}
+        </StoryQuote>
         <StoryText>{t("answer")}</StoryText>
       </StoryCol>
       <StoryCol at="bottom" weight={1}>
@@ -196,14 +200,13 @@ function Night() {
         <StoryText>{t("need")}</StoryText>
       </StoryCol>
       <StoryCol at="middle" weight={1.15}>
-        <StoryQuote drift={60}>{t("quote")}</StoryQuote>
+        <StoryQuote depth={120}>{t("quote")}</StoryQuote>
         <NightLog />
       </StoryCol>
       <StoryCol at="bottom" weight={0.9}>
         <StoryText>{t("wait")}</StoryText>
-        <StoryText>
-          <b>{t("grant")}</b> {t("move")}
-        </StoryText>
+        <StoryQuote depth={110}>{t("grant")}</StoryQuote>
+        <StoryText>{t("move")}</StoryText>
       </StoryCol>
     </StoryChapter>
   );
@@ -215,7 +218,9 @@ function Rent() {
   return (
     <StoryChapter id="rent">
       <StoryCol at="bottom">
-        <StoryQuote drift={50}>{t("quote")}</StoryQuote>
+        <StoryQuote cross depth={190}>
+          {t("quote")}
+        </StoryQuote>
       </StoryCol>
       <StoryBleed label={photos("friends")} src={friends} />
       <StoryBleed label={photos("room")} src={room} />
@@ -262,7 +267,7 @@ function Now() {
           {t("firstSource")}
         </p>
         <StoryText>{t("next")}</StoryText>
-        <StoryQuote drift={30}>{t("quote")}</StoryQuote>
+        <StoryQuote depth={70}>{t("quote")}</StoryQuote>
       </StoryCol>
       <StoryBleed label={photos("portrait")} src={portrait} />
     </StoryChapter>
@@ -288,7 +293,7 @@ export function Story() {
           <Ruler />
           <div className="story-track" data-story-track>
             <div className="story-open" style={{ "--span": SPANS.open }}>
-              <h2 className="story-title font-display" id="story-title">
+              <h2 className="story-title font-display" data-title id="story-title">
                 {t("title")}
               </h2>
               <p className="story-text">{t("lead")}</p>

@@ -2,6 +2,7 @@
 
 import { useRef, type ReactNode } from "react";
 
+import { driftLines } from "@/motion/drift-lines";
 import { gsap, MOTION_ALLOWED, ScrollTrigger, useGSAP } from "@/motion/gsap";
 import { SCENE } from "@/motion/tokens";
 
@@ -20,6 +21,9 @@ const RULER_TRAVEL = 2400;
 const RIPPLE = 0.45;
 const RIPPLE_SPEED = 14;
 const RIPPLE_EASE = 0.12;
+
+/** How far the lines of the story's title go when the ribbon starts, in pixels of the wide screen. */
+const TITLE_DEPTH = 150;
 
 /** How long the page takes to turn to paper once the story holds, in screens of scroll. */
 const PAPER_SCREENS = 0.4;
@@ -170,6 +174,36 @@ function wakeAhead(section: HTMLElement, track: HTMLElement) {
   });
 }
 
+/** The large lines of the story move line by line, on whichever axis the page goes along. */
+function moveLines(section: HTMLElement, passing: (element: Element) => ScrollTrigger.Vars) {
+  const stops = gsap.utils.toArray<HTMLElement>("[data-lines]", section).map((element) =>
+    driftLines(element.querySelector("[data-reveal]") ?? element, {
+      depth: Number(element.dataset.lines),
+      cross: element.hasAttribute("data-lines-cross"),
+      scrollTrigger: passing(element),
+    }),
+  );
+  const title = section.querySelector("[data-title]");
+  if (title) {
+    stops.push(
+      driftLines(title, {
+        depth: TITLE_DEPTH,
+        path: "leave",
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",
+          end: () => `+=${String(window.innerHeight)}`,
+        },
+      }),
+    );
+  }
+  return () => {
+    stops.forEach((stop) => {
+      stop();
+    });
+  };
+}
+
 /** Shows an element once its trigger has been passed: the stylesheet does the move. */
 function revealOnce(element: Element, vars: ScrollTrigger.Vars) {
   ScrollTrigger.create({
@@ -241,8 +275,18 @@ function runRibbon(section: HTMLElement, track: HTMLElement, mark: Mark) {
   }));
   slideBleeds(section, move);
   wakeAhead(section, track);
+  const stopLines = moveLines(section, (element) => ({
+    containerAnimation: move,
+    trigger: element,
+    start: "left right",
+    end: "right left",
+  }));
+  const stopRuler = runRuler(section, () => move.progress() * distance() * RULER_PACE);
 
-  return runRuler(section, () => move.progress() * distance() * RULER_PACE);
+  return () => {
+    stopLines();
+    stopRuler();
+  };
 }
 
 /** A phone keeps the page: chapters come up as they arrive, and the ruler counts along. */
@@ -264,7 +308,17 @@ function runColumn(section: HTMLElement, mark: Mark) {
 
   dealMenus(section, (view) => ({ trigger: view, start: "top 85%", end: "top 30%" }));
 
-  return runRuler(section, () => along.progress * RULER_TRAVEL);
+  const stopLines = moveLines(section, (element) => ({
+    trigger: element,
+    start: "top bottom",
+    end: "bottom top",
+  }));
+  const stopRuler = runRuler(section, () => along.progress * RULER_TRAVEL);
+
+  return () => {
+    stopLines();
+    stopRuler();
+  };
 }
 
 /**

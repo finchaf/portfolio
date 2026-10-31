@@ -1,10 +1,14 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
+import { DriftTitle } from "./drift-title";
 import portrait from "./portrait.webp";
 
 const ROWS = ["pora", "first", "team", "freelance"] as const;
 const NOTES = ["grant", "pitch", "english"] as const;
+
+/** How far the heading starts from its place, in pixels of the wide screen. */
+const TITLE_DEPTH = 160;
 
 /** The dates a reader in a hurry came for, and a person behind them. */
 export function Experience() {
@@ -17,9 +21,13 @@ export function Experience() {
     >
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-4">
-          <h2 className="font-display text-3xl font-bold lg:text-5xl" id="experience-title">
+          <DriftTitle
+            className="font-display text-3xl font-bold lg:text-5xl"
+            depth={TITLE_DEPTH}
+            id="experience-title"
+          >
             {t("title")}
-          </h2>
+          </DriftTitle>
           <ul>
             {ROWS.map((row) => (
               <li

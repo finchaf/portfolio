@@ -1223,6 +1223,12 @@
         max-width: 20em;
       }
 
+      /* Lines going opposite ways leave from the edge of their column, not over its neighbours. */
+      .story-col:has([data-lines-cross]) {
+        overflow-x: clip;
+        overflow-clip-margin: 0.75rem;
+      }
+
       .story-rent {
         gap: 0;
       }
