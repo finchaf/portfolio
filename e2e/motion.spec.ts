@@ -434,7 +434,7 @@ test.describe("the home page in motion", () => {
         });
         return Math.max(...centres) - Math.min(...centres);
       });
-    await expect(page.locator("[data-scrap]")).toHaveCount(8);
+    await expect(page.locator("[data-scrap]")).toHaveCount(9);
     await expect.poll(spread).toBeLessThan(320);
     await jump(page, (await topOf(page, "#story")) + 0.2 * (await height(page)));
     await expect.poll(spread).toBeGreaterThan(700);
