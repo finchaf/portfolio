@@ -18,6 +18,28 @@
   --success: light-dark(#08b94e, #44cf6e);
   --warning: light-dark(#ec7500, #e9973f);
   --danger: light-dark(#e93147, #fb464c);
+
+  /* Controls: the plain pill, until this theme gets a skin of its own (ADR-0011). */
+  --control-face: var(--sans);
+  --control-text: 1;
+  --control-text-small: 0.875;
+  --control-radius: 999px;
+  --control-fill: var(--accent-strong);
+  --on-control: var(--on-accent);
+  --control-mark: var(--on-accent);
+  --control-open: "";
+  --control-close: "";
+  --control-hover: -1px;
+  --control-rules: 0 0 transparent;
+  --control-well: var(--surface);
+  --control-thumb: var(--page);
+  --control-line: transparent;
+  --control-surface: var(--surface);
+  --control-raise:
+    0 0 0 1px var(--line), 0 4px 6px -1px color-mix(in srgb, var(--ink) 10%, transparent),
+    0 2px 4px -2px color-mix(in srgb, var(--ink) 10%, transparent);
+  --control-current: var(--page);
+  --control-current-line: 0 0 transparent;
 }
 
 :root:has([data-world="flow"]),

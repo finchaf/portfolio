@@ -11,6 +11,9 @@
  * `accent-strong`, on `page`, with `on-accent` on it: some brand colours are too pale for text.
  * On `raised`, text is `ink`; `muted` is promised only on `page` and `surface`.
  *
+ * The `--control-*` variables are a theme's skin for its controls: the components are one, and only
+ * these change (ADR-0011).
+ *
  * `data-tint` gives a piece of a page the colours of a theme; `data-tint-fonts` beside it adds the
  * typefaces. It also re-reads the pairs against that element's own `color-scheme`, which a browser
  * may otherwise settle on :root.
@@ -92,6 +95,7 @@ body {
 /* A scene of the home page lends the capsule the page it is showing. */
 :root[data-scene] [data-capsule] [aria-current="page"] {
   background: transparent;
+  box-shadow: none;
 }
 
 :root[data-scene="pora"] [data-capsule] [data-nav="pora"],

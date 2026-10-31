@@ -21,6 +21,27 @@ const COLORS = [
 ];
 const FONTS = ["sans", "display", "mono"];
 
+/** A theme's skin for its controls (ADR-0011). */
+const CONTROLS = [
+  "face",
+  "text",
+  "text-small",
+  "radius",
+  "fill",
+  "mark",
+  "open",
+  "close",
+  "hover",
+  "rules",
+  "well",
+  "thumb",
+  "line",
+  "surface",
+  "raise",
+  "current",
+  "current-line",
+];
+
 /** The WCAG ratios a pair must reach: 4.5 is AA for text, 3 for large text and indicators. */
 const CONTRASTS = [
   ["ink", "page", 7],
@@ -75,12 +96,32 @@ describe.each([
   });
 });
 
+describe.each([
+  ["light", 0],
+  ["dark", 1],
+] as const)("the mark on a home button in the %s mode", (_, mode) => {
+  it("reads on the button's ink", () => {
+    const css = read("home");
+    expect(
+      contrast(value(css, "control-mark", mode), value(css, "ink", mode)),
+    ).toBeGreaterThanOrEqual(3);
+  });
+});
+
 describe.each(THEMES)("the %s theme", (theme) => {
   const css = read(theme);
 
   it.each(COLORS)("gives --%s a value in both modes", (name) => {
     expect(value(css, name, 0)).not.toBe("");
     expect(value(css, name, 1)).not.toBe("");
+  });
+
+  it.each(CONTROLS)("gives its controls --control-%s", (name) => {
+    expect(css).toContain(`--control-${name}:`);
+  });
+
+  it("says what sits on a filled control", () => {
+    expect(css).toContain("--on-control:");
   });
 
   it.each(FONTS)("names --%s with a fallback", (name) => {

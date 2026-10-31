@@ -20,7 +20,7 @@ export function NavLink({ href, world, label, children }: NavLinkProps) {
     <Link
       aria-current={current ? "page" : undefined}
       aria-label={label}
-      className="capsule-link text-muted transition-colors duration-(--duration-quick) hover:text-ink aria-[current=page]:bg-page aria-[current=page]:text-ink"
+      className="capsule-link text-muted transition-colors duration-(--duration-quick) hover:text-ink aria-[current=page]:text-ink"
       data-nav={world}
       href={href}
     >

@@ -47,7 +47,7 @@ export function Hero() {
   );
   const work = <ButtonLink href="#work">{t("work")}</ButtonLink>;
   const github = (
-    <a className="px-1 py-2 text-sm underline underline-offset-4" href={GITHUB_URL}>
+    <a className="control-link px-1 py-2" href={GITHUB_URL}>
       {t("github")}
     </a>
   );

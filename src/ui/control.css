@@ -1,0 +1,93 @@
+/*
+ * Controls read their whole look from the theme's `--control-*` variables (ADR-0011): the component
+ * is one, the skin is the theme's. What a skin adds around a label is decoration, so its alternative
+ * text is empty and a screen reader hears the label alone.
+ */
+.control-shape {
+  border-radius: var(--control-radius);
+}
+
+.control-button {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--control-radius);
+  font-family: var(--control-face);
+  font-size: calc(var(--control-text) * 1rem);
+  font-weight: 500;
+  white-space: nowrap;
+  transition: translate var(--duration-quick) var(--ease-out);
+}
+
+.control-button::before {
+  content: var(--control-open) / "";
+  color: var(--control-mark);
+}
+
+.control-button::after {
+  content: var(--control-close) / "";
+  margin-left: 0.375em;
+  opacity: 0.55;
+  transition:
+    translate var(--duration-base) var(--ease-out),
+    opacity var(--duration-quick) var(--ease-out);
+}
+
+.control-button:hover {
+  translate: 0 var(--control-hover);
+}
+
+.control-button:hover::after {
+  opacity: 1;
+  translate: 0.1875rem 0;
+}
+
+.control-button:active {
+  translate: 0 1px;
+}
+
+.control-primary {
+  background: var(--control-fill);
+  color: var(--on-control);
+}
+
+.control-inverse {
+  --control-mark: var(--accent-strong);
+  background: var(--on-accent);
+  color: var(--accent-strong);
+}
+
+.control-quiet {
+  --control-mark: var(--accent-strong);
+  background: var(--control-well);
+  box-shadow: var(--control-rules);
+  color: var(--ink);
+}
+
+.control-regular {
+  min-height: 2.75rem;
+  padding-inline: 1rem;
+}
+
+.control-small {
+  min-height: 2rem;
+  padding-inline: 0.875rem;
+  font-size: calc(var(--control-text-small) * 1rem);
+}
+
+.control-link {
+  font-family: var(--control-face);
+  font-size: calc(var(--control-text-small) * 1rem);
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+  transition: color var(--duration-quick) var(--ease-out);
+}
+
+.control-link:hover {
+  color: var(--accent-strong);
+}
+
+@media (min-width: 64rem) {
+  .control-regular {
+    padding-inline: 1.25rem;
+  }
+}

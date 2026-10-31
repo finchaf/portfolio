@@ -7,10 +7,44 @@
   place-items: center;
   height: 2rem;
   padding-inline: 0.625rem;
-  border-radius: 999px;
-  font-size: 0.875rem;
+  border-radius: var(--control-radius);
+  font-family: var(--control-face);
+  font-size: calc(var(--control-text-small) * 1rem);
   font-weight: 500;
   white-space: nowrap;
+}
+
+.capsule-link[aria-current="page"] {
+  background: var(--control-current);
+  box-shadow: var(--control-current-line);
+}
+
+.capsule-write {
+  border-radius: var(--control-radius);
+  font-family: var(--control-face);
+  font-size: calc(var(--control-text-small) * 1rem);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.capsule-action {
+  background: var(--control-fill);
+  color: var(--on-control);
+  transition: translate var(--duration-quick) var(--ease-out);
+}
+
+.capsule-action:hover {
+  translate: 0 var(--control-hover);
+}
+
+.capsule-action:active {
+  translate: 0 1px;
+}
+
+.capsule-surface {
+  border-radius: var(--control-radius);
+  background: var(--control-surface);
+  box-shadow: var(--control-rules), var(--control-raise);
 }
 
 /* Inside: the row scrolls on a tight screen, and would cut a ring around the link. */
@@ -125,18 +159,6 @@
     color: var(--muted);
     white-space: pre;
   }
-}
-
-:root[data-scrolled] [data-capsule][data-lens] .capsule-code {
-  background: var(--page);
-}
-
-[data-capsule]:has(:focus-visible) .capsule-items {
-  mask-image: none;
-}
-
-[data-capsule][data-lens]:has(:focus-visible) .capsule-code {
-  display: none;
 }
 
 /*

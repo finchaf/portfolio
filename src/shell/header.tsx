@@ -25,7 +25,7 @@ function Mark() {
   );
 }
 
-const WRITE = "grid size-8 place-items-center rounded-full text-sm font-medium whitespace-nowrap";
+const WRITE = "capsule-write grid size-8 place-items-center";
 const WRITE_WIDE = "lg:block lg:size-auto lg:px-3.5 lg:py-1.5";
 
 /**
@@ -43,10 +43,7 @@ export function Header() {
       className="fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom))] left-1/2 z-30 flex max-w-[calc(100vw-1rem)] -translate-x-1/2 items-center p-1 text-ink transition-colors duration-(--duration-slow) lg:top-3.5 lg:bottom-auto"
       data-capsule
     >
-      <i
-        aria-hidden
-        className="capsule-surface absolute inset-0 rounded-full bg-surface shadow-md ring-1 ring-line"
-      />
+      <i aria-hidden className="capsule-surface absolute inset-0" />
       <div className="capsule-items" data-capsule-items>
         <nav
           aria-label={t("shell.navigation")}
@@ -68,7 +65,7 @@ export function Header() {
         </nav>
         <a
           aria-label={t("shell.write")}
-          className={`${WRITE} ${WRITE_WIDE} shrink-0 bg-accent-strong text-on-accent transition-transform duration-(--duration-quick) ease-out hover:-translate-y-px active:translate-y-0`}
+          className={`${WRITE} ${WRITE_WIDE} capsule-action shrink-0`}
           href={TELEGRAM_URL}
         >
           <span className="max-lg:sr-only">{t("shell.write")}</span>
@@ -92,7 +89,7 @@ export function Header() {
           {PAGE_PATHS.map((path) => (
             <li data-measure key={path}>
               <CodeFace
-                className="rounded-full"
+                className="control-shape"
                 shape={
                   <span className="capsule-link">
                     {path === "" ? <Mark /> : t(`${PAGES[path]}.title`)}
@@ -105,7 +102,7 @@ export function Header() {
           ))}
         </ul>
         <CodeFace
-          className="shrink-0 rounded-full"
+          className="control-shape shrink-0"
           shape={
             <span className={`${WRITE} ${WRITE_WIDE}`}>
               <span className="max-lg:hidden">{t("shell.write")}</span>

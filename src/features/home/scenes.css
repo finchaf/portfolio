@@ -355,6 +355,12 @@
   }
 }
 
+/* In the code layer a control is its hatching alone. */
+.hero-code .segmented {
+  background: none;
+  box-shadow: none;
+}
+
 /* Film grain over the whole page, faint enough to feel rather than see. Its tile is plain noise. */
 .home-grain {
   position: fixed;

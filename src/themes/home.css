@@ -25,4 +25,24 @@
   --mono: "JetBrains Mono Variable", ui-monospace, "SF Mono", Menlo, monospace;
   /* Only the large lines of the story, and only here: no other theme sets one. */
   --serif: "Playfair Display Variable", Georgia, "Times New Roman", serif;
+
+  /* Controls: typeset like the logo, a command with its braces between two rules (ADR-0011). */
+  --control-face: var(--mono);
+  --control-text: 0.875;
+  --control-text-small: 0.8125;
+  --control-radius: 0;
+  --control-fill: var(--ink);
+  --on-control: var(--page);
+  --control-mark: light-dark(#f0916f, #a33a23);
+  --control-open: "\\";
+  --control-close: "{}";
+  --control-hover: 0px;
+  --control-rules: 0 -2px 0 var(--ink), 0 1px 0 var(--ink);
+  --control-well: transparent;
+  --control-thumb: transparent;
+  --control-line: var(--accent);
+  --control-surface: var(--page);
+  --control-raise: 0 0.75rem 1.25rem -0.75rem color-mix(in srgb, var(--ink) 35%, transparent);
+  --control-current: transparent;
+  --control-current-line: inset 0 -2px 0 var(--accent);
 }

@@ -1,3 +1,5 @@
+import "./segmented.css";
+
 export interface SegmentedProps<Value extends string | number> {
   /** The group's name for a form and for a screen reader. */
   name: string;
@@ -18,12 +20,9 @@ export function Segmented<Value extends string | number>({
   return (
     <fieldset className="flex flex-col gap-1">
       <legend className="pb-1 text-xs text-muted">{label}</legend>
-      <div className="flex w-fit rounded-full bg-surface p-0.5 text-sm">
+      <div className="segmented">
         {options.map((option) => (
-          <label
-            className="cursor-pointer rounded-full px-2.5 py-1 has-checked:bg-page has-focus-visible:outline-2 has-focus-visible:outline-accent-strong"
-            key={option.value}
-          >
+          <label className="segmented-option" key={option.value}>
             <input
               checked={value === option.value}
               className="sr-only"

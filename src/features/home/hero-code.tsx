@@ -57,7 +57,7 @@ export function HeroCode({ words, status, copy, proof, work, github, labels }: H
           <div className="hero-actions">
             <CodeSource className="hero-near" lines={HERO_SOURCE.action} />
             <span className="hero-control" data-plan>
-              <CodeFace className="rounded-full" shape={work}>
+              <CodeFace className="control-shape" shape={work}>
                 {labels.work}
               </CodeFace>
             </span>
@@ -69,12 +69,12 @@ export function HeroCode({ words, status, copy, proof, work, github, labels }: H
       </div>
 
       <div className="hero-switch-twin">
-        <div className="hero-control flex rounded-full p-0.5 text-sm" data-plan>
+        <div className="hero-control segmented" data-plan>
           {(["design", "code"] as const).map((layer) => (
-            <span className="rounded-full" data-tab={layer} key={layer}>
+            <span className="control-shape" data-tab={layer} key={layer}>
               <CodeFace
-                className="rounded-full"
-                shape={<span className="block px-2.5 py-1">{labels[layer]}</span>}
+                className="control-shape"
+                shape={<span className="segmented-option">{labels[layer]}</span>}
               >
                 {labels[layer]}
               </CodeFace>
