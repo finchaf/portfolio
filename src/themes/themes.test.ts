@@ -58,6 +58,23 @@ function contrast(a: string, b: string): number {
   return (high + 0.05) / (low + 0.05);
 }
 
+describe.each([
+  ["light", 0],
+  ["dark", 1],
+] as const)("the story's paper in the %s mode", (_, mode) => {
+  const css = read("home");
+
+  it.each([
+    ["ink", 7],
+    ["muted", 4.5],
+    ["accent-strong", 4.5],
+  ] as const)("carries %s at %d:1", (foreground, ratio) => {
+    expect(
+      contrast(value(css, foreground, mode), value(css, "paper", mode)),
+    ).toBeGreaterThanOrEqual(ratio);
+  });
+});
+
 describe.each(THEMES)("the %s theme", (theme) => {
   const css = read(theme);
 

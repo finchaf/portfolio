@@ -14,6 +14,8 @@
   --accent: light-dark(#b8452c, #f0916f);
   --accent-strong: light-dark(#a33a23, #f4a488);
   --on-accent: light-dark(#ffffff, #1b120e);
+  /* The story's page, which the scene fades up over --page: paper in the light, night in the dark. */
+  --paper: light-dark(#f8f7f3, #0e1419);
   --success: light-dark(#5f6b2f, #b4c077);
   --warning: light-dark(#a8741c, #e3b45f);
   --danger: light-dark(#b3261e, #ff8a80);

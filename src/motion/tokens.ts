@@ -11,6 +11,8 @@ export const DURATION = {
   base: 0.32,
   /** Something crossing the screen. */
   slow: 0.7,
+  /** One round of the grain's jumps across the page. */
+  grain: 1.2,
 } as const;
 
 /** Curves for CSS transitions. */
