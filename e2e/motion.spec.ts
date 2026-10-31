@@ -183,6 +183,67 @@ test.describe("the home page in motion", () => {
     expect(offset).toBeLessThan(1);
   });
 
+  for (const [width, viewport] of [
+    [2560, 1440],
+    [1920, 1080],
+    [1440, 900],
+    [1440, 833],
+    [1440, 831],
+    [1455, 650],
+    [1280, 720],
+    [1280, 601],
+    [1280, 599],
+  ] as const) {
+    test(`keeps the source clear of the name on ${String(width)}×${String(viewport)}`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height: viewport });
+      await page.goto(HOME);
+      await expect(page.locator("html")).not.toHaveAttribute("data-intro");
+      const clear = await page.evaluate(() => {
+        const label = document.querySelector("[data-hero-box]")?.getBoundingClientRect().top ?? 0;
+        // The measure of the name stands 1.625rem above its frame.
+        const name = label - 26;
+        return [".capsule-source", ".hero-switch-source"].map((selector) => {
+          const node = document.querySelector(selector);
+          if (!node || getComputedStyle(node).display === "none") return 1;
+          return name - node.getBoundingClientRect().bottom;
+        });
+      });
+      for (const room of clear) expect(room).toBeGreaterThan(0);
+    });
+  }
+
+  test("closes the source up on a low screen, and leaves the sizes on a very low one", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1455, height: 650 });
+    await page.goto(HOME);
+    const lines = page.locator(".capsule-source code");
+    await expect(lines.filter({ visible: true })).toHaveCount(3);
+    await page.setViewportSize({ width: 1455, height: 580 });
+    await expect(page.locator(".capsule-source")).toBeHidden();
+    await expect(page.locator(".capsule-code [data-measure]").first()).toBeAttached();
+  });
+
+  test("wears the home skin on the home page and the theme's skin in its chapters", async ({
+    page,
+  }) => {
+    await page.goto(HOME);
+    await expect(page.getByRole("link", { name: "Смотреть работы", exact: true })).toHaveCSS(
+      "border-top-left-radius",
+      "0px",
+    );
+    await expect(page.locator(".control-primary").first()).toHaveCSS("font-family", /JetBrains/);
+    const write = page.locator(".capsule-action");
+    await expect(write).toHaveCSS("border-top-left-radius", "0px");
+    await jump(page, await topOf(page, "#work-pora"));
+    await expect(page.locator("[data-capsule]")).toHaveAttribute("data-tint", "pora");
+    await expect(write).toHaveCSS("border-top-left-radius", "999px");
+    await jump(page, 0);
+    await expect(write).toHaveCSS("border-top-left-radius", "0px");
+  });
+
   test("keeps the status, the capsule and the switch in one row, on the content's edge", async ({
     page,
   }) => {
