@@ -190,8 +190,9 @@ function drawBranches(section: HTMLElement, scrollTrigger: ScrollTrigger.Vars) {
   let reach = 1;
   const pen = { done: 0 };
 
+  // Visibility, not opacity: the light at the end of the first line pulses by its opacity.
   const show = (node: Element | null, shown: boolean) => {
-    node?.setAttribute("opacity", shown ? "1" : "0");
+    node?.setAttribute("visibility", shown ? "visible" : "hidden");
   };
   const draw = () => {
     const at = pen.done * reach;
@@ -215,12 +216,13 @@ function drawBranches(section: HTMLElement, scrollTrigger: ScrollTrigger.Vars) {
       const path = graph.querySelector<SVGPathElement>(`[data-line="${line}"]`);
       if (!path) return [];
       path.setAttribute("d", d);
+      graph.querySelector(`[data-shape="${line}"]`)?.setAttribute("d", d);
       const length = path.getTotalLength();
       path.style.strokeDasharray = `${String(length)} ${String(length + 2)}`;
       return [{ path, length, from, line }];
     });
     reach = Math.max(...lines.map(({ from, length }) => from + length));
-    (["first", "masters"] as const).forEach((line) => {
+    (["open", "masters"] as const).forEach((line) => {
       circle(`fork-${line}`)?.setAttribute("cx", String(forks[line].x));
       circle(`fork-${line}`)?.setAttribute("cy", String(forks[line].y));
       circle(`tip-${line}`)?.setAttribute("cx", String(tips[line].x));

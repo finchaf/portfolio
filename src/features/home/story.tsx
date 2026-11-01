@@ -209,6 +209,7 @@ function Moscow() {
     <StoryChapter id="moscow">
       <StoryCol weight={1}>
         <StoryHead date={t("date")} title={t("title")} />
+        <StoryText>{t("study")}</StoryText>
         <StoryText>{t("job")}</StoryText>
         <StoryText>{t("agents")}</StoryText>
       </StoryCol>

@@ -763,8 +763,10 @@
   background: var(--page);
 }
 
+/* The light of the first screen's status, on what is open now. */
 .story-branch:first-child::before {
-  border-color: var(--accent);
+  border: 0;
+  background: var(--success);
 }
 
 /* The next chapter's colour, from its dot down and on past the end of the list. */
@@ -797,6 +799,11 @@
   color: var(--muted);
   font-size: 0.9375rem;
   line-height: 1.35;
+}
+
+.story-branch-write {
+  align-self: flex-start;
+  margin-top: 0.625rem;
 }
 
 /* A photograph without its frame: to the edges of a phone, from top to bottom of a wide screen. */
@@ -1310,7 +1317,9 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .hero-dot {
+  .hero-dot,
+  .story-node-live,
+  .story-branch:first-child::before {
     animation: hero-pulse 2.4s var(--ease-in-out) infinite;
   }
 
@@ -1758,6 +1767,25 @@
 
       .story-line-lit {
         stroke: var(--accent);
+      }
+
+      .story-line-dashed {
+        stroke-dasharray: 9 8;
+      }
+
+      /* What the pen draws on the dashed line: its alpha lets the line through. */
+      .story-pen {
+        mask-type: alpha;
+      }
+
+      .story-pen-line {
+        fill: none;
+        stroke: var(--ink);
+        stroke-width: 8;
+      }
+
+      .story-node-live {
+        fill: var(--success);
       }
 
       .story-node {

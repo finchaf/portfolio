@@ -24,14 +24,14 @@
     }
   },
   "story": {
-    "title": "How I got here",
-    "lead": "From a menu for a game to a product of my own: nine chapters on how I became a design engineer.",
+    "title": "My story",
+    "lead": "From a menu for a game to a product of my own: how I became a design engineer.",
     "hint": "Keep scrolling",
     "omsk": {
       "mark": "School",
       "date": "Omsk",
       "title": "It started with a menu for a game",
-      "school": "A maths and physics class. We wrote websites in Notepad, in plain HTML, CSS and JS: they taught us the hard way. From the seventh grade I lived in Photoshop, then found Illustrator, and in the eleventh, Figma.",
+      "school": "A maths and physics class, plus programming lessons: we wrote websites right in Notepad, in plain HTML, CSS and JS. From the seventh grade I lived in Photoshop, then found Illustrator, and in the eleventh, Figma.",
       "game": "In it I built a menu for a game I played all the time and posted it in the game's groups. People asked how to install it. It reached the developers: they offered me work, then opened my file and stopped answering.",
       "quote": "Over a hundred frames. Not one component.",
       "after": "I was furious at the time. Now I understand them.",
@@ -43,7 +43,7 @@
       "date": "2022",
       "title": "Maths first",
       "choice": "I wanted to study product design, but a teacher talked me out of it: get your maths up first. So I ended up at Omsk State University, in applied mathematics and computer science.",
-      "roles": "I always had top marks in programming, and in group projects I always ended up as the designer.",
+      "roles": "Programming came easily and I enjoyed it, but in group projects I still ended up as the designer.",
       "quote": "It's a pain to check my own class schedule.",
       "idea": "Some universities had apps for that. From 2023 Maxim, a classmate of mine, and I kept talking about building one for ours, and kept putting it off: the idea felt too big.",
       "notesCaption": "Lecture notes in LaTeX, autumn 2024"
@@ -123,26 +123,28 @@
       "mark": "Moscow",
       "date": "Moscow",
       "title": "Ten prompts",
-      "job": "I moved at the end of the summer and started work: several iOS app designs a week, plus their ASO. Doing that by hand would have driven me mad.",
+      "study": "At the end of the summer I moved and started my master's at Central University.",
+      "job": "Alongside it I started work: several iOS app designs a week, plus their ASO. Doing that by hand would have driven me mad.",
       "agents": "I tried agents in Figma. That took a whole pipeline, and it worked.",
-      "quote": "I got a personal designer, and I became the boss.",
+      "quote": "The tool took the routine. The decisions stayed with me.",
       "prompts": "I won't claim a complete app, with icons and an App Store page, comes out of one prompt. I will claim it comes out of ten thoughtful, consecutive ones."
     },
     "now": {
       "mark": "Now",
       "date": "Now",
-      "title": "Still going",
-      "quote": "I have plenty of components now.",
+      "title": "A product and a master's",
+      "quote": "I want to make products where design and code are one job.",
       "branches": {
-        "first": {
-          "tag": "vcourse",
-          "name": "VCourse",
-          "text": "Running: 1,049 people a day on average, September 2026"
+        "open": {
+          "tag": "next",
+          "name": "Open to a conversation",
+          "text": "If you need someone who designs and takes it all the way to code, write to me.",
+          "write": "Write to me"
         },
         "masters": {
           "tag": "masters",
           "name": "Master's",
-          "text": "Central University, since 2026"
+          "text": "Central University, Human Experience Design, since 2026"
         },
         "next": {
           "tag": "poranaparu",

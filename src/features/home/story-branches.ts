@@ -13,12 +13,12 @@ export interface Route {
 export interface Routes {
   routes: Route[];
   /** Where the lines leave the trunk, by the line that leaves. */
-  forks: Record<"first" | "masters", { x: number; y: number }>;
+  forks: Record<"open" | "masters", { x: number; y: number }>;
   /** Where the lines that stop, stop. */
-  tips: Record<"first" | "masters", { x: number; y: number }>;
+  tips: Record<"open" | "masters", { x: number; y: number }>;
 }
 
-const [first, masters, next] = BRANCHES;
+const [open, masters, next] = BRANCHES;
 
 /**
  * A line leaves the trunk at an angle, so it is never two lines lying on one another for the first
@@ -42,14 +42,14 @@ export function branchRoutes(width: number, height: number): Routes {
     y: branch.y * height,
     end: branch.end * width,
   });
-  const a = at(first);
+  const a = at(open);
   const b = at(masters);
   const c = at(next);
   return {
     routes: [
       { line: "trunk", d: `M 0 ${String(base)} L ${String(b.x)} ${String(base)}`, from: 0 },
       {
-        line: "first",
+        line: "open",
         d: `M ${String(a.x)} ${String(base)} ${leave(a.x, base, a.y, run)} L ${String(a.end)} ${String(a.y)}`,
         from: a.x,
       },
@@ -64,7 +64,7 @@ export function branchRoutes(width: number, height: number): Routes {
         from: b.x,
       },
     ],
-    forks: { first: { x: a.x, y: base }, masters: { x: b.x, y: base } },
-    tips: { first: { x: a.end, y: a.y }, masters: { x: b.end, y: b.y } },
+    forks: { open: { x: a.x, y: base }, masters: { x: b.x, y: base } },
+    tips: { open: { x: a.end, y: a.y }, masters: { x: b.end, y: b.y } },
   };
 }

@@ -1,5 +1,8 @@
 import { useLocale, useTranslations } from "next-intl";
 
+import { TELEGRAM_URL } from "@/lib/site";
+import { ButtonLink } from "@/ui/button-link";
+
 import {
   BRANCHES,
   LAUNCH,
@@ -166,22 +169,37 @@ export function NightLog() {
 
 /**
  * What goes on from the story. In the HTML a list; on a wide screen the scene draws the lines around
- * it, and the last line, in the colours of the next chapter, leaves the screen towards it.
+ * it, and the last line, in the colours of the next chapter, leaves the screen towards it. The first
+ * line is dashed, a branch not made yet, so the pen draws its mask rather than the line itself: a
+ * dash pattern cannot be both drawn and dashed. It ends in the status's light from the first screen.
  */
 export function StoryBranches() {
   const t = useTranslations("home.story.now.branches");
   return (
     <div className="story-branches">
       <svg aria-hidden className="story-graph" data-graph>
+        <mask
+          className="story-pen"
+          height="100%"
+          id="story-pen"
+          maskUnits="userSpaceOnUse"
+          width="100%"
+        >
+          <path className="story-pen-line" data-line="open" />
+        </mask>
         <path className="story-line" data-line="trunk" />
-        <path className="story-line story-line-lit" data-line="first" />
+        <path
+          className="story-line story-line-lit story-line-dashed"
+          data-shape="open"
+          mask="url(#story-pen)"
+        />
         <path className="story-line" data-line="masters" />
         <g data-tint="pora">
           <path className="story-line story-line-lit" data-line="next" />
         </g>
-        <circle className="story-node" data-node="fork-first" r="3.5" />
+        <circle className="story-node" data-node="fork-open" r="3.5" />
         <circle className="story-node" data-node="fork-masters" r="3.5" />
-        <circle className="story-node story-node-lit" data-node="tip-first" r="5" />
+        <circle className="story-node-live" data-node="tip-open" r="6" />
         <circle className="story-node" data-node="tip-masters" r="5" />
       </svg>
       <ul className="story-branch-list" data-branch-list>
@@ -197,6 +215,16 @@ export function StoryBranches() {
             <code className="story-branch-tag">{t(`${key}.tag`)}</code>
             <h4 className="story-branch-name font-display">{t(`${key}.name`)}</h4>
             <p className="story-branch-text">{t(`${key}.text`)}</p>
+            {key === "open" && (
+              <ButtonLink
+                className="story-branch-write"
+                data-write
+                href={TELEGRAM_URL}
+                size="small"
+              >
+                {t("open.write")}
+              </ButtonLink>
+            )}
           </li>
         ))}
       </ul>

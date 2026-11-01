@@ -638,20 +638,39 @@ test.describe("the home page in motion", () => {
     });
     await jump(page, end - hold - 40);
     await expect.poll(() => drawn("trunk")).toBeLessThan(0.02);
-    await expect(page.locator('[data-branch="first"]')).toHaveCSS("opacity", "0");
+    await expect(page.locator('[data-branch="open"]')).toHaveCSS("opacity", "0");
     await jump(page, end - hold * 0.75);
     await expect.poll(() => drawn("trunk")).toBeGreaterThan(0.2);
     expect(await drawn("next")).toBeLessThan(0.05);
     await jump(page, end);
-    for (const line of ["trunk", "first", "masters", "next"]) {
+    for (const line of ["trunk", "open", "masters", "next"]) {
       await expect.poll(() => drawn(line)).toBeGreaterThan(0.99);
     }
-    await expect(page.locator('[data-branch="first"]')).toHaveCSS("opacity", "1");
-    await expect(page.locator('[data-branch="first"] code')).toHaveText(/^[a-z]+$/);
+    await expect(page.locator('[data-branch="open"]')).toHaveCSS("opacity", "1");
+    await expect(page.locator('[data-branch="open"] code')).toHaveText(/^[a-z]+$/);
     const weights = await page
-      .locator("[data-line]")
+      .locator(".story-line")
       .evaluateAll((all) => all.map((path) => getComputedStyle(path).strokeWidth));
     expect(new Set(weights).size).toBe(1);
+  });
+
+  test("ends the story on a dashed line, with the way to write at its end", async ({ page }) => {
+    await page.goto(HOME);
+    await expect(page.locator('[data-shape="open"]')).toHaveCSS("stroke-dasharray", /^9/);
+    const box = await page.locator("#story").evaluate((node) => ({
+      top: node.getBoundingClientRect().top + window.scrollY,
+      height: node.getBoundingClientRect().height,
+    }));
+    await jump(page, box.top + box.height - 2 * (await height(page)));
+    await expect(page.locator('[data-node="tip-open"]')).toHaveAttribute("visibility", "visible");
+    const write = page.locator('[data-branch="open"] [data-write]');
+    const sizes = await write.evaluate((node) => ({
+      button: node.getBoundingClientRect().width,
+      words: node.parentElement?.getBoundingClientRect().width ?? 0,
+    }));
+    expect(sizes.button).toBeLessThan(sizes.words / 2);
+    await write.click();
+    await expect(page.locator(".write-sheet")).toBeVisible();
   });
 
   test("brings the last chapter's lines to rest straight", async ({ page }) => {

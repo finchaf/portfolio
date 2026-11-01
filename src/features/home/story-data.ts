@@ -113,7 +113,7 @@ export const SCORE_DAYS = ["mon", "tue", "wed", "thu", "fri", "sat"] as const;
  * settles on, where it stops, and where its words stand. The last one runs off the screen.
  */
 export const BRANCHES = [
-  { key: "first", fork: 0.3, y: 0.24, end: 0.66, label: 0.676, below: false },
+  { key: "open", fork: 0.3, y: 0.24, end: 0.66, label: 0.676, below: false },
   { key: "masters", fork: 0.355, y: 0.46, end: 0.56, label: 0.576, below: false },
   { key: "next", fork: 0.4, y: 0.68, end: 1.02, label: 0.56, below: true },
 ] as const;
