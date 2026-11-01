@@ -5,3 +5,5 @@ out/
 pnpm-lock.yaml
 playwright-report/
 test-results/
+# The vault's notes are Obsidian Markdown: their front matter is not YAML to reflow.
+messages/*/vault/
