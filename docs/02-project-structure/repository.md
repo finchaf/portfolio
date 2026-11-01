@@ -22,7 +22,7 @@ portfolio/
 ├── public/                      иконки и картинка ссылки
 ├── messages/<locale>/*.json     строки, файл на область
 ├── e2e/                         браузерные гейты Playwright
-├── scripts/                     check.py и гейты, serve.py, compress.ts
+├── scripts/                     check.py и гейты, serve.py, compress.ts, deploy.py
 ├── deploy/Caddyfile.test        блок Caddy для гейтов и просмотра
 ├── docs/                        база знаний
 ├── .claude/                     скиллы `/nt`, `/si`, `/ar`, `/rf` и их агенты
