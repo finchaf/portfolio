@@ -22,8 +22,8 @@ export interface HeroSettingsProps {
 
 /**
  * The language and the theme, in the same instrument as the layers: it leaves with them when the
- * page moves, and shuts then. The footer keeps both on every page, and without a script. A language
- * is a plain link to this page in it, as in the footer, and a theme the same hook, so they agree.
+ * page moves, and shuts then. The footer keeps both on every page. A language is a plain link to
+ * this page in it, as in the footer, and a theme the same hook, so the two always agree.
  */
 export function HeroSettings({ locale, onToggle, labels }: HeroSettingsProps) {
   const [open, setOpen] = useState(false);
