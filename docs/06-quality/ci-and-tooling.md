@@ -40,7 +40,7 @@
 
 ## Бюджеты
 
-Замер на 01.11.2026, gzip уровня 9 (`python3 scripts/check_bundle.py`): главная 248,4 КБ с GSAP и
+Замер на 01.11.2026, gzip уровня 9 (`python3 scripts/check_bundle.py`): главная 249,1 КБ с GSAP и
 ScrollTrigger, остальные страницы 188,5 КБ. По прототипу Motion добавит 45 КБ.
 
 | Что | Бюджет |

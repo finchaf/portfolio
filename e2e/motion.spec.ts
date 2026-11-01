@@ -155,6 +155,96 @@ test.describe("the home page in motion", () => {
     await expect.poll(() => lens(page, "--lens-r")).toBeGreaterThan(500);
   });
 
+  test("opens the settings from the switch, and shuts them every way a reader would", async ({
+    page,
+  }) => {
+    await page.goto(HOME);
+    const button = page.getByRole("button", { name: "Настройки" });
+    const menu = page.locator(".hero-menu");
+    await expect(menu).toBeHidden();
+    await expect(button).toHaveAttribute("aria-expanded", "false");
+
+    await button.click();
+    await expect(menu).toBeVisible();
+    await expect(button).toHaveAttribute("aria-expanded", "true");
+    await page.keyboard.press("Escape");
+    await expect(menu).toBeHidden();
+    await expect(button).toBeFocused();
+
+    await button.click();
+    await page.mouse.click(300, 400);
+    await expect(menu).toBeHidden();
+
+    await button.click();
+    await expect(menu).toBeVisible();
+    await button.click();
+    await expect(menu).toBeHidden();
+
+    await button.click();
+    await jump(page, 200);
+    await expect(menu).toBeHidden();
+  });
+
+  test("leaves the settings with the switch while the capsule stays", async ({ page }) => {
+    await page.goto(HOME);
+    const button = page.getByRole("button", { name: "Настройки" });
+    const capsule = await page.locator("[data-capsule]").boundingBox();
+    await jump(page, 400);
+    await expect.poll(async () => (await button.boundingBox())?.y ?? 0).toBeLessThan(0);
+    expect((await page.locator("[data-capsule]").boundingBox())?.y).toBe(capsule?.y);
+  });
+
+  test("keeps the settings and the footer on one theme, and remembers it", async ({ page }) => {
+    await page.goto(HOME);
+    await page.getByRole("button", { name: "Настройки" }).click();
+    const menu = page.locator(".hero-menu");
+    await menu.getByRole("radio", { name: "Тёмная" }).check({ force: true });
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    await expect(page.locator("footer").getByRole("radio", { name: "Тёмная" })).toBeChecked();
+    await page.reload();
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    await page.getByRole("button", { name: "Настройки" }).click();
+    await expect(menu.getByRole("radio", { name: "Тёмная" })).toBeChecked();
+    await menu.getByRole("radio", { name: "Система" }).check({ force: true });
+    await expect(page.locator("html")).not.toHaveAttribute("data-theme");
+  });
+
+  test("takes the reader to this page in the other language", async ({ page }) => {
+    await page.goto(HOME);
+    await page.getByRole("button", { name: "Настройки" }).click();
+    const menu = page.locator(".hero-menu");
+    await expect(menu.getByRole("link", { name: "Русский" })).toHaveAttribute(
+      "aria-current",
+      "true",
+    );
+    await menu.getByRole("link", { name: "English" }).click();
+    await expect(page).toHaveURL(/\/en$/);
+    await expect(page.getByRole("button", { name: "Settings" })).toBeVisible();
+    await expect(page.locator("html")).toHaveAttribute("data-js");
+    await expect(page.locator("h1")).toContainText("Danil");
+  });
+
+  test("darkens the settings over the source", async ({ page }) => {
+    await page.emulateMedia({ colorScheme: "light" });
+    await page.goto(HOME);
+    await page.getByRole("radio", { name: "Код" }).check({ force: true });
+    await page.getByRole("button", { name: "Настройки" }).click();
+    const menu = page.locator(".hero-menu");
+    await expect(menu).toHaveCSS("color-scheme", "dark");
+    await expect(menu).toHaveCSS("background-color", "rgb(20, 27, 34)");
+    await expect.poll(() => lens(page, "--lens-r")).toBeGreaterThan(500);
+  });
+
+  test("shuts the lens for the settings, and opens it again after them", async ({ page }) => {
+    await page.goto(HOME);
+    await expect(page.locator("html")).not.toHaveAttribute("data-intro");
+    await expect.poll(() => lens(page, "--lens-r")).toBeGreaterThan(100);
+    await page.getByRole("button", { name: "Настройки" }).click();
+    await expect.poll(() => lens(page, "--lens-r")).toBe(0);
+    await page.keyboard.press("Escape");
+    await expect.poll(() => lens(page, "--lens-r")).toBeGreaterThan(100);
+  });
+
   test("lays the code layer block for block over the design, however wide the screen", async ({
     page,
   }) => {
@@ -166,7 +256,7 @@ test.describe("the home page in motion", () => {
       ["h1", ".hero-outline"],
       [".hero-status", ".hero-top .hero-twin"],
       [".hero-copy", ".hero-foot > .hero-twin"],
-      [".hero-switch fieldset", ".hero-switch-twin .hero-control"],
+      [".hero-switch .hero-tools", ".hero-switch-twin .hero-control"],
     ] as const) {
       expect(await box(code)).toEqual(await box(design));
     }
@@ -270,12 +360,12 @@ test.describe("the home page in motion", () => {
     };
     const capsule = await centre("[data-capsule]");
     expect(await centre(".hero-status")).toBeCloseTo(capsule, 0);
-    expect(await centre(".hero-switch fieldset")).toBeCloseTo(capsule, 0);
+    expect(await centre(".hero-switch .hero-tools")).toBeCloseTo(capsule, 0);
     const right = async (selector: string) => {
       const box = await page.locator(selector).first().boundingBox();
       return (box?.x ?? 0) + (box?.width ?? 0);
     };
-    expect(await right(".hero-switch fieldset")).toBeCloseTo(await right(".hero-foot"), 0);
+    expect(await right(".hero-switch .hero-tools")).toBeCloseTo(await right(".hero-foot"), 0);
   });
 
   test("lays the capsule's items on the page, and closes it around them when the page moves", async ({
@@ -897,6 +987,33 @@ test.describe("the shell", () => {
     await expect(footer.getByRole("link", { name: "English" })).toHaveAttribute("href", "/en");
     await expect(footer.getByRole("link", { name: "Telegram" })).toBeAttached();
   });
+});
+
+test.describe("the first screen's row on a phone", () => {
+  for (const [width, locale] of [
+    [320, "ru"],
+    [360, "ru"],
+    [360, "en"],
+    [390, "en"],
+  ] as const) {
+    test(`keeps the status clear of the instrument at ${String(width)}, ${locale}`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height: 800 });
+      await page.goto(`/${locale}`);
+      const edges = await page.evaluate(() => {
+        const status = document.querySelector(".hero-status");
+        const tools = document.querySelector(".hero-switch .hero-tools");
+        return {
+          status: status?.getBoundingClientRect().right ?? 0,
+          tools: tools?.getBoundingClientRect().left ?? 0,
+          screen: document.documentElement.scrollWidth,
+        };
+      });
+      expect(edges.status).toBeLessThanOrEqual(edges.tools);
+      expect(edges.screen).toBe(width);
+    });
+  }
 });
 
 test.describe("the home page on a phone", () => {

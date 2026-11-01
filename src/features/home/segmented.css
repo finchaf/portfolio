@@ -39,15 +39,35 @@
   transition: scale var(--duration-base) var(--ease-out);
 }
 
-.segmented-option:has(:checked) {
+.segmented-option:hover {
+  color: var(--ink);
+}
+
+/* A choice is a radio button, a link to where the reader already is, or a button that stands open. */
+.segmented-option:is(:has(:checked), [aria-current="true"], [aria-expanded="true"]) {
   background: var(--control-thumb);
   color: var(--ink);
 }
 
-.segmented-option:has(:checked)::after {
+.segmented-option:is(:has(:checked), [aria-current="true"], [aria-expanded="true"])::after {
   scale: 1 1;
 }
 
-.segmented-option:has(:focus-visible) {
+.segmented-option:is(:has(:focus-visible), :focus-visible) {
   outline: 2px solid var(--accent-strong);
+}
+
+/* A mark instead of a word: no slash before it, and more room for a finger than it shows. */
+.segmented-icon {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  padding-block: 0;
+  padding-inline: 0.4375rem;
+}
+
+.segmented-icon::before {
+  content: "";
+  position: absolute;
+  inset: -0.5rem -0.25rem;
 }

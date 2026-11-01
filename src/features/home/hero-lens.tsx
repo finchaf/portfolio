@@ -1,11 +1,12 @@
 "use client";
 
-import { useRef, useState, type ReactNode } from "react";
+import { useCallback, useRef, useState, type ReactNode } from "react";
 
 import { gsap, MOTION_ALLOWED, ScrollTrigger, useGSAP } from "@/motion/gsap";
 import { DURATION, PAGE_MOVED, SCENE } from "@/motion/tokens";
 
 import { HERO_FACE } from "./hero-source";
+import { HeroSettings, type HeroSettingsProps } from "./hero-settings";
 import { Segmented } from "./segmented";
 
 type Layer = "design" | "code";
@@ -24,6 +25,8 @@ const size = (node: Element) => {
 
 export interface HeroLensProps {
   labels: Record<"label" | Layer, string>;
+  /** The settings stand in the same instrument as the switch, and leave with it. */
+  settings: Pick<HeroSettingsProps, "locale" | "labels">;
   children: ReactNode;
 }
 
@@ -34,11 +37,12 @@ export interface HeroLensProps {
  * capsule above the screen too, in the capsule's own coordinates, so it belongs to the top of the
  * page alone: it shuts when the page moves, and the layer the reader chose comes back with the top.
  * When a page opens, the stylesheet assembles the screen on the plan of the same layer, and the
- * lens opens once that is over.
+ * lens opens once that is over. It also shuts for the settings, which it would only peek out from.
  */
-export function HeroLens({ labels, children }: HeroLensProps) {
+export function HeroLens({ labels, settings, children }: HeroLensProps) {
   const scope = useRef<HTMLElement>(null);
   const lens = useRef({ x: 0, y: 0, r: 0 });
+  const menuOpen = useRef(false);
   const [layer, setLayer] = useState<Layer>("design");
 
   const resting = () => (window.innerWidth < WIDE ? RADIUS.phone : RADIUS.wide);
@@ -48,7 +52,8 @@ export function HeroLens({ labels, children }: HeroLensProps) {
     if (!hero) return;
     const { width, height } = hero.getBoundingClientRect();
     const moving = matchMedia(MOTION_ALLOWED).matches;
-    const wide = shown === "code" ? Math.hypot(width, height) : moving ? resting() : 0;
+    const wide =
+      shown === "code" ? Math.hypot(width, height) : moving && !menuOpen.current ? resting() : 0;
     gsap.to(lens.current, {
       r: moved() ? 0 : wide,
       duration: moving ? duration : 0,
@@ -203,21 +208,32 @@ export function HeroLens({ labels, children }: HeroLensProps) {
     open(next, DURATION.slow);
   };
 
+  const onMenu = useCallback((isOpen: boolean) => {
+    if (menuOpen.current === isOpen) return;
+    menuOpen.current = isOpen;
+    if (document.documentElement.hasAttribute("data-intro")) return;
+    open(scope.current?.dataset.layer === "code" ? "code" : "design", DURATION.base);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- `open` reads only refs and the page.
+  }, []);
+
   return (
     <section className="hero" data-layer={layer} ref={scope}>
       {children}
       <i aria-hidden className="hero-ring" />
       <div className="hero-switch">
-        <Segmented
-          label={labels.label}
-          name="hero-layer"
-          onChange={choose}
-          options={[
-            { value: "design", label: labels.design },
-            { value: "code", label: labels.code },
-          ]}
-          value={layer}
-        />
+        <div className="hero-tools">
+          <Segmented
+            label={labels.label}
+            name="hero-layer"
+            onChange={choose}
+            options={[
+              { value: "design", label: labels.design },
+              { value: "code", label: labels.code },
+            ]}
+            value={layer}
+          />
+          <HeroSettings {...settings} onToggle={onMenu} />
+        </div>
       </div>
     </section>
   );

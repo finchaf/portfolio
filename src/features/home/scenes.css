@@ -32,6 +32,7 @@
 .hero {
   position: relative;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   min-height: 100svh;
   overflow: hidden;
   touch-action: pan-y;
@@ -261,7 +262,8 @@
 }
 
 .hero[data-layer="design"] [data-tab="design"] .code-face > span,
-.hero[data-layer="code"] [data-tab="code"] .code-face > span {
+.hero[data-layer="code"] [data-tab="code"] .code-face > span,
+.hero:has([data-open]) [data-tab="settings"] .code-face > span {
   background: var(--accent);
   color: var(--on-accent);
 }
@@ -286,12 +288,82 @@
   height: var(--row);
 }
 
-:root[data-js] .hero-switch legend {
+:root[data-js] .hero-tools > fieldset > legend {
   position: absolute;
   width: 1px;
   height: 1px;
   overflow: hidden;
   clip-path: inset(50%);
+}
+
+/* The switch and the settings are one instrument: the two rules go around them both. */
+.hero-tools {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  border-radius: var(--control-radius);
+  background: var(--control-well);
+  box-shadow: var(--control-rules);
+}
+
+.hero-tools .segmented {
+  background: none;
+  box-shadow: none;
+}
+
+.hero-settings {
+  display: flex;
+  align-items: stretch;
+  padding: 0.125rem 0.125rem 0.125rem 0;
+}
+
+.hero-settings::before {
+  content: "";
+  flex: none;
+  width: 1px;
+  height: 1rem;
+  margin-inline: 0.25rem;
+  align-self: center;
+  background: var(--line);
+}
+
+/*
+ * Hangs from the whole instrument and lies over the lens, without lifting the switch through it.
+ * Shut, it is out of reach of a key as well as of the eye. Over the source it is dark, as that is.
+ */
+.hero-menu {
+  position: absolute;
+  z-index: 2;
+  top: calc(100% + 0.625rem);
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  width: min(21rem, calc(100vw - 2 * var(--gutter)));
+  padding: 0.875rem;
+  border-radius: var(--control-radius);
+  background: var(--control-surface);
+  box-shadow: var(--control-rules), var(--control-raise);
+  color: var(--ink);
+  opacity: 0;
+  translate: 0 -0.375rem;
+  visibility: hidden;
+}
+
+.hero-settings[data-open] .hero-menu {
+  opacity: 1;
+  translate: 0 0;
+  visibility: visible;
+}
+
+.hero[data-layer="code"] .hero-menu {
+  color-scheme: dark;
+}
+
+.hero-menu .segmented {
+  gap: 0.125rem;
+  margin-left: -0.625rem;
+  padding: 0;
 }
 
 /* A key's focus lifts the real control through the layer of pictures over it. */
@@ -351,9 +423,27 @@
 }
 
 /* In the code layer a control is its hatching alone. */
+.hero-code .hero-tools,
 .hero-code .segmented {
   background: none;
   box-shadow: none;
+}
+
+/* A phone's row is short: the status stops before the instrument, which tightens on the narrowest. */
+@media (width < 64rem) {
+  :root[data-js] .hero-top {
+    padding-right: 11.25rem;
+  }
+}
+
+@media (width < 24rem) {
+  :root[data-js] .hero-top {
+    padding-right: 10.75rem;
+  }
+
+  .hero-tools > :is(fieldset, .segmented) .segmented-option {
+    padding-inline: 0.375rem;
+  }
 }
 
 /* Story: chapters one under another until a scene takes them. */
@@ -1211,6 +1301,13 @@
 @media (prefers-reduced-motion: no-preference) {
   .hero-dot {
     animation: hero-pulse 2.4s var(--ease-in-out) infinite;
+  }
+
+  .hero-menu {
+    transition:
+      opacity var(--duration-quick) var(--ease-out),
+      translate var(--duration-base) var(--ease-out),
+      visibility var(--duration-quick);
   }
 
   @keyframes hero-pulse {

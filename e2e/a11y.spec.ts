@@ -18,6 +18,39 @@ for (const address of [...ADDRESSES, "/ru/no-such-page"]) {
   });
 }
 
+for (const colorScheme of ["light", "dark"] as const) {
+  test(`the open settings have no violations, ${colorScheme}`, async ({ page }) => {
+    await page.emulateMedia({ colorScheme });
+    await page.goto("/ru");
+    await expect(page.locator("html")).not.toHaveAttribute("data-intro");
+    await page.getByRole("button", { name: "Настройки" }).click();
+    await expect(page.locator(".hero-menu")).toBeVisible();
+    const { violations } = await new AxeBuilder({ page })
+      .include(".hero-tools")
+      .withTags(TAGS)
+      .analyze();
+    expect(violations.map(({ id }) => id)).toEqual([]);
+  });
+}
+
+test("a key reaches every choice of the settings, and leaving them shuts them", async ({
+  page,
+}) => {
+  await page.goto("/ru");
+  const button = page.getByRole("button", { name: "Настройки" });
+  await button.focus();
+  await page.keyboard.press("Enter");
+  await expect(page.locator(".hero-menu")).toBeVisible();
+  await page.keyboard.press("Tab");
+  await expect(page.locator(".hero-menu").getByRole("link", { name: "Русский" })).toBeFocused();
+  await page.keyboard.press("Tab");
+  await expect(page.locator(".hero-menu").getByRole("link", { name: "English" })).toBeFocused();
+  await page.keyboard.press("Tab");
+  await expect(page.locator(".hero-menu").getByRole("radio", { name: "Система" })).toBeFocused();
+  await page.keyboard.press("Tab");
+  await expect(page.locator(".hero-menu")).toBeHidden();
+});
+
 test("the first Tab reaches the skip link, and it leads to the page", async ({ page }) => {
   await page.goto("/ru");
   await page.keyboard.press("Tab");

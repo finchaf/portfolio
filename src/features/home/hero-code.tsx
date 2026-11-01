@@ -4,6 +4,7 @@ import { CodeFace } from "@/ui/code-face";
 import { CodeSource } from "@/ui/code-source";
 
 import { HERO_SOURCE, SWITCH_SOURCE } from "./hero-source";
+import { SettingsIcon } from "./settings-icon";
 
 /** A block's source in the block's own place: the block itself, hidden, gives it the room. */
 function Twin({ shape, lines }: { shape: ReactNode; lines: readonly string[] }) {
@@ -65,17 +66,31 @@ export function HeroCode({ words, status, copy, work, github, labels }: HeroCode
       </div>
 
       <div className="hero-switch-twin">
-        <div className="hero-control segmented" data-plan>
-          {(["design", "code"] as const).map((layer) => (
-            <span className="control-shape" data-tab={layer} key={layer}>
-              <CodeFace
-                className="control-shape"
-                shape={<span className="segmented-option">{labels[layer]}</span>}
-              >
-                {labels[layer]}
-              </CodeFace>
-            </span>
-          ))}
+        <div className="hero-control hero-tools" data-plan>
+          <div className="segmented">
+            {(["design", "code"] as const).map((layer) => (
+              <span className="control-shape" data-tab={layer} key={layer}>
+                <CodeFace
+                  className="control-shape"
+                  shape={<span className="segmented-option">{labels[layer]}</span>}
+                >
+                  {labels[layer]}
+                </CodeFace>
+              </span>
+            ))}
+          </div>
+          <span className="hero-settings" data-tab="settings">
+            <CodeFace
+              className="control-shape"
+              shape={
+                <span className="segmented-option segmented-icon">
+                  <SettingsIcon />
+                </span>
+              }
+            >
+              <SettingsIcon />
+            </CodeFace>
+          </span>
         </div>
         <CodeSource className="hero-switch-source" lines={SWITCH_SOURCE} />
       </div>

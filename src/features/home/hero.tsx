@@ -10,13 +10,14 @@ import { HeroLens } from "./hero-lens";
 /** The first screen: who this is and what they do, in the HTML. The lens is an extra layer on top. */
 export function Hero() {
   const t = useTranslations("home.hero");
+  const shell = useTranslations("shell");
   const locale = useLocale();
   const words = t("name").split(" ");
 
   const status = (
-    <p className="hero-status flex items-center gap-2 text-sm whitespace-nowrap text-muted">
-      <span aria-hidden className="hero-dot size-2 rounded-full bg-success" />
-      <span>
+    <p className="hero-status flex min-w-0 items-center gap-2 text-sm whitespace-nowrap text-muted">
+      <span aria-hidden className="hero-dot size-2 shrink-0 rounded-full bg-success" />
+      <span className="truncate">
         {t("status")}
         <span className="hero-where">
           {" · "}
@@ -42,7 +43,22 @@ export function Hero() {
   );
 
   return (
-    <HeroLens labels={{ label: t("lens.label"), design: t("lens.design"), code: t("lens.code") }}>
+    <HeroLens
+      labels={{ label: t("lens.label"), design: t("lens.design"), code: t("lens.code") }}
+      settings={{
+        locale,
+        labels: {
+          label: t("settings"),
+          language: t("language"),
+          theme: shell("theme.label"),
+          system: shell("theme.system"),
+          light: shell("theme.light"),
+          dark: shell("theme.dark"),
+          ru: shell("language.ru"),
+          en: shell("language.en"),
+        },
+      }}
+    >
       <div className="hero-layer">
         <div className="hero-top">{status}</div>
         <h1 className="hero-name font-display font-extrabold" data-hero-name>
