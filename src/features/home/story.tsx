@@ -3,17 +3,14 @@ import { useTranslations } from "next-intl";
 import buildIcon from "./photos/build-icon.webp";
 import buildLayers from "./photos/build-layers.webp";
 import buildUpdate from "./photos/build-update.webp";
-import firstRoom from "./photos/first-room.webp";
-import hall from "./photos/hall.webp";
-import mirror from "./photos/mirror.webp";
+import moscowLecture from "./photos/moscow-lecture.webp";
+import moscowWindow from "./photos/moscow-window.webp";
 import msu from "./photos/msu.webp";
 import notesLecture from "./photos/notes-lecture.webp";
 import notesNight from "./photos/notes-night.webp";
-import comments from "./photos/omsk-comments.webp";
 import plane from "./photos/plane.webp";
 import room from "./photos/room.webp";
 import stage from "./photos/stage.webp";
-import sunset from "./photos/sunset.webp";
 import { StoryCollage } from "./story-collage";
 import { CHAPTERS, RIBBON_BLEEDS, RIBBON_HOLD, RIBBON_SPANS, SPANS } from "./story-data";
 import { LaunchSheet, NightLog, StoryBranches, StoryScore } from "./story-figures";
@@ -23,8 +20,8 @@ import {
   StoryChapter,
   StoryCol,
   StoryHead,
+  StoryPair,
   StoryPhoto,
-  StoryPile,
   StoryQuote,
   StoryStack,
   StoryStay,
@@ -61,15 +58,6 @@ function Omsk() {
         <StoryMenus />
         <StoryQuote>{t("quote")}</StoryQuote>
         <StoryText>{t("after")}</StoryText>
-      </StoryCol>
-      <StoryCol at="middle" weight={1}>
-        <StoryPhoto
-          caption={t("commentsCaption")}
-          drift={30}
-          label={t("comments")}
-          size={30}
-          src={comments}
-        />
       </StoryCol>
     </StoryChapter>
   );
@@ -112,28 +100,15 @@ function Build() {
         <StoryText>{t("start")}</StoryText>
         <StoryText>{t("learn")}</StoryText>
       </StoryCol>
-      <StoryCol at="middle" weight={1}>
-        <StoryPhoto
-          caption={t("layersCaption")}
-          drift={40}
-          label={t("layers")}
-          size={30}
-          src={buildLayers}
-        />
-      </StoryCol>
-      <StoryCol at="bottom" weight={1.15}>
-        <StoryPhoto drift={70} label={t("update")} size={34} src={buildUpdate} tilt={-1.5} />
+      <StoryCol at="bottom" weight={1.1}>
+        <StoryPhoto drift={50} label={t("update")} size={30} src={buildUpdate} tilt={-1.5} />
         <StoryQuote>{t("quote")}</StoryQuote>
       </StoryCol>
-      <StoryCol weight={1.45}>
-        <StoryPhoto
-          caption={t("iconCaption")}
-          drift={60}
-          label={t("icon")}
-          size={44}
-          src={buildIcon}
-          tilt={1}
-        />
+      <StoryCol weight={1.1}>
+        <StoryPair>
+          <StoryPhoto drift={-20} label={t("layers")} src={buildLayers} />
+          <StoryPhoto drift={40} label={t("icon")} src={buildIcon} tilt={1.5} />
+        </StoryPair>
         <StoryText>{t("polish")}</StoryText>
       </StoryCol>
     </StoryChapter>
@@ -151,7 +126,14 @@ function Launch() {
         <StoryQuote>{t("quote")}</StoryQuote>
       </StoryCol>
       <StoryCol at="middle" weight={0.7}>
-        <StoryPhoto drift={20} label={photos("stage")} size={34} src={stage} tilt={1.5} />
+        <StoryPhoto
+          caption={t("stageCaption")}
+          drift={20}
+          label={photos("stage")}
+          size={34}
+          src={stage}
+          tilt={1.5}
+        />
       </StoryCol>
       <StoryCol at="middle" spot weight={1.5}>
         <LaunchSheet />
@@ -183,16 +165,16 @@ function Night() {
   const t = useTranslations("home.story.night");
   return (
     <StoryChapter dark id="night">
-      <StoryCol weight={1}>
+      <StoryCol weight={0.95}>
         <StoryHead date={t("date")} title={t("title")} />
         <StoryText>{t("letter")}</StoryText>
         <StoryText>{t("need")}</StoryText>
       </StoryCol>
-      <StoryCol at="middle" weight={1.15}>
+      <StoryCol at="middle" weight={1.1}>
         <StoryQuote depth={60}>{t("quote")}</StoryQuote>
         <NightLog />
       </StoryCol>
-      <StoryCol at="bottom" weight={0.9}>
+      <StoryCol at="bottom" weight={1.12}>
         <StoryText>{t("wait")}</StoryText>
         <StoryQuote depth={55}>{t("grant")}</StoryQuote>
         <StoryText>{t("move")}</StoryText>
@@ -229,16 +211,12 @@ function Moscow() {
         <StoryHead date={t("date")} title={t("title")} />
         <StoryText>{t("job")}</StoryText>
         <StoryText>{t("agents")}</StoryText>
-        <StoryPhoto drift={40} label={photos("firstRoom")} size={18} src={firstRoom} tilt={2} />
       </StoryCol>
-      <StoryCol at="middle" weight={0.8}>
-        <StoryPhoto drift={80} label={photos("mirror")} size={25} src={mirror} tilt={-1.5} />
-      </StoryCol>
-      <StoryCol at="bottom" weight={1.25}>
-        <StoryPile>
-          <StoryPhoto label={photos("sunset")} size={31} src={sunset} tilt={1} />
-          <StoryPhoto drift={90} label={photos("hall")} size={17} src={hall} tilt={-2.5} />
-        </StoryPile>
+      <StoryStack>
+        <StoryPhoto drift={-30} label={photos("window")} src={moscowWindow} tilt={1} />
+        <StoryPhoto drift={70} label={photos("lecture")} src={moscowLecture} tilt={-2} />
+      </StoryStack>
+      <StoryCol at="bottom" weight={1.05}>
         <StoryQuote>{t("quote")}</StoryQuote>
         <StoryText>{t("prompts")}</StoryText>
       </StoryCol>

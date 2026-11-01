@@ -38,20 +38,61 @@ export const MENUS = WALL.flatMap((frames, row) => {
 }).sort((a, b) => b.menu - a.menu);
 
 /**
- * The collage that opens the story: nine prints the owner chose, in the order of the years, so it is
- * the story in short. `left`, `top` and `size` are in the ribbon's units, for one density on any screen.
+ * The collage that opens the story: five prints the owner chose. They rise and fall from left to
+ * right and overlap only where nothing is covered, so the order here is the order they lie in, the
+ * last on top. `left`, `top` and `size` are in the ribbon's units, for one density on any screen;
+ * `narrow` is the same pile for a phone, in percent of the collage's width.
  */
 export const SCRAPS = [
-  { key: "child", left: 0, top: 4, size: 20, tilt: -2.5, drift: 18 },
-  { key: "forest", left: 0, top: 18, size: 22, tilt: 1.5, drift: 28 },
-  { key: "prom", left: 18.5, top: 0, size: 15, tilt: 2, drift: 22 },
-  { key: "book", left: 32, top: 2, size: 17, tilt: -1.5, drift: 26 },
-  { key: "window", left: 31, top: 23, size: 15, tilt: 2.5, drift: 16 },
-  { key: "desk", left: 47.5, top: 0.5, size: 24, tilt: 1.5, drift: 20 },
-  { key: "hat", left: 44.5, top: 16, size: 15, tilt: -2.5, drift: 30 },
-  { key: "moscow", left: 58, top: 15.5, size: 16, tilt: 1.5, drift: 18 },
-  { key: "airport", left: 70, top: 10, size: 24, tilt: -2, drift: 24 },
+  {
+    key: "desk",
+    left: 34,
+    top: 12,
+    size: 25,
+    tilt: 1.5,
+    drift: 20,
+    narrow: { left: 0, top: 49, size: 50 },
+  },
+  {
+    key: "book",
+    left: 20,
+    top: 0,
+    size: 18,
+    tilt: -1.5,
+    drift: 26,
+    narrow: { left: 56, top: 0, size: 44 },
+  },
+  {
+    key: "child",
+    left: 0,
+    top: 6,
+    size: 23,
+    tilt: -2.5,
+    drift: 18,
+    narrow: { left: 0, top: 6, size: 60 },
+  },
+  {
+    key: "hat",
+    left: 14,
+    top: 19,
+    size: 14,
+    tilt: 2.5,
+    drift: 30,
+    narrow: { left: 34, top: 42, size: 33 },
+  },
+  {
+    key: "airport",
+    left: 50,
+    top: 2,
+    size: 23,
+    tilt: -2,
+    drift: 24,
+    narrow: { left: 50, top: 72, size: 50 },
+  },
 ] as const;
+
+/** How tall the phone's pile stands, in percent of its width. */
+export const SCRAPS_NARROW_HEIGHT = 110;
 
 /** The launch in the store: the first three days and the whole road, from App Store Connect. */
 export const LAUNCH = { impressions: 2800, pageViews: 1287, total: 3428 } as const;
@@ -85,15 +126,15 @@ export const BRANCH_RISE = 0.13;
 
 /** How wide each part of the ribbon is, in widths of the screen. */
 export const SPANS = {
-  open: 1.4,
-  omsk: 1.35,
+  open: 1.18,
+  omsk: 1.02,
   university: 1.2,
-  build: 1.6,
+  build: 1.2,
   launch: 1.47,
   fork: 1 + FORK_HOLD,
-  night: 1.05,
+  night: 0.92,
   rent: 0.62,
-  moscow: 1.4,
+  moscow: 1.2,
   now: 1,
 } as const;
 

@@ -34,9 +34,7 @@
       "quote": "Over a hundred frames. Not one component.",
       "after": "I was furious at the time. Now I understand them.",
       "menus": "The Figma file of the game menu: dozens of nearly identical screens",
-      "menuName": "menu",
-      "comments": "The menu's video on YouTube and three comments under it, in Russian: “If they really made one like this, it'd be a great update”, “Damn, cool”, and a question about where it's from and what the chances are it will happen",
-      "commentsCaption": "The menu's video on YouTube, with the comments under it"
+      "menuName": "menu"
     },
     "university": {
       "mark": "2022",
@@ -57,17 +55,16 @@
       "quote": "By the end of the semester my own app was on my phone.",
       "polish": "The next semester and the summer went on polish. The app was rewritten from scratch several times: I wanted it perfect.",
       "layers": "The VCourse profile screen in Xcode's view debugger, pulled apart into layers",
-      "layersCaption": "The profile screen in Xcode's view debugger",
       "update": "A lock screen notification: VCourse updated to version 0.1.0",
-      "icon": "Icon Composer with an icon of two circles on blue",
-      "iconCaption": "The icon in Icon Composer"
+      "icon": "Icon Composer with an icon of two circles on blue"
     },
     "launch": {
       "mark": "1 September 2025",
       "date": "1 September 2025",
       "title": "Launch",
       "post": "We agreed with the university on a post in its Telegram channel. The post went out, and we sat refreshing the pages, watching the numbers.",
-      "quote": "I had never felt anything that good.",
+      "quote": "Strangers started downloading our app.",
+      "stageCaption": "Presenting VCourse to first-years, as a fourth-year",
       "rank": "57",
       "rankLabel": "rank among education apps on the Russian App Store at launch",
       "chart": "Downloads per day, 1–14 September 2025",
@@ -96,8 +93,8 @@
       "mark": "June 2026",
       "date": "June 2026",
       "title": "One night",
-      "letter": "My bachelor's was ending and I was looking at master's programmes in Omsk. One night a newsletter from Central University arrived: a programme in Human Experience Design. Literally what I had wanted to study from the start.",
-      "need": "They asked for a portfolio. I didn't have one.",
+      "letter": "My bachelor's was ending and I was looking at master's programmes in Omsk. One night a newsletter from Central University arrived: a programme in Human Experience Design. In essence, the product design I had wanted to study after school.",
+      "need": "They wanted a portfolio. I had none.",
       "quote": "I decided not to sleep until I had built something worth sending.",
       "logLabel": "git log, 23 June 2026, Omsk time",
       "log": {
@@ -106,20 +103,15 @@
           "time": "06:56",
           "subject": "Портфолио: первичная сборка на Next.js"
         },
-        "assets": {
-          "hash": "3b88940",
-          "time": "09:34",
-          "subject": "assets: add portrait and product screenshots"
-        },
         "build": {
           "hash": "fb0936a",
           "time": "09:34",
           "subject": "feat: build out the portfolio"
         }
       },
-      "wait": "The site went up on Vercel and the application went out. Then a call, and several weeks of silence.",
+      "wait": "The application went out. Then a call, and several weeks of silence.",
       "grant": "And then a letter: the largest grant they give.",
-      "move": "One letter changed the plan: I was moving to Moscow."
+      "move": "I was moving to Moscow."
     },
     "rent": {
       "mark": "August 2026",
@@ -160,23 +152,17 @@
     "photos": {
       "notesNight": "At night: a textbook on the monitor, below it a laptop with notes in LaTeX",
       "notesLecture": "A laptop with topology notes in a lecture, a cap beside it on the desk",
-      "stage": "A presentation of VCourse on a big screen in front of a hall",
+      "stage": "A presentation of VCourse on a big screen in front of first-years",
       "room": "A bright empty room with a desk by the window",
-      "firstRoom": "A cat on a beanbag beside shelves and boxes",
-      "mirror": "A selfie in a mirror",
-      "hall": "A laptop in a large lecture hall",
-      "sunset": "A red sunset over a street",
       "plane": "A plane's cabin: seat backs and the aisle",
+      "window": "A view from a window down Tverskaya Street to the State Historical Museum",
+      "lecture": "A lecture in a large hall, seen from the back rows",
       "msu": "The main building of Moscow State University under a cloudy sky",
       "scraps": {
         "child": "Two children by a radiator, a cat beside them",
-        "forest": "A curly-haired young man in profile among birches",
-        "prom": "Two young men in suits taking a mirror photo",
         "book": "A selfie with an open student record book",
-        "window": "A view from a window of mountains and snowy roofs",
         "desk": "A desk with a large monitor and a keyboard",
         "hat": "A cat in a Santa hat",
-        "moscow": "A street in central Moscow, a building with a globe on its front",
         "airport": "A laptop with Figma open in an airport lounge"
       }
     }

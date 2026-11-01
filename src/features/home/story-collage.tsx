@@ -5,34 +5,20 @@ import airport from "./photos/scrap-airport.webp";
 import book from "./photos/scrap-book.webp";
 import child from "./photos/scrap-child.webp";
 import desk from "./photos/scrap-desk.webp";
-import forest from "./photos/scrap-forest.webp";
 import hat from "./photos/scrap-hat.webp";
-import moscow from "./photos/scrap-moscow.webp";
-import prom from "./photos/scrap-prom.webp";
-import windowView from "./photos/scrap-window.webp";
-import { SCRAPS } from "./story-data";
+import { SCRAPS, SCRAPS_NARROW_HEIGHT } from "./story-data";
 
-const PICTURES = {
-  airport,
-  book,
-  child,
-  desk,
-  forest,
-  hat,
-  moscow,
-  prom,
-  window: windowView,
-};
+const PICTURES = { airport, book, child, desk, hat };
 
 /**
  * Loose photographs across the opening of the story. A scene deals them out of one pile as the story
- * arrives, and each then moves at its own depth; without a scene they simply lie in a row.
+ * arrives, and each then moves at its own depth; without a scene they simply lie in their places.
  */
 export function StoryCollage() {
   const t = useTranslations("home.story.photos");
   return (
-    <div className="story-collage" data-collage>
-      {SCRAPS.map(({ key, left, top, size, tilt, drift }) => (
+    <div className="story-collage" data-collage style={{ "--tall": SCRAPS_NARROW_HEIGHT }}>
+      {SCRAPS.map(({ key, left, top, size, tilt, drift, narrow }) => (
         <figure
           className="story-scrap"
           data-drift={drift}
@@ -43,6 +29,9 @@ export function StoryCollage() {
             "--top": top,
             "--size": size,
             "--tilt": `${String(tilt)}deg`,
+            "--narrow-left": narrow.left,
+            "--narrow-top": narrow.top,
+            "--narrow-size": narrow.size,
           }}
         >
           <Image

@@ -143,7 +143,7 @@ export function LaunchSheet() {
   );
 }
 
-const COMMITS = ["first", "assets", "build"] as const;
+const COMMITS = ["first", "build"] as const;
 
 /** The night in the log of the repository it produced: the times are the commits' own. */
 export function NightLog() {
@@ -155,7 +155,7 @@ export function NightLog() {
         {COMMITS.map((commit, index) => (
           <li key={commit} style={{ "--i": index * 12 }}>
             <span className="text-accent-strong">{t(`log.${commit}.time`)}</span>{" "}
-            <span className="text-muted">{t(`log.${commit}.hash`)}</span>{" "}
+            <span className="story-log-hash text-muted">{t(`log.${commit}.hash`)}</span>{" "}
             {t(`log.${commit}.subject`)}
           </li>
         ))}

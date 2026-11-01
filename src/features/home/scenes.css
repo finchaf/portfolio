@@ -14,11 +14,11 @@
   --sheet-shadow: 0 -1.5rem 4rem
     light-dark(color-mix(in srgb, var(--ink) 14%, transparent), transparent);
   /* One print over another: on a photograph it reads in the dark too. */
-  --stack-shadow: 0 0.75rem 1.75rem
-    light-dark(
-      color-mix(in srgb, var(--ink) 30%, transparent),
-      color-mix(in srgb, var(--paper) 60%, transparent)
-    );
+  --stack-tone: light-dark(
+    color-mix(in srgb, var(--ink) 30%, transparent),
+    color-mix(in srgb, var(--paper) 60%, transparent)
+  );
+  --stack-shadow: 0 0.75rem 1.75rem var(--stack-tone);
 }
 
 @media (min-width: 64rem) {
@@ -518,25 +518,21 @@
   gap: 1rem;
 }
 
-/* A loose row of photographs, until a wide screen spreads them over the opening. */
+/* A pile of photographs, until a wide screen spreads them over the opening. */
 .story-collage {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  padding: 0.375rem;
+  position: relative;
+  width: min(100%, 30rem);
+  margin-inline: auto;
+  aspect-ratio: 100 / var(--tall);
 }
 
 .story-scrap {
-  width: calc(var(--size) * 0.66rem);
-  margin: -0.25rem;
+  position: absolute;
+  top: calc(var(--narrow-top) / var(--tall) * 100%);
+  left: calc(var(--narrow-left) * 1%);
+  width: calc(var(--narrow-size) * 1%);
+  margin: 0;
   rotate: var(--tilt);
-}
-
-@media (min-width: 40rem) {
-  .story-scrap {
-    width: calc(var(--size) * 0.9rem);
-  }
 }
 
 .story-chapter {
@@ -629,11 +625,6 @@
   aspect-ratio: var(--field);
 }
 
-/* The screenshot is a dark card of its own: on a dark page its corners keep it a card. */
-.story-omsk .story-image {
-  border-radius: 1rem;
-}
-
 .story-menu {
   position: absolute;
   aspect-ratio: 110 / 71;
@@ -663,18 +654,30 @@
   height: 600%;
 }
 
-/* Screens are cards, as the file of Omsk is. */
-.story-build .story-image {
+/* The notice is a card of its own. */
+.story-build .story-col-bottom .story-image {
   border-radius: 1rem;
 }
 
-/* The layers of a screen hang on the page, in either mode: their hairlines are a grey that reads on both. */
-.story-build .story-col-middle .story-image {
-  padding: 1.25rem;
+/*
+ * The layers of a screen hang on the page, in either mode: their hairlines are a grey that reads on
+ * both. The window of the icon, the smaller and the plainer of the two, lies over their corner.
+ */
+.story-pair {
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 26rem);
 }
 
-.story-build .story-col-middle .story-caption {
-  padding-left: 1.25rem;
+.story-pair > :first-child {
+  --width: 62%;
+}
+
+.story-pair > :last-child {
+  --width: 58%;
+  z-index: 1;
+  margin-top: -27%;
+  margin-left: auto;
 }
 
 /* The second print lies over the first's corner, the first's caption in the room this leaves. */
@@ -706,15 +709,13 @@
   text-wrap: balance;
 }
 
-.story-pile {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+/* The view is the large one; the hall lies on its sill, which has nothing to lose. */
+.story-moscow .story-stack > :first-child {
+  --width: 72%;
 }
 
-.story-pile > :nth-child(2) {
-  max-width: calc(100% - 2.5rem);
-  margin-left: 2.5rem;
+.story-moscow .story-stack > :last-child {
+  --width: 54%;
 }
 
 /*
@@ -894,9 +895,16 @@
   background: var(--line);
 }
 
-/* A print over the page and the band at once: on the band a shadow is what parts them. */
+/*
+ * A print over the page and the band at once: on the band a shadow is what parts them. It falls
+ * towards the band, and leaves the caption under the print in the clear.
+ */
+.story-launch .story-col:not(.story-spot) .story-image {
+  box-shadow: 0.875rem 0.125rem 1.75rem var(--stack-tone);
+}
+
 .story-launch .story-col:not(.story-spot) .story-print {
-  box-shadow: var(--stack-shadow);
+  gap: 0.625rem;
 }
 
 /* The band of the launch: every colour in it reads on the accent. */
@@ -1062,6 +1070,17 @@
   border-radius: 0.5rem;
   background: var(--surface);
   font: 400 0.8125rem/1.5 var(--mono);
+}
+
+/* A phone's line has room for the time and the subject, or it breaks every commit in two. */
+@media (width < 40rem) {
+  .story-log {
+    font-size: 0.6875rem;
+  }
+
+  .story-log-hash {
+    display: none;
+  }
 }
 
 .story-hint,
@@ -1568,7 +1587,7 @@
         flex-direction: row;
         align-items: center;
         gap: calc(var(--u) * 3);
-        width: calc(var(--u) * 140);
+        width: calc(var(--u) * 118);
       }
 
       .story-open-copy {
@@ -1581,9 +1600,10 @@
         position: relative;
         display: block;
         flex: none;
-        width: calc(var(--u) * 94);
-        height: calc(var(--u) * 40);
-        padding: 0;
+        width: calc(var(--u) * 73);
+        height: calc(var(--u) * 38);
+        margin: 0;
+        aspect-ratio: auto;
       }
 
       .story-scrap {
@@ -1673,25 +1693,6 @@
         max-width: none;
       }
 
-      .story-omsk .story-image {
-        border-radius: calc(var(--u) * 1.4);
-      }
-
-      .story-pile {
-        flex-direction: row;
-        align-items: flex-end;
-        gap: calc(var(--u) * 1.25);
-      }
-
-      .story-pile > * {
-        flex: none;
-      }
-
-      .story-pile > :nth-child(2) {
-        max-width: none;
-        margin-left: 0;
-      }
-
       .story-photo .story-caption {
         font-size: max(0.6875rem, calc(var(--u) * 0.75));
       }
@@ -1713,11 +1714,6 @@
       .story[data-live] .story-bleed-image {
         width: 106%;
         max-width: none;
-      }
-
-      /* The widest column of the ribbon: its line takes the width and leaves the height to the prints. */
-      .story-moscow .story-quote {
-        max-width: 20em;
       }
 
       /* Lines going opposite ways leave from the edge of their column, not over its neighbours. */
@@ -1811,15 +1807,15 @@
         max-width: 56%;
       }
 
-      .story-build .story-image {
+      .story-build .story-col-bottom .story-image {
         border-radius: calc(var(--u) * 1.2);
       }
 
-      /* The layers run a little past the height the columns keep, and stay clear of the ruler. */
-      .story-build .story-col-middle .story-photo {
-        --width: min(
-          calc((100svh - var(--pad-top) - var(--pad-bottom)) * 0.72),
-          calc(var(--u) * 30)
+      /* The pair leaves the height of the lines under it, on any screen. */
+      .story-pair {
+        width: min(
+          calc((100svh - var(--pad-top) - var(--pad-bottom) - 6.5rem) * 0.96),
+          calc(var(--u) * 33)
         );
       }
 
@@ -1829,7 +1825,15 @@
        */
       .story-launch .story-col-middle:not(.story-spot) {
         flex: none;
-        width: min(calc((100svh - var(--pad-top) - var(--pad-bottom)) * 0.75), calc(var(--u) * 34));
+        width: min(
+          calc((100svh - var(--pad-top) - var(--pad-bottom) - 2.75rem) * 0.75),
+          calc(var(--u) * 34)
+        );
+      }
+
+      /* The caption stops short of the band it would have no contrast on, however far it drifts. */
+      .story-launch .story-col-middle:not(.story-spot) .story-caption {
+        max-width: calc(100% - var(--u) * 3 - 3rem);
       }
 
       /* Moved by `left`: the scene's own transforms take over `translate`. */
@@ -1943,7 +1947,12 @@
       }
 
       .story-log {
-        font-size: max(0.75rem, calc(var(--u) * 0.9));
+        font-size: max(0.6875rem, calc(var(--u) * 0.8));
+      }
+
+      /* The night is the shortest of the turns: its lines are set a size down. */
+      .story-night .story-quote {
+        font-size: calc(var(--u) * 3);
       }
     }
 

@@ -464,13 +464,13 @@ test.describe("the home page in motion", () => {
     await page.goto(HOME);
     await page.waitForLoadState("networkidle");
     // A browser takes what is close on its own; the far end of the ribbon must wait.
-    expect(photos.filter((url) => /sunset|plane|msu/.test(url))).toEqual([]);
+    expect(photos.filter((url) => /moscow-window|plane|msu/.test(url))).toEqual([]);
     const box = await page.locator("#story").evaluate((node) => ({
       top: node.getBoundingClientRect().top + window.scrollY,
       height: node.getBoundingClientRect().height,
     }));
     await jump(page, box.top + box.height - 2 * (await height(page)));
-    await expect.poll(() => photos.some((url) => url.includes("sunset"))).toBe(true);
+    await expect.poll(() => photos.some((url) => url.includes("moscow-window"))).toBe(true);
   });
 
   test("moves the large lines one by one, and they read straight where they meet", async ({
@@ -539,10 +539,10 @@ test.describe("the home page in motion", () => {
         });
         return Math.max(...centres) - Math.min(...centres);
       });
-    await expect(page.locator("[data-scrap]")).toHaveCount(9);
+    await expect(page.locator("[data-scrap]")).toHaveCount(5);
     await expect.poll(spread).toBeLessThan(320);
     await jump(page, (await topOf(page, "#story")) + 0.2 * (await height(page)));
-    await expect.poll(spread).toBeGreaterThan(700);
+    await expect.poll(spread).toBeGreaterThan(500);
   });
 
   test("keeps the opening's pile together until the story is nearly there", async ({ page }) => {
@@ -761,7 +761,8 @@ test.describe("the home page in motion", () => {
     });
     const along = (share: number) =>
       way.top + ((way.left + way.room * share) / way.distance) * way.ride;
-    const left = () => stay.evaluate((node) => Math.round(node.getBoundingClientRect().left));
+    // Plus zero: a stay a fraction of a pixel left of the edge rounds to minus zero.
+    const left = () => stay.evaluate((node) => Math.round(node.getBoundingClientRect().left) + 0);
     const picture = () => canvas.evaluate((node: HTMLCanvasElement) => node.toDataURL());
 
     await jump(page, along(0.1));
@@ -782,29 +783,76 @@ test.describe("the home page in motion", () => {
     await page.goto(HOME);
     const edges = await page.locator(".story-launch").evaluate((chapter) => {
       const right = (selector: string) => chapter.querySelector(selector)?.getBoundingClientRect();
+      const caption = document.createRange();
+      caption.selectNodeContents(chapter.querySelector(".story-caption") ?? chapter);
       return {
         print: right(".story-photo")?.right ?? 0,
+        caption: caption.getBoundingClientRect().right,
         band: right(".story-spot")?.left ?? 0,
         sheet: right(".story-sheet")?.left ?? 0,
       };
     });
     expect(edges.print - edges.band).toBeGreaterThan(30);
     expect(edges.print).toBeLessThan(edges.sheet);
+    expect(edges.caption).toBeLessThan(edges.band);
   });
 
   test("hangs the layers on the page with no ground, in either mode", async ({ page }) => {
     await page.goto(HOME);
-    const layers = page.locator(".story-build .story-col-middle .story-image");
+    const layers = page.locator(".story-pair .story-image").first();
     for (const colorScheme of ["dark", "light"] as const) {
       await page.emulateMedia({ colorScheme });
       await expect(layers).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
     }
   });
 
+  test("lays the window of the icon over the corner of the layers", async ({ page }) => {
+    await page.goto(HOME);
+    const parts = await page
+      .locator(".story-pair > .story-photo")
+      .evaluateAll((nodes: HTMLElement[]) =>
+        nodes.map((node) => ({
+          left: node.offsetLeft,
+          top: node.offsetTop,
+          right: node.offsetLeft + node.offsetWidth,
+          bottom: node.offsetTop + node.offsetHeight,
+        })),
+      );
+    expect(parts).toHaveLength(2);
+    const [layers, icon] = parts;
+    expect(icon?.left).toBeLessThan(layers?.right ?? 0);
+    expect(icon?.top).toBeLessThan(layers?.bottom ?? 0);
+    expect(icon?.right).toBeGreaterThan(layers?.right ?? 0);
+    expect(icon?.bottom).toBeGreaterThan(layers?.bottom ?? 0);
+    const window = page.locator(".story-pair > .story-photo").last();
+    await expect(window.locator(".story-image")).toHaveCSS("border-radius", "0px");
+    await expect(window.locator(".story-print")).toHaveCSS("box-shadow", "none");
+  });
+
+  test("lays the hall on the sill of the view", async ({ page }) => {
+    await page.goto(HOME);
+    const parts = await page
+      .locator(".story-moscow .story-stack > .story-photo")
+      .evaluateAll((nodes: HTMLElement[]) =>
+        nodes.map((node) => ({
+          left: node.offsetLeft,
+          top: node.offsetTop,
+          height: node.offsetHeight,
+          right: node.offsetLeft + node.offsetWidth,
+        })),
+      );
+    expect(parts).toHaveLength(2);
+    const [view, hall] = parts;
+    expect(hall?.left).toBeLessThan(view?.right ?? 0);
+    expect(hall?.right).toBeGreaterThan(view?.right ?? 0);
+    // The museum stands at the middle of the view: the hall stays below it.
+    expect(hall?.top).toBeGreaterThan((view?.top ?? 0) + (view?.height ?? 0) / 2);
+  });
+
   test("lays one print of the notes over the corner of the other", async ({ page }) => {
     await page.goto(HOME);
     const parts = await page
-      .locator(".story-stack > .story-photo")
+      .locator(".story-university .story-stack > .story-photo")
       .evaluateAll((nodes: HTMLElement[]) =>
         nodes.map((node) => ({
           left: node.offsetLeft,

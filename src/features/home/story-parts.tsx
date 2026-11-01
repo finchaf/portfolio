@@ -145,14 +145,14 @@ export function StoryPhoto({
   );
 }
 
-/** Two prints side by side, on one line at the bottom. */
-export function StoryPile({ children }: { children: ReactNode }) {
-  return <div className="story-pile">{children}</div>;
-}
-
 /** Two prints of one thing, the second lying over the corner of the first. Their drifts part them. */
 export function StoryStack({ children }: { children: ReactNode }) {
   return <div className="story-stack">{children}</div>;
+}
+
+/** Two pictures of one piece of work: the smaller one lies over the lower corner of the larger. */
+export function StoryPair({ children }: { children: ReactNode }) {
+  return <div className="story-pair">{children}</div>;
 }
 
 /** A photograph from the top of the screen to the bottom, which the ribbon slides past. */

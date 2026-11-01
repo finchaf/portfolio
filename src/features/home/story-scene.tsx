@@ -533,7 +533,7 @@ function runRibbon(section: HTMLElement, track: HTMLElement, mark: Mark) {
     containerAnimation: move,
     trigger: view,
     start: "left 88%",
-    end: "left 8%",
+    end: "left 32%",
   }));
   dealScraps(section, { trigger: section, start: "top 58%", end: "top -14%" });
   const stopBranches = drawBranches(section, {
