@@ -32,13 +32,16 @@
     opacity var(--duration-quick) var(--ease-out);
 }
 
-.control-button:hover {
-  translate: 0 var(--control-hover);
-}
+/* A finger leaves a hover behind it: only a pointer that can leave gets one. */
+@media (hover: hover) {
+  .control-button:hover {
+    translate: 0 var(--control-hover);
+  }
 
-.control-button:hover::after {
-  opacity: 1;
-  translate: 0.1875rem 0;
+  .control-button:hover::after {
+    opacity: 1;
+    translate: 0.1875rem 0;
+  }
 }
 
 .control-button:active {
@@ -82,8 +85,10 @@
   transition: color var(--duration-quick) var(--ease-out);
 }
 
-.control-link:hover {
-  color: var(--accent-strong);
+@media (hover: hover) {
+  .control-link:hover {
+    color: var(--accent-strong);
+  }
 }
 
 @media (min-width: 64rem) {

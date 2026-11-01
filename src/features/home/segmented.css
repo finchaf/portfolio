@@ -39,8 +39,10 @@
   transition: scale var(--duration-base) var(--ease-out);
 }
 
-.segmented-option:hover {
-  color: var(--ink);
+@media (hover: hover) {
+  .segmented-option:hover {
+    color: var(--ink);
+  }
 }
 
 /* A choice is a radio button, a link to where the reader already is, or a button that stands open. */

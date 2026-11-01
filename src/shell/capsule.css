@@ -33,8 +33,10 @@
   transition: translate var(--duration-quick) var(--ease-out);
 }
 
-.capsule-action:hover {
-  translate: 0 var(--control-hover);
+@media (hover: hover) {
+  .capsule-action:hover {
+    translate: 0 var(--control-hover);
+  }
 }
 
 .capsule-action:active {
