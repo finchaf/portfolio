@@ -121,6 +121,8 @@ test.describe("the home page in motion", () => {
 
   test("moves the lens with the pointer and opens the whole source", async ({ page }) => {
     await page.goto(HOME);
+    // It listens from hydration, which on a slow machine comes well after `load`.
+    await expect.poll(() => lens(page, "--lens-x")).not.toBeNaN();
     await page.mouse.move(300, 300);
     await page.mouse.move(320, 340);
     await expect.poll(() => lens(page, "--lens-x")).toBeCloseTo(320, -1);
