@@ -11,7 +11,7 @@ portfolio/
 │   │   ├── [locale]/            все страницы; корневой layout здесь
 │   │   ├── global-not-found.tsx 404 на двух языках
 │   │   ├── sitemap.ts, robots.ts
-│   │   └── globals.css          Tailwind, позже токены
+│   │   └── globals.css          Tailwind и подключение тем
 │   ├── features/<страница>/     всё, что нужно одной странице, снимки главной в `photos/`
 │   ├── shell/                   капсула, футер, ссылки, 404, ошибка
 │   ├── ui/                      базовые компоненты без текста

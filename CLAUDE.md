@@ -1,8 +1,9 @@
 # Portfolio
 
 Personal site of Danil Zablotsky, live at `finchaf.com`: a statically exported Next.js app with
-rich motion and interactive demos, served by Caddy. The skeleton stands: four pages in two
-languages behind every gate; check the plan before assuming what exists.
+rich motion and interactive demos, served by Caddy. The home page is built and live in two
+languages, behind every gate; the other three pages are still placeholders. Check the plan before
+assuming what exists.
 
 ## Read this first — `docs/` is the source of truth
 
@@ -43,3 +44,7 @@ texts, cases or what the site may show. Commit there separately.
 By the skills in `.claude/skills/`: `/nt` starts a task and stops before the push, `/ar` audits what
 is not yet in `main`, `/si` lands it, `/rf` ports a reference. Tasks live in the plan, with no tracker
 (ADR-0007). One task, one session.
+
+A choice of how something looks is made on a live page before the site changes: options in real
+tokens, in `docs/private/prototype/`, with a recommendation. A release is `python3 scripts/deploy.py`
+from `main`. A card's colours or strings changed: `pnpm og`, or the Unit gate goes red.
