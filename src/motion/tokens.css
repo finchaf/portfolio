@@ -3,15 +3,16 @@
   --duration-quick: 0.18s;
   --duration-base: 0.32s;
   --duration-slow: 0.7s;
+  --duration-page: 0.62s;
   --duration-grain: 1.2s;
   --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-/* A change of page, and a card flowing into the page it opens. */
+/* A change of page, and a name flowing into the page it opens. */
 ::view-transition-group(*),
 ::view-transition-old(*),
 ::view-transition-new(*) {
-  animation-duration: var(--duration-slow);
+  animation-duration: var(--duration-page);
   animation-timing-function: var(--ease-in-out);
 }

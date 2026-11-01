@@ -43,6 +43,16 @@
   translate: 0 1px;
 }
 
+.capsule-action > span::before {
+  content: var(--capsule-open, "") / "";
+  color: var(--control-mark);
+}
+
+.capsule-action > span::after {
+  content: var(--capsule-close, "") / "";
+  color: var(--control-mark);
+}
+
 .capsule-surface {
   border-radius: var(--control-radius);
   background: var(--control-surface);
@@ -208,4 +218,31 @@
 
 [data-capsule][data-lens]:has(:focus-visible) .capsule-code {
   display: none;
+}
+
+/*
+ * A page with a bar of its own at the top holds the capsule open and flat in that bar: on a wide
+ * screen there is nothing for it to close around. On a phone the text of such a page runs under
+ * the capsule, so its surface is always there.
+ */
+@media (min-width: 64rem) {
+  :root:has([data-capsule-flat]) {
+    --header: 2.5rem;
+  }
+
+  :root:has([data-capsule-flat]) [data-capsule] {
+    --capsule-gap: 1rem;
+    top: 0;
+  }
+
+  :root:has([data-capsule-flat]) .capsule-surface {
+    display: none;
+  }
+}
+
+@media (max-width: 63.99rem) {
+  :root[data-js]:has([data-capsule-flat]):not([data-scrolled]) .capsule-surface {
+    opacity: 1;
+    scale: 1;
+  }
 }

@@ -1,0 +1,82 @@
+/*
+ * The six looks of the made-up app on the Flow page: its own colours and type, not the site's. The
+ * board switches between them by `data-style`, as tokens re-dress a real file.
+ */
+[data-style="a"] {
+  --s-bg: #0e1330;
+  --s-ink: #eef0ff;
+  --s-sub: #a7aecf;
+  --s-card: #1a2147;
+  --s-acc: #f5c26b;
+  --s-on: #1a1408;
+  --s-moon: #f5c26b;
+  --s-f: "Geist Variable", "Inter Variable", sans-serif;
+  --s-w: 600;
+  --s-r: 1.6em;
+  --s-sky: #151c45;
+}
+[data-style="b"] {
+  --s-bg: #f4efe6;
+  --s-ink: #211c16;
+  --s-sub: #6f6657;
+  --s-card: #fffdf8;
+  --s-acc: #211c16;
+  --s-on: #f4efe6;
+  --s-moon: #d9573f;
+  --s-f: "Geologica Variable", sans-serif;
+  --s-w: 500;
+  --s-r: 0.7em;
+  --s-sky: #ebe3d4;
+}
+[data-style="c"] {
+  --s-bg: #efeaff;
+  --s-ink: #2a2352;
+  --s-sub: #675f8f;
+  --s-card: #ffffff;
+  --s-acc: #5b3df5;
+  --s-on: #ffffff;
+  --s-moon: #b9a8ff;
+  --s-f: "Nunito Variable", sans-serif;
+  --s-w: 800;
+  --s-r: 2.2em;
+  --s-sky: #e2dbff;
+}
+[data-style="d"] {
+  --s-bg: #070707;
+  --s-ink: #ffffff;
+  --s-sub: #9a9a9a;
+  --s-card: #171717;
+  --s-acc: #d4ff3f;
+  --s-on: #0a0a0a;
+  --s-moon: #d4ff3f;
+  --s-f: "Geologica Variable", sans-serif;
+  --s-w: 800;
+  --s-r: 0.9em;
+  --s-sky: #111111;
+}
+[data-style="e"] {
+  --s-bg: #e8eef1;
+  --s-ink: #102027;
+  --s-sub: #4f6875;
+  --s-card: #ffffff;
+  --s-acc: #0f6e84;
+  --s-on: #ffffff;
+  --s-moon: #0f6e84;
+  --s-f: "JetBrains Mono Variable", monospace;
+  --s-w: 600;
+  --s-r: 0.4em;
+  --s-sky: #dbe4e9;
+}
+[data-style="f"] {
+  --s-bg: #ffe6d6;
+  --s-ink: #3a1a12;
+  --s-sub: #84503f;
+  --s-card: #fff5ee;
+  --s-acc: #c8391f;
+  --s-on: #ffffff;
+  --s-moon: #ff8a5b;
+  --s-f: "Golos Text Variable", sans-serif;
+  --s-w: 700;
+  --s-r: 1.8em;
+  --s-sky: #ffd8c2;
+}

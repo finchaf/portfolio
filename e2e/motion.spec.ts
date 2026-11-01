@@ -10,7 +10,7 @@ test.describe("without JavaScript", () => {
     test(`${address} shows its heading and its links`, async ({ page }) => {
       await page.goto(address);
       await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-      await expect(page.getByRole("navigation").getByRole("link")).toHaveCount(4);
+      await expect(page.locator("[data-capsule] nav").getByRole("link")).toHaveCount(4);
     });
   }
 });
@@ -1288,5 +1288,178 @@ test.describe("the home page on a phone", () => {
     expect(await nav.evaluate((node) => node.scrollWidth - node.clientWidth)).toBeLessThanOrEqual(
       1,
     );
+  });
+});
+
+test.describe("the Flow vault", () => {
+  const FLOW = "/ru/flow";
+
+  test("opens a note by its address and Back returns to the place", async ({ page }) => {
+    await page.goto(FLOW);
+    // The vault starts at the top of the page: a scroll made before it runs would be lost.
+    await expect.poll(() => page.evaluate(() => history.scrollRestoration)).toBe("manual");
+    await page.evaluate(() => {
+      window.scrollTo({ top: 900, behavior: "instant" });
+    });
+    await page.locator('#tree a[data-note="critic"]').click();
+    await expect(page).toHaveURL(/#critic$/);
+    await expect(page.locator(".note[data-open] .inline-title")).toHaveText("Критик");
+    await page.goBack();
+    await expect(page.locator(".note[data-open] .inline-title")).toHaveText("Флоу");
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(900);
+  });
+
+  test("runs by itself, stops for a person, and takes commands", async ({ page }) => {
+    await page.goto(FLOW);
+    await expect(page.locator("#term-log")).toContainText("new-app 000", { timeout: 5000 });
+    await expect(page.locator("#term-now[data-ask]")).toBeVisible({ timeout: 15000 });
+    await page.locator('.sdir[data-dir="a"]').click();
+    await expect(page.locator(".compare").first()).toHaveAttribute("data-style", "a");
+    await page.locator("#term-in").fill("open rules");
+    await page.locator("#term-in").press("Enter");
+    await expect(page).toHaveURL(/#rules$/);
+  });
+
+  test("keeps decisions on their side of the map", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(FLOW);
+    await expect(page.locator(".lane.me.lane-stop a").first()).toHaveCSS("text-align", "right");
+  });
+
+  test("keeps the header flat over the page on a wide screen", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(FLOW);
+    await page.evaluate(() => {
+      window.scrollTo({ top: 600, behavior: "instant" });
+    });
+    await expect(page.locator(".capsule-surface")).toBeHidden();
+    await expect(page.locator("[data-capsule]")).toHaveCSS("top", "0px");
+  });
+
+  test("draws the graph and answers with the note under the pointer", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(`${FLOW}#graph`);
+    await expect(page.locator("#graph-full")).toBeVisible();
+    await expect.poll(() => page.locator("#graph-full").getAttribute("width")).not.toBe("300");
+  });
+
+  test.describe("without a script", () => {
+    test.use({ javaScriptEnabled: false });
+
+    test("stands every note on the page", async ({ page }) => {
+      await page.goto(FLOW);
+      await expect(page.locator("article.note:visible")).toHaveCount(17);
+      await expect(page.locator(".transcript")).toBeVisible();
+    });
+  });
+
+  test.describe("with reduced motion", () => {
+    test.use({ reducedMotion: "reduce" });
+
+    test("shows the whole run at once", async ({ page }) => {
+      await page.goto(FLOW);
+      await expect(page.locator("#term-log")).toContainText("harvest");
+      await expect(page.locator('#tree [data-note="brief"]')).toBeVisible();
+    });
+  });
+});
+
+test.describe("a change of page", () => {
+  const FLOW = "/ru/flow";
+
+  // What the next view transition runs, read when it is ready: the browser drops it right after.
+  const watch = (page: Page) =>
+    page.evaluate(() => {
+      const start = document.startViewTransition.bind(document) as (
+        update: unknown,
+      ) => ViewTransition;
+      const seen = window as unknown as { change?: string[]; held?: string };
+      delete seen.change;
+      Object.assign(document, {
+        startViewTransition(update: unknown) {
+          Object.assign(document, { startViewTransition: start });
+          const transition = start(update);
+          void transition.ready.then(() => {
+            const root = document.documentElement;
+            seen.held = getComputedStyle(root, "::view-transition-group(root)").height;
+            seen.change = root
+              .getAnimations({ subtree: true })
+              .filter((run) => (run.effect as KeyframeEffect).pseudoElement?.includes("transition"))
+              .map((run) => {
+                const { pseudoElement } = run.effect as KeyframeEffect;
+                return `${pseudoElement} ${(run as CSSAnimation).animationName}`;
+              });
+          });
+          return transition;
+        },
+      });
+    });
+
+  const change = (page: Page) =>
+    page.waitForFunction(() => (window as unknown as { change?: string[] }).change);
+
+  const capsule = (page: Page, path: string) =>
+    page.locator(`[data-capsule] a[href$="${path}"]`).first();
+
+  test("crosses the screen along the slash, and back the other way", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(FLOW);
+    await page.waitForLoadState("networkidle");
+
+    await watch(page);
+    await capsule(page, "/ru/projects").click();
+    const forward = (await (await change(page)).jsonValue()) as string[];
+    expect(forward).toContain("::view-transition-new(root) page-slash-in");
+    expect(forward).toContain("::view-transition-new(page-lead) page-lead-in");
+    expect(forward).toContain("::view-transition-old(capsule) page-capsule-off");
+    await expect(page).toHaveURL(/\/ru\/projects$/);
+    await expect(page.locator("html")).not.toHaveAttribute("data-page-back");
+
+    await page.waitForTimeout(700);
+    await watch(page);
+    await capsule(page, "/ru").click();
+    const back = (await (await change(page)).jsonValue()) as string[];
+    expect(back).toContain("::view-transition-new(root) page-slash-back");
+    expect(back).toContain("::view-transition-new(page-lead) page-lead-back");
+    await expect(page.locator("html")).toHaveAttribute("data-page-back");
+  });
+
+  test("keeps the picture of the page to the size of the screen", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(HOME);
+    await page.waitForLoadState("networkidle");
+    await watch(page);
+    await capsule(page, "/ru/flow").click();
+    await change(page);
+    const held = await page.evaluate(() => (window as unknown as { held?: string }).held);
+    expect(held).toBe("900px");
+  });
+
+  test("lets the name of a chapter flow into the page it opens", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(HOME);
+    await page.waitForLoadState("networkidle");
+    const open = page.locator('main a[href$="/ru/flow"]').first();
+    await jump(page, (await open.evaluate((node) => node.getBoundingClientRect().top)) - 500);
+    await expect(open).toBeInViewport();
+
+    await watch(page);
+    await open.click();
+    const run = (await (await change(page)).jsonValue()) as string[];
+    expect(run).toContain("::view-transition-old(world-flow) page-name-off");
+    expect(run).toContain("::view-transition-new(world-flow) page-name-on");
+  });
+
+  test.describe("with reduced motion", () => {
+    test.use({ reducedMotion: "reduce" });
+
+    test("is instant", async ({ page }) => {
+      await page.goto(FLOW);
+      await page.waitForLoadState("networkidle");
+      await watch(page);
+      await capsule(page, "/ru/projects").click();
+      expect((await (await change(page)).jsonValue()) as string[]).toEqual([]);
+      await expect(page).toHaveURL(/\/ru\/projects$/);
+    });
   });
 });

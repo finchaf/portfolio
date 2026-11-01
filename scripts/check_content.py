@@ -6,7 +6,7 @@ nothing in a build says so: the types come from the Russian catalog alone.
 
     python3 scripts/check_content.py
 
-1. `messages/ru/` and `messages/en/` hold the same files.
+1. `messages/ru/` and `messages/en/` hold the same files, the vault's notes among them.
 2. A catalog has exactly the keys of its twin; a difference is named by its dotted path.
 3. Keys are camelCase and every value is non-empty text.
 
@@ -39,6 +39,12 @@ def main() -> int:
     russian = {path.name for path in (MESSAGES / "ru").glob("*.json")}
     english = {path.name for path in (MESSAGES / "en").glob("*.json")}
     findings += [f"{name}: only in one language" for name in sorted(russian ^ english)]
+
+    notes = {
+        locale: {path.name for path in (MESSAGES / locale / "vault").glob("*.md")}
+        for locale in ("ru", "en")
+    }
+    findings += [f"vault/{name}: only in one language" for name in sorted(notes["ru"] ^ notes["en"])]
 
     for name in sorted(russian & english):
         catalogs = {

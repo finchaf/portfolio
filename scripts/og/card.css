@@ -161,7 +161,9 @@ body {
   top: 88px;
   left: 262px;
   color: var(--on-accent);
-  font: 800 400px/1 var(--display);
+  font:
+    800 400px/1 "Inter Variable",
+    sans-serif;
   letter-spacing: -0.04em;
 }
 

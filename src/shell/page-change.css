@@ -1,0 +1,234 @@
+/*
+ * One page gives way to another along the slash of the logo, 20.2 degrees: the new page comes in
+ * behind a strip of its own accent, and a step back in the order of the capsule runs the other way.
+ * The capsule stays where it is and changes at the middle, so two sets of words never overlap.
+ *
+ * The shapes are written out in the keyframes. Firefox does not interpolate a registered custom
+ * property on these pseudo-elements, and a shape built on one stands at its end for the whole
+ * change. 36.8vh is how far the slash leans over the height of the screen, 7vw the strip's width.
+ */
+.page-lead {
+  position: fixed;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes page-slash-in {
+  from {
+    clip-path: polygon(-100vw 0, calc(-36.8vh - 7vw) 0, -7vw 100%, -100vw 100%);
+  }
+
+  to {
+    clip-path: polygon(-100vw 0, 107vw 0, calc(107vw + 36.8vh) 100%, -100vw 100%);
+  }
+}
+
+@keyframes page-lead-in {
+  from {
+    clip-path: polygon(calc(-36.8vh - 7vw) 0, -36.8vh 0, 0 100%, -7vw 100%);
+  }
+
+  to {
+    clip-path: polygon(107vw 0, 114vw 0, calc(114vw + 36.8vh) 100%, calc(107vw + 36.8vh) 100%);
+  }
+}
+
+@keyframes page-slash-back {
+  from {
+    clip-path: polygon(107vw 0, 300vw 0, 300vw 100%, calc(107vw + 36.8vh) 100%);
+  }
+
+  to {
+    clip-path: polygon(calc(-36.8vh - 7vw) 0, 300vw 0, 300vw 100%, -7vw 100%);
+  }
+}
+
+@keyframes page-lead-back {
+  from {
+    clip-path: polygon(100vw 0, 107vw 0, calc(107vw + 36.8vh) 100%, calc(100vw + 36.8vh) 100%);
+  }
+
+  to {
+    clip-path: polygon(calc(-36.8vh - 14vw) 0, calc(-36.8vh - 7vw) 0, -7vw 100%, -14vw 100%);
+  }
+}
+
+@keyframes page-drift-left {
+  to {
+    transform: translateX(-6%);
+  }
+}
+
+@keyframes page-drift-right {
+  to {
+    transform: translateX(6%);
+  }
+}
+
+@keyframes page-capsule-off {
+  0%,
+  49.9% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes page-capsule-on {
+  0%,
+  49.9% {
+    opacity: 0;
+  }
+
+  50%,
+  100% {
+    opacity: 1;
+  }
+}
+
+/* The big name scales down crisp: it holds until the last third, then gives way to the small one. */
+@keyframes page-name-off {
+  0%,
+  66% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes page-name-on {
+  0%,
+  66% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+/* A name with no partner on the screen flows nowhere, so it leaves before the slash reaches it. */
+@keyframes page-name-gone {
+  0%,
+  30% {
+    opacity: 1;
+  }
+
+  55%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* A rule with a name outranks the instant change of reduced motion, so all of them live here. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-capsule] {
+    view-transition-name: capsule;
+  }
+
+  /* Left in the page it would stand frozen in both pictures while the pointer moves on. */
+  :root[data-pointer] .dot-cursor > i {
+    view-transition-name: dot-cursor;
+  }
+
+  ::view-transition-group(root),
+  ::view-transition-group(page-lead),
+  ::view-transition-group(dot-cursor) {
+    animation: none;
+  }
+
+  ::view-transition-group(page-lead) {
+    z-index: 1;
+  }
+
+  ::view-transition-group(.world-name) {
+    z-index: 2;
+  }
+
+  ::view-transition-group(capsule) {
+    z-index: 3;
+  }
+
+  /* A picture has nothing behind it to invert: the point goes on as its hairline alone. */
+  ::view-transition-group(dot-cursor) {
+    z-index: 4;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 60%, transparent);
+  }
+
+  ::view-transition-old(dot-cursor),
+  ::view-transition-new(dot-cursor) {
+    opacity: 0;
+    animation: none;
+  }
+
+  ::view-transition-image-pair(root),
+  ::view-transition-image-pair(capsule),
+  ::view-transition-image-pair(.world-name) {
+    isolation: auto;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  ::view-transition-old(capsule),
+  ::view-transition-new(capsule),
+  ::view-transition-old(.world-name),
+  ::view-transition-new(.world-name) {
+    mix-blend-mode: normal;
+  }
+
+  ::view-transition-old(root) {
+    animation: page-drift-left var(--duration-page) var(--ease-in-out) both;
+  }
+
+  ::view-transition-new(root) {
+    animation: page-slash-in var(--duration-page) var(--ease-in-out) both;
+  }
+
+  ::view-transition-old(page-lead) {
+    display: none;
+  }
+
+  ::view-transition-new(page-lead) {
+    background: var(--accent);
+    animation: page-lead-in var(--duration-page) var(--ease-in-out) both;
+  }
+
+  ::view-transition-old(capsule) {
+    animation: page-capsule-off var(--duration-page) linear both;
+  }
+
+  ::view-transition-new(capsule) {
+    animation: page-capsule-on var(--duration-page) linear both;
+  }
+
+  ::view-transition-old(.world-name) {
+    animation: page-name-off var(--duration-page) linear both;
+  }
+
+  ::view-transition-new(.world-name) {
+    animation: page-name-on var(--duration-page) linear both;
+  }
+
+  ::view-transition-old(.world-name):only-child {
+    animation-name: page-name-gone;
+  }
+
+  :root[data-page-back]::view-transition-old(root) {
+    animation-name: page-drift-right;
+  }
+
+  :root[data-page-back]::view-transition-new(root) {
+    animation-name: page-slash-back;
+  }
+
+  :root[data-page-back]::view-transition-new(page-lead) {
+    animation-name: page-lead-back;
+  }
+}
