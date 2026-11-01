@@ -131,17 +131,17 @@ export function StoryPhoto({
   caption,
 }: StoryPhotoProps) {
   return (
-    <figure
+    <div
       className="story-photo"
       data-drift={drift}
       data-tilt={tilt}
       style={{ "--size": size, "--tilt": `${String(tilt)}deg` }}
     >
-      <div className="story-print" data-reveal>
+      <figure className="story-print" data-reveal>
         <Image alt={label} className="story-image" src={src} unoptimized />
         {caption && <figcaption className="story-caption">{caption}</figcaption>}
-      </div>
-    </figure>
+      </figure>
+    </div>
   );
 }
 
