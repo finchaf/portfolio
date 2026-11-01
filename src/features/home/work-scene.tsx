@@ -8,7 +8,11 @@ import { SCENE } from "@/motion/tokens";
 /** The corners of a sheet rising over the page, and how far what it covers sinks. */
 const SHEET = { radius: "2rem", sunk: 0.93, dimmed: 0.55 };
 
-const WIDE_SCREEN = "(min-width: 64rem)";
+/** Both, so that a window or a tablet crossing the line builds the scene again. */
+const WIDTHS = {
+  wide: `${MOTION_ALLOWED} and (min-width: 64rem)`,
+  narrow: `${MOTION_ALLOWED} and (width < 64rem)`,
+};
 
 /** How much of the move between two stops the old stop takes to leave. */
 const LEAVING = 0.65;
@@ -282,7 +286,7 @@ export function WorkScene({ children }: { children: ReactNode }) {
       const undoTheme = lendTheme(chapters, after);
 
       const motion = gsap.matchMedia();
-      motion.add(MOTION_ALLOWED, () => {
+      motion.add(WIDTHS, ({ conditions }) => {
         const [pora, flow, projects] = chapters;
         if (!pora || !flow || !projects || !after) return;
 
@@ -304,7 +308,7 @@ export function WorkScene({ children }: { children: ReactNode }) {
         const poraStage = stage(pora);
         const flowStage = stage(flow);
         // On a phone the story is a long column: sinking it would throw its end far up the page.
-        const sinking = window.matchMedia(WIDE_SCREEN).matches ? under : null;
+        const sinking = conditions?.wide ? under : null;
         if (poraStage) rise(pora, poraStage, sinking);
         if (flowStage) rise(flow, flowStage, poraStage);
         rise(after, after, stage(projects));
