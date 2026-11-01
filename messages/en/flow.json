@@ -1,7 +1,9 @@
 {
   "meta": {
     "title": "Flow — Danil Zablotsky",
-    "description": "How I work with agents: a terminal and a knowledge base."
+    "description": "Agents, a terminal and a Markdown knowledge base carry a task from the brief to finished screens.",
+    "shareTitle": "Flow: how I work with agents",
+    "imageAlt": "A large hash sign and a terminal command on a violet field."
   },
   "title": "Flow",
   "lead": "How I work with agents: a terminal and a knowledge base."

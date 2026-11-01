@@ -10,8 +10,8 @@ export const SITE_ICONS = {
   apple: "/apple-touch-icon.png",
 };
 
-/** The picture of a link shared in a chat or a feed. */
-export const SITE_IMAGE = { url: "/og.png", width: 1200, height: 630 };
+/** The site's name on a link shared in a chat or a feed: the logo's word, the same in any language. */
+export const SITE_NAME = "finchaf";
 
 /** Where a reader writes. A plain link, so it works without JavaScript. */
 export const TELEGRAM_URL = "https://t.me/finchaf";

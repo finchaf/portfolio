@@ -24,7 +24,7 @@
 
 У каждой страницы:
 
-- свой `title`, `description` и общая картинка для ссылок `public/og.png`;
+- свой `title`, `description` и своё превью: заголовок, картинка и её описание ([дизайн-система](../04-design-system/README.md#превью-ссылок));
 - `canonical` и `hreflang` `ru`, `en`, `x-default` на `/`;
 - место в `sitemap.xml`.
 

@@ -19,10 +19,10 @@ portfolio/
 │   ├── themes/                  контракт токенов, тема на страницу, шрифты, режимы
 │   ├── i18n/                    языки, адреса, каталог, метаданные страниц
 │   └── lib/                     чистый код: реестр страниц, адрес сайта
-├── public/                      иконки и картинка ссылки
+├── public/                      иконки, картинки ссылок в og/
 ├── messages/<locale>/*.json     строки, файл на область
 ├── e2e/                         браузерные гейты Playwright
-├── scripts/                     check.py и гейты, serve.py, compress.ts, deploy.py
+├── scripts/                     check.py и гейты, serve.py, compress.ts, deploy.py, og/ для картинок ссылок
 ├── deploy/Caddyfile.test        блок Caddy для гейтов и просмотра
 ├── docs/                        база знаний
 ├── .claude/                     скиллы `/nt`, `/si`, `/ar`, `/rf` и их агенты

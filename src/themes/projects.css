@@ -18,6 +18,11 @@
   --success: light-dark(#40a02b, #a6e3a1); /* Green */
   --warning: light-dark(#df8e1d, #f9e2af); /* Yellow */
   --danger: light-dark(#d20f39, #f38ba8); /* Red */
+  /* The rest of the palette, for what is drawn in all of it: the link picture. */
+  --peach: light-dark(#fe640b, #fab387);
+  --teal: light-dark(#179299, #94e2d5);
+  --blue: light-dark(#1e66f5, #89b4fa);
+  --pink: light-dark(#ea76cb, #f5c2e7);
 
   /* Controls: the plain pill, until this theme gets a skin of its own (ADR-0011). */
   --control-face: var(--sans);

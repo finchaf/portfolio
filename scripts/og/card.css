@@ -1,0 +1,257 @@
+/*
+ * The link pictures: a field of the page's theme and a dark zone, parted by the slash of the logo.
+ * The slash leans 20.2° in the logo's outline, which over the 630 px of a card is 232 px. Sizes are
+ * for the 1200 px canvas; the colours are the themes' tokens, read in the mode each part declares.
+ */
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html,
+body {
+  width: 1200px;
+  height: 630px;
+  overflow: hidden;
+}
+
+.tile-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.card {
+  --stamp: var(--mono);
+  position: relative;
+  width: 1200px;
+  height: 630px;
+  overflow: hidden;
+}
+
+.zone,
+.field,
+.over {
+  position: absolute;
+  inset: 0;
+}
+
+.zone {
+  --sign: var(--ink);
+  --sign-mark: var(--accent);
+  background: var(--surface);
+  color-scheme: dark;
+}
+
+.field {
+  background: var(--accent);
+  color-scheme: light;
+  clip-path: polygon(0 0, var(--top) 0, calc(var(--top) + 232px) 100%, 0 100%);
+}
+
+.over {
+  color-scheme: light;
+}
+
+.sign {
+  position: absolute;
+  top: 50px;
+  right: 285px;
+  color: var(--sign);
+  font: 700 38px/1 var(--stamp);
+  white-space: nowrap;
+}
+
+.sign i {
+  color: var(--sign-mark);
+  font-style: normal;
+}
+
+.mark {
+  position: absolute;
+  top: 252px;
+  left: 300px;
+  display: block;
+  width: 600px;
+  height: 128px;
+  overflow: visible;
+}
+
+/* The home page: the coral field holds the finished mark, the dark zone its plan. */
+.card-home {
+  --top: 484px;
+}
+
+.card-home .zone {
+  --grid: color-mix(in srgb, var(--muted) 10%, var(--line));
+  background-color: var(--page);
+  background-image:
+    linear-gradient(var(--grid) 3px, transparent 3px),
+    linear-gradient(90deg, var(--grid) 3px, transparent 3px);
+  background-position: 22px 44px;
+  background-size: 64px 64px;
+}
+
+.mark-solid {
+  fill: var(--on-accent);
+}
+
+.mark-plan {
+  fill: var(--page);
+  stroke: var(--accent);
+  stroke-width: 28;
+  paint-order: stroke fill;
+}
+
+.mark-hatch {
+  fill: url(#hatch);
+}
+
+.hatch-line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-opacity: 0.9;
+  stroke-width: 1.15;
+}
+
+/* Pora na paru: one lesson, close up. */
+.card-pora {
+  --top: 400px;
+}
+
+.lesson {
+  position: absolute;
+  top: 158px;
+  left: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 600px;
+  height: 314px;
+  padding: 40px 44px;
+  border-radius: 40px;
+  background: var(--surface);
+  color: var(--ink);
+  color-scheme: light;
+}
+
+.time {
+  color: var(--accent-strong);
+  font: 500 62px/1 var(--sans);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.subject {
+  font: 700 112px/1 var(--sans);
+  letter-spacing: -0.04em;
+}
+
+/* Flow: the mark of a note and a command with its cursor. */
+.card-flow {
+  --top: 380px;
+}
+
+.card-flow .zone {
+  --sign-mark: var(--accent-strong);
+}
+
+.hash {
+  position: absolute;
+  top: 88px;
+  left: 262px;
+  color: var(--on-accent);
+  font: 800 400px/1 var(--display);
+  letter-spacing: -0.04em;
+}
+
+.command {
+  position: absolute;
+  top: 330px;
+  left: 590px;
+  color: var(--ink);
+  font: 500 46px/1.25 var(--stamp);
+  white-space: pre;
+}
+
+.command b {
+  color: var(--accent-strong);
+  font-weight: 500;
+}
+
+.command u {
+  display: inline-block;
+  width: 26px;
+  height: 50px;
+  margin-left: 4px;
+  background: var(--accent-strong);
+  vertical-align: -8px;
+}
+
+/* Projects: the palette itself, which keeps the page apart from Flow's violet, and two folders. */
+.card-projects .zone {
+  --sign-mark: var(--warning);
+}
+
+.card-projects .sign {
+  right: 288px;
+  font-size: 32px;
+}
+
+.band {
+  position: absolute;
+  top: -40px;
+  bottom: -40px;
+  width: 172px;
+  transform: skewX(20.2deg);
+  transform-origin: 0 50%;
+}
+
+.band-danger {
+  left: -230px;
+  background: var(--danger);
+}
+
+.band-peach {
+  left: -60px;
+  background: var(--peach);
+}
+
+.band-warning {
+  left: 110px;
+  background: var(--warning);
+}
+
+.band-success {
+  left: 280px;
+  background: var(--success);
+}
+
+.band-blue {
+  left: 450px;
+  background: var(--blue);
+}
+
+.folder {
+  position: absolute;
+  left: 296px;
+  display: flex;
+  align-items: center;
+  height: 128px;
+  padding-inline: 34px;
+  border-radius: 28px;
+  color: var(--on-accent);
+  font: 700 52px/1 var(--sans);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.folder-site {
+  top: 176px;
+  background: var(--pink);
+}
+
+.folder-thesis {
+  top: 330px;
+  background: var(--teal);
+}

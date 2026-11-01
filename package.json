@@ -17,6 +17,7 @@
     "dev": "next dev --port 3000",
     "build": "next build && node scripts/compress.ts",
     "preview": "python3 scripts/serve.py",
+    "og": "node scripts/og/build.ts",
     "typecheck": "next typegen && tsc --noEmit",
     "lint": "next typegen && eslint .",
     "test": "vitest run",

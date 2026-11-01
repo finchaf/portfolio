@@ -1,7 +1,13 @@
 import { expect, test } from "@playwright/test";
 
-import { SITE_ICONS, SITE_IMAGE, SITE_ORIGIN } from "../src/lib/site";
+import { LOCALES } from "../src/i18n/locales";
+import { PAGES } from "../src/lib/pages";
+import { SHARE_IMAGE, shareImagePath } from "../src/lib/share-images";
+import { SITE_ICONS, SITE_ORIGIN } from "../src/lib/site";
 import { ADDRESSES } from "./pages";
+
+/** The picture every link had until each page got its own: posts that hold it must not break. */
+const FIRST_PICTURE = "/og.png";
 
 for (const address of ADDRESSES) {
   test(`${address} is findable`, async ({ page }) => {
@@ -12,7 +18,11 @@ for (const address of ADDRESSES) {
     await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /\S/);
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
       "content",
-      `${SITE_ORIGIN}${SITE_IMAGE.url}`,
+      new RegExp(`^${SITE_ORIGIN}/og/${locale}/\\w+\\.png\\?v=[0-9a-f]{8}$`),
+    );
+    await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
+      "content",
+      `${SITE_ORIGIN}${address}`,
     );
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       "href",
@@ -57,11 +67,23 @@ for (const address of ["/ru", "/ru/no-such-page"]) {
   });
 }
 
-test("every icon and the link picture are served", async ({ request }) => {
-  const files = [...SITE_ICONS.icon.map(({ url }) => url), SITE_ICONS.apple, SITE_IMAGE.url];
+test("every icon is served", async ({ request }) => {
+  const files = [...SITE_ICONS.icon.map(({ url }) => url), SITE_ICONS.apple];
   for (const file of files) {
     const response = await request.get(file);
     expect(response.status(), file).toBe(200);
     expect((await response.body()).length, file).toBeGreaterThan(0);
+  }
+});
+
+// Only a real answer shows this: a file a server cannot name a type for reaches no platform.
+test("every link picture is served as a picture", async ({ request }) => {
+  const pictures = LOCALES.flatMap((locale) =>
+    Object.values(PAGES).map((card) => shareImagePath(locale, card)),
+  );
+  for (const picture of [...pictures, FIRST_PICTURE]) {
+    const response = await request.get(picture);
+    expect(response.status(), picture).toBe(200);
+    expect(response.headers()["content-type"], picture).toBe(SHARE_IMAGE.type);
   }
 });
