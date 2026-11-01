@@ -15,7 +15,7 @@
 | --- | --- | --- | --- | --- |
 | Главная и 404 | `src/themes/home.css` | «Зяблик»: сланец, коралл и олива из расцветки птицы | Geologica, Golos Text, Playfair Display для крупных строк истории | JetBrains Mono |
 | Пора на пару | `src/themes/pora.css` | Токены продукта: zinc и blue | Geist | Geist Mono |
-| Флоу | `src/themes/flow.css` | Стандартная тема Obsidian | Inter | Системный, как в Obsidian |
+| Флоу | `src/themes/flow.css` | Стандартная тема Obsidian | Системный, как в Obsidian: на Mac San Francisco, запасной Inter | Системный, как в Obsidian |
 | Проекты | `src/themes/projects.css` | Catppuccin: Latte и Mocha | Nunito | JetBrains Mono |
 
 Источники значений:
@@ -74,6 +74,10 @@
 | `--control-rules`, `--control-well`, `--control-thumb`, `--control-line` | Линейки, лунка табов, выбранный пункт и линия под ним |
 | `--control-surface`, `--control-raise` | Подложка капсулы и её тень |
 | `--control-current`, `--control-current-line` | Отметка текущей страницы в капсуле |
+
+На «Флоу» обшивка «Ссылка»: кнопка набрана как вики-ссылка, `[[Написать]]`, скругление 5 px, как у кнопок приложения. Токены `--control-close-gap`,
+`--capsule-open` и `--capsule-close` необязательные: их берёт только эта тема. Токены `--info` и `--info-text`, синий врезок приложения, есть только у неё и в
+контракт тем не входят. Шесть образов условного приложения лежат в `src/themes/flow-looks.css`: это его цвета, а не цвета сайта.
 
 На главной обшивка «Набор»: контролы набраны как логотип. Кнопка — команда `\Смотреть работы{}`, табы и капсула лежат
 между двумя линейками, текущий пункт подчёркнут акцентом. Остальные темы пока держат простую пилюлю, поэтому капсула

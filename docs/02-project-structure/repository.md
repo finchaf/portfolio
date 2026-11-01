@@ -21,6 +21,7 @@ portfolio/
 │   └── lib/                     чистый код: реестр страниц, адрес сайта
 ├── public/                      иконки, картинки ссылок в og/
 ├── messages/<locale>/*.json     строки, файл на область
+├── messages/<locale>/vault/*.md  заметки страницы «Флоу»
 ├── e2e/                         браузерные гейты Playwright
 ├── scripts/                     check.py и гейты, serve.py, compress.ts, deploy.py, og/ для картинок ссылок
 ├── deploy/Caddyfile.test        блок Caddy для гейтов и просмотра
