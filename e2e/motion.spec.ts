@@ -989,6 +989,23 @@ test.describe("the shell", () => {
   });
 });
 
+test.describe("the story's ruler on a phone", () => {
+  test.use({ viewport: { width: 390, height: 844 } });
+
+  test("keeps its own colours over the bands, and leaves the photographs alone", async ({
+    page,
+  }) => {
+    await page.goto(HOME);
+    const marks = page.locator("[data-story-marks]");
+    await jump(page, await topOf(page, ".story-launch .story-sheet"));
+    await expect(page.locator("[data-story-mark][data-active]")).toBeAttached();
+    await expect(marks).not.toHaveCSS("color", "rgb(255, 255, 255)");
+    await jump(page, await topOf(page, "[data-bare-run]"));
+    await expect(page.locator("html")).toHaveAttribute("data-bare");
+    await expect(page.locator(".story-ruler")).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+  });
+});
+
 test.describe("the first screen's row on a phone", () => {
   for (const [width, locale] of [
     [320, "ru"],

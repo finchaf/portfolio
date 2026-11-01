@@ -65,11 +65,11 @@ const follow = () => (ScrollTrigger.isTouch === 1 ? true : SCENE.catchUp);
  * Keeps the ruler drawn. It goes on after the scroll has stopped, until the lens settles, and it
  * draws nothing while nothing changes.
  */
-function runRuler(section: HTMLElement, travelled: () => number) {
+function runRuler(section: HTMLElement, travelled: () => number, bands: Element[] = []) {
   const canvas = section.querySelector<HTMLCanvasElement>("[data-story-canvas]");
   const marks = section.querySelector<HTMLElement>("[data-story-marks]");
   if (!canvas || !marks) return () => undefined;
-  const ruler = createRuler(canvas, marks, gsap.utils.toArray("[data-ruler-band]", section));
+  const ruler = createRuler(canvas, marks, bands);
   if (!ruler) return () => undefined;
 
   let last = Number.NaN;
@@ -569,7 +569,11 @@ function runRibbon(section: HTMLElement, track: HTMLElement, mark: Mark) {
       end: "left left",
     }),
   );
-  const stopRuler = runRuler(section, () => (travelled() - fork.held()) * RULER_PACE);
+  const stopRuler = runRuler(
+    section,
+    () => (travelled() - fork.held()) * RULER_PACE,
+    gsap.utils.toArray("[data-ruler-band]", section),
+  );
 
   return () => {
     fork.stop?.();

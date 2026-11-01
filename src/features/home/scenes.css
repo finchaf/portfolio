@@ -35,7 +35,7 @@
   grid-template-columns: minmax(0, 1fr);
   min-height: 100svh;
   overflow: hidden;
-  touch-action: pan-y;
+  touch-action: pan-y pinch-zoom;
 }
 
 .hero-layer {
@@ -373,10 +373,6 @@
   z-index: 2;
 }
 
-.hero-switch:has(:focus-visible) {
-  position: absolute;
-}
-
 @media (min-width: 64rem) {
   .hero-twin > .hero-source {
     right: auto;
@@ -584,10 +580,6 @@
   max-width: 34rem;
   font-size: 1.0625rem;
   line-height: 1.45;
-}
-
-.story-text b {
-  font-weight: 600;
 }
 
 /* --serif lives only in the home theme: nothing else on the site sets a line in it. */
@@ -1459,6 +1451,11 @@
       opacity: 0;
     }
 
+    /* A phone's ruler is a strip of its own, which would stay across the photographs. */
+    &[data-bare] .story-ruler {
+      background: none;
+    }
+
     /* The canvas reads its colours from here: `color` and this one. */
     .story-ruler canvas {
       position: absolute;
@@ -1877,7 +1874,7 @@
         height: auto;
         margin-block: calc(var(--u) * -1.5);
         aspect-ratio: auto;
-        touch-action: pan-y;
+        touch-action: pan-y pinch-zoom;
       }
 
       /* Four lines on any screen: this line stands beside the pair of prints, level with the second. */
