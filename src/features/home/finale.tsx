@@ -27,7 +27,7 @@ export function Finale() {
           {t("title")}
         </DriftTitle>
         <p className="text-lg lg:text-xl">{t("text")}</p>
-        <ButtonLink href={TELEGRAM_URL} tone="inverse">
+        <ButtonLink data-write href={TELEGRAM_URL} tone="inverse">
           {t("write")}
         </ButtonLink>
       </div>

@@ -33,6 +33,30 @@ for (const colorScheme of ["light", "dark"] as const) {
   });
 }
 
+for (const colorScheme of ["light", "dark"] as const) {
+  for (const address of ["/ru", "/ru/poranaparu", "/ru/flow", "/ru/projects"]) {
+    test(`the sheet of ways to write has no violations on ${address}, ${colorScheme}`, async ({
+      page,
+    }) => {
+      await page.emulateMedia({ colorScheme });
+      await page.goto(address);
+      await expect(page.locator("html")).not.toHaveAttribute("data-intro");
+      await page.locator("[data-capsule] [data-write]").click();
+      const sheet = page.locator(".write-sheet");
+      await expect(sheet).toBeVisible();
+      // Half way through its entrance it is half transparent, and axe would measure that.
+      await sheet.evaluate((node) =>
+        Promise.all(node.getAnimations().map((animation) => animation.finished)),
+      );
+      const { violations } = await new AxeBuilder({ page })
+        .include(".write-sheet")
+        .withTags(TAGS)
+        .analyze();
+      expect(violations.map(({ id }) => id)).toEqual([]);
+    });
+  }
+}
+
 test("a key reaches every choice of the settings, and leaving them shuts them", async ({
   page,
 }) => {

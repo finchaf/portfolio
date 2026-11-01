@@ -21,6 +21,15 @@
     "dark": "Dark"
   },
   "write": "Write to me",
+  "contact": {
+    "scan": "Point your phone's camera",
+    "open": "Open the chat",
+    "mail": "Email",
+    "send": "Send an email",
+    "copy": "Copy",
+    "copied": "Copied",
+    "code": "QR code of the Telegram chat"
+  },
   "footer": {
     "status": "Open to a conversation",
     "city": "Moscow",
@@ -29,6 +38,7 @@
     "contact": "Get in touch",
     "settings": "Settings",
     "telegram": "Telegram",
+    "mail": "Email",
     "github": "GitHub",
     "source": "Site source",
     "theme": "Theme",

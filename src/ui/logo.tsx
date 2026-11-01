@@ -1,3 +1,7 @@
+/** The slash alone, for a mark that has only its room: its outline and that outline's box. */
+export const SLASH_PATH = "M345 940L0 0H155L500 940H345Z";
+export const SLASH_SIZE = { width: 500, height: 940 };
+
 /**
  * The site's mark, `\fc`: a LaTeX command that calls its author. JetBrains Mono ExtraBold in
  * outlines, in the colours of the theme around it. Decoration, never a label.

@@ -11,6 +11,7 @@ import { Logo, Wordmark } from "@/ui/logo";
 
 import { CAPSULE_SOURCE } from "./capsule-source";
 import { NavLink } from "./nav-link";
+import { WriteMenu } from "./write-menu";
 
 /**
  * Both forms of the logo: the full word, and the sign where the word does not fit. The widths are
@@ -66,6 +67,7 @@ export function Header() {
         <a
           aria-label={t("shell.write")}
           className={`${WRITE} ${WRITE_WIDE} capsule-action shrink-0`}
+          data-write
           href={TELEGRAM_URL}
         >
           <span className="max-lg:sr-only">{t("shell.write")}</span>
@@ -83,6 +85,8 @@ export function Header() {
           </svg>
         </a>
       </div>
+
+      <WriteMenu />
 
       <div aria-hidden className="capsule-code" data-capsule-code data-tint="home">
         <ul>

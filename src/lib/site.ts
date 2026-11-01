@@ -16,6 +16,12 @@ export const SITE_IMAGE = { url: "/og.png", width: 1200, height: 630 };
 /** Where a reader writes. A plain link, so it works without JavaScript. */
 export const TELEGRAM_URL = "https://t.me/finchaf";
 
+/** The same chat as a person writes it. */
+export const TELEGRAM_HANDLE = "@finchaf";
+
+/** The address the site shows: an alias for work, so the mailbox itself stays out of public view. */
+export const EMAIL = "work@finchaf.com";
+
 export const GITHUB_URL = "https://github.com/finchaf";
 
 /** This site's code: it is part of the portfolio. */

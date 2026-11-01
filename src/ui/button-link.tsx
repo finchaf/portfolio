@@ -1,6 +1,6 @@
 import "./control.css";
 
-import type { ReactNode } from "react";
+import type { ComponentProps } from "react";
 
 const TONES = {
   primary: "control-primary",
@@ -10,22 +10,23 @@ const TONES = {
 
 const SIZES = { regular: "control-regular", small: "control-small" } as const;
 
-export interface ButtonLinkProps {
+export interface ButtonLinkProps extends ComponentProps<"a"> {
   href: string;
   tone?: keyof typeof TONES;
   size?: keyof typeof SIZES;
-  children: ReactNode;
+  "data-write"?: boolean;
 }
 
 /** A link that looks like a button: the action that leaves for elsewhere, with or without script. */
 export function ButtonLink({
-  href,
   tone = "primary",
   size = "regular",
+  className = "",
   children,
+  ...link
 }: ButtonLinkProps) {
   return (
-    <a className={`control-button ${TONES[tone]} ${SIZES[size]}`} href={href}>
+    <a className={`control-button ${TONES[tone]} ${SIZES[size]} ${className}`} {...link}>
       {children}
     </a>
   );

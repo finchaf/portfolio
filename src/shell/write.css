@@ -1,0 +1,167 @@
+/*
+ * The sheet out of the capsule: above it on a phone, where the capsule is at the bottom, and under
+ * it on a wide screen. Its colours are whatever the capsule wears.
+ */
+.write-sheet {
+  /* A pill is a control's shape: a sheet takes its theme's corner, up to a point. */
+  --sheet-radius: min(var(--control-radius), 1.25rem);
+  position: absolute;
+  bottom: calc(100% + 0.625rem);
+  left: 50%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  width: min(35rem, calc(100vw - 1.5rem));
+  border-radius: var(--sheet-radius);
+  background: var(--control-surface);
+  box-shadow:
+    var(--control-rules),
+    0 1.25rem 2.5rem -1rem light-dark(color-mix(in srgb, var(--ink) 40%, transparent), transparent);
+  color: var(--ink);
+  font-family: var(--sans);
+  transform-origin: 50% 100%;
+  translate: -50% 0;
+}
+
+.write-sheet[hidden] {
+  display: none;
+}
+
+.write-sheet:focus {
+  outline: none;
+}
+
+.write-lead {
+  padding: 0.875rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+
+.write-part {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  min-width: 0;
+  padding: 1.25rem;
+}
+
+.write-part + .write-part {
+  border-top: 1px solid var(--line);
+}
+
+.write-tag {
+  color: var(--muted);
+  font: 500 0.75rem/1.3 var(--mono);
+}
+
+.write-value {
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.write-address {
+  font-family: var(--mono);
+  overflow-wrap: anywhere;
+  text-decoration: underline transparent;
+  text-underline-offset: 0.2em;
+  transition: text-decoration-color var(--duration-quick) var(--ease-out);
+}
+
+.write-scan {
+  display: none;
+  align-items: flex-end;
+  gap: 0.75rem;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1.3;
+}
+
+/*
+ * Dark on light in either mode: a scanner may refuse a code turned inside out. The tokens swap
+ * places in the dark, and the theme's colour goes darker to stay readable on the light.
+ */
+.write-code {
+  display: block;
+  flex: none;
+  width: 7.75rem;
+  height: 7.75rem;
+  border-radius: min(var(--control-radius), 0.5rem);
+  background: light-dark(var(--page), var(--ink));
+}
+
+.write-code-module {
+  fill: light-dark(var(--ink), var(--page));
+}
+
+.write-code-mark {
+  fill: light-dark(var(--accent-strong), color-mix(in srgb, var(--accent-strong) 50%, var(--page)));
+}
+
+.write-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 1rem;
+  margin-top: auto;
+}
+
+.write-copy {
+  min-height: 2.25rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+@media (hover: hover) {
+  .write-address:hover {
+    text-decoration-color: currentcolor;
+  }
+}
+
+/* Two ways side by side, and a code: a screen of its own can't read itself on a phone. */
+@media (min-width: 40rem) {
+  .write-sheet {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .write-lead {
+    grid-column: 1 / -1;
+  }
+
+  .write-part + .write-part {
+    border-top: 0;
+    border-left: 1px solid var(--line);
+  }
+
+  .write-scan {
+    display: flex;
+  }
+}
+
+@media (min-width: 64rem) {
+  .write-sheet {
+    top: calc(100% + 0.75rem);
+    bottom: auto;
+    transform-origin: 80% 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes write-grow {
+    from {
+      opacity: 0;
+      scale: 0.94;
+    }
+  }
+
+  .write-sheet:not([hidden]) {
+    animation: write-grow var(--duration-base) var(--ease-out);
+  }
+}

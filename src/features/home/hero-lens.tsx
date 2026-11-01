@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 
 import { gsap, MOTION_ALLOWED, ScrollTrigger, useGSAP } from "@/motion/gsap";
 import { DURATION, PAGE_MOVED, SCENE } from "@/motion/tokens";
@@ -215,6 +215,18 @@ export function HeroLens({ labels, settings, children }: HeroLensProps) {
     open(scope.current?.dataset.layer === "code" ? "code" : "design", DURATION.base);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- `open` reads only refs and the page.
   }, []);
+
+  // The sheet out of the capsule hangs over this screen too: the shell says so on the root.
+  useEffect(() => {
+    const root = document.documentElement;
+    const watch = new MutationObserver(() => {
+      onMenu(root.hasAttribute("data-writing"));
+    });
+    watch.observe(root, { attributes: true, attributeFilter: ["data-writing"] });
+    return () => {
+      watch.disconnect();
+    };
+  }, [onMenu]);
 
   return (
     <section className="hero" data-layer={layer} ref={scope}>

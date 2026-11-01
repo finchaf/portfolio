@@ -30,7 +30,7 @@
   --control-face: var(--mono);
   --control-text: 0.875;
   --control-text-small: 0.8125;
-  --control-radius: 0;
+  --control-radius: 0rem;
   --control-fill: var(--ink);
   --on-control: var(--page);
   --control-mark: light-dark(#f0916f, #a33a23);

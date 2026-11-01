@@ -1039,6 +1039,134 @@ test.describe("the shell", () => {
   });
 });
 
+test.describe("the sheet out of the capsule, without a script", () => {
+  test.use({ javaScriptEnabled: false });
+
+  test("stays a link to the chat, and the footer keeps the address", async ({ page }) => {
+    await page.goto(HOME);
+    const write = page.locator("[data-capsule] [data-write]");
+    await expect(write).toHaveAttribute("href", /^https:\/\/t\.me\//);
+    await expect(page.locator(".write-sheet")).toBeHidden();
+    await expect(page.locator("footer").getByRole("link", { name: "Почта" })).toHaveAttribute(
+      "href",
+      /^mailto:/,
+    );
+  });
+});
+
+test.describe("the sheet out of the capsule", () => {
+  const write = (page: Page) => page.locator("[data-capsule] [data-write]");
+
+  test("shows both ways at once, and gives the key back with Escape", async ({ page }) => {
+    await page.goto(HOME);
+    const sheet = page.getByRole("dialog", { name: "Написать" });
+    await expect(sheet).toBeHidden();
+    await write(page).focus();
+    await page.keyboard.press("Enter");
+    await expect(sheet).toBeVisible();
+    await expect(sheet).toBeFocused();
+    await expect(write(page)).toHaveAttribute("aria-expanded", "true");
+    await expect(sheet.getByRole("link", { name: "Открыть чат" })).toHaveAttribute(
+      "href",
+      /^https:\/\/t\.me\//,
+    );
+    await expect(sheet.getByRole("link", { name: "Написать письмо" })).toHaveAttribute(
+      "href",
+      /^mailto:/,
+    );
+    await expect(sheet.getByRole("img", { name: "QR-код чата в Telegram" })).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(sheet).toBeHidden();
+    await expect(write(page)).toBeFocused();
+    await expect(write(page)).toHaveAttribute("aria-expanded", "false");
+  });
+
+  test("shuts with a click elsewhere, which still does what it was for", async ({ page }) => {
+    await page.goto(HOME);
+    await write(page).click();
+    await expect(page.locator(".write-sheet")).toBeVisible();
+    await page.locator("[data-capsule] nav").getByRole("link", { name: "Флоу" }).click();
+    await expect(page.locator(".write-sheet")).toBeHidden();
+    await expect(page).toHaveURL(/\/ru\/flow$/);
+  });
+
+  test("shuts when a key leaves it", async ({ page }) => {
+    await page.goto(HOME);
+    await write(page).click();
+    await page.locator(".write-sheet").getByRole("button", { name: "Скопировать" }).focus();
+    await page.keyboard.press("Tab");
+    await expect(page.locator(".write-sheet")).toBeHidden();
+  });
+
+  test("the button toggles it, and the last call opens the same sheet", async ({ page }) => {
+    await page.goto(HOME);
+    await write(page).click();
+    await expect(page.locator(".write-sheet")).toBeVisible();
+    await write(page).click();
+    await expect(page.locator(".write-sheet")).toBeHidden();
+    await jump(page, await topOf(page, "#contact"));
+    await page.locator("#contact [data-write]").click();
+    await expect(page.locator(".write-sheet")).toBeVisible();
+    await expect(page.locator(".write-sheet")).toBeInViewport();
+  });
+
+  test("copies the address and says so", async ({ context, page }) => {
+    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+    await page.goto(HOME);
+    await write(page).click();
+    const sheet = page.locator(".write-sheet");
+    await sheet.getByRole("button", { name: "Скопировать" }).click();
+    await expect(sheet.getByRole("button", { name: "Скопировано" })).toBeVisible();
+    const address = await page.evaluate(() => navigator.clipboard.readText());
+    await expect(sheet.getByRole("link", { name: address })).toHaveAttribute(
+      "href",
+      `mailto:${address}`,
+    );
+  });
+
+  test("wears the theme the capsule wears", async ({ page }) => {
+    await page.goto(HOME);
+    await jump(page, await topOf(page, "#work-pora"));
+    await expect(page.locator("[data-capsule]")).toHaveAttribute("data-tint", "pora");
+    await write(page).click();
+    const sheet = page.locator(".write-sheet");
+    await expect(sheet).toBeVisible();
+    await expect(sheet.locator(".control-button").first()).toHaveCSS(
+      "font-family",
+      /Geist|ui-sans-serif/,
+    );
+  });
+
+  test("shuts the lens while it is open", async ({ page }) => {
+    await page.goto(HOME);
+    await expect(page.locator("html")).not.toHaveAttribute("data-intro");
+    const radius = () =>
+      page.locator(".hero").evaluate((hero) => parseFloat(hero.style.getPropertyValue("--lens-r")));
+    await expect.poll(radius).toBeGreaterThan(100);
+    await write(page).click();
+    await expect(page.locator("html")).toHaveAttribute("data-writing");
+    await expect.poll(radius).toBe(0);
+    await page.keyboard.press("Escape");
+    await expect(page.locator("html")).not.toHaveAttribute("data-writing");
+    await expect.poll(radius).toBeGreaterThan(100);
+  });
+
+  test("on a phone has no code to read, and stands above the capsule, whole", async ({ page }) => {
+    await page.setViewportSize({ width: 360, height: 640 });
+    await page.goto(HOME);
+    await write(page).click();
+    const sheet = page.locator(".write-sheet");
+    await expect(sheet).toBeVisible();
+    await expect(sheet.locator(".write-code")).toBeHidden();
+    await expect(sheet).toBeInViewport({ ratio: 1 });
+    const edges = await page.evaluate(() => ({
+      sheet: document.querySelector(".write-sheet")?.getBoundingClientRect().bottom ?? 0,
+      capsule: document.querySelector("[data-capsule]")?.getBoundingClientRect().top ?? 0,
+    }));
+    expect(edges.sheet).toBeLessThanOrEqual(edges.capsule);
+  });
+});
+
 test.describe("the story's ruler on a phone", () => {
   test.use({ viewport: { width: 390, height: 844 } });
 

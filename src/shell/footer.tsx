@@ -4,7 +4,14 @@ import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { LOCALES } from "@/i18n/locales";
 import { localizedPath } from "@/i18n/localized-path";
 import { PAGE_PATHS, PAGES } from "@/lib/pages";
-import { GITHUB_URL, REPOSITORY_URL, SITE_COMMIT, SITE_UPDATED, TELEGRAM_URL } from "@/lib/site";
+import {
+  EMAIL,
+  GITHUB_URL,
+  REPOSITORY_URL,
+  SITE_COMMIT,
+  SITE_UPDATED,
+  TELEGRAM_URL,
+} from "@/lib/site";
 import { LocalClock } from "@/ui/local-clock";
 import { Wordmark } from "@/ui/logo";
 
@@ -60,6 +67,11 @@ export function Footer() {
               <li>
                 <a className="underline-offset-4 hover:underline" href={TELEGRAM_URL}>
                   {t("shell.footer.telegram")}
+                </a>
+              </li>
+              <li>
+                <a className="underline-offset-4 hover:underline" href={`mailto:${EMAIL}`}>
+                  {t("shell.footer.mail")}
                 </a>
               </li>
               <li>
