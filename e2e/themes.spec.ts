@@ -8,7 +8,7 @@ import { ADDRESSES } from "./pages";
 
 const WORLDS = [
   { address: "/ru", theme: "home", display: "Geologica Variable", font: /^geologica-/ },
-  { address: "/ru/pora-na-paru", theme: "pora", display: "Geist Variable", font: /^geist-/ },
+  { address: "/ru/poranaparu", theme: "pora", display: "Geist Variable", font: /^geist-/ },
   { address: "/ru/flow", theme: "flow", display: "Inter Variable", font: /^inter-/ },
   { address: "/ru/projects", theme: "projects", display: "Nunito Variable", font: /^nunito-/ },
 ] as const;

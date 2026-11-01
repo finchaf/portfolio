@@ -29,17 +29,22 @@
 
 	root * /srv/portfolio/current
 
-	# The language of the bare address: Russian or no header gives ru, anything else en.
-	@bare path /
+	# An address without a language, the home page's or a page's: Russian or no header gives ru,
+	# anything else en.
+	@bare path_regexp bare ^/$|^(/poranaparu|/flow|/projects)$
 	handle @bare {
 		header Vary Accept-Language
 		@english {
 			header_regexp Accept-Language \S
 			not header_regexp Accept-Language ^\s*ru
 		}
-		redir @english /en{?query} 302
-		redir * /ru{?query} 302
+		redir @english /en{re.bare.1}{?query} 302
+		redir * /ru{re.bare.1}{?query} 302
 	}
+
+	# The page's first address: what was sent or indexed under it stays alive.
+	@renamed path_regexp renamed ^/(ru|en)/pora-na-paru$
+	redir @renamed /{re.renamed.1}/poranaparu{?query} 308
 
 	# One address per page: a trailing slash answers with the address without it.
 	@slash path_regexp slash ^(.+)/$

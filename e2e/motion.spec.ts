@@ -984,7 +984,7 @@ test.describe("the home page in motion", () => {
       await jump(page, top + stop * 0.9 * (await height(page)) + 100);
       await expect(link).toBeInViewport();
     }
-    await expect(link).toHaveAttribute("href", "/ru/pora-na-paru");
+    await expect(link).toHaveAttribute("href", "/ru/poranaparu");
   });
 
   test("brings a stop to the keyboard and runs the week's rule", async ({ page }) => {

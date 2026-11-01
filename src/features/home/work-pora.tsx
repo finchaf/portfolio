@@ -24,7 +24,7 @@ export function WorkPora() {
       name={p("name")}
       next={{ href: "#work-flow", label: t("next.flow") }}
       open={t("open")}
-      path="/pora-na-paru"
+      path="/poranaparu"
       ticks={TICKS.map((tick) => p(`ticks.${tick}`))}
       world="pora"
     >

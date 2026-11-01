@@ -5,7 +5,7 @@
  */
 export const PAGES = {
   "": "home",
-  "/pora-na-paru": "pora",
+  "/poranaparu": "pora",
   "/flow": "flow",
   "/projects": "projects",
 } as const;

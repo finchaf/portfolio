@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 
+import { PAGE_PATHS } from "../src/lib/pages";
 import { ADDRESSES } from "./pages";
 
 const DIRECT = { maxRedirects: 0 };
@@ -29,6 +30,41 @@ test("the redirect keeps the query string", async ({ request }) => {
   });
   expect(response.headers().location).toBe("/ru?r=mark");
 });
+
+for (const path of PAGE_PATHS.filter(Boolean)) {
+  for (const [language, target] of [
+    ["ru-RU,ru;q=0.9", `/ru${path}`],
+    ["en-US,en;q=0.9", `/en${path}`],
+    ["", `/ru${path}`],
+  ] as const) {
+    test(`${path} with Accept-Language "${language}" goes to ${target}`, async ({ request }) => {
+      const response = await request.get(path, {
+        ...DIRECT,
+        headers: { "Accept-Language": language },
+      });
+      expect(response.status()).toBe(302);
+      expect(response.headers().location).toBe(target);
+      expect(response.headers().vary).toContain("Accept-Language");
+    });
+  }
+}
+
+test("a page without a language keeps the query string", async ({ request }) => {
+  const response = await request.get("/flow?r=mark", {
+    ...DIRECT,
+    headers: { "Accept-Language": "en" },
+  });
+  expect(response.headers().location).toBe("/en/flow?r=mark");
+});
+
+for (const locale of ["ru", "en"]) {
+  test(`/${locale}/pora-na-paru moved for good, and keeps its query`, async ({ request }) => {
+    const response = await request.get(`/${locale}/pora-na-paru?r=mark`, DIRECT);
+    expect(response.status()).toBe(308);
+    expect(response.headers().location).toBe(`/${locale}/poranaparu?r=mark`);
+    expect((await request.get(`/${locale}/pora-na-paru`)).status()).toBe(200);
+  });
+}
 
 test("a trailing slash answers with the address without it", async ({ request }) => {
   const response = await request.get("/ru/flow/", DIRECT);
