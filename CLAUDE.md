@@ -1,6 +1,6 @@
 # Portfolio
 
-Personal site of Danil Zablotsky, planned for `finchaf.com`: a statically exported Next.js app with
+Personal site of Danil Zablotsky, live at `finchaf.com`: a statically exported Next.js app with
 rich motion and interactive demos, served by Caddy. The skeleton stands: four pages in two
 languages behind every gate; check the plan before assuming what exists.
 

@@ -2,7 +2,7 @@
 
 [![Gates](https://github.com/finchaf/portfolio/actions/workflows/gates.yml/badge.svg)](https://github.com/finchaf/portfolio/actions/workflows/gates.yml)
 
-Personal site of Danil Zablotsky, design engineer. It will live at `finchaf.com`.
+Personal site of Danil Zablotsky, design engineer, at [finchaf.com](https://finchaf.com).
 
 This repository is public on purpose: the way a site is built is part of the work. It starts where
 the work started, with decisions, and the [plan](docs/07-roadmap/README.md) shows what is done. The
