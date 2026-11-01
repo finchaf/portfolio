@@ -39,6 +39,9 @@ test("a trailing slash answers with the address without it", async ({ request })
 test("an unknown address is a 404 with the site's page, out of search", async ({ page }) => {
   const response = await page.goto("/ru/no-such-page");
   expect(response?.status()).toBe(404);
+  expect(response?.headers()["content-security-policy"]).toContain("frame-ancestors 'none'");
+  expect(response?.headers()["x-content-type-options"]).toBe("nosniff");
+  expect(response?.headers().server).toBeUndefined();
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
   await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible();
 });

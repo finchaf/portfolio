@@ -1,18 +1,30 @@
-# The site's block for the browser gates and `pnpm preview`: production's, on plain HTTP, without
-# the shared `edge` snippet and TLS of the server's Caddyfile. A change here goes to
-# poranaparu/backend, deploy/Caddyfile, in the same task (docs/01-architecture/infrastructure.md).
+# The site's block for the browser gates and `pnpm preview`: production's, line for line, on plain
+# HTTP and with stand-ins for the server's snippets. A change here goes to poranaparu/backend,
+# deploy/Caddyfile, in the same task (docs/01-architecture/infrastructure.md).
 {
 	auto_https off
 	admin off
 }
 
+# What the shared snippets of the same names add on plain HTTP. The header that deletes one is
+# deferred, so it reaches only an answer of the routes: the error's route imports it again.
+(security_headers) {
+	header {
+		X-Content-Type-Options nosniff
+		-Server
+	}
+}
+
+(edge) {
+	import security_headers
+}
+
 :8080 {
+	import edge
 	header {
 		Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'"
 		Referrer-Policy "strict-origin-when-cross-origin"
 		Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
-		X-Content-Type-Options nosniff
-		-Server
 	}
 
 	root * /srv/portfolio/current
@@ -49,10 +61,13 @@
 		}
 	}
 
+	# An error's answer is written outside the routes above.
 	handle_errors 404 {
+		import security_headers
 		rewrite * /404.html
 		file_server {
 			status 404
+			precompressed br gzip
 		}
 	}
 }
