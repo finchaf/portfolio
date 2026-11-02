@@ -43,7 +43,8 @@ texts, cases or what the site may show. Commit there separately.
 
 By the skills in `.claude/skills/`: `/nt` starts a task and stops before the push, `/ar` audits what
 is not yet in `main`, `/si` lands it, `/rf` ports a reference. Tasks live in the plan, with no tracker
-(ADR-0007). One task, one session.
+(ADR-0007). One task, one session. While `/si` runs in the background it owns the branch: nothing
+else touches it until the run is over.
 
 A choice of how something looks is made on a live page before the site changes: options in real
 tokens, in `docs/private/prototype/`, with a recommendation. A release is `python3 scripts/deploy.py`

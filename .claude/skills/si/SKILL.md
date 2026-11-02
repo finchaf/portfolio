@@ -86,6 +86,10 @@ A timed-out watch is not a red check: read the state again. Commit messages red 
 message and push with `--force-with-lease`. Anything else red → reproduce with the gates, fix, commit,
 push, watch again.
 
+⚠️ **Stopping here ends the run.** Wait for CI inside the run. If you do hand back with checks
+pending, leave no watch behind: the caller may change the branch after your report, and a run that
+wakes up would land what CI never saw.
+
 ## 5. Land on `main`
 
 ⚠️ **Not `gh pr merge`.** GitHub's rebase merge rewrites commits and drops their signatures, and the
@@ -107,10 +111,21 @@ gh pr view "$BR" --json state,mergedAt
 ```
 
 GitHub marks the PR merged by itself. A refusal from the ruleset is reported, never worked around.
+
+⚠️ **A refused push stops the run.** Check that it landed before going on:
+`git ls-remote origin refs/heads/main` must show `HEAD`. Step 6 deletes the branch, and that closes
+the PR for good.
+
+«N of N required status checks are expected» means CI never ran on this SHA: the branch moved after
+the run. The rule and the names of the checks are fine. Compare `git rev-parse HEAD` with
+`gh pr view "$BR" --json headRefOid`, push, back to 4.
+
 «Commits must have verified signatures» with a local `G` means the key is not in the account as a
 signing key (`docs/06-quality/ci-and-tooling.md`, «Коммиты»): that is the owner's to fix.
 
 ## 6. Clean up
+
+A call of its own, never chained to the push in step 5.
 
 ```
 git switch main
