@@ -1,6 +1,10 @@
 import { useTranslations } from "next-intl";
 import type { CSSProperties } from "react";
 
+/** The six looks of the made-up app, in src/themes/flow-looks.css, and the one its tool recommended. */
+export const APP_LOOKS = ["a", "b", "c", "d", "e", "f"] as const;
+export const DEFAULT_LOOK = "c";
+
 /** A block of a wireframe, placed in percent of the frame. */
 function Wire({
   shape,
@@ -255,6 +259,32 @@ export function NightWire() {
       <Wire height={10} left={36.5} shape="w-b q" top={60} width={27} />
       <Wire height={10} left={67} shape="w-b q" top={60} width={27} />
       <Wire height={12} label={t("wfNote")} left={6} shape="w-b p" top={75} width={88} />
+    </div>
+  );
+}
+
+/** The phone of one rule's history: a menu under its button, then on its place. `data-rung` above moves it. */
+export function RuleDemo() {
+  const t = useTranslations("flow.app");
+  return (
+    <div aria-hidden className="demo">
+      <div className="d-phone">
+        <div className="d-bar">
+          <span className="d-title">{t("menuTitle")}</span>
+          <span className="d-btn">{t("glyphMore")}</span>
+          <span className="d-menu">
+            <i>{t("menuShare")}</i>
+            <i>{t("menuNote")}</i>
+            <i>{t("menuDelete")}</i>
+          </span>
+        </div>
+        <div className="d-body">
+          <i />
+          <i />
+          <i />
+        </div>
+        <span className="d-check">{t("corner")}</span>
+      </div>
     </div>
   );
 }

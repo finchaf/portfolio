@@ -264,6 +264,8 @@
   font-size: 2.8em;
 }
 .ring {
+  /* Tailwind has a utility of this name: without this it draws a frame around the dial. */
+  box-shadow: none;
   position: relative;
   width: 25em;
   height: 25em;
@@ -646,4 +648,114 @@
   height: 2cqw;
   border-radius: 1cqw;
   background: #bcbcc8;
+}
+
+/* The phone of one rule's history. */
+.d-phone {
+  position: relative;
+  height: 336px;
+  overflow: hidden;
+  border-radius: 24px;
+  background: var(--surface);
+}
+
+.d-bar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 68px;
+  padding-inline: 16px;
+}
+
+.d-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.d-btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--raised);
+  font-weight: 700;
+}
+
+.d-menu {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  display: grid;
+  width: 168px;
+  padding: 6px;
+  border-radius: 20px;
+  background: var(--page);
+  box-shadow:
+    0 0 0 1px var(--line),
+    0 12px 28px -12px light-dark(color-mix(in srgb, var(--ink) 40%, transparent), transparent);
+  transform-origin: top right;
+}
+
+.d-menu i {
+  padding: 9px 12px;
+  font-size: 14px;
+  font-style: normal;
+}
+
+.d-menu i + i {
+  box-shadow: 0 -1px 0 var(--line);
+}
+
+.d-body {
+  display: grid;
+  gap: 8px;
+  padding: 8px 16px;
+}
+
+.d-body i {
+  height: 68px;
+  border-radius: 12px;
+  background: var(--raised);
+  opacity: 0.7;
+}
+
+.d-check {
+  position: absolute;
+  z-index: 3;
+  right: 16px;
+  bottom: 12px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  background: var(--page);
+  box-shadow: 0 0 0 1px var(--success);
+  font: 500 12px/1 var(--mono);
+  opacity: 0;
+}
+
+[data-rung="0"] .d-menu {
+  top: 68px;
+  right: 36px;
+}
+
+[data-rung]:not([data-rung="0"]) .d-btn {
+  opacity: 0;
+}
+
+[data-rung="4"] .d-check {
+  opacity: 1;
+}
+
+[data-rung="4"] .d-menu {
+  box-shadow: 0 0 0 1.5px var(--success);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .d-menu {
+    transition:
+      top var(--duration-base) var(--ease-out),
+      right var(--duration-base) var(--ease-out);
+  }
 }
