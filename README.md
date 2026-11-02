@@ -6,7 +6,8 @@ Personal site of Danil Zablotsky, design engineer, at [finchaf.com](https://finc
 
 This repository is public on purpose: the way a site is built is part of the work. It starts where
 the work started, with decisions, and the [plan](docs/07-roadmap/README.md) shows what is done. The
-home page is live in two languages, with every gate in place; the other three pages come next.
+home page and Flow are live in two languages, with every gate in place; the other two pages come
+next.
 
 ## Decisions
 

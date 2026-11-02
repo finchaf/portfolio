@@ -1,8 +1,8 @@
 # Portfolio
 
 Personal site of Danil Zablotsky, live at `finchaf.com`: a statically exported Next.js app with
-rich motion and interactive demos, served by Caddy. The home page is built and live in two
-languages, behind every gate; the other three pages are still placeholders. Check the plan before
+rich motion and interactive demos, served by Caddy. The home page and Flow are live in two
+languages, behind every gate; the other two pages are still placeholders. Check the plan before
 assuming what exists.
 
 ## Read this first — `docs/` is the source of truth
