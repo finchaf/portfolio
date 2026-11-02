@@ -25,7 +25,7 @@
 
 .control-button::after {
   content: var(--control-close) / "";
-  margin-left: 0.375em;
+  margin-left: var(--control-close-gap, 0.375em);
   opacity: 0.55;
   transition:
     translate var(--duration-base) var(--ease-out),

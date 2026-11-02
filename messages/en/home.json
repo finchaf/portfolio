@@ -89,7 +89,14 @@
       "quote": "Ads in the app, or a service for universities.",
       "answer": "We really didn't want ads. We took the second road: our own service for building timetables, with the apps as a pleasant extra for students and teachers. We started talking to the people who make the timetables and took apart how it's really done.",
       "score": "A week as a musical score: tangled lines fall into straight rows, with strokes for classes on them",
-      "days": { "mon": "Mon", "tue": "Tue", "wed": "Wed", "thu": "Thu", "fri": "Fri", "sat": "Sat" }
+      "days": {
+        "mon": "Mon",
+        "tue": "Tue",
+        "wed": "Wed",
+        "thu": "Thu",
+        "fri": "Fri",
+        "sat": "Sat"
+      }
     },
     "night": {
       "mark": "June 2026",
@@ -124,10 +131,10 @@
       "date": "Moscow",
       "title": "Ten prompts",
       "study": "At the end of the summer I moved and started my master's at Central University.",
-      "job": "Alongside it I started work: several iOS app designs a week, plus their ASO. Doing that by hand would have driven me mad.",
+      "job": "Alongside it I worked in a team: several iOS app designs a week, plus their ASO. Doing that by hand would have driven me mad.",
       "agents": "I tried agents in Figma. That took a whole pipeline, and it worked.",
       "quote": "The tool took the routine. The decisions stayed with me.",
-      "prompts": "I won't claim a complete app, with icons and an App Store page, comes out of one prompt. I will claim it comes out of ten thoughtful, consecutive ones."
+      "prompts": "I won’t claim a complete app, with icons and an App Store page, came out of one prompt. I will claim it came out of ten thoughtful, consecutive ones."
     },
     "now": {
       "mark": "Now",
@@ -185,7 +192,7 @@
         "role": "Creator: design and client development"
       },
       "team": {
-        "years": "since 2026",
+        "years": "2026",
         "place": "iOS apps team",
         "role": "Designer"
       },
@@ -283,11 +290,11 @@
     },
     "flow": {
       "name": "Flow",
-      "label": "iOS app design · since 2026",
-      "text": "A system of my own: agents, a terminal and a Markdown knowledge base carry a task from the brief to finished screens.",
+      "label": "Case · iOS app production line, 2026",
+      "text": "How I fitted agents to production-line design: a terminal and a Markdown knowledge base carried a task from the brief to finished screens. It was a solution for one type of work, not my usual process.",
       "note": "The tasks in the demo are made up.",
       "ticks": {
-        "intro": "The system",
+        "intro": "The case",
         "brief": "Brief",
         "research": "Research",
         "screens": "Screens",
@@ -297,57 +304,57 @@
       "steps": {
         "brief": {
           "title": "Brief",
-          "text": "A task becomes a short brief and a list of questions.",
-          "command": "> /new-task demo-app",
+          "text": "A brief became a short summary and a board of six style directions.",
+          "command": "$ new-app 000",
           "mock": "Screenshot: brief"
         },
         "research": {
           "title": "Research",
           "text": "References from real apps, a breakdown of patterns and a map of screens.",
-          "command": "> /research",
+          "command": "· s1.screens",
           "mock": "Screenshot: screen map"
         },
         "screens": {
           "title": "Screens",
-          "text": "An agent assembles screens from base tokens and components, and I make the decisions.",
-          "command": "> /screens",
+          "text": "A tool assembled screens from tokens and components, and I made the decisions.",
+          "command": "$ stage-2",
           "mock": "Screenshot: screens in Figma"
         },
         "handoff": {
           "title": "Handoff",
-          "text": "The finished file goes to development.",
-          "command": "> /handoff",
+          "text": "The finished file went to development.",
+          "command": "· s2.assets",
           "mock": "Screenshot: handoff"
         },
         "base": {
           "title": "Back to the base",
-          "text": "Review notes become rules in the knowledge base, and the next task starts from them.",
-          "command": "> git commit rules.md"
+          "text": "Review notes became rules in the knowledge base, and the next task started from them.",
+          "command": "$ edits"
         }
       },
       "graph": {
         "brief": "brief.md",
         "research": "research.md",
         "screens": "screens.md",
-        "handoff": "handoff.md",
-        "base": "rules.md"
+        "handoff": "state.json",
+        "base": "checklists/"
       },
       "terminal": {
-        "line1": "$ claude",
-        "line2": "> /new-task demo-app",
-        "line3": "  brief assembled",
-        "line4": "> /research",
-        "line5": "  screen map ready",
-        "line6": "> /screens",
-        "line7": "  screens in review",
-        "line8": "> /handoff",
-        "line9": "  handed to development"
+        "line1": "$ new-app 000",
+        "line2": "  ✓ s1.brief",
+        "line3": "  ? style: C",
+        "line4": "  ✓ s1.wireframes",
+        "line5": "  ✓ stage 1 ready",
+        "line6": "$ stage-2",
+        "line7": "  ? stop: accepted",
+        "line8": "  ✓ s2.audit",
+        "line9": "  ✓ stage 2 ready"
       }
     },
     "projects": {
       "name": "Projects",
       "label": "Everything else",
-      "text": "What I make beside the product and the job: one screen for each project.",
+      "text": "What I make beside the product: one screen for each project.",
       "ticks": {
         "intro": "About",
         "site": "This site",

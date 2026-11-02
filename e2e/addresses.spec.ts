@@ -122,7 +122,7 @@ test("the header moves between pages without a reload and marks the current one"
     (window as unknown as { sameDocument: boolean }).sameDocument = true;
   });
 
-  const header = page.getByRole("navigation");
+  const header = page.locator("[data-capsule]");
   await header.getByRole("link", { name: "Флоу" }).click();
   await expect(page).toHaveURL(/\/ru\/flow$/);
   await expect(page.getByRole("heading", { level: 1, name: "Флоу" })).toBeVisible();

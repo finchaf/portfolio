@@ -9,7 +9,8 @@ import { ADDRESSES } from "./pages";
 const WORLDS = [
   { address: "/ru", theme: "home", display: "Geologica Variable", font: /^geologica-/ },
   { address: "/ru/poranaparu", theme: "pora", display: "Geist Variable", font: /^geist-/ },
-  { address: "/ru/flow", theme: "flow", display: "Inter Variable", font: /^inter-/ },
+  // Flow takes the app's stack: a system with its own interface font downloads none.
+  { address: "/ru/flow", theme: "flow", display: "Inter Variable", font: null },
   { address: "/ru/projects", theme: "projects", display: "Nunito Variable", font: /^nunito-/ },
 ] as const;
 
@@ -62,8 +63,10 @@ test("a page downloads its own fonts and nobody else's", async ({ page }) => {
     await page.evaluate(() => document.fonts.ready);
     page.off("response", listen);
     expect(fonts.length, address).toBeGreaterThan(0);
-    const display = fonts.filter((name) => font.test(name));
-    expect(display.length, `${address}: ${fonts.join(", ")}`).toBeGreaterThan(0);
+    if (font) {
+      const display = fonts.filter((name) => font.test(name));
+      expect(display.length, `${address}: ${fonts.join(", ")}`).toBeGreaterThan(0);
+    }
     expect(fonts.every((name) => name.includes("cyrillic") || name.includes("latin"))).toBe(true);
   }
 });
@@ -74,6 +77,10 @@ test("the default is the system, and a choice beats it and survives a reload", a
   await expect(page.getByRole("radio", { name: "Система" })).toBeChecked();
   await expect(page.locator("html")).not.toHaveAttribute("data-theme");
 
+  // A tall page holds its footer under itself until the reader gets there.
+  await page.evaluate(() => {
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "instant" });
+  });
   await page.getByTitle("Тёмная", { exact: true }).click();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   expect(await background(page)).toBe(pageColor("flow", "dark"));

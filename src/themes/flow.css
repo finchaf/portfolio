@@ -1,8 +1,8 @@
 /*
  * Flow: Obsidian's default theme, read from the variables of its app.css (1.x, 30.10.2026). `accent`
  * is its default accent, hsl(258 88% 66%), too light for text on white, so `accent-strong` is
- * Obsidian's own purple there and its lighter accent in the dark. Inter is Figma's default for
- * text; the monospace is the system stack Obsidian itself uses.
+ * Obsidian's own purple there and its lighter accent in the dark. The typefaces are the app's own
+ * stacks: the system's on each platform, with Inter behind them.
  */
 :root:has([data-world="flow"]),
 [data-tint="flow"] {
@@ -19,16 +19,23 @@
   --warning: light-dark(#ec7500, #e9973f);
   --danger: light-dark(#e93147, #fb464c);
 
-  /* Controls: the plain pill, until this theme gets a skin of its own (ADR-0011). */
+  /* The blue of the app's callouts, for this theme alone: not in the contract of themes. */
+  --info: light-dark(#086ddd, #027aff);
+  --info-text: light-dark(#0a64c9, #5aa9ff);
+
+  /* Controls: a wiki link. A button reads `[[Написать]]`, as a link reads in a note's source. */
   --control-face: var(--sans);
-  --control-text: 1;
-  --control-text-small: 0.875;
-  --control-radius: 999px;
+  --control-text: 0.9375;
+  --control-text-small: 0.8125;
+  --control-radius: 5px;
   --control-fill: var(--accent-strong);
   --on-control: var(--on-accent);
-  --control-mark: var(--on-accent);
-  --control-open: "";
-  --control-close: "";
+  --control-mark: color-mix(in srgb, currentColor 55%, transparent);
+  --control-open: "[[";
+  --control-close: "]]";
+  --control-close-gap: 0;
+  --capsule-open: "[[";
+  --capsule-close: "]]";
   --control-hover: -1px;
   --control-rules: 0 0 transparent;
   --control-well: var(--surface);
@@ -37,16 +44,19 @@
   --control-surface: var(--surface);
   --control-raise:
     0 0 0 1px var(--line),
-    0 4px 6px -1px light-dark(color-mix(in srgb, var(--ink) 10%, transparent), transparent),
-    0 2px 4px -2px light-dark(color-mix(in srgb, var(--ink) 10%, transparent), transparent);
-  --control-current: var(--page);
+    0 4px 12px -4px light-dark(color-mix(in srgb, var(--ink) 14%, transparent), transparent);
+  --control-current: color-mix(in srgb, var(--accent) 16%, transparent);
   --control-current-line: 0 0 transparent;
 }
 
 :root:has([data-world="flow"]),
 [data-tint="flow"][data-tint-fonts] {
-  --sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
-  --display: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --sans:
+    ui-sans-serif, -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", Roboto,
+    "Inter Variable", sans-serif;
+  --display:
+    ui-sans-serif, -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", Roboto,
+    "Inter Variable", sans-serif;
   --mono:
     ui-monospace, SFMono-Regular, "Cascadia Mono", "Roboto Mono", "DejaVu Sans Mono",
     "Liberation Mono", Menlo, Monaco, Consolas, "Source Code Pro", monospace;

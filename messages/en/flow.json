@@ -1,10 +1,414 @@
 {
   "meta": {
     "title": "Flow — Danil Zablotsky",
-    "description": "Agents, a terminal and a Markdown knowledge base carry a task from the brief to finished screens.",
-    "shareTitle": "Flow: how I work with agents",
+    "description": "A case: the agent system I built for production-line iOS app design.",
+    "shareTitle": "Flow: agents for an app production line",
     "imageAlt": "A large hash sign and a terminal command on a violet field."
   },
   "title": "Flow",
-  "lead": "How I work with agents: a terminal and a knowledge base."
+  "lead": "A case: an agent system built for production-line app design.",
+  "ui": {
+    "properties": "Properties",
+    "addProperty": "Add property",
+    "backlinks": "Links to this note",
+    "searchPlaceholder": "A note or a command",
+    "searchHint": "↑↓ select · ↵ open · esc close",
+    "files": "Files",
+    "search": "Search",
+    "bookmarks": "Bookmarks",
+    "toggleLeft": "Left sidebar",
+    "toggleRight": "Right sidebar",
+    "newNote": "New note",
+    "newFolder": "New folder",
+    "sort": "Change sort order",
+    "layout": "Reveal the active file",
+    "collapse": "Collapse all",
+    "ribbonNote": "Open the main note",
+    "ribbonGraph": "Graph view",
+    "ribbonResults": "Screens",
+    "ribbonState": "Run state",
+    "ribbonChecklists": "Checklists",
+    "ribbonTerminal": "Terminal",
+    "ribbonRules": "Rules",
+    "back": "Navigate back",
+    "forward": "Navigate forward",
+    "newTab": "New tab",
+    "tabList": "Open tabs",
+    "closeTab": "Close",
+    "source": "Edit source",
+    "reading": "Reading view",
+    "more": "More options",
+    "copyLink": "Copy link",
+    "copied": "Link copied",
+    "openGraph": "Open graph",
+    "readOnly": "This vault is read-only: the terminal changes the notes",
+    "rightBacklinks": "Backlinks",
+    "rightOutgoing": "Outgoing links",
+    "rightTags": "Tags",
+    "rightProperties": "All properties",
+    "rightOutline": "Outline",
+    "rightGraph": "Local graph",
+    "noBacklinks": "No links",
+    "graphSettings": "Graph labels",
+    "graphAnimate": "Animate",
+    "graphLabel": "A graph: 234 rules around 16 checklists, and the notes",
+    "graphTitle": "Graph",
+    "vaultName": "flow",
+    "vaultMenu": "Other vaults",
+    "help": "Main note",
+    "settings": "Settings",
+    "open": "Open",
+    "close": "Close",
+    "noteBar": "Note",
+    "openNotes": "Open notes",
+    "notesNav": "Notes",
+    "noteWord": "note",
+    "commandWord": "command",
+    "themeLabel": "Theme",
+    "themeSystem": "System",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "languageOther": "Русский"
+  },
+  "folders": {
+    "process": "Process",
+    "quality": "Quality",
+    "task": "Task 000",
+    "results": "Results",
+    "madeUp": "made up"
+  },
+  "lanes": {
+    "me": "I decided",
+    "tool": "The tool did",
+    "rows": {
+      "r0": {
+        "title": "I sent the brief",
+        "text": "The task text and a link to the file"
+      },
+      "r1": {
+        "title": "Brief and style board",
+        "text": "Visual research, 6 directions, up to 4 questions"
+      },
+      "r2": {
+        "title": "I picked the style",
+        "text": "I answered questions, then the tool went on alone"
+      },
+      "r3": {
+        "title": "Stage 1",
+        "text": "Research, screen map, file, tokens, wireframes, audit"
+      },
+      "r4": {
+        "title": "Review, then “go”",
+        "text": "Notes became rules; stage 2 waited for my word"
+      },
+      "r5": {
+        "title": "Key screens",
+        "text": "Components, onboarding, paywall, main feature"
+      },
+      "r6": {
+        "title": "The stop",
+        "text": "I reviewed the screens while the icons were drawn"
+      },
+      "r7": {
+        "title": "Everything else",
+        "text": "Branches, prototype, cover, 28 icons, two store sets, audit"
+      },
+      "r8": {
+        "title": "I walked the file",
+        "text": "I fixed it or sent it back, then review"
+      },
+      "r9": {
+        "title": "Close",
+        "text": "What was new from the task went into the base"
+      }
+    }
+  },
+  "board": {
+    "label": "Style direction",
+    "why": "The tool recommends C. Lavender is the calmest on a night screen, and one accent holds the main button.",
+    "a": "Night",
+    "b": "Paper",
+    "c": "Lavender",
+    "d": "Contrast",
+    "e": "Dial",
+    "f": "Dawn"
+  },
+  "compare": {
+    "screen": "Screen",
+    "wireframe": "Wireframe",
+    "label": "Compare wireframe and screen",
+    "caption": "A made-up app: the same frames and coordinates, a wireframe becomes a screen in place."
+  },
+  "shelf": {
+    "caption": "A made-up app, mockups in vector. I show the real files in conversation."
+  },
+  "figures": {
+    "rules": "rules in the base",
+    "scripted": "checked by script",
+    "repeated": "marked as repeats"
+  },
+  "cta": "Write",
+  "ladder": {
+    "s0": {
+      "title": "Note",
+      "text": "The menu dropped below the button.",
+      "source": "at review"
+    },
+    "s1": {
+      "title": "Rule",
+      "text": "A menu from a button takes the button’s place: the menu’s top right corner matches the button’s.",
+      "source": "sheets-menus#1"
+    },
+    "s2": {
+      "title": "Critic",
+      "text": "Read this checklist on every frame with a menu and compared the two.",
+      "source": "screen-critic"
+    },
+    "s3": {
+      "title": "Repeat",
+      "text": "The note came back on the next task, so the rule was not read in time: a repeat mark and a move into the main rules.",
+      "source": "main rules"
+    },
+    "s4": {
+      "title": "Script",
+      "text": "The audit compared the corners of menu and button. From then on a machine checked it.",
+      "source": "[script]"
+    }
+  },
+  "app": {
+    "continue": "Continue",
+    "welcomeTitle": "Read your nights",
+    "welcomeText": "One line each morning. The pattern shows up within a week.",
+    "paywallTitle": "Every night, explained",
+    "benefit1": "See why you woke up",
+    "benefit2": "Your week on one screen",
+    "benefit3": "Notes that stay on this phone",
+    "yearly": "Yearly",
+    "yearlyPrice": "$39.99 / year",
+    "monthly": "Monthly",
+    "monthlyPrice": "$6.99 / month",
+    "fine": "Restore · Terms · Privacy",
+    "tonight": "Tonight",
+    "lastNight": "last night",
+    "score": "7:42",
+    "start": "Start the night",
+    "day1": "M",
+    "day2": "T",
+    "day3": "W",
+    "day4": "T",
+    "day5": "F",
+    "day6": "S",
+    "day7": "S",
+    "nightTitle": "Tuesday night",
+    "nightTime": "23:40 to 07:22",
+    "awake": "Awake",
+    "rem": "REM",
+    "light": "Light",
+    "deep": "Deep",
+    "deepValue": "1:12",
+    "remValue": "1:48",
+    "woke": "Woke up",
+    "wokeValue": "2",
+    "memo": "Coffee after five. Fell asleep slowly.",
+    "time": "9:41",
+    "menuTitle": "Night",
+    "menuShare": "Share",
+    "menuNote": "Add a note",
+    "menuDelete": "Delete night",
+    "corner": "Δ 0 pt",
+    "wfHero": "Hero",
+    "wfCta": "CTA",
+    "wfPlan": "Plan",
+    "wfRing": "Ring",
+    "wfWeek": "Week",
+    "wfTabs": "Tabs",
+    "wfChart": "Chart",
+    "wfNote": "Note",
+    "store1": "Read your nights",
+    "store2": "Know why you woke up",
+    "store3": "Your week at a glance",
+    "glyphClose": "×",
+    "glyphMore": "⋯",
+    "glyphBack": "‹"
+  },
+  "checklists": {
+    "store": "Store set",
+    "visual": "Visual",
+    "figma": "Figma file",
+    "lists": "Lists and settings",
+    "onboarding": "Onboarding",
+    "copy": "Copy",
+    "paywall": "Paywall",
+    "scope": "Product scope",
+    "generation": "Generation",
+    "layout": "Geometry and spacing",
+    "states": "States",
+    "navigation": "Navigation",
+    "media": "Media",
+    "sheets": "Sheets and menus",
+    "chat": "Chat",
+    "icon": "Icon"
+  },
+  "transcript": {
+    "title": "Terminal",
+    "text": "A record of the made-up task’s run. With the script on, it plays here live.",
+    "lines": "$ new-app 000\n  ✓ s1.brief       quick brief\n  ✓ s1.board       style board, waiting\n  ? direction: C\n  ✓ s1.wireframes  wireframes and critic\n  ✓ s1.audit       empty\n  ✓ stage 1 ready, waiting for review\n$ edits\n  note → rule in a checklist\n$ stage-2\n  ✓ s2.key         onboarding, paywall, main feature\n  ? stop: accepted\n  ✓ s2.audit       empty\n  ✓ stage 2 ready\n$ done"
+  },
+  "terminal": {
+    "title": "Terminal",
+    "label": "Terminal output",
+    "input": "Command",
+    "replay": "replay · task 000 is made up",
+    "statusRules": "234 rules · 16 checklists",
+    "notStarted": "not started",
+    "waitStyle": "waiting for a style",
+    "waitStop": "stopped, waiting for me",
+    "intro": "This is a replay on a made-up task: there is no agent on the page. The commands are the ones from that job.",
+    "unknown": "no command {x}. help lists them all.",
+    "noFile": "no note {x}. ls lists them all.",
+    "opened": "opened: {x}",
+    "askStyle": "Style direction? A B C D E F. A person decides",
+    "askStop": "Stop. I review onboarding, paywall, main feature",
+    "askStopShort": "Stop: next or edits?",
+    "chosen": "chosen: {x}, {y}",
+    "autoChosen": "the replay picked {x}. On a real task the stage waited for me.",
+    "autoNext": "the replay said “next”. On a real task the stage waited for me.",
+    "alone": "waiting_for: null, no more questions",
+    "stage1Done": "stage 1 ready, waiting for review",
+    "stage2Done": "stage 2 ready, the file can be viewed",
+    "closed": "task closed, what is new went into the base",
+    "goSay": "“go”: only on my word",
+    "resumed": "resuming from {x}",
+    "broke": "the session broke at {x}. continue resumes from that step.",
+    "waitingFor": "the stage is waiting for: {x}. It does not go on without an answer.",
+    "nothing": "nothing to resume, the run is over. run starts it again.",
+    "running": "task 000 is already running. state shows where.",
+    "remarkAsk": "which note should be sorted?",
+    "freeRemark": "noted: “{x}”. The real sorting is done by the tool, which is not running here.",
+    "next": "next",
+    "editsChip": "edits",
+    "pause": "Pause",
+    "play": "Resume",
+    "collapse": "Collapse the terminal",
+    "remarks": {
+      "menu": {
+        "key": "menu",
+        "chip": "the menu dropped below the button",
+        "quote": "The menu dropped below the button",
+        "id": "sheets-menus#1",
+        "what": "this rule already exists: repeat mark",
+        "line": "moved into the main rules, a script checks it"
+      },
+      "where": {
+        "key": "where",
+        "chip": "unclear where a button leads",
+        "quote": "Unclear where a button leads",
+        "id": "navigation#3",
+        "what": "this rule already exists: repeat mark",
+        "line": "every control shows what a tap will do"
+      },
+      "label": {
+        "key": "label",
+        "chip": "chart label is too small",
+        "quote": "Chart label is too small",
+        "id": "visual#30",
+        "what": "no rule yet, adding one",
+        "line": "A chart label is no smaller than its scale (made-up example, on this page only)"
+      }
+    },
+    "critic": "07 · Night detail\n  — button label 13 pt, needs at least 16            texts#5\n  — Share pressed to the right edge, margins differ  layout#1\n08 · Home — clean",
+    "audit": "audit.js          edges, opacity, clipped shadows\nlayout-audit.js   margins, steps, sizes\ncheck-screens.py  a one-tap entry for every feature\ntypo-scan.js      hanging prepositions\na machine checked 89 of 234 rules, as of 1 Nov 2026",
+    "rules": "234 rules in 16 checklists, as of 1 Nov 2026\n89 checked by script, 24 marked as repeats",
+    "steps": {
+      "s1Start": "task folder, file, component library",
+      "s1Brief": "quick brief",
+      "s1Visual": "visual research",
+      "s1Board": "style board of 6 directions",
+      "s1Style": "tokens in style.md",
+      "s1Product": "product research",
+      "s1Screens": "screen map, map checks",
+      "s1File": "file pages, brand dress",
+      "s1Tokens": "variables, text styles",
+      "s1Wireframes": "wireframes, critic",
+      "s1Pages": "brief, research, style pages",
+      "s1Audit": "audit: empty",
+      "s1Deliver": "push, notification",
+      "s2Start": "start on my word",
+      "s2Trend": "images",
+      "s2Base": "screens page from wireframes",
+      "s2Components": "inventory and components",
+      "s2Key": "onboarding, paywall, main feature",
+      "s2Rest": "other branches, critic loop",
+      "s2Unify": "consistency pass",
+      "s2Map": "layout, prototype",
+      "s2Cover": "cover",
+      "s2Icons": "28 icons",
+      "s2Preview": "store sets A and B",
+      "s2Assets": "images for the developer",
+      "s2Asc": "paywall for review",
+      "s2Pages": "summaries, brief check",
+      "s2Audit": "closing audit: empty",
+      "s2Deliver": "push, notification",
+      "harvest": "topping up the base: patterns, niche, build traps"
+    },
+    "help": {
+      "newApp": {
+        "name": "new-app",
+        "text": "stage 1 on made-up task 000"
+      },
+      "edits": {
+        "name": "edits",
+        "text": "a note becomes a rule"
+      },
+      "stage2": {
+        "name": "stage-2",
+        "text": "stage 2, screens"
+      },
+      "resume": {
+        "name": "continue",
+        "text": "resume from the first unfinished step"
+      },
+      "done": {
+        "name": "done",
+        "text": "close the task"
+      },
+      "state": {
+        "name": "state",
+        "text": "where the run stands"
+      },
+      "rules": {
+        "name": "rules",
+        "text": "real rules from the checklists"
+      },
+      "critic": {
+        "name": "critic",
+        "text": "how the critic answered"
+      },
+      "audit": {
+        "name": "audit",
+        "text": "which scripts ran"
+      },
+      "open": {
+        "name": "open",
+        "text": "open a note"
+      },
+      "ls": {
+        "name": "ls",
+        "text": "list the notes"
+      },
+      "graph": {
+        "name": "graph",
+        "text": "the link graph"
+      },
+      "clear": {
+        "name": "clear",
+        "text": "clear the output"
+      },
+      "run": {
+        "name": "run",
+        "text": "start the run again"
+      }
+    },
+    "prompt": "~/flow $"
+  }
 }
