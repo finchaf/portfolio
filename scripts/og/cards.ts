@@ -5,8 +5,28 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
+import {
+  Bookmark,
+  CalendarDays,
+  ChevronDown,
+  Copy,
+  FileSearch,
+  Folder,
+  GitFork,
+  LayoutDashboard,
+  ListTodo,
+  Plus,
+  Search,
+  Terminal,
+  X,
+  type LucideIcon,
+} from "lucide-react";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+
 import { LOCALES, type Locale } from "../../src/i18n/locales.ts";
 import { PAGE_PATHS, PAGES } from "../../src/lib/pages.ts";
+import { flowGraph } from "./flow-graph.ts";
 
 const read = (path: string) => readFileSync(fileURLToPath(new URL(path, import.meta.url)));
 const text = (path: string) => read(path).toString("utf8");
@@ -36,14 +56,36 @@ function strings(locale: Locale) {
   const { work } = JSON.parse(text(`../../messages/${locale}/home.json`)) as {
     work: {
       pora: { week: { days: { mon: string }; lessons: { math: string } } };
-      flow: { steps: { brief: { command: string } } };
       projects: { site: { file: string }; thesis: { file: string } };
     };
   };
+  const { folders, card, transcript } = JSON.parse(text(`../../messages/${locale}/flow.json`)) as {
+    folders: { process: string; quality: string };
+    card: { line: string; lead: string; link: string };
+    transcript: { lines: string };
+  };
+  const title = (note: string) =>
+    /^title: (.+)$/m.exec(text(`../../messages/${locale}/vault/${note}.md`))?.[1] ?? note;
+  const [run = "", done = "", , asks = ""] = transcript.lines.split("\n");
   return {
     day: work.pora.week.days.mon,
     subject: work.pora.week.lessons.math,
-    command: work.flow.steps.brief.command,
+    flow: {
+      ...card,
+      name: title("flow"),
+      rules: title("rules"),
+      process: folders.process,
+      quality: folders.quality,
+      notes: [title("stage-1"), title("stage-2"), title("edits")],
+      checklists: title("checklists"),
+      run: run.replace(/^\$ /, ""),
+      done:
+        done
+          .trim()
+          .split(/\s{2,}/)[0]
+          ?.replace(/^✓ /, "") ?? "",
+      asks: asks.trim().replace(/^\? /, ""),
+    },
     site: work.projects.site.file,
     thesis: work.projects.thesis.file,
   };
@@ -71,6 +113,40 @@ const zone = (world: string, body: string) =>
 const field = (world: string, body = "") =>
   `<div class="field" data-tint="${world}" data-tint-fonts>${body}</div>`;
 
+const icon = (shape: LucideIcon, size: number) =>
+  renderToStaticMarkup(createElement(shape, { size, strokeWidth: 1.75, "aria-hidden": true }));
+
+/** The Flow page itself: its ribbon, tree, note, terminal and graph, in type a chat can show. */
+function vaultWindow({ flow }: ReturnType<typeof strings>) {
+  const ribbon = [FileSearch, GitFork, LayoutDashboard, CalendarDays, Copy, Terminal, ListTodo];
+  const folder = (name: string) =>
+    `<span class="row">${icon(ChevronDown, 18)}${escape(name)}</span>`;
+  return `<div class="win" data-tint="flow" data-tint-fonts>
+    <div class="win-bar">
+      <span class="win-side">${[Folder, Search, Bookmark].map((shape) => icon(shape, 26)).join("")}</span>
+      <span class="tab tab-on">${escape(flow.name)}${icon(X, 20)}</span>
+      <span class="tab">${escape(flow.rules)}</span>
+      <span class="tab-new">${icon(Plus, 24)}</span>
+    </div>
+    <div class="ribbon">${ribbon.map((shape) => icon(shape, 28)).join("")}</div>
+    <div class="tree">
+      <span class="row row-on">${escape(flow.name)}</span>
+      ${folder(flow.process)}
+      ${flow.notes.map((note) => `<span class="row row-in">${escape(note)}</span>`).join("")}
+      ${folder(flow.quality)}
+      <span class="row row-in">${escape(flow.checklists)}</span>
+    </div>
+    <div class="note">
+      <h3>${escape(flow.name)}</h3>
+      <p>${escape(flow.line)}<br>${escape(flow.lead)} <a>${escape(flow.link)}</a></p>
+      <pre class="term"><b>$</b> ${escape(flow.run)}
+  <s>✓</s> ${escape(flow.done)}
+  <b>?</b> ${escape(flow.asks)}<u></u></pre>
+    </div>
+    <div class="dock">${flowGraph()}</div>
+  </div>`;
+}
+
 const BODIES: Record<Card, (words: ReturnType<typeof strings>) => string> = {
   // The two faces of the first screen, on the two sides of the slash.
   home: () =>
@@ -90,18 +166,7 @@ const BODIES: Record<Card, (words: ReturnType<typeof strings>) => string> = {
       <span class="subject">${escape(subject)}</span>
     </div>`,
 
-  flow: ({ command }) => {
-    const [prompt = "", name = "", argument = ""] = command.split(" ");
-    return (
-      zone(
-        "flow",
-        `${sign("flow")}<span class="command"><b>${escape(prompt)}</b> ${escape(name)}
-  ${escape(argument)}<u></u></span>`,
-      ) +
-      field("flow") +
-      `<div class="over" data-tint="flow" data-tint-fonts><span class="hash">#</span></div>`
-    );
-  },
+  flow: (words) => field("flow") + vaultWindow(words),
 
   projects: ({ site, thesis }) =>
     zone(

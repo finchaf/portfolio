@@ -30,8 +30,7 @@ body {
 }
 
 .zone,
-.field,
-.over {
+.field {
   position: absolute;
   inset: 0;
 }
@@ -47,10 +46,6 @@ body {
   background: var(--accent);
   color-scheme: light;
   clip-path: polygon(0 0, var(--top) 0, calc(var(--top) + 232px) 100%, 0 100%);
-}
-
-.over {
-  color-scheme: light;
 }
 
 .sign {
@@ -147,47 +142,202 @@ body {
   letter-spacing: -0.04em;
 }
 
-/* Flow: the mark of a note and a command with its cursor. */
-.card-flow {
-  --top: 380px;
+/*
+ * Flow: the page itself, on its violet. The window runs off the right and the bottom, so the colour
+ * keeps an edge on a dark chat and the window on a light one. Type is far larger than on the page:
+ * a chat shows this at a quarter of its size. The face is named: the theme's is the reader's system.
+ */
+.card-flow .field {
+  clip-path: none;
 }
 
-.card-flow .zone {
-  --sign-mark: var(--accent-strong);
-}
-
-.hash {
+.win {
   position: absolute;
-  top: 88px;
-  left: 262px;
-  color: var(--on-accent);
-  font:
-    800 400px/1 "Inter Variable",
-    sans-serif;
-  letter-spacing: -0.04em;
-}
-
-.command {
-  position: absolute;
-  top: 330px;
-  left: 590px;
+  top: 64px;
+  left: 84px;
+  display: grid;
+  grid-template-rows: 58px 1fr;
+  grid-template-columns: 64px 224px 560px 1fr;
+  width: 1240px;
+  height: 640px;
+  overflow: hidden;
+  border-radius: 18px 0 0;
+  background: var(--page);
+  box-shadow:
+    0 0 0 1.5px #3a3a3a,
+    -30px 30px 60px -20px color-mix(in srgb, var(--accent) 22%, #000);
   color: var(--ink);
-  font: 500 46px/1.25 var(--stamp);
-  white-space: pre;
+  color-scheme: dark;
+  font-family: "Inter Variable", sans-serif;
 }
 
-.command b {
+.win svg {
+  display: block;
+  flex: none;
+}
+
+.win-bar {
+  display: flex;
+  grid-column: 1 / -1;
+  align-items: flex-end;
+  background: var(--surface);
+  box-shadow: inset 0 -1.5px var(--line);
+  color: var(--muted);
+}
+
+.win-side {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 26px;
+  width: 288px;
+  height: 58px;
+  padding-left: 19px;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  height: 46px;
+  padding-inline: 22px;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.tab-on {
+  border-radius: 12px 12px 0 0;
+  background: var(--page);
+  color: var(--ink);
+}
+
+.tab-new {
+  align-self: center;
+  margin-left: 4px;
+}
+
+.ribbon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  padding-top: 22px;
+  background: var(--surface);
+  box-shadow: inset -1.5px 0 var(--line);
+  color: var(--muted);
+}
+
+.tree {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px 16px;
+  background: var(--surface);
+  box-shadow: inset -1.5px 0 var(--line);
+  color: var(--muted);
+  font-size: 24px;
+  line-height: 1;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+.row-on {
+  background: var(--raised);
+  color: var(--ink);
+}
+
+.row-in {
+  margin-left: 26px;
+}
+
+.note {
+  position: relative;
+  padding: 26px 40px;
+}
+
+.note h3 {
+  font-size: 96px;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+}
+
+.note p {
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 30px;
+  line-height: 1.32;
+}
+
+.note a {
+  color: var(--accent-strong);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+}
+
+.term {
+  position: absolute;
+  inset: 276px 0 0;
+  padding: 22px 40px;
+  box-shadow: 0 -1.5px var(--line);
+  font:
+    500 40px/1.3 "JetBrains Mono Variable",
+    monospace;
+}
+
+.term b {
   color: var(--accent-strong);
   font-weight: 500;
 }
 
-.command u {
+.term s {
+  color: var(--success);
+  text-decoration: none;
+}
+
+.term u {
   display: inline-block;
-  width: 26px;
-  height: 50px;
+  width: 24px;
+  height: 44px;
   margin-left: 4px;
   background: var(--accent-strong);
-  vertical-align: -8px;
+  vertical-align: -7px;
+}
+
+.dock {
+  background: var(--surface);
+  box-shadow: inset 1.5px 0 var(--line);
+}
+
+.graph {
+  width: 340px;
+  height: 508px;
+}
+
+.graph-line {
+  fill: none;
+  stroke: rgb(255 255 255 / 0.2);
+  stroke-width: 0.9;
+}
+
+.graph-rule {
+  fill: rgb(255 255 255 / 0.62);
+}
+
+.graph-hub {
+  fill: rgb(255 255 255 / 0.92);
+}
+
+.graph-now {
+  fill: var(--accent-strong);
 }
 
 /* Projects: the palette itself, which keeps the page apart from Flow's violet, and two folders. */
