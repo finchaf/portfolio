@@ -1,0 +1,695 @@
+/*
+ * Flow on the home page. In the HTML each stop is a section with what it shows. The scene, under the
+ * script and the query of motion, stacks the stops on the stage and draws the base on the canvas.
+ */
+.map-stops {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+}
+
+.map-stop {
+  display: grid;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.map-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.map-object {
+  min-width: 0;
+}
+
+.map-canvas {
+  display: none;
+}
+
+.map-label,
+.map-command {
+  font-family: var(--mono);
+  font-size: 0.875rem;
+  line-height: 1.3;
+  color: var(--muted);
+}
+
+.map-number {
+  font-family: var(--mono);
+  font-size: 0.875rem;
+  line-height: 1.3;
+  color: var(--accent-strong);
+}
+
+.map-note {
+  font-size: 0.875rem;
+  line-height: 1.35;
+  color: var(--muted);
+}
+
+.map-hint {
+  font-size: 0.875rem;
+  line-height: 1.3;
+  color: var(--accent-strong);
+}
+
+/* The same rows as the properties of a note on the Flow page. */
+.map-facts {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.25rem 1.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.35;
+}
+
+.map-facts div {
+  display: contents;
+}
+
+.map-facts dt {
+  color: var(--muted);
+}
+
+.map-roles {
+  display: grid;
+  gap: 0.5rem;
+  max-width: 31rem;
+  font-size: 0.9375rem;
+  line-height: 1.35;
+}
+
+.map-roles dt {
+  display: flex;
+  align-items: center;
+  gap: 0.4375rem;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.map-roles i {
+  flex: none;
+  width: 0.4375rem;
+  height: 0.4375rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ink) 55%, transparent);
+}
+
+.map-roles i[data-me] {
+  background: var(--accent);
+}
+
+.map-figures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 2rem;
+}
+
+.map-figures dd {
+  font-family: var(--display);
+  font-size: clamp(2.25rem, 4.6vw, 4.25rem);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  color: var(--accent-strong);
+}
+
+.map-figures div + div dd {
+  font-size: clamp(1.5rem, 2.6vw, 2.5rem);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.map-figures div {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: 0.25rem;
+}
+
+.map-figures dd {
+  order: 1;
+}
+
+.map-figures dt {
+  font-size: 0.875rem;
+  line-height: 1.25;
+  color: var(--muted);
+}
+
+/* ---------- what each stop shows ---------- */
+.map-terminal {
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 37.5rem);
+  overflow: hidden;
+  border-radius: 0.625rem;
+  background: var(--page);
+  box-shadow:
+    0 0 0 1px var(--line),
+    0 18px 40px -22px light-dark(color-mix(in srgb, var(--ink) 40%, transparent), transparent);
+  font: 400 0.8125rem/1.55 var(--mono);
+}
+
+.map-terminal-head {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  height: 2.125rem;
+  padding-inline: 0.75rem;
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow: inset 0 -1px var(--line);
+  color: var(--muted);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.map-terminal-head b {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.map-terminal-head span {
+  margin-left: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.map-terminal-body {
+  padding: 0.75rem 0.875rem 0.875rem;
+  overflow: hidden;
+  color: var(--muted);
+  white-space: pre;
+}
+
+.map-terminal-body p[data-line="run"] {
+  color: var(--ink);
+}
+
+.map-terminal-body p[data-line="done"] {
+  color: var(--ink);
+}
+
+.map-terminal-body [data-step] {
+  color: var(--success);
+}
+
+.map-terminal-body p[data-line="ask"] {
+  color: var(--accent-strong);
+}
+
+.map-board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.625rem;
+  width: min(100%, 26rem);
+}
+
+.map-tile {
+  display: grid;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  text-align: left;
+}
+
+.map-tile .frame {
+  border-radius: 0.625rem;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition: outline-color var(--duration-quick) var(--ease-out);
+}
+
+.map-tile[aria-checked="true"] .frame,
+.map-tile:focus-visible .frame {
+  outline-color: var(--accent-strong);
+}
+
+@media (hover: hover) {
+  .map-tile:hover .frame {
+    outline-color: color-mix(in srgb, var(--accent-strong) 50%, transparent);
+  }
+
+  .map-tile[aria-checked="true"]:hover .frame {
+    outline-color: var(--accent-strong);
+  }
+}
+
+.map-tile-name {
+  overflow: hidden;
+  font-size: 0.8125rem;
+  color: var(--muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.map-tile-name b {
+  font-family: var(--mono);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.map-tile[aria-checked="true"] .map-tile-name {
+  color: var(--ink);
+}
+
+.map-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 3%;
+  align-items: center;
+}
+
+.map-row .map-phone:nth-child(even) {
+  translate: 0 6%;
+}
+
+.map-phone {
+  position: relative;
+}
+
+.map-phone .frame {
+  box-shadow:
+    0 0 0 2px var(--page),
+    0 14px 34px -16px light-dark(color-mix(in srgb, var(--ink) 40%, transparent), transparent);
+}
+
+.map-cut {
+  position: absolute;
+  z-index: 3;
+  top: -2%;
+  bottom: -8%;
+  left: 0;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--accent-strong);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.map-cut::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.375rem;
+  height: 1.375rem;
+  margin: -0.6875rem;
+  border-radius: 50%;
+  background: var(--accent-strong);
+  box-shadow: 0 0 0 3px var(--page);
+}
+
+.map-file {
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+}
+
+.map-file-screens {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.map-file-screens .map-phone:nth-child(2) {
+  z-index: 2;
+  translate: 0 5%;
+  scale: 1.08;
+}
+
+.map-file-icons {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.625rem;
+}
+
+.map-file-icons .appicon {
+  width: 100%;
+}
+
+.map-ladder {
+  display: grid;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.map-ladder .demo {
+  width: min(100%, 15rem);
+}
+
+.map-ladder .d-phone {
+  height: 17rem;
+}
+
+.map-rungs {
+  position: relative;
+  display: grid;
+  gap: 0.625rem;
+}
+
+.map-rungs li {
+  position: relative;
+  display: grid;
+  gap: 0.0625rem;
+  padding-left: 1.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.35;
+}
+
+.map-rungs li::before {
+  content: "";
+  position: absolute;
+  top: 0.4375rem;
+  left: 0;
+  width: 0.5625rem;
+  height: 0.5625rem;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.map-rungs b {
+  font-weight: 600;
+}
+
+.map-rungs code {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.map-tip {
+  display: none;
+}
+
+@media (min-width: 64rem) {
+  .map-stop {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: 3rem;
+  }
+
+  .map-board {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .map-file {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 1.2fr);
+  }
+
+  .map-file-icons {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .map-ladder {
+    grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* ---------- the scene ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  :root[data-js] {
+    .chapter[data-axis="x"] {
+      --length: 860svh;
+    }
+
+    [data-chapter="flow"] .chapter-stage {
+      touch-action: pan-y;
+    }
+
+    [data-chapter="flow"] .chapter-bar {
+      background: none;
+    }
+
+    .map {
+      position: absolute;
+      inset: 0;
+    }
+
+    .map-canvas {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .map-tip:not([hidden]) {
+      position: absolute;
+      z-index: 2;
+      top: 0;
+      left: 0;
+      display: block;
+      padding: 0.1875rem 0.5rem;
+      border-radius: 0.3125rem;
+      background: var(--surface);
+      box-shadow: 0 0 0 1px var(--line);
+      font-size: 0.8125rem;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .map-stops {
+      display: block;
+    }
+
+    .map-stop {
+      position: absolute;
+      inset: 0;
+      display: block;
+      pointer-events: none;
+    }
+
+    .map-copy {
+      position: absolute;
+      top: calc(var(--bar) + 0.375rem);
+      right: var(--gutter);
+      left: var(--gutter);
+      gap: 0.5rem;
+    }
+
+    .map-copy .stop-text {
+      font-size: 1rem;
+      line-height: 1.32;
+      text-wrap: pretty;
+    }
+
+    .map-roles,
+    .map-facts {
+      font-size: 0.875rem;
+    }
+
+    .map-roles {
+      gap: 0.25rem;
+    }
+
+    .map-number,
+    .map-command {
+      display: none;
+    }
+
+    .map-stop:first-child .map-object {
+      top: calc(var(--bar) + 22rem);
+    }
+
+    .map-object {
+      position: absolute;
+      top: calc(var(--bar) + 15.5rem);
+      right: var(--gutter);
+      bottom: calc(var(--dock) + 0.5rem);
+      left: var(--gutter);
+      container-type: size;
+      display: grid;
+      place-items: center;
+    }
+
+    /* Until the scene has its hands on them, only the first stop is on the stage. */
+    .map-stop:not(:first-child) [data-map-line],
+    .map-stop:not(:first-child) [data-map-title],
+    .map-stop:not(:first-child) [data-piece] {
+      opacity: 0;
+    }
+
+    [data-map-title] {
+      transform-origin: 0 0;
+    }
+
+    [data-terminal] p {
+      opacity: 0;
+    }
+
+    [data-terminal] p:first-child {
+      opacity: 1;
+    }
+
+    .map-terminal {
+      font-size: 0.6875rem;
+    }
+
+    .map-board {
+      width: min(100cqw, 66cqh);
+      gap: 0.375rem;
+    }
+
+    .map-tile-name {
+      display: none;
+    }
+
+    .map-row {
+      width: min(100cqw, 130cqh);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .map-row .map-phone:nth-child(4) {
+      display: none;
+    }
+
+    .map-file {
+      width: min(100cqw, 90cqh);
+      gap: 0.75rem;
+    }
+
+    .map-ladder {
+      grid-template-columns: 1fr;
+      align-self: end;
+      width: 100cqw;
+      gap: 0.75rem;
+    }
+
+    .map-figures {
+      display: grid;
+      grid-template-columns: repeat(3, auto);
+      gap: 0.75rem;
+      justify-content: start;
+    }
+
+    .map-figures div {
+      justify-content: flex-end;
+    }
+
+    .map-ladder > [data-piece]:first-child {
+      display: none;
+    }
+
+    .map-rungs li {
+      display: none;
+    }
+
+    .map-rungs li[data-on] {
+      display: grid;
+    }
+
+    @media (min-width: 64rem) {
+      .map-copy {
+        top: var(--header);
+        right: auto;
+        bottom: var(--bar);
+        left: var(--gutter);
+        justify-content: center;
+        width: 33vw;
+        gap: 0.75rem;
+      }
+
+      .map-copy .stop-text {
+        font-size: clamp(1rem, 1.42vw, 1.3125rem);
+      }
+
+      .map-roles,
+      .map-facts {
+        font-size: 0.9375rem;
+      }
+
+      .map-roles {
+        gap: 0.5rem;
+      }
+
+      .map-number,
+      .map-command {
+        display: block;
+      }
+
+      .map-stop:first-child .map-object,
+      .map-object {
+        top: calc(var(--header) + 2rem);
+        right: var(--gutter);
+        bottom: calc(var(--bar) + 2.5rem);
+        left: 42vw;
+      }
+
+      .map-terminal {
+        width: min(100cqw, 37.5rem);
+        font-size: 0.8125rem;
+      }
+
+      .map-board {
+        width: min(100cqw, 300cqh);
+        gap: 0.625rem;
+      }
+
+      .map-tile-name {
+        display: block;
+      }
+
+      .map-row {
+        width: min(100cqw, 190cqh);
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .map-row .map-phone:nth-child(4) {
+        display: block;
+      }
+
+      .map-file {
+        width: min(100cqw, 165cqh);
+        gap: 2rem;
+      }
+
+      .map-ladder {
+        grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+        align-self: center;
+        gap: 2rem;
+      }
+
+      .map-ladder > [data-piece]:first-child {
+        display: block;
+      }
+
+      .map-figures {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 1.25rem;
+      }
+
+      .map-rungs li {
+        display: grid;
+        opacity: 0.5;
+        transition: opacity var(--duration-base) var(--ease-out);
+      }
+
+      .map-rungs li[data-past] {
+        opacity: 0.72;
+      }
+
+      .map-rungs li[data-on] {
+        opacity: 1;
+      }
+    }
+
+    @media (width < 64rem) and (height < 47.5rem) {
+      .map-facts,
+      .map-stop:first-child .map-note {
+        display: none;
+      }
+
+      .map-stop:first-child .map-object {
+        top: calc(var(--bar) + 15.5rem);
+      }
+    }
+  }
+}

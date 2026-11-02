@@ -2,15 +2,20 @@ import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
 import {
+  APP_LOOKS,
+  DEFAULT_LOOK,
   HomeScreen,
   HomeWire,
   NightScreen,
   NightWire,
   PaywallScreen,
   PaywallWire,
+  RuleDemo,
   WelcomeScreen,
   WelcomeWire,
-} from "./app-screens";
+} from "@/ui/app-screens";
+import { BASE_FIGURES } from "@/lib/base-graph";
+
 import { WikiLink } from "./markdown";
 
 const ROWS = [
@@ -52,16 +57,13 @@ export function Lanes() {
   );
 }
 
-const LOOKS = ["a", "b", "c", "d", "e", "f"] as const;
-export const DEFAULT_LOOK = "c";
-
 /** The board of six style directions. Choosing one is the reader's decision. */
 export function Board() {
   const t = useTranslations("flow.board");
   return (
     <figure className="board wide">
       <div aria-label={t("label")} className="board-row" role="radiogroup">
-        {LOOKS.map((look) => (
+        {APP_LOOKS.map((look) => (
           <button
             aria-checked={look === DEFAULT_LOOK}
             className="sdir"
@@ -134,28 +136,9 @@ const RUNGS = ["s0", "s1", "s2", "s3", "s4"] as const;
 /** The real history of one rule: a note, a rule, the critic, a repeat, a script. */
 export function Ladder() {
   const t = useTranslations("flow.ladder");
-  const app = useTranslations("flow.app");
   return (
     <figure className="ladder wide" data-ladder="" data-rung="0">
-      <div aria-hidden className="demo">
-        <div className="d-phone">
-          <div className="d-bar">
-            <span className="d-title">{app("menuTitle")}</span>
-            <span className="d-btn">{app("glyphMore")}</span>
-            <span className="d-menu">
-              <i>{app("menuShare")}</i>
-              <i>{app("menuNote")}</i>
-              <i>{app("menuDelete")}</i>
-            </span>
-          </div>
-          <div className="d-body">
-            <i />
-            <i />
-            <i />
-          </div>
-          <span className="d-check">{app("corner")}</span>
-        </div>
-      </div>
+      <RuleDemo />
       <ol className="rungs">
         {RUNGS.map((rung, index) => (
           <li key={rung}>
@@ -177,15 +160,15 @@ export function Figures() {
   return (
     <dl className="figures">
       <div>
-        <dd>{234}</dd>
+        <dd>{BASE_FIGURES.rules}</dd>
         <dt>{t("rules")}</dt>
       </div>
       <div>
-        <dd>{89}</dd>
+        <dd>{BASE_FIGURES.scripted}</dd>
         <dt>{t("scripted")}</dt>
       </div>
       <div>
-        <dd>{24}</dd>
+        <dd>{BASE_FIGURES.repeated}</dd>
         <dt>{t("repeated")}</dt>
       </div>
     </dl>
@@ -195,7 +178,7 @@ export function Figures() {
 export function Icons() {
   return (
     <div className="icons">
-      {LOOKS.map((look, index) => (
+      {APP_LOOKS.map((look, index) => (
         <span className={`appicon v${String(index)}`} data-style={look} key={look}>
           <i />
         </span>

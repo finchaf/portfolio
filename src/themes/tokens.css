@@ -92,19 +92,6 @@ body {
   display: inline;
 }
 
-/* A scene of the home page lends the capsule the page it is showing. */
-:root[data-scene] [data-capsule] [aria-current="page"] {
-  background: transparent;
-  box-shadow: none;
-}
-
-:root[data-scene="pora"] [data-capsule] [data-nav="pora"],
-:root[data-scene="flow"] [data-capsule] [data-nav="flow"],
-:root[data-scene="projects"] [data-capsule] [data-nav="projects"] {
-  background: var(--page);
-  color: var(--ink);
-}
-
 ::selection {
   background: color-mix(in srgb, var(--accent) 30%, transparent);
 }

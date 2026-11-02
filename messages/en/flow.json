@@ -3,7 +3,7 @@
     "title": "Flow — Danil Zablotsky",
     "description": "A case: the agent system I built for production-line iOS app design.",
     "shareTitle": "Flow: agents for an app production line",
-    "imageAlt": "A large hash sign and a terminal command on a violet field."
+    "imageAlt": "A notes window on a violet field: a file tree, the note “Flow”, a terminal running new-app and the graph of the knowledge base."
   },
   "title": "Flow",
   "lead": "A case: an agent system built for production-line app design.",
@@ -410,5 +410,10 @@
       }
     },
     "prompt": "~/flow $"
+  },
+  "card": {
+    "line": "An agent system",
+    "lead": "for a",
+    "link": "production line"
   }
 }

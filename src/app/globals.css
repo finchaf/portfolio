@@ -6,3 +6,8 @@
 @import "../themes/pora.css";
 @import "../themes/flow.css";
 @import "../themes/projects.css";
+
+/* A picture stays where it lies. Gecko has no such property: `src/shell/still-images.tsx` holds it there. */
+img {
+  -webkit-user-drag: none;
+}

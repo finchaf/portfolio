@@ -1,33 +1,14 @@
+import { CHECKLISTS, relax, type BodyKind } from "@/lib/base-graph";
+
 import { isStill } from "./dom";
 
 /**
  * The graph of the base, drawn on canvas: the notes, the 16 checklists and every one of the 234
- * rules as a dot on its checklist. The counts are the real ones, as of 01.11.2026.
+ * rules as a dot on its checklist.
  */
-export const CHECKLISTS = [
-  ["store", 38],
-  ["visual", 26],
-  ["figma", 17],
-  ["lists", 17],
-  ["onboarding", 17],
-  ["copy", 14],
-  ["paywall", 14],
-  ["scope", 13],
-  ["generation", 13],
-  ["layout", 11],
-  ["states", 11],
-  ["navigation", 10],
-  ["media", 10],
-  ["sheets", 9],
-  ["chat", 8],
-  ["icon", 6],
-] as const;
-
-type Kind = "note" | "hub" | "rule";
-
 interface Node {
   id: string;
-  kind: Kind;
+  kind: BodyKind;
   label: string;
   x: number;
   y: number;
@@ -79,7 +60,7 @@ export function makeGraph({ notes, links, hubLabel, open, signal }: GraphInput) 
     return seed / 2147483647;
   };
 
-  const add = (id: string, kind: Kind, label: string, on = true) => {
+  const add = (id: string, kind: BodyKind, label: string, on = true) => {
     const angle = random() * Math.PI * 2;
     const radius = Math.sqrt(random()) * 0.9;
     const node: Node = {
@@ -120,47 +101,7 @@ export function makeGraph({ notes, links, hubLabel, open, signal }: GraphInput) 
 
   let alpha = 1;
   function tick() {
-    const list = live();
-    for (let i = 0; i < list.length; i += 1) {
-      const a = list[i] as Node;
-      a.vx -= a.x * 0.034 * alpha;
-      a.vy -= a.y * 0.034 * alpha;
-      for (let j = i + 1; j < list.length; j += 1) {
-        const b = list[j] as Node;
-        const dx = a.x - b.x;
-        const dy = a.y - b.y;
-        const distance = dx * dx + dy * dy + 0.0004;
-        if (distance > 0.3) continue;
-        const notes = a.kind === "note" && b.kind === "note" ? 5 : 1;
-        const force = (0.00058 * notes * alpha) / distance;
-        a.vx += dx * force;
-        a.vy += dy * force;
-        b.vx -= dx * force;
-        b.vy -= dy * force;
-      }
-    }
-    for (const { a, b } of liveEdges()) {
-      const leaf = a.kind === "rule" || b.kind === "rule";
-      const dx = b.x - a.x;
-      const dy = b.y - a.y;
-      const distance = Math.sqrt(dx * dx + dy * dy) || 0.001;
-      const force = ((distance - (leaf ? 0.12 : 0.26)) * (leaf ? 0.05 : 0.02) * alpha) / distance;
-      a.vx += dx * force;
-      a.vy += dy * force;
-      b.vx -= dx * force;
-      b.vy -= dy * force;
-    }
-    for (const node of list) {
-      if (node === dragged) {
-        node.vx = 0;
-        node.vy = 0;
-        continue;
-      }
-      node.vx *= 0.7;
-      node.vy *= 0.7;
-      node.x += node.vx;
-      node.y += node.vy;
-    }
+    relax(live(), liveEdges(), alpha, dragged);
     alpha *= 0.992;
   }
 

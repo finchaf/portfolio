@@ -1,6 +1,6 @@
 import "@/themes/flow-looks.css";
+import "@/ui/app-screens.css";
 import "./flow.css";
-import "./app-screens.css";
 
 import { useLocale, useMessages, useTranslations } from "next-intl";
 

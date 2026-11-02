@@ -6,7 +6,6 @@ export const CAPSULE_SOURCE = [
   "{PAGE_PATHS.map((path) => (",
   "  <NavLink",
   "    href={localizedPath(locale, path)}",
-  "    world={PAGES[path]}",
   "  >",
   '    {path === "" ? <Mark /> : t(`${PAGES[path]}.title`)}',
   "  </NavLink>",

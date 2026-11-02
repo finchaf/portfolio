@@ -292,64 +292,76 @@
       "name": "Flow",
       "label": "Case · iOS app production line, 2026",
       "text": "How I fitted agents to production-line design: a terminal and a Markdown knowledge base carried a task from the brief to finished screens. It was a solution for one type of work, not my usual process.",
-      "note": "The tasks in the demo are made up.",
+      "note": "The task in the demo is made up.",
+      "facts": {
+        "period": {
+          "term": "period",
+          "value": "2026, finished"
+        },
+        "volume": {
+          "term": "volume",
+          "value": "1–2 new apps a week"
+        },
+        "rules": {
+          "term": "base",
+          "value": "234 rules in 16 checklists"
+        }
+      },
+      "roles": {
+        "me": "I decided",
+        "tool": "The tool did"
+      },
       "ticks": {
         "intro": "The case",
         "brief": "Brief",
         "research": "Research",
         "screens": "Screens",
         "handoff": "Handoff",
+        "rule": "Rule",
         "base": "Base"
       },
       "steps": {
         "brief": {
           "title": "Brief",
-          "text": "A brief became a short summary and a board of six style directions.",
-          "command": "$ new-app 000",
-          "mock": "Screenshot: brief"
+          "text": "The task became a short brief and a board of six style directions.",
+          "me": "I picked the style and answered questions",
+          "tool": "A brief in ten minutes, visual research, a style board",
+          "hint": "Pick a direction for me: the screens ahead will take its colours.",
+          "command": "$ new-app 000"
         },
         "research": {
           "title": "Research",
           "text": "References from real apps, a breakdown of patterns and a map of screens.",
-          "command": "· s1.screens",
-          "mock": "Screenshot: screen map"
+          "me": "Review, then “go”: stage 2 waited for my word",
+          "tool": "Research, screen map, tokens, wireframes, audit",
+          "command": "· s1.screens"
         },
         "screens": {
           "title": "Screens",
-          "text": "A tool assembled screens from tokens and components, and I made the decisions.",
-          "command": "$ stage-2",
-          "mock": "Screenshot: screens in Figma"
+          "text": "A wireframe became a screen in place: the same frames on the same coordinates.",
+          "me": "I reviewed the key screens at the stop",
+          "tool": "Components, onboarding, paywall, main feature, other branches",
+          "command": "$ stage-2"
         },
         "handoff": {
           "title": "Handoff",
-          "text": "The finished file went to development.",
-          "command": "· s2.assets",
-          "mock": "Screenshot: handoff"
+          "text": "One run gave a file that could go to development.",
+          "me": "I walked the file, fixed it or sent it back",
+          "tool": "Prototype, cover, 28 icons, two store sets, assets",
+          "command": "· s2.assets"
+        },
+        "rule": {
+          "title": "A note became a rule",
+          "text": "A note was not fixed once. Here is the real history of one dot of this graph.",
+          "command": "$ edits"
         },
         "base": {
           "title": "Back to the base",
-          "text": "Review notes became rules in the knowledge base, and the next task started from them.",
-          "command": "$ edits"
+          "text": "Review notes became rules in the knowledge base, and the next task started from them."
         }
       },
-      "graph": {
-        "brief": "brief.md",
-        "research": "research.md",
-        "screens": "screens.md",
-        "handoff": "state.json",
-        "base": "checklists/"
-      },
-      "terminal": {
-        "line1": "$ new-app 000",
-        "line2": "  ✓ s1.brief",
-        "line3": "  ? style: C",
-        "line4": "  ✓ s1.wireframes",
-        "line5": "  ✓ stage 1 ready",
-        "line6": "$ stage-2",
-        "line7": "  ? stop: accepted",
-        "line8": "  ✓ s2.audit",
-        "line9": "  ✓ stage 2 ready"
-      }
+      "figuresDate": "As of 01.11.2026, counted over the checklists.",
+      "hubUnit": "rules"
     },
     "projects": {
       "name": "Projects",

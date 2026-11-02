@@ -56,7 +56,6 @@ export function Header() {
                 <NavLink
                   href={localizedPath(locale, path)}
                   label={path === "" ? t("home.title") : undefined}
-                  world={PAGES[path]}
                 >
                   {path === "" ? <Mark /> : t(`${PAGES[path]}.title`)}
                 </NavLink>

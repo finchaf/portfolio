@@ -13,6 +13,7 @@ import { Header } from "@/shell/header";
 import { PageChange } from "@/shell/page-change";
 import { ScrollMark } from "@/shell/scroll-mark";
 import { SkipLink } from "@/shell/skip-link";
+import { StillImages } from "@/shell/still-images";
 import { ThemeScript } from "@/themes/theme-script";
 
 // Tells the browser both modes exist before the stylesheet arrives.
@@ -57,6 +58,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
         <Footer />
         <ScrollMark />
         <DotCursor />
+        <StillImages />
         <PageChange />
       </body>
     </html>

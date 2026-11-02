@@ -5,6 +5,8 @@ import { useRef, type ReactNode } from "react";
 import { gsap, MOTION_ALLOWED, ScrollTrigger, useGSAP } from "@/motion/gsap";
 import { SCENE } from "@/motion/tokens";
 
+import { runFlowMap } from "./flow-map-scene";
+
 /** The corners of a sheet rising over the page, and how far what it covers sinks. */
 const SHEET = { radius: "2rem", sunk: 0.93, dimmed: 0.55 };
 
@@ -125,80 +127,6 @@ function runStops(chapter: HTMLElement, start: () => string, end: () => string, 
   };
 }
 
-/** The track slides sideways while the page scrolls down, and a line runs along its stages. */
-function runTrack(chapter: HTMLElement) {
-  const track = chapter.querySelector<HTMLElement>("[data-track]");
-  const line = chapter.querySelector("[data-flow-line]");
-  const progress = chapter.querySelector("[data-chapter-progress]");
-  if (!track) return;
-  const mark = marker(chapter);
-  const panels = gsap.utils.toArray<HTMLElement>("[data-panel]", chapter);
-  const along = {
-    trigger: chapter,
-    start: "top top",
-    end: () => `+=${chapter.offsetHeight - 2 * window.innerHeight}`,
-    scrub: follow(),
-    invalidateOnRefresh: true,
-  };
-
-  const move = gsap.to(track, {
-    x: () => window.innerWidth - track.scrollWidth,
-    ease: "none",
-    scrollTrigger: {
-      ...along,
-      onUpdate: ({ progress: done }) => {
-        mark(Math.round(done * (panels.length - 1)));
-      },
-    },
-  });
-  gsap.fromTo(line, { scaleX: 0 }, { scaleX: 1, ease: "none", scrollTrigger: { ...along } });
-  gsap.fromTo(progress, { scaleX: 0 }, { scaleX: 1, ease: "none", scrollTrigger: { ...along } });
-  mark(0);
-
-  panels.slice(1).forEach((panel) => {
-    gsap.fromTo(
-      panel.querySelector("[data-panel-visual]"),
-      { xPercent: 22, opacity: 0.2 },
-      {
-        xPercent: 0,
-        opacity: 1,
-        ease: "none",
-        scrollTrigger: {
-          containerAnimation: move,
-          trigger: panel,
-          start: "left 100%",
-          end: "left 45%",
-          scrub: true,
-        },
-      },
-    );
-    const node = panel.querySelector("[data-flow-node]");
-    if (!node) return;
-    ScrollTrigger.create({
-      containerAnimation: move,
-      trigger: panel,
-      start: "left 55%",
-      onToggle: ({ isActive }) => {
-        node.toggleAttribute("data-reached", isActive);
-      },
-      end: "max",
-    });
-  });
-
-  gsap.to(chapter.querySelectorAll("[data-graph-line]"), {
-    strokeDashoffset: 0,
-    ease: "none",
-    stagger: 0.25,
-    scrollTrigger: {
-      containerAnimation: move,
-      trigger: panels.at(-1),
-      start: "left 90%",
-      end: "right 106%",
-      scrub: true,
-    },
-  });
-}
-
 /** Flow leaves to the left and the next chapter comes in from the right, as its next panel. */
 function handOver(from: HTMLElement, to: HTMLElement) {
   const fromStage = from.querySelector("[data-stage]");
@@ -217,11 +145,10 @@ function handOver(from: HTMLElement, to: HTMLElement) {
 }
 
 /**
- * While a work fills the screen, the capsule takes its theme and marks its page. It is colour
- * rather than motion, so it stays with reduced motion too.
+ * While a work fills the screen, the capsule takes its theme; the page it marks stays the one the
+ * reader is on. It is colour rather than motion, so it stays with reduced motion too.
  */
 function lendTheme(chapters: HTMLElement[], after: HTMLElement | null) {
-  const root = document.documentElement;
   const capsule = document.querySelector<HTMLElement>("[data-capsule]");
   let marks: { at: number; world?: string }[] = [];
   let shown: string | undefined;
@@ -243,11 +170,9 @@ function lendTheme(chapters: HTMLElement[], after: HTMLElement | null) {
     if (world === shown) return;
     shown = world;
     if (world) {
-      root.dataset.scene = world;
       if (capsule) capsule.dataset.tint = world;
-    } else {
-      delete root.dataset.scene;
-      if (capsule) delete capsule.dataset.tint;
+    } else if (capsule) {
+      delete capsule.dataset.tint;
     }
   };
 
@@ -264,7 +189,6 @@ function lendTheme(chapters: HTMLElement[], after: HTMLElement | null) {
   });
   return () => {
     watch.kill();
-    delete root.dataset.scene;
     if (capsule) delete capsule.dataset.tint;
   };
 }
@@ -296,7 +220,7 @@ export function WorkScene({ children }: { children: ReactNode }) {
           () => `+=${pora.offsetHeight - 2 * window.innerHeight}`,
           false,
         );
-        runTrack(flow);
+        const undoFlow = runFlowMap(flow, follow());
         handOver(flow, projects);
         const undoProjects = runStops(
           projects,
@@ -314,6 +238,7 @@ export function WorkScene({ children }: { children: ReactNode }) {
         rise(after, after, stage(projects));
         return () => {
           undoPora();
+          undoFlow();
           undoProjects();
         };
       });

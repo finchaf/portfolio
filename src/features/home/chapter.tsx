@@ -49,7 +49,9 @@ export function Chapter({
       <div className="chapter-stage" data-stage>
         {children}
         <div className="chapter-bar">
-          <i aria-hidden className="chapter-progress" data-chapter-progress />
+          {axis === "y" ? (
+            <i aria-hidden className="chapter-progress" data-chapter-progress />
+          ) : null}
           <p className="chapter-name">
             <span aria-hidden className="font-mono text-sm text-muted">
               {String(index).padStart(2, "0")}
@@ -58,10 +60,16 @@ export function Chapter({
               <span className="font-display font-semibold">{name}</span>
             </ViewTransition>
           </p>
-          <ol aria-hidden className="chapter-rail">
+          <ol aria-hidden={axis === "y"} className="chapter-rail">
             {ticks.map((tick, position) => (
               <li data-active={position === 0 ? "" : undefined} data-tick key={tick}>
-                {tick}
+                {axis === "x" ? (
+                  <button data-go={position} type="button">
+                    {tick}
+                  </button>
+                ) : (
+                  tick
+                )}
               </li>
             ))}
           </ol>

@@ -192,7 +192,7 @@
  * cuts, and on a very low one only the sizes stay.
  */
 @media (min-width: 64rem) and (height < 52rem) {
-  .capsule-source code:nth-child(n + 3):nth-child(-n + 7) {
+  .capsule-source code:nth-child(n + 3):nth-child(-n + 6) {
     display: none;
   }
 

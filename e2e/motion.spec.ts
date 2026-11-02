@@ -37,7 +37,7 @@ const topOf = (page: Page, selector: string) =>
 const HOME = "/ru";
 const CHAPTERS = 9;
 const STOPS = 8;
-const PANELS = 6;
+const PANELS = 7;
 
 test.describe("the home page without JavaScript", () => {
   test.use({ javaScriptEnabled: false });
@@ -53,7 +53,9 @@ test.describe("the home page without JavaScript", () => {
     await expect(page.locator(".story-photo img").first()).toHaveAttribute("loading", "lazy");
     await expect(page.locator(".stop")).toHaveCount(STOPS);
     for (const stop of await page.locator(".stop").all()) await expect(stop).toBeVisible();
-    await expect(page.locator(".flow-panel")).toHaveCount(PANELS);
+    await expect(page.locator(".map-stop")).toHaveCount(PANELS);
+    for (const stop of await page.locator(".map-stop").all()) await expect(stop).toBeVisible();
+    await expect(page.locator("[data-map-canvas]")).toBeHidden();
     await expect(page.locator(".hero-switch")).toBeHidden();
     await expect(page.locator("[data-hero-code]")).toBeHidden();
   });
@@ -958,11 +960,30 @@ test.describe("the home page in motion", () => {
     for (const world of ["pora", "flow"]) {
       await jump(page, await topOf(page, `#work-${world}`));
       await expect(capsule).toHaveAttribute("data-tint", world);
-      await expect(page.locator("html")).toHaveAttribute("data-scene", world);
+      await expect(capsule.getByRole("link", { name: "Главная" })).toHaveAttribute(
+        "aria-current",
+        "page",
+      );
+      await expect(capsule.getByRole("link", { name: "Флоу" })).toHaveCSS(
+        "background-color",
+        "rgba(0, 0, 0, 0)",
+      );
     }
     await jump(page, 0);
     await expect(capsule).not.toHaveAttribute("data-tint");
-    await expect(page.locator("html")).not.toHaveAttribute("data-scene");
+  });
+
+  test("keeps every picture of the page from being dragged away", async ({ page }) => {
+    await page.goto(HOME);
+    const refused = await page
+      .locator("main img")
+      .first()
+      .evaluate((image) => {
+        const drag = new DragEvent("dragstart", { bubbles: true, cancelable: true });
+        image.dispatchEvent(drag);
+        return drag.defaultPrevented;
+      });
+    expect(refused).toBe(true);
   });
 
   test("steps through a chapter downward, one stop at a time", async ({ page }) => {
@@ -975,24 +996,52 @@ test.describe("the home page in motion", () => {
     await expect(second.locator("[data-stop-copy]")).toHaveCSS("opacity", "1");
   });
 
-  test("slides Flow sideways and hands over to Projects from the right", async ({ page }) => {
+  test("flies along Flow's graph and hands over to Projects from the right", async ({ page }) => {
     await page.goto(HOME);
-    const track = page.locator("[data-track]");
-    const left = () => track.evaluate((node) => node.getBoundingClientRect().left);
+    const titles = page.locator("#work-flow [data-map-title]");
     const stage = page.locator("#work-projects [data-stage]");
     const stageLeft = () => stage.evaluate((node) => node.getBoundingClientRect().left);
     const flow = await topOf(page, "#work-flow");
     const projects = await topOf(page, "#work-projects");
     await jump(page, flow);
-    const start = await left();
+    await expect(titles.first()).toHaveCSS("opacity", "1");
+    await expect(titles.last()).toHaveCSS("opacity", "0");
     await jump(page, projects - 10);
-    await expect.poll(left).toBeLessThan(start - 1000);
+    await expect(titles.first()).toHaveCSS("opacity", "0");
+    await expect(titles.last()).toHaveCSS("opacity", "1");
     expect(await stageLeft()).toBeGreaterThan(1000);
     await jump(page, projects + (await height(page)));
     await expect.poll(stageLeft).toBeCloseTo(0, 0);
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(
       await page.evaluate(() => document.documentElement.clientWidth),
     );
+  });
+
+  test("goes along Flow's stops by the rail and the arrows", async ({ page }) => {
+    await page.goto(HOME);
+    await jump(page, await topOf(page, "#work-flow"));
+    const scroll = () => page.evaluate(() => window.scrollY);
+    const start = await scroll();
+    await page.keyboard.press("ArrowRight");
+    await expect.poll(scroll).toBeGreaterThan(start + 100);
+    const rail = page.locator("#work-flow [data-go]");
+    await rail.nth(5).click();
+    await expect(page.locator("#work-flow [data-tick]").nth(5)).toHaveAttribute("data-active", "");
+  });
+
+  test("lets a reader choose the style of Flow's screens", async ({ page }) => {
+    await page.goto(HOME);
+    await jump(page, await topOf(page, "#work-flow"));
+    await page.locator("#work-flow [data-go]").nth(1).click();
+    const tile = page.locator('#work-flow [data-look="f"]');
+    await expect(tile).toHaveCSS("opacity", "1");
+    await tile.click();
+    await expect(tile).toHaveAttribute("aria-checked", "true");
+    await expect(page.locator("#work-flow [data-look-target]").first()).toHaveAttribute(
+      "data-style",
+      "f",
+    );
+    await expect(page.locator("#work-flow [data-look-letter]")).toHaveText("F");
   });
 
   test("keeps the way to the product's page through a chapter", async ({ page }) => {
