@@ -48,4 +48,6 @@ else touches it until the run is over.
 
 A choice of how something looks is made on a live page before the site changes: options in real
 tokens, in `docs/private/prototype/`, with a recommendation. A release is `python3 scripts/deploy.py`
-from `main`. A card's colours or strings changed: `pnpm og`, or the Unit gate goes red.
+from `main`. A card's colours or strings changed: `pnpm og`, or the Unit gate goes red. The laptop is
+arm64 and CI is x64, so a simulation ends on different numbers: a hash never covers such a result.
+What `/si` reports is checked against `git` and `gh`, and a release is checked on the live site.
