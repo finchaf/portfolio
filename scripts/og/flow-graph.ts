@@ -74,6 +74,18 @@ function layout() {
 const circle = (x: number, y: number, r: number) =>
   `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${String(r)}"/>`;
 
+/**
+ * What the graph is made of, for the hash of the cards. Not its coordinates: hundreds of steps of the
+ * forces end apart on arm64 and x64, and CI would call a fresh picture stale.
+ */
+export function flowGraphSource() {
+  const { list, links } = layout();
+  return JSON.stringify([
+    list.map(({ id, kind }) => [id, kind]),
+    links.map(({ a, b }) => [a.id, b.id]),
+  ]);
+}
+
 let drawn = "";
 
 /** The graph as SVG, in the part of the picture's right dock that the picture shows. */

@@ -26,7 +26,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 
 import { LOCALES, type Locale } from "../../src/i18n/locales.ts";
 import { PAGE_PATHS, PAGES } from "../../src/lib/pages.ts";
-import { flowGraph } from "./flow-graph.ts";
+import { flowGraph, flowGraphSource } from "./flow-graph.ts";
 
 const read = (path: string) => readFileSync(fileURLToPath(new URL(path, import.meta.url)));
 const text = (path: string) => read(path).toString("utf8");
@@ -117,7 +117,7 @@ const icon = (shape: LucideIcon, size: number) =>
   renderToStaticMarkup(createElement(shape, { size, strokeWidth: 1.75, "aria-hidden": true }));
 
 /** The Flow page itself: its ribbon, tree, note, terminal and graph, in type a chat can show. */
-function vaultWindow({ flow }: ReturnType<typeof strings>) {
+function vaultWindow({ flow }: ReturnType<typeof strings>, graph: () => string) {
   const ribbon = [FileSearch, GitFork, LayoutDashboard, CalendarDays, Copy, Terminal, ListTodo];
   const folder = (name: string) =>
     `<span class="row">${icon(ChevronDown, 18)}${escape(name)}</span>`;
@@ -143,11 +143,11 @@ function vaultWindow({ flow }: ReturnType<typeof strings>) {
   <s>✓</s> ${escape(flow.done)}
   <b>?</b> ${escape(flow.asks)}<u></u></pre>
     </div>
-    <div class="dock">${flowGraph()}</div>
+    <div class="dock">${graph()}</div>
   </div>`;
 }
 
-const BODIES: Record<Card, (words: ReturnType<typeof strings>) => string> = {
+const BODIES: Record<Card, (words: ReturnType<typeof strings>, graph: () => string) => string> = {
   // The two faces of the first screen, on the two sides of the slash.
   home: () =>
     zone(
@@ -166,7 +166,7 @@ const BODIES: Record<Card, (words: ReturnType<typeof strings>) => string> = {
       <span class="subject">${escape(subject)}</span>
     </div>`,
 
-  flow: (words) => field("flow") + vaultWindow(words),
+  flow: (words, graph) => field("flow") + vaultWindow(words, graph),
 
   projects: ({ site, thesis }) =>
     zone(
@@ -206,15 +206,15 @@ const STYLE = [
 const WORD = `<svg class="tile-defs"><symbol id="word" viewBox="0 0 4420 940">${wordmark()}</symbol></svg>`;
 
 /** The whole page of one card. */
-export function cardPage(locale: Locale, card: Card) {
+export function cardPage(locale: Locale, card: Card, graph = flowGraph) {
   return `<!doctype html><html lang="${locale}"><head><meta charset="utf-8"/>
 <style>${STYLE}</style></head>
-<body>${WORD}<div class="card card-${card}" data-tint="home" data-tint-fonts>${BODIES[card](strings(locale))}</div></body></html>`;
+<body>${WORD}<div class="card card-${card}" data-tint="home" data-tint-fonts>${BODIES[card](strings(locale), graph)}</div></body></html>`;
 }
 
 /** What all the cards are made of: the same hash means the same pictures. */
 export function digest() {
   const hash = createHash("sha256");
-  for (const { locale, card } of CARDS) hash.update(cardPage(locale, card));
+  for (const { locale, card } of CARDS) hash.update(cardPage(locale, card, flowGraphSource));
   return hash.digest("hex").slice(0, 16);
 }
