@@ -54,7 +54,7 @@ export function Chapter({
             <span aria-hidden className="font-mono text-sm text-muted">
               {String(index).padStart(2, "0")}
             </span>
-            <ViewTransition name={`world-${world}`}>
+            <ViewTransition default="none" name={`world-${world}`} share="world-name">
               <span className="font-display font-semibold">{name}</span>
             </ViewTransition>
           </p>

@@ -1363,3 +1363,103 @@ test.describe("the Flow vault", () => {
     });
   });
 });
+
+test.describe("a change of page", () => {
+  const FLOW = "/ru/flow";
+
+  // What the next view transition runs, read when it is ready: the browser drops it right after.
+  const watch = (page: Page) =>
+    page.evaluate(() => {
+      const start = document.startViewTransition.bind(document) as (
+        update: unknown,
+      ) => ViewTransition;
+      const seen = window as unknown as { change?: string[]; held?: string };
+      delete seen.change;
+      Object.assign(document, {
+        startViewTransition(update: unknown) {
+          Object.assign(document, { startViewTransition: start });
+          const transition = start(update);
+          void transition.ready.then(() => {
+            const root = document.documentElement;
+            seen.held = getComputedStyle(root, "::view-transition-group(root)").height;
+            seen.change = root
+              .getAnimations({ subtree: true })
+              .filter((run) => (run.effect as KeyframeEffect).pseudoElement?.includes("transition"))
+              .map((run) => {
+                const { pseudoElement } = run.effect as KeyframeEffect;
+                return `${pseudoElement} ${(run as CSSAnimation).animationName}`;
+              });
+          });
+          return transition;
+        },
+      });
+    });
+
+  const change = (page: Page) =>
+    page.waitForFunction(() => (window as unknown as { change?: string[] }).change);
+
+  const capsule = (page: Page, path: string) =>
+    page.locator(`[data-capsule] a[href$="${path}"]`).first();
+
+  test("crosses the screen along the slash, and back the other way", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(FLOW);
+    await page.waitForLoadState("networkidle");
+
+    await watch(page);
+    await capsule(page, "/ru/projects").click();
+    const forward = (await (await change(page)).jsonValue()) as string[];
+    expect(forward).toContain("::view-transition-new(root) page-slash-in");
+    expect(forward).toContain("::view-transition-new(page-lead) page-lead-in");
+    expect(forward).toContain("::view-transition-old(capsule) page-capsule-off");
+    await expect(page).toHaveURL(/\/ru\/projects$/);
+    await expect(page.locator("html")).not.toHaveAttribute("data-page-back");
+
+    await page.waitForTimeout(700);
+    await watch(page);
+    await capsule(page, "/ru").click();
+    const back = (await (await change(page)).jsonValue()) as string[];
+    expect(back).toContain("::view-transition-new(root) page-slash-back");
+    expect(back).toContain("::view-transition-new(page-lead) page-lead-back");
+    await expect(page.locator("html")).toHaveAttribute("data-page-back");
+  });
+
+  test("keeps the picture of the page to the size of the screen", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(HOME);
+    await page.waitForLoadState("networkidle");
+    await watch(page);
+    await capsule(page, "/ru/flow").click();
+    await change(page);
+    const held = await page.evaluate(() => (window as unknown as { held?: string }).held);
+    expect(held).toBe("900px");
+  });
+
+  test("lets the name of a chapter flow into the page it opens", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(HOME);
+    await page.waitForLoadState("networkidle");
+    const open = page.locator('main a[href$="/ru/flow"]').first();
+    await jump(page, (await open.evaluate((node) => node.getBoundingClientRect().top)) - 500);
+    await expect(open).toBeInViewport();
+
+    await watch(page);
+    await open.click();
+    const run = (await (await change(page)).jsonValue()) as string[];
+    expect(run).toContain("::view-transition-old(world-flow) page-name-off");
+    expect(run).toContain("::view-transition-new(world-flow) page-name-on");
+  });
+
+  test.describe("with reduced motion", () => {
+    test.use({ reducedMotion: "reduce" });
+
+    test("is instant", async ({ page }) => {
+      await page.goto(FLOW);
+      await page.waitForLoadState("networkidle");
+      await watch(page);
+      await capsule(page, "/ru/projects").click();
+      expect((await (await change(page)).jsonValue()) as string[]).toEqual([]);
+      await expect(page).toHaveURL(/\/ru\/projects$/);
+    });
+  });
+});

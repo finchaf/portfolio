@@ -4,13 +4,13 @@ import "../globals.css";
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { ViewTransition } from "react";
 
 import { DEFAULT_LOCALE, isLocale, LOCALES } from "@/i18n/locales";
 import { SITE_ICONS, SITE_ORIGIN } from "@/lib/site";
 import { DotCursor } from "@/shell/dot-cursor";
 import { Footer } from "@/shell/footer";
 import { Header } from "@/shell/header";
+import { PageChange } from "@/shell/page-change";
 import { ScrollMark } from "@/shell/scroll-mark";
 import { SkipLink } from "@/shell/skip-link";
 import { ThemeScript } from "@/themes/theme-script";
@@ -52,14 +52,12 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
         <SkipLink />
         <Header />
         <main className="relative z-10 flex flex-1 flex-col bg-page" id="content" tabIndex={-1}>
-          {/* A page change is a cross-fade; pages name their own shared elements as they grow. */}
-          <ViewTransition>
-            <div>{children}</div>
-          </ViewTransition>
+          <div>{children}</div>
         </main>
         <Footer />
         <ScrollMark />
         <DotCursor />
+        <PageChange />
       </body>
     </html>
   );
