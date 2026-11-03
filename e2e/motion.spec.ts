@@ -410,8 +410,12 @@ test.describe("the home page in motion", () => {
     const dot = page.locator(".dot-cursor");
     await expect(root).not.toHaveAttribute("data-pointer");
     await expect(page.locator("body")).toHaveCSS("cursor", "auto");
-    await page.mouse.move(300, 300);
-    await expect(root).toHaveAttribute("data-pointer");
+    // The page listens once it has woken up: a move before that is lost, as it is for a reader.
+    await expect(async () => {
+      await page.mouse.move(299, 300);
+      await page.mouse.move(300, 300);
+      await expect(root).toHaveAttribute("data-pointer", { timeout: 250 });
+    }).toPass();
     await expect(page.locator("body")).toHaveCSS("cursor", "none");
     await expect(dot).toHaveCSS("transform", "matrix(1, 0, 0, 1, 300, 300)");
     await page.locator("[data-capsule]").getByRole("link", { name: "Написать" }).hover();
@@ -980,15 +984,19 @@ test.describe("the home page in motion", () => {
 
   test("keeps every picture of the page from being dragged away", async ({ page }) => {
     await page.goto(HOME);
-    const refused = await page
-      .locator("main img")
-      .first()
-      .evaluate((image) => {
-        const drag = new DragEvent("dragstart", { bubbles: true, cancelable: true });
-        image.dispatchEvent(drag);
-        return drag.defaultPrevented;
-      });
-    expect(refused).toBe(true);
+    // The refusal is the page's own listener, there once the page has woken up.
+    await expect
+      .poll(() =>
+        page
+          .locator("main img")
+          .first()
+          .evaluate((image) => {
+            const drag = new DragEvent("dragstart", { bubbles: true, cancelable: true });
+            image.dispatchEvent(drag);
+            return drag.defaultPrevented;
+          }),
+      )
+      .toBe(true);
   });
 
   test("steps through a chapter downward, one stop at a time", async ({ page }) => {
