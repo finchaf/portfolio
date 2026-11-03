@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import { COMMAND } from "./facts";
+import { COMMAND } from "@/lib/project-facts";
 
 /** Milliseconds a step of the release stays lit in the replay. */
 const STEP = 460;

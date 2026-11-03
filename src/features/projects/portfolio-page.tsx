@@ -1,3 +1,4 @@
+import "@/ui/board/board.css";
 import "./projects.css";
 import "./portfolio.css";
 
@@ -13,11 +14,11 @@ import { DemoLens } from "./demo-lens";
 import { DemoRelease } from "./demo-release";
 import { DemoSlash } from "./demo-slash";
 import { DemoThemes } from "./demo-themes";
-import { BUDGET, COMMITS_BY_DAY, FACTS, GATES, JOURNAL, RELEASES } from "./facts";
+import { BUDGET, COMMITS_BY_DAY, FACTS, GATES, JOURNAL, RELEASES } from "@/lib/project-facts";
 import { SECTIONS, type SectionId } from "./portfolio-sections";
 import { ProjectFacts } from "./project-parts";
 import { ProjectShell } from "./project-shell";
-import { Shot } from "./shot";
+import { Shot } from "@/ui/board/shot";
 
 const FINDINGS = [
   ["found1", "664494f"],

@@ -1,0 +1,225 @@
+/*
+ * The board: the sections of the projects and the frames on them, as the Projects page lays them out
+ * and as the home page's chapter flies over them. The page's editor and the chapter's camera dress
+ * these from their own sheets. The two colours of the projects are the tiles of the link picture,
+ * the same in both modes, as they are there.
+ */
+
+/* A passed check and a reference, deep enough for small type on the surface in both modes: on the
+   board, on the pages of the projects, and on the frames wherever they are shown. */
+.pj-board,
+.pj-sub,
+.pj-sec {
+  --passed: color-mix(in srgb, var(--success) 30%, var(--ink));
+  --failed: color-mix(in srgb, var(--danger) 55%, var(--ink));
+  --ref: color-mix(in srgb, var(--accent-strong) 55%, var(--ink));
+}
+
+[data-color="pink"] {
+  --project: var(--tile-pink);
+}
+
+[data-color="teal"] {
+  --project: var(--tile-teal);
+}
+
+/* The frames of the site come in both modes, and only the reader's is shown or fetched. */
+:root[data-theme="dark"] .pj-only-light,
+:root[data-theme="light"] .pj-only-dark {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .pj-only-light {
+    display: none;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .pj-only-dark {
+    display: none;
+  }
+}
+
+/*
+ * A mode for a piece of a page. It has to be a rule: the build turns `light-dark()` into variables
+ * that only a `color-scheme` in a stylesheet sets, so an inline style would change nothing.
+ */
+.pj-scheme-light {
+  color-scheme: light;
+}
+
+.pj-scheme-dark {
+  color-scheme: dark;
+}
+
+.pj-chip {
+  display: inline-block;
+  padding: 0.5rem 0.75rem;
+  border-radius: 999px;
+  background: var(--project);
+  color: var(--on-tile);
+  font: 700 0.8125rem/1 var(--mono);
+  white-space: nowrap;
+}
+
+.pj-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4375rem;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.pj-state::before {
+  content: "";
+  width: 0.4375rem;
+  height: 0.4375rem;
+  border-radius: 50%;
+  background: var(--project);
+}
+
+.pj-sec {
+  position: relative;
+  aspect-ratio: var(--section-ratio);
+  margin-top: 2.5rem;
+  border-radius: 1.375rem;
+  background: color-mix(in srgb, var(--project) 16%, var(--page));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--project) 42%, transparent);
+}
+
+.pj-sec-label {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  margin-bottom: 0.5rem;
+}
+
+.pj-frame {
+  position: absolute;
+  display: block;
+  container-type: inline-size;
+}
+
+.pj-frame-name {
+  display: none;
+}
+
+.pj-frame-body {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 0.25rem;
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+.pj-frame-body img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0;
+}
+
+.pj-frame[data-kind="lines"] .pj-frame-body {
+  background: var(--page);
+}
+
+.pj-frame[data-kind="phone"] .pj-frame-body {
+  border-radius: 0.75rem;
+}
+
+.pj-frame[data-kind="paper"] .pj-frame-body {
+  border-radius: 0;
+  background: var(--pdf);
+}
+
+/* What lies in a frame is set in shares of the frame, so it scales with it. */
+.pj-tiles {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  width: 100%;
+  height: 100%;
+}
+
+.pj-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4cqw;
+  padding: 2.4cqw;
+  background: var(--page);
+  color: var(--ink);
+}
+
+.pj-tile b {
+  font: 600 2.6cqw/1.1 var(--sans);
+}
+
+.pj-tile-dots {
+  display: flex;
+  gap: 0.8cqw;
+}
+
+.pj-tile-dots i {
+  width: 1.8cqw;
+  height: 1.8cqw;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+.pj-tile em {
+  width: 60%;
+  height: 3.4cqw;
+  margin-top: auto;
+  border-radius: 1cqw;
+}
+
+.pj-lines {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 5cqw 6cqw;
+  overflow: hidden;
+  font: 500 4.4cqw/1.5 var(--mono);
+  /* What is typed shows as typed: the face would join <= and >> into one sign. After `font`,
+     which resets it. */
+  font-variant-ligatures: none;
+}
+
+.pj-frame[data-frame="release"] .pj-lines,
+.pj-frame[data-frame="journal"] .pj-lines {
+  font-size: 5.4cqw;
+}
+
+.pj-lines b {
+  margin-bottom: 1.5cqw;
+  color: var(--accent-strong);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.pj-lines > span {
+  display: flex;
+  justify-content: space-between;
+  gap: 2cqw;
+  white-space: nowrap;
+}
+
+.pj-lines > span > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pj-lines em {
+  color: var(--passed);
+  font-style: normal;
+}
+
+.pj-lines em[data-failed] {
+  color: var(--failed);
+}

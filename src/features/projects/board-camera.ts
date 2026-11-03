@@ -1,4 +1,4 @@
-import { FRAMES, SECTION } from "./board-layout";
+import { FRAMES, SECTION } from "@/ui/board/board-layout";
 
 interface Options {
   open: (href: string) => void;

@@ -1,7 +1,7 @@
+import "@/ui/board/board.css";
 import "./projects.css";
 
 import { Minus, Plus } from "lucide-react";
-import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { Fragment, type ReactNode } from "react";
 
@@ -11,29 +11,10 @@ import { ButtonLink } from "@/ui/button-link";
 import { World } from "@/ui/world";
 
 import { BoardEngine } from "./board-engine";
-import { GateLines, JournalLines, ReleaseLines, ThemeTiles } from "./board-frames";
-import { frameBox, PROJECTS, type ProjectId } from "./board-layout";
-import { SnippetLines, VerdictLines } from "./latex-frames";
-import { THESIS_URL } from "./latex-facts";
-import { Paper } from "./paper";
+import { PROJECTS, type ProjectId } from "@/ui/board/board-layout";
+import { BoardSections } from "@/ui/board/board-sections";
+import { THESIS_URL } from "@/lib/latex-facts";
 import { LatexFacts, ProjectFacts } from "./project-parts";
-import { Shot } from "./shot";
-
-const OBJECTS: Record<string, ReactNode> = {
-  home: <Shot name="home" sizes="(min-width: 64rem) 30vw, 60vw" />,
-  phone: <Shot name="phoneFlow" sizes="(min-width: 64rem) 12vw, 25vw" />,
-  themes: <ThemeTiles />,
-  release: <ReleaseLines />,
-  gates: <GateLines />,
-  flow: <Shot name="flow" sizes="(min-width: 64rem) 18vw, 40vw" />,
-  journal: <JournalLines />,
-  notes: <Paper name="notes-calculus" sizes="(min-width: 64rem) 18vw, 40vw" />,
-  snippets: <SnippetLines />,
-  thesis: <Paper name="thesis-69" sizes="(min-width: 64rem) 10vw, 22vw" />,
-  document: <Paper name="doc-cover" sizes="(min-width: 64rem) 10vw, 22vw" />,
-  wall: <Paper name="wall-v2026.06.10" sizes="(min-width: 64rem) 18vw, 40vw" />,
-  verify: <VerdictLines />,
-};
 
 const FACTS: Record<ProjectId, ReactNode> = {
   portfolio: <ProjectFacts />,
@@ -85,48 +66,7 @@ export function ProjectsPage() {
 
         <div aria-label={t("canvas")} className="pj-board-canvas" data-canvas role="group">
           <div className="pj-board-world" data-camera>
-            {PROJECTS.map((project, index) => {
-              const page = localizedPath(locale, project.path);
-              return (
-                <section
-                  aria-labelledby={`sec-${project.id}`}
-                  className="pj-sec"
-                  data-color={project.color}
-                  data-sec={project.id}
-                  key={project.id}
-                  style={{ order: index * 2 + 1 }}
-                >
-                  <h2 className="pj-sec-label" id={`sec-${project.id}`}>
-                    <Link
-                      className="pj-chip"
-                      data-color={project.color}
-                      data-open={project.id}
-                      href={page}
-                    >
-                      {t(`${project.id}.chip`)}
-                    </Link>
-                  </h2>
-                  {project.frames.map((frame) => (
-                    <Link
-                      aria-label={t(`frames.${frame.key}.name` as never)}
-                      className="pj-frame"
-                      data-frame={frame.key}
-                      data-kind={frame.kind}
-                      draggable={false}
-                      href={`${page}#${frame.section}`}
-                      key={frame.key}
-                      style={frameBox(frame)}
-                    >
-                      <span aria-hidden className="pj-frame-name">
-                        {t(`frames.${frame.key}.name` as never)}
-                      </span>
-                      <span className="pj-frame-body">{OBJECTS[frame.key]}</span>
-                      <i aria-hidden className="pj-frame-handles" data-js-only />
-                    </Link>
-                  ))}
-                </section>
-              );
-            })}
+            <BoardSections ids="sec" ordered />
           </div>
         </div>
 

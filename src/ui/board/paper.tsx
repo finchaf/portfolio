@@ -1,3 +1,5 @@
+import "./board.css";
+
 import Image, { type StaticImageData } from "next/image";
 
 import docCoverDark from "./paper/doc-cover-dark.webp";

@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
 
-import { FACTS } from "./facts";
-import { LATEX } from "./latex-facts";
+import { FACTS } from "@/lib/project-facts";
+import { LATEX } from "@/lib/latex-facts";
 
 /** What is true of the project as a whole: on the board's panel and on the project's page. */
 export function ProjectFacts() {

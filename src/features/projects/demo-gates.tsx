@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import { COMMAND, GATES } from "./facts";
+import { COMMAND, GATES } from "@/lib/project-facts";
 
 /** How long the replay takes, in milliseconds: the real run's shares, a fraction of its length. */
 const REPLAY = 3200;

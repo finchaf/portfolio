@@ -1,3 +1,4 @@
+import "@/ui/board/board.css";
 import "./projects.css";
 import "./portfolio.css";
 import "./latex.css";
@@ -12,9 +13,16 @@ import { DemoPages } from "./demo-pages";
 import { DemoThesis, type SourceBlock } from "./demo-thesis";
 import { DemoTyping } from "./demo-typing";
 import { DemoWalls } from "./demo-walls";
-import { LATEX, SOURCES, THESIS_PDF, THESIS_RELEASES, THESIS_URL, thesisFile } from "./latex-facts";
-import { VERDICTS } from "./latex-frames";
-import { Paper, PAPER, type PaperName } from "./paper";
+import {
+  LATEX,
+  SOURCES,
+  THESIS_PDF,
+  THESIS_RELEASES,
+  THESIS_URL,
+  thesisFile,
+} from "@/lib/latex-facts";
+import { VERDICTS } from "@/ui/board/latex-frames";
+import { Paper, PAPER, type PaperName } from "@/ui/board/paper";
 import { LatexFacts } from "./project-parts";
 import { ProjectShell, type Ref } from "./project-shell";
 import { TYPING_STEPS, TypingRenders } from "./typing-line";

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { LATEX, THESIS_RELEASES } from "./latex-facts";
+import { LATEX, THESIS_RELEASES } from "@/lib/latex-facts";
 import TYPING from "./latex-typing.json";
 
 describe("the numbers of the LaTeX project", () => {

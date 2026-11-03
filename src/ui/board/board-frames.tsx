@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
 
-import { COMMAND, GATES, JOURNAL, RELEASES } from "./facts";
+import { COMMAND, GATES, JOURNAL, RELEASES } from "@/lib/project-facts";
 
 const THEMES = ["home", "pora", "flow", "projects"] as const;
 const MODES = ["light", "dark"] as const;

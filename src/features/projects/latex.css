@@ -662,8 +662,7 @@
   font-weight: 700;
 }
 
-.pj-tx-checks b[data-failed],
-.pj-lines em[data-failed] {
+.pj-tx-checks b[data-failed] {
   color: var(--failed);
 }
 

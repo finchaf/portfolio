@@ -1,3 +1,5 @@
+import "./board.css";
+
 import Image, { type StaticImageData } from "next/image";
 
 import flowDark from "./shots/flow-dark.webp";
