@@ -25,7 +25,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
 import { LOCALES, type Locale } from "../../src/i18n/locales.ts";
-import { PAGE_PATHS, PAGES } from "../../src/lib/pages.ts";
+import { EVERY_PAGE, EVERY_PATH } from "../../src/lib/pages.ts";
 import { flowGraph, flowGraphSource } from "./flow-graph.ts";
 
 const read = (path: string) => readFileSync(fileURLToPath(new URL(path, import.meta.url)));
@@ -43,7 +43,7 @@ const LESSON_START = "09:00";
 export const SIZE = { width: 1200, height: 630 };
 
 export const CARDS = LOCALES.flatMap((locale) =>
-  Object.values(PAGES).map((card) => ({ locale, card, key: `${locale}/${card}` })),
+  Object.values(EVERY_PAGE).map((card) => ({ locale, card, key: `${locale}/${card}` })),
 );
 
 type Card = (typeof CARDS)[number]["card"];
@@ -56,8 +56,12 @@ function strings(locale: Locale) {
   const { work } = JSON.parse(text(`../../messages/${locale}/home.json`)) as {
     work: {
       pora: { week: { days: { mon: string }; lessons: { math: string } } };
-      projects: { site: { file: string }; thesis: { file: string } };
     };
+  };
+  // The folders are named as the board of Projects names them.
+  const projects = JSON.parse(text(`../../messages/${locale}/projects.json`)) as {
+    portfolio: { chip: string };
+    latex: { chip: string };
   };
   const { folders, card, transcript } = JSON.parse(text(`../../messages/${locale}/flow.json`)) as {
     folders: { process: string; quality: string };
@@ -86,8 +90,8 @@ function strings(locale: Locale) {
           ?.replace(/^✓ /, "") ?? "",
       asks: asks.trim().replace(/^\? /, ""),
     },
-    site: work.projects.site.file,
-    thesis: work.projects.thesis.file,
+    site: projects.portfolio.chip,
+    latex: projects.latex.chip,
   };
 }
 
@@ -100,7 +104,7 @@ function wordmark() {
 
 /** `\finchaf{flow}`: the logo is a command, and the argument is the page's own address. */
 function sign(card: Card) {
-  const argument = PAGE_PATHS.find((path) => PAGES[path] === card)?.slice(1);
+  const argument = EVERY_PATH.find((path) => EVERY_PAGE[path] === card)?.slice(1);
   return `<span class="sign">\\finchaf<i>{${argument ?? ""}}</i></span>`;
 }
 
@@ -168,14 +172,32 @@ const BODIES: Record<Card, (words: ReturnType<typeof strings>, graph: () => stri
 
   flow: (words, graph) => field("flow") + vaultWindow(words, graph),
 
-  projects: ({ site, thesis }) =>
+  projects: ({ site, latex }) =>
     zone(
       "projects",
       `<i class="band band-danger"></i><i class="band band-peach"></i><i class="band band-warning"></i>
       <i class="band band-success"></i><i class="band band-blue"></i>
       ${sign("projects")}
       <span class="folder folder-site">${escape(site)}</span>
-      <span class="folder folder-thesis">${escape(thesis)}</span>`,
+      <span class="folder folder-latex">${escape(latex)}</span>`,
+    ),
+
+  portfolio: ({ site }) =>
+    zone(
+      "projects",
+      `<i class="band band-danger"></i><i class="band band-peach"></i><i class="band band-warning"></i>
+      <i class="band band-success"></i><i class="band band-blue"></i>
+      ${sign("portfolio")}
+      <span class="folder folder-only">${escape(site)}</span>`,
+    ),
+
+  latex: ({ latex }) =>
+    zone(
+      "projects",
+      `<i class="band band-danger"></i><i class="band band-peach"></i><i class="band band-warning"></i>
+      <i class="band band-success"></i><i class="band band-blue"></i>
+      ${sign("latex")}
+      <span class="folder folder-only folder-teal">${escape(latex)}</span>`,
     ),
 };
 

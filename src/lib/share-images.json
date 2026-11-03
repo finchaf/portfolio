@@ -1,13 +1,17 @@
 {
-  "input": "4fd0ad1e99461cd2",
+  "input": "cf37aa6f1b981037",
   "files": {
     "ru/home": "d7f13346",
     "ru/pora": "1daf8e4a",
     "ru/flow": "7e5f5890",
-    "ru/projects": "925667b7",
+    "ru/projects": "16b4c890",
+    "ru/portfolio": "2699f357",
+    "ru/latex": "64649c5d",
     "en/home": "d7f13346",
     "en/pora": "dda3cf98",
     "en/flow": "cf408135",
-    "en/projects": "925667b7"
+    "en/projects": "16b4c890",
+    "en/portfolio": "2699f357",
+    "en/latex": "64649c5d"
   }
 }

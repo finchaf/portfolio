@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { CARDS, digest } from "../../scripts/og/cards";
-import { PAGES } from "./pages";
+import { EVERY_PAGE } from "./pages";
 import { SHARE_IMAGE } from "./share-images";
 import images from "./share-images.json";
 
@@ -17,7 +17,7 @@ describe("the link pictures", () => {
   });
 
   it("cover every page in every language, and nothing else", () => {
-    expect(CARDS).toHaveLength(2 * Object.keys(PAGES).length);
+    expect(CARDS).toHaveLength(2 * Object.keys(EVERY_PAGE).length);
     expect(Object.keys(images.files).sort()).toEqual(CARDS.map(({ key }) => key).sort());
   });
 

@@ -1,0 +1,884 @@
+/*
+ * A project's page: the board's panels stay at the sides, and the frames are read in a column on
+ * the same dotted canvas. A phone gets the column alone, with the files under each section.
+ */
+.pj-sub {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2.5rem;
+  padding: 1.25rem 1rem calc(var(--dock) + 1.5rem);
+}
+
+.pj-sub-left,
+.pj-sub-right {
+  display: none;
+}
+
+.pj-sub-column {
+  display: grid;
+  gap: 2.75rem;
+  grid-template-columns: minmax(0, 1fr);
+  width: 100%;
+  max-width: 52rem;
+  margin-inline: auto;
+}
+
+.pj-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+@media (hover: hover) {
+  .pj-back:hover {
+    color: var(--ink);
+  }
+}
+
+.pj-sub-head {
+  display: grid;
+  justify-items: start;
+  gap: 0.75rem;
+  scroll-margin-top: 5rem;
+}
+
+.pj-sub-head h1 {
+  font: 600 clamp(2.5rem, 5vw, 4.25rem)/1.03 var(--display);
+  letter-spacing: -0.03em;
+}
+
+.pj-sub-lead {
+  max-width: 38em;
+  color: var(--muted);
+  font-size: clamp(1.0625rem, 1.5vw, 1.3125rem);
+  line-height: 1.42;
+}
+
+.pj-brief {
+  display: grid;
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  box-shadow: 0 -1px 0 var(--line);
+}
+
+.pj-brief div {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr);
+  gap: 0.75rem;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.pj-brief dt {
+  color: var(--muted);
+}
+
+.pj-sub-narrow {
+  display: grid;
+  gap: 0.875rem;
+  width: 100%;
+}
+
+.pj-sub-frame {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.25rem;
+  padding: 1.125rem;
+  border-radius: 0.75rem;
+  background: var(--surface);
+  scroll-margin-top: 5.5rem;
+  transition: box-shadow var(--duration-quick) var(--ease-out);
+}
+
+.pj-sub-frame-name {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  margin-bottom: 0.375rem;
+  color: var(--muted);
+  font: 500 0.75rem/1 var(--mono);
+}
+
+.pj-sub-text h2 {
+  font: 600 clamp(1.5rem, 2.4vw, 2rem)/1.14 var(--display);
+  letter-spacing: -0.02em;
+}
+
+.pj-sub-text p {
+  max-width: 38em;
+  margin-top: 0.625rem;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.pj-sub-text code {
+  padding: 0.05em 0.3em;
+  border-radius: 0.25em;
+  background: var(--raised);
+  color: var(--ink);
+  font: 500 0.88em var(--mono);
+  overflow-wrap: anywhere;
+}
+
+.pj-sub-demo {
+  display: grid;
+  gap: 0.875rem;
+  min-width: 0;
+}
+
+.pj-sub-refs {
+  display: grid;
+  gap: 0.5rem;
+  padding-top: 0.75rem;
+  box-shadow: 0 -1px 0 var(--line);
+}
+
+.pj-sub-refs > p {
+  color: var(--muted);
+  font: 600 0.75rem/1 var(--mono);
+}
+
+.pj-refs {
+  display: grid;
+  gap: 0.25rem;
+  font: 500 0.75rem/1.35 var(--mono);
+}
+
+.pj-refs a {
+  color: var(--ref);
+  overflow-wrap: anywhere;
+  text-underline-offset: 0.2em;
+}
+
+@media (hover: hover) {
+  .pj-refs a:hover {
+    text-decoration: underline;
+  }
+}
+
+/* Shared parts of the demonstrations */
+
+.pj-seg {
+  display: inline-flex;
+  gap: 0.25rem;
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.pj-seg button {
+  padding: 0.5rem 0.75rem;
+  border-radius: 999px;
+  background: var(--raised);
+  color: var(--ink);
+  font: 500 0.8125rem/1 var(--mono);
+  white-space: nowrap;
+}
+
+.pj-seg [aria-pressed="true"] {
+  background: var(--accent-strong);
+  color: var(--on-accent);
+  font-weight: 700;
+}
+
+.pj-mini {
+  padding: 0.5rem 0.75rem;
+  border-radius: 999px;
+  background: var(--raised);
+  color: var(--ink);
+  font: 500 0.8125rem/1 var(--mono);
+}
+
+.pj-mini:disabled {
+  opacity: 0.5;
+}
+
+@media (hover: hover) {
+  .pj-mini:not(:disabled):hover {
+    color: var(--ink);
+  }
+}
+
+.pj-demo-note {
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+.pj-term {
+  position: relative;
+  padding: 0.875rem;
+  border-radius: 0.5rem;
+  background: var(--crust);
+  font: 500 0.8125rem/1.62 var(--mono);
+}
+
+.pj-term p {
+  display: flex;
+  gap: 0.75rem;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.pj-term p > span:first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pj-term em {
+  color: var(--passed);
+  font-style: normal;
+}
+
+.pj-term-command {
+  margin-bottom: 0.5rem;
+  color: var(--ref);
+}
+
+.pj-term-command::before {
+  content: "$ " / "";
+  color: var(--muted);
+}
+
+.pj-term-sum {
+  margin-top: 0.5rem;
+  color: var(--passed);
+  font-weight: 600;
+}
+
+.pj-gates-demo [data-waiting] {
+  opacity: 0.14;
+}
+
+.pj-gates-demo .pj-mini {
+  margin-top: 0.625rem;
+}
+
+/* The line under a terminal, as lualine draws it: the mode, the branch, and who is keeping watch. */
+.pj-term p.pj-status {
+  display: flex;
+  gap: 0;
+  margin: 0.875rem -0.875rem -0.875rem;
+  overflow: hidden;
+  border-radius: 0 0 0.5rem 0.5rem;
+  background: var(--raised);
+  font-weight: 700;
+}
+
+.pj-status span {
+  flex: none !important;
+  font-variant-ligatures: none;
+  padding: 0.125rem 0.75rem;
+}
+
+.pj-status span:first-child {
+  background: var(--accent-strong);
+  color: var(--on-accent);
+}
+
+.pj-status span:last-child {
+  margin-left: auto;
+  color: var(--ink);
+}
+
+/* Form */
+
+.pj-form-shots {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  padding-right: 14%;
+}
+
+.pj-form-wide img,
+.pj-form-phone img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.pj-form-wide {
+  display: block;
+  overflow: hidden;
+  border-radius: 0.375rem;
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+.pj-form-phone {
+  position: absolute;
+  right: 0;
+  bottom: -1.5rem;
+  display: block;
+  width: 25%;
+  overflow: hidden;
+  border-radius: 0.875rem;
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+.pj-sub-frame[data-step="form"] .pj-sub-refs {
+  margin-top: 1.5rem;
+}
+
+/* Themes */
+
+.pj-themes-demo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.625rem;
+}
+
+.pj-themes-sample {
+  display: grid;
+  justify-items: start;
+  gap: 0.625rem;
+  padding: 1.125rem;
+  border-radius: 0.75rem;
+  background: var(--crust);
+  color: var(--ink);
+  font-family: var(--sans);
+  transition:
+    background var(--duration-base) var(--ease-out),
+    color var(--duration-base) var(--ease-out);
+}
+
+.pj-themes-sample h3 {
+  font: 600 1.625rem/1.1 var(--display);
+  letter-spacing: -0.02em;
+}
+
+.pj-themes-sample p {
+  color: var(--muted);
+}
+
+.pj-themes-sample div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.625rem;
+  margin-top: 0.5rem;
+}
+
+.pj-themes-read {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.375rem;
+  font: 500 0.75rem/1.3 var(--mono);
+}
+
+.pj-themes-read div {
+  min-width: 0;
+  padding: 0.5rem 0.625rem;
+  overflow: hidden;
+  border-radius: 0.4375rem;
+  background: var(--crust);
+}
+
+.pj-themes-read dt {
+  color: var(--muted);
+}
+
+.pj-themes-read dd {
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Lens */
+
+.pj-lens-demo,
+.pj-slash-demo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: start;
+  gap: 0.625rem;
+}
+
+.pj-lens-frame,
+.pj-slash-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 8 / 5;
+  overflow: hidden;
+  border-radius: 0.375rem;
+  background: var(--page);
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+.pj-lens-frame {
+  touch-action: pan-y;
+}
+
+.pj-lens-layer,
+.pj-slash-page {
+  position: absolute;
+  inset: 0;
+}
+
+.pj-lens-layer img,
+.pj-slash-page img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0;
+}
+
+.pj-lens-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1.5px var(--accent-strong);
+  pointer-events: none;
+}
+
+.pj-lens-demo:not([data-view="lens"]) .pj-lens-ring {
+  display: none;
+}
+
+.pj-lens-demo[data-view="design"] .pj-lens-code {
+  display: none;
+}
+
+/* The page change, in the keyframes of the real one, in shares of this frame */
+
+.pj-slash-under {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.pj-slash-new {
+  background: var(--page);
+}
+
+.pj-slash-lead {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: var(--accent-strong);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pj-slash-demo[data-way="after"] .pj-slash-new {
+    animation: slash-in var(--duration-page) var(--ease-in-out) both;
+  }
+
+  .pj-slash-demo[data-way="after"] .pj-slash-lead {
+    opacity: 1;
+    animation: slash-lead var(--duration-page) var(--ease-in-out) both;
+  }
+
+  .pj-slash-demo[data-way="before"] .pj-slash-new {
+    animation: slash-squeeze var(--duration-page) var(--ease-in-out) both;
+    transform-origin: 50% 0;
+  }
+}
+
+@keyframes slash-in {
+  from {
+    clip-path: polygon(0 0, -23% 0, -7% 100%, 0 100%);
+  }
+
+  to {
+    clip-path: polygon(0 0, 107% 0, 136% 100%, 0 100%);
+  }
+}
+
+@keyframes slash-lead {
+  from {
+    clip-path: polygon(-30% 0, -23% 0, 0 100%, -7% 100%);
+  }
+
+  to {
+    clip-path: polygon(107% 0, 114% 0, 143% 100%, 136% 100%);
+  }
+}
+
+/* 34 678 px of the document in the 900 px of the screen. */
+@keyframes slash-squeeze {
+  from {
+    transform: scaleY(38.5);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* Budget and findings */
+
+.pj-budget {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.875rem;
+  border-radius: 0.75rem;
+  background: var(--crust);
+  font-size: 0.8125rem;
+}
+
+.pj-budget figcaption {
+  color: var(--muted);
+}
+
+.pj-budget div {
+  display: grid;
+  grid-template-columns: minmax(0, 8rem) minmax(0, 1fr) auto;
+  gap: 0.625rem;
+  align-items: center;
+}
+
+.pj-budget i {
+  position: relative;
+  height: 0.5rem;
+  overflow: hidden;
+  border-radius: 0.25rem;
+  background: var(--raised);
+}
+
+.pj-budget i::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--share);
+  background: var(--tile-pink);
+}
+
+.pj-budget b {
+  font: 500 0.8125rem/1 var(--mono);
+}
+
+.pj-budget p {
+  color: var(--muted);
+  text-align: right;
+}
+
+.pj-found-title {
+  margin-top: 0.5rem;
+  font: 600 1.125rem/1.2 var(--display);
+}
+
+.pj-found {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.pj-found li {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: baseline;
+}
+
+.pj-found a {
+  color: var(--ref);
+  font: 500 0.8125rem/1 var(--mono);
+  text-underline-offset: 0.2em;
+}
+
+.pj-found p {
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+/* The log */
+
+.pj-journal li a {
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  gap: 0.625rem;
+  align-items: baseline;
+  padding: 0.5rem 0.25rem;
+  box-shadow: 0 1px 0 var(--line);
+}
+
+.pj-journal b {
+  color: var(--ref);
+  font: 500 0.8125rem/1 var(--mono);
+}
+
+@media (hover: hover) {
+  .pj-journal a:hover span {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+}
+
+/* The release */
+
+.pj-release {
+  display: grid;
+  gap: 0.875rem;
+}
+
+.pj-release-demo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.875rem;
+}
+
+.pj-release-steps {
+  display: grid;
+  gap: 2px;
+  counter-reset: step;
+}
+
+.pj-release-steps li {
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr);
+  gap: 0.5rem;
+  padding: 0.5rem 0.625rem;
+  border-radius: 0.5rem;
+  background: var(--crust);
+  counter-increment: step;
+  font-size: 0.875rem;
+  line-height: 1.35;
+  transition: background var(--duration-quick) var(--ease-out);
+}
+
+.pj-release-steps li::before {
+  content: counter(step);
+  color: var(--muted);
+  font: 500 0.8125rem/1.4 var(--mono);
+}
+
+.pj-release-steps [data-on] {
+  background: var(--raised);
+}
+
+.pj-release-folders [data-live] {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.pj-release-folders p:not([data-live]):not(.pj-term-command) {
+  color: var(--muted);
+}
+
+.pj-release-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.pj-days {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.875rem;
+  border-radius: 0.75rem;
+  background: var(--crust);
+}
+
+.pj-days figcaption {
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
+.pj-days div {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+  height: 9rem;
+  font-family: var(--mono);
+  text-align: center;
+}
+
+.pj-days span {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  min-height: 0;
+}
+
+.pj-days i {
+  height: calc(var(--share) * 0.72);
+  min-height: 3px;
+  border-radius: 3px 3px 0 0;
+  background: var(--tile-pink);
+}
+
+.pj-days b {
+  font-size: 0.9375rem;
+}
+
+.pj-days em {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-style: normal;
+}
+
+.pj-stage-list {
+  display: grid;
+  gap: 0.5rem;
+  line-height: 1.5;
+}
+
+.pj-stage-list li {
+  padding-left: 1rem;
+  background: linear-gradient(var(--tile-pink), var(--tile-pink)) 0 0.6em / 0.4375rem 0.4375rem
+    no-repeat;
+}
+
+/* The wide layout */
+
+@media (min-width: 64rem) {
+  :root:has([data-subpage]) body {
+    --left: 15.75rem;
+    --right: 17.25rem;
+  }
+
+  .pj-sub {
+    grid-template-columns: var(--left) minmax(0, 1fr) var(--right);
+    gap: 2rem;
+    align-items: start;
+    min-height: 100svh;
+    padding: 4.75rem 1rem 1rem;
+    background-color: var(--page);
+    background-image: radial-gradient(
+      color-mix(in srgb, var(--ink) 16%, transparent) 1px,
+      transparent 1px
+    );
+    background-size: 1.5rem 1.5rem;
+  }
+
+  .pj-sub-left,
+  .pj-sub-right {
+    position: sticky;
+    top: 4.75rem;
+    display: flex;
+    max-height: calc(100svh - 5.75rem);
+    overflow: auto;
+    scrollbar-width: none;
+  }
+
+  .pj-sub-column {
+    gap: 3.5rem;
+    padding: 0.75rem 0 4rem;
+  }
+
+  .pj-sub-narrow {
+    display: none;
+  }
+
+  .pj-sub-frame {
+    gap: 1.25rem;
+    padding: 1.75rem;
+  }
+
+  .pj-sub-frame[data-active] {
+    box-shadow: inset 0 0 0 1.5px var(--accent-strong);
+  }
+
+  .pj-sub-frame[data-active] .pj-sub-frame-name {
+    color: var(--accent-strong);
+  }
+
+  .pj-sub-text p {
+    font-size: 1.0625rem;
+  }
+
+  :root[data-js] .pj-sub-refs {
+    display: none;
+  }
+
+  .pj-themes-demo {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+  }
+
+  .pj-themes-demo .pj-seg:nth-of-type(2) {
+    justify-self: end;
+  }
+
+  .pj-themes-sample,
+  .pj-themes-read {
+    grid-column: 1 / -1;
+  }
+
+  .pj-themes-sample {
+    padding: 1.875rem;
+  }
+
+  .pj-themes-sample h3 {
+    font-size: 2.125rem;
+  }
+
+  /* Three pairs over four values. */
+  .pj-themes-read {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+
+  .pj-themes-read div {
+    grid-column: span 3;
+  }
+
+  .pj-themes-read div:nth-child(-n + 3) {
+    grid-column: span 4;
+  }
+
+  .pj-release-demo {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+@media (min-width: 64rem) and (max-width: 82.5rem) {
+  :root:has([data-subpage]) body {
+    --left: 12.25rem;
+    --right: 14.5rem;
+  }
+}
+
+/* Arriving from the board: the page rises in under the camera's end. */
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-arrive] .pj-sub-head,
+  [data-arrive] .pj-sub-frame {
+    animation: sub-rise var(--duration-slow) var(--ease-out) both;
+  }
+
+  [data-arrive] .pj-sub-left {
+    animation: sub-left var(--duration-slow) var(--ease-out) both;
+  }
+
+  [data-arrive] .pj-sub-right {
+    animation: sub-right var(--duration-slow) var(--ease-out) both;
+  }
+}
+
+@keyframes sub-rise {
+  from {
+    opacity: 0;
+    translate: 0 1.625rem;
+  }
+}
+
+@keyframes sub-left {
+  from {
+    opacity: 0;
+    translate: -2.5rem 0;
+  }
+}
+
+@keyframes sub-right {
+  from {
+    opacity: 0;
+    translate: 2.5rem 0;
+  }
+}

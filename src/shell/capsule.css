@@ -1,12 +1,29 @@
 /*
  * The capsule. At the top of a page its items lie on the page; once the page moves, its surface
  * closes in around them and they draw together. Without a script the surface is simply there.
+ *
+ * Every page shows it in another typeface, and it is one object, so its geometry owes nothing to
+ * any of them. A cell is as wide as its letters in the mono of the home page, the widest of the
+ * themes: JetBrains Mono's advance is exactly 0.6 em, so the width is arithmetic, needs no font to
+ * have loaded, and is the same on every page and in every chapter that lends the capsule a theme.
  */
+[data-capsule] {
+  --capsule-pad: 0.625rem;
+  --capsule-advance: calc(0.6 * 0.8125rem);
+}
+
+/* The narrowest phones: the cells give up their margins before the list has to scroll. */
+@media (max-width: 23.5rem) {
+  [data-capsule] {
+    --capsule-pad: 0.3125rem;
+  }
+}
+
 .capsule-link {
   display: grid;
   place-items: center;
   height: 2rem;
-  padding-inline: 0.625rem;
+  padding-inline: var(--capsule-pad);
   border-radius: var(--control-radius);
   font-family: var(--control-face);
   font-size: calc(var(--control-text-small) * 1rem);
@@ -14,9 +31,23 @@
   white-space: nowrap;
 }
 
-.capsule-link[aria-current="page"] {
+.capsule-link[style] {
+  width: calc(var(--chars) * var(--capsule-advance) + 2 * var(--capsule-pad));
+}
+
+[data-capsule] .capsule-link[aria-current] {
   background: var(--control-current);
   box-shadow: var(--control-current-line);
+  color: var(--control-current-ink, var(--ink));
+}
+
+/* The logo is a chosen cell too: on a skin that fills the cell, it takes the same ink as a word. */
+[data-capsule] .capsule-link[aria-current] .fill-ink {
+  fill: var(--control-current-ink, var(--ink));
+}
+
+[data-capsule] .capsule-link[aria-current] .fill-accent {
+  fill: var(--control-current-ink, var(--accent));
 }
 
 .capsule-write {
@@ -28,8 +59,8 @@
 }
 
 .capsule-action {
-  background: var(--control-fill);
-  color: var(--on-control);
+  background: var(--capsule-narrow, var(--control-fill));
+  color: var(--capsule-narrow-ink, var(--on-control));
   transition: translate var(--duration-quick) var(--ease-out);
 }
 
@@ -77,9 +108,11 @@
   gap: var(--capsule-gap);
 }
 
+/* Centred on the window, not the page: a scrollbar comes and goes between pages, the window stays. */
 [data-capsule] {
   --capsule-gap: 0.125rem;
   --capsule-away: 200%;
+  left: 50vw;
   transition-duration: var(--duration-slow), var(--duration-base), var(--duration-base);
   transition-property: color, opacity, translate;
 }
@@ -106,8 +139,37 @@
     --capsule-away: -200%;
   }
 
-  .capsule-link {
-    padding-inline: 0.75rem;
+  [data-capsule] {
+    --capsule-pad: 0.75rem;
+  }
+
+  /* Two signs of the skin around the word, however a theme uses them. */
+  [data-capsule] .capsule-write {
+    width: calc((var(--write-chars) + 4) * var(--capsule-advance) + 1.75rem);
+    text-align: center;
+  }
+
+  .capsule-action {
+    background: var(--control-fill);
+    color: var(--on-control);
+  }
+
+  /* A skin with a cap: the word moves over, and the cell stays the size it is in every theme. */
+  .capsule-action {
+    position: relative;
+    overflow: var(--control-clip, visible);
+    padding-left: calc(1.25rem * var(--control-cap-room, 0) + 0.875rem);
+  }
+
+  .capsule-action::before {
+    content: var(--capsule-cap, none) / "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    display: grid;
+    place-items: center;
+    width: 1.625rem;
+    background: var(--control-cap);
+    color: var(--control-mark);
   }
 
   :root[data-js]:not([data-scrolled]) [data-capsule] {
@@ -218,6 +280,22 @@
 
 [data-capsule][data-lens]:has(:focus-visible) .capsule-code {
   display: none;
+}
+
+/*
+ * A page that moves under the capsule, or lets the reader move things under it, holds the capsule
+ * open with its surface on, scrolled or not. So does each page inside it: between them it stands
+ * still. On a phone the text of such a page runs under the capsule.
+ */
+:root[data-js]:has([data-capsule-held]):not([data-scrolled]) .capsule-surface {
+  opacity: 1;
+  scale: 1;
+}
+
+@media (min-width: 64rem) {
+  :root:has([data-capsule-held]) [data-capsule] {
+    --capsule-gap: 1rem;
+  }
 }
 
 /*

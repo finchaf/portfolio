@@ -66,13 +66,17 @@
   }
 }
 
+/*
+ * The capsule passes from one skin to the next as the slash crosses it. The two overlap only for
+ * a moment and with no gap: the same words in two typefaces would read as a double image.
+ */
 @keyframes page-capsule-off {
   0%,
-  49.9% {
+  50% {
     opacity: 1;
   }
 
-  50%,
+  60%,
   100% {
     opacity: 0;
   }
@@ -80,11 +84,11 @@
 
 @keyframes page-capsule-on {
   0%,
-  49.9% {
+  42% {
     opacity: 0;
   }
 
-  50%,
+  52%,
   100% {
     opacity: 1;
   }
@@ -200,6 +204,14 @@
     animation: page-lead-in var(--duration-page) var(--ease-in-out) both;
   }
 
+  /* A picture keeps its own size and stands in the middle: stretched, its letters would swim. */
+  ::view-transition-old(capsule),
+  ::view-transition-new(capsule) {
+    block-size: 100%;
+    object-fit: none;
+    object-position: 50% 50%;
+  }
+
   ::view-transition-old(capsule) {
     animation: page-capsule-off var(--duration-page) linear both;
   }
@@ -231,4 +243,17 @@
   :root[data-page-back]::view-transition-new(page-lead) {
     animation-name: page-lead-back;
   }
+}
+
+/* A page that has moved its own camera swaps without the slash. */
+:root[data-page-quiet]::view-transition-group(*),
+:root[data-page-quiet]::view-transition-old(*),
+:root[data-page-quiet]::view-transition-new(*) {
+  animation: none !important;
+}
+
+/* The arriving page shows the capsule in its final state: nothing is left to play after the slash. */
+:root[data-page-change] [data-capsule],
+:root[data-page-change] [data-capsule] * {
+  transition: none !important;
 }

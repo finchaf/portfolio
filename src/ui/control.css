@@ -7,9 +7,15 @@
   border-radius: var(--control-radius);
 }
 
+/*
+ * A skin may put its mark in a cap at the start of the button: `--control-cap` is the cap's colour
+ * and `--control-cap-room` turns its size on. A number, because a variable on the root cannot read
+ * the size of the button it lands on.
+ */
 .control-button {
   display: inline-flex;
   align-items: center;
+  overflow: var(--control-clip, visible);
   border-radius: var(--control-radius);
   font-family: var(--control-face);
   font-size: calc(var(--control-text) * 1rem);
@@ -20,7 +26,15 @@
 
 .control-button::before {
   content: var(--control-open) / "";
+  display: inline-grid;
+  align-self: stretch;
+  place-items: center;
+  min-width: calc(var(--control-cap-size) * var(--control-cap-room, 0));
+  margin-right: calc(0.75rem * var(--control-cap-room, 0));
+  margin-left: calc(var(--control-pad) * -1 * var(--control-cap-room, 0));
+  background: var(--control-cap, transparent);
   color: var(--control-mark);
+  transition: min-width var(--duration-base) var(--ease-out);
 }
 
 .control-button::after {
@@ -36,6 +50,10 @@
 @media (hover: hover) {
   .control-button:hover {
     translate: 0 var(--control-hover);
+  }
+
+  .control-button:hover::before {
+    min-width: calc((var(--control-cap-size) + 0.5rem) * var(--control-cap-room, 0));
   }
 
   .control-button:hover::after {
@@ -60,20 +78,25 @@
 }
 
 .control-quiet {
-  --control-mark: var(--accent-strong);
+  --control-mark: var(--control-cap-quiet-ink, var(--accent-strong));
+  --control-cap: var(--control-cap-quiet, transparent);
   background: var(--control-well);
   box-shadow: var(--control-rules);
   color: var(--ink);
 }
 
 .control-regular {
+  --control-pad: 1rem;
+  --control-cap-size: 2rem;
   min-height: 2.75rem;
-  padding-inline: 1rem;
+  padding-inline: var(--control-pad);
 }
 
 .control-small {
+  --control-pad: 0.875rem;
+  --control-cap-size: 1.625rem;
   min-height: 2rem;
-  padding-inline: 0.875rem;
+  padding-inline: var(--control-pad);
   font-size: calc(var(--control-text-small) * 1rem);
 }
 
@@ -93,6 +116,6 @@
 
 @media (min-width: 64rem) {
   .control-regular {
-    padding-inline: 1.25rem;
+    --control-pad: 1.25rem;
   }
 }

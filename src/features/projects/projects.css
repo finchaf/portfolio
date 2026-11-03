@@ -1,0 +1,702 @@
+/*
+ * The editor: the board of the Projects page and the panels it shares with a project's page.
+ *
+ * Without the selector `:root[data-js]` and below the wide layout the board is a list: the same
+ * elements, in reading order, with each project's frames composed at full width. The two colours
+ * of the projects are the tiles of the link picture, the same in both modes, as they are there.
+ */
+/*
+ * The cat, in type and nowhere loud: it walks beside the chosen layer and lies in the status line.
+ * The three signs of ᓚᘏᗢ are in no face of the site, and a system
+ * without them would show boxes, so they are drawn: Noto Sans Canadian Aboriginal, SIL OFL 1.1.
+ */
+.pj-tree > [aria-current]::after {
+  content: "" / "";
+  flex: none;
+  width: 1.75rem;
+  height: 0.5rem;
+  margin-left: auto;
+  background: currentColor;
+  mask: var(--pj-cat) center / contain no-repeat;
+}
+
+/* A passed check and a reference, deep enough for small type on the surface in both modes. */
+.pj-board,
+.pj-sub {
+  --pj-cat: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 -726 2539 741'%3E%3Cpath d='M333 0Q264 0 213 -16Q162 -32 128 -64Q93 -95 76 -142Q59 -189 59 -252Q59 -308 77 -354Q95 -400 128 -432Q161 -465 208 -482Q254 -500 311 -500H410V-430H307Q256 -430 218 -407Q179 -384 158 -344Q137 -303 137 -250Q137 -188 160 -148Q182 -109 228 -90Q274 -71 344 -71H836V0Z M1333 -726Q1521 -726 1612 -634Q1702 -543 1702 -354V0H1624V-350Q1624 -508 1554 -582Q1483 -655 1333 -655Q1185 -655 1109 -576Q1033 -498 1033 -343Q1033 -59 1245 -59Q1331 -59 1377 -98Q1423 -138 1423 -214Q1423 -284 1390 -320Q1356 -357 1291 -357Q1262 -357 1232 -348Q1201 -338 1183 -323L1158 -391Q1178 -408 1216 -418Q1254 -429 1292 -429Q1390 -429 1446 -372Q1501 -314 1501 -213Q1502 -109 1434 -48Q1365 12 1246 12Q1101 12 1027 -78Q953 -168 953 -343Q953 -531 1050 -628Q1147 -726 1333 -726Z M2155 15Q2059 15 1998 -12Q1936 -38 1901 -90Q1866 -142 1852 -216Q1839 -291 1839 -387V-714H1904L2155 -559L2405 -714H2470V-387Q2470 -291 2456 -216Q2443 -142 2408 -90Q2374 -38 2312 -12Q2251 15 2155 15ZM2392 -620 2162 -481H2148L1917 -621V-361Q1917 -267 1937 -198Q1957 -130 2008 -94Q2060 -57 2155 -57Q2250 -57 2301 -94Q2352 -130 2372 -198Q2392 -267 2392 -361Z'/%3E%3C/svg%3E");
+  --passed: color-mix(in srgb, var(--success) 30%, var(--ink));
+  --failed: color-mix(in srgb, var(--danger) 55%, var(--ink));
+  --ref: color-mix(in srgb, var(--accent-strong) 55%, var(--ink));
+}
+
+[data-color="pink"] {
+  --project: var(--tile-pink);
+}
+
+[data-color="teal"] {
+  --project: var(--tile-teal);
+}
+
+/* The frames of the site come in both modes, and only the reader's is shown or fetched. */
+:root[data-theme="dark"] .pj-only-light,
+:root[data-theme="light"] .pj-only-dark {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .pj-only-light {
+    display: none;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .pj-only-dark {
+    display: none;
+  }
+}
+
+/*
+ * A mode for a piece of a page. It has to be a rule: the build turns `light-dark()` into variables
+ * that only a `color-scheme` in a stylesheet sets, so an inline style would change nothing.
+ */
+.pj-scheme-light {
+  color-scheme: light;
+}
+
+.pj-scheme-dark {
+  color-scheme: dark;
+}
+
+/* Parts */
+
+.pj-chip {
+  display: inline-block;
+  padding: 0.5rem 0.75rem;
+  border-radius: 999px;
+  background: var(--project);
+  color: var(--on-tile);
+  font: 700 0.8125rem/1 var(--mono);
+  white-space: nowrap;
+}
+
+.pj-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4375rem;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.pj-state::before {
+  content: "";
+  width: 0.4375rem;
+  height: 0.4375rem;
+  border-radius: 50%;
+  background: var(--project);
+}
+
+.pj-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: var(--surface);
+}
+
+/* A panel's title is a module of the status line. */
+.pj-panel-label {
+  align-self: flex-start;
+  justify-self: start;
+  padding: 0.3125rem 0.625rem;
+  border-radius: 999px;
+  background: var(--accent-strong);
+  color: var(--on-accent);
+  font: 700 0.75rem/1 var(--mono);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.pj-panel-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.pj-panel .control-quiet {
+  background: var(--page);
+}
+
+.pj-tree {
+  display: grid;
+  gap: 1px;
+}
+
+.pj-tree > button,
+.pj-tree > a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.4375rem 0.5rem;
+  border-radius: 0.5rem;
+  color: var(--ink);
+  font-size: 0.84375rem;
+  font-weight: 600;
+  line-height: 1.1;
+  text-align: left;
+}
+
+.pj-tree > .pj-tree-child {
+  padding-left: 1.625rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.pj-tree i {
+  flex: none;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 0.1875rem;
+  background: var(--project);
+}
+
+/* A project's row opens its group of frames: the second one stands apart from the first's. */
+.pj-tree > [data-color]:not(:first-child) {
+  margin-top: 0.5rem;
+}
+
+@media (hover: hover) {
+  .pj-tree > :hover,
+  .pj-tree > [data-hover] {
+    background: color-mix(in srgb, var(--ink) 7%, transparent);
+  }
+}
+
+.pj-tree > [aria-current] {
+  border-radius: 999px;
+  background: var(--accent-strong);
+  color: var(--on-accent);
+}
+
+.pj-tree > [aria-current] i {
+  background: var(--on-accent);
+}
+
+.pj-props {
+  display: grid;
+  gap: 0.4375rem;
+  font-size: 0.875rem;
+  line-height: 1.35;
+}
+
+.pj-props div {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr);
+  gap: 0.5rem;
+}
+
+.pj-props dt {
+  color: var(--muted);
+}
+
+.pj-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem 0.5rem;
+}
+
+.pj-facts b {
+  display: block;
+  font: 600 1.25rem/1.1 var(--mono);
+  letter-spacing: -0.02em;
+}
+
+.pj-facts span {
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
+.pj-as-of {
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.3;
+}
+
+.pj-ins-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.pj-board-inspector h2 {
+  font: 600 1.375rem/1.15 var(--display);
+  letter-spacing: -0.015em;
+}
+
+.pj-ins-text {
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.42;
+}
+
+.pj-ins-frame {
+  display: grid;
+  gap: 0.625rem;
+  padding-top: 0.75rem;
+  box-shadow: 0 -1px 0 var(--line);
+}
+
+.pj-ins-frame[hidden] {
+  display: none;
+}
+
+.pj-ins-hint {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.pj-xywh {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.375rem;
+}
+
+.pj-xywh div {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.375rem 0.5rem;
+  border-radius: 0.4375rem;
+  background: var(--page);
+  font: 500 0.8125rem/1 var(--mono);
+}
+
+.pj-xywh dt {
+  color: var(--muted);
+}
+
+/* The list */
+
+.pj-board {
+  --section-ratio: 680 / 826;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 44rem;
+  margin-inline: auto;
+  padding: calc(var(--header) + 1rem) 1rem calc(var(--dock) + 1.5rem);
+}
+
+.pj-board-head {
+  order: 0;
+}
+
+.pj-board-head h1 {
+  font: 600 2.75rem/1.08 var(--display);
+  letter-spacing: -0.03em;
+}
+
+.pj-board-head p {
+  margin-top: 0.375rem;
+  color: var(--muted);
+  font-size: 1.0625rem;
+}
+
+.pj-board-layers,
+.pj-board-zoom {
+  display: none;
+}
+
+.pj-board-canvas,
+.pj-board-world {
+  display: contents;
+}
+
+.pj-sec {
+  position: relative;
+  aspect-ratio: var(--section-ratio);
+  margin-top: 2.5rem;
+  border-radius: 1.375rem;
+  background: color-mix(in srgb, var(--project) 16%, var(--page));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--project) 42%, transparent);
+}
+
+.pj-sec-label {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  margin-bottom: 0.5rem;
+}
+
+.pj-frame {
+  position: absolute;
+  display: block;
+  container-type: inline-size;
+}
+
+.pj-frame-name {
+  display: none;
+}
+
+.pj-frame-body {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 0.25rem;
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+.pj-frame-body img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0;
+}
+
+.pj-frame[data-kind="lines"] .pj-frame-body {
+  background: var(--page);
+}
+
+.pj-frame[data-kind="phone"] .pj-frame-body {
+  border-radius: 0.75rem;
+}
+
+.pj-frame[data-kind="paper"] .pj-frame-body {
+  border-radius: 0;
+  background: var(--pdf);
+}
+
+/* What lies in a frame is set in shares of the frame, so it scales with it. */
+.pj-tiles {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  width: 100%;
+  height: 100%;
+}
+
+.pj-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4cqw;
+  padding: 2.4cqw;
+  background: var(--page);
+  color: var(--ink);
+}
+
+.pj-tile b {
+  font: 600 2.6cqw/1.1 var(--sans);
+}
+
+.pj-tile-dots {
+  display: flex;
+  gap: 0.8cqw;
+}
+
+.pj-tile-dots i {
+  width: 1.8cqw;
+  height: 1.8cqw;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+.pj-tile em {
+  width: 60%;
+  height: 3.4cqw;
+  margin-top: auto;
+  border-radius: 1cqw;
+}
+
+.pj-lines {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 5cqw 6cqw;
+  overflow: hidden;
+  font: 500 4.4cqw/1.5 var(--mono);
+  /* What is typed shows as typed: the face would join <= and >> into one sign. After `font`,
+     which resets it. */
+  font-variant-ligatures: none;
+}
+
+.pj-frame[data-frame="release"] .pj-lines,
+.pj-frame[data-frame="journal"] .pj-lines {
+  font-size: 5.4cqw;
+}
+
+.pj-lines b {
+  margin-bottom: 1.5cqw;
+  color: var(--accent-strong);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.pj-lines > span {
+  display: flex;
+  justify-content: space-between;
+  gap: 2cqw;
+  white-space: nowrap;
+}
+
+.pj-lines > span > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pj-lines em {
+  color: var(--passed);
+  font-style: normal;
+}
+
+/* The editor */
+
+@media (min-width: 64rem) {
+  :root[data-js] .pj-board {
+    --left: 15.75rem;
+    --right: 17.25rem;
+    --edge: 1rem;
+    --top: 4.75rem;
+    --dot: 1.5rem;
+    --dot-x: 0 0;
+    position: relative;
+    display: block;
+    height: 100svh;
+    min-height: 38rem;
+    max-width: none;
+    overflow: hidden;
+    padding: 0;
+    background-color: var(--page);
+    background-image: radial-gradient(
+      color-mix(in srgb, var(--ink) 18%, transparent) 1px,
+      transparent 1px
+    );
+    background-position: var(--dot-x);
+    background-size: var(--dot) var(--dot);
+  }
+
+  :root[data-js] .pj-board-head {
+    position: absolute;
+    top: var(--top);
+    left: var(--edge);
+    z-index: 3;
+    width: var(--left);
+    padding: 1rem 1rem 0;
+    pointer-events: none;
+  }
+
+  :root[data-js] .pj-board-head h1 {
+    font-size: 1.75rem;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  :root[data-js] .pj-board-head p {
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+  }
+
+  :root[data-js] .pj-board-layers,
+  :root[data-js] .pj-board-inspector {
+    position: absolute;
+    top: var(--top);
+    bottom: var(--edge);
+    z-index: 2;
+    overflow: auto;
+    scrollbar-width: none;
+    transition:
+      translate var(--duration-slow) var(--ease-in-out),
+      opacity var(--duration-base) var(--ease-out);
+  }
+
+  :root[data-js] .pj-board-layers {
+    left: var(--edge);
+    display: flex;
+    width: var(--left);
+    padding-top: 6.25rem;
+  }
+
+  :root[data-js] .pj-board-inspector {
+    right: var(--edge);
+    width: var(--right);
+  }
+
+  /* One panel of properties at a time: the chosen project's. */
+  :root[data-js] .pj-board-inspector:not([data-current]) {
+    display: none;
+  }
+
+  :root[data-js] .pj-board-inspector .pj-panel-links {
+    margin-top: auto;
+  }
+
+  :root[data-js] .pj-board-canvas {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    padding: calc(var(--top) + 2.5rem) calc(var(--right) + var(--edge) + 1.25rem) 1.5rem
+      calc(var(--left) + var(--edge) + 1.25rem);
+    touch-action: none;
+    user-select: none;
+  }
+
+  :root[data-js] .pj-board-world {
+    --z: 1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.75rem;
+    width: min(100%, calc((100svh - var(--top) - 4rem) * 1388 / 826));
+    transform-origin: 0 0;
+  }
+
+  :root[data-js] .pj-sec {
+    margin: 0;
+  }
+
+  :root[data-js] .pj-sec-label {
+    margin-bottom: calc(0.5rem / var(--z));
+    transform: scale(calc(1 / var(--z)));
+    transform-origin: 0 100%;
+  }
+
+  :root[data-js] .pj-sec[data-selected] {
+    outline: calc(2px / var(--z)) solid var(--accent-strong);
+    outline-offset: calc(3px / var(--z));
+  }
+
+  :root[data-js] .pj-sec[data-hover]:not([data-selected]) {
+    outline: calc(1.5px / var(--z)) solid var(--accent-strong);
+    outline-offset: calc(3px / var(--z));
+  }
+
+  :root[data-js] .pj-frame-name {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    display: block;
+    overflow: hidden;
+    max-width: calc(100% * var(--z));
+    margin-bottom: calc(0.1875rem / var(--z));
+    color: var(--muted);
+    font-size: 0.6875rem;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    transform: scale(calc(1 / var(--z)));
+    transform-origin: 0 100%;
+    white-space: nowrap;
+  }
+
+  :root[data-js] .pj-frame-handles {
+    position: absolute;
+    inset: 0;
+    display: none;
+    outline: calc(1.5px / var(--z)) solid var(--accent-strong);
+    pointer-events: none;
+  }
+
+  :root[data-js] .pj-frame-handles::before,
+  :root[data-js] .pj-frame-handles::after {
+    content: "";
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    background: var(--page);
+    box-shadow: 0 0 0 1.5px var(--accent-strong);
+    transform: scale(calc(1 / var(--z)));
+  }
+
+  :root[data-js] .pj-frame-handles::before {
+    top: -3.5px;
+    left: -3.5px;
+  }
+
+  :root[data-js] .pj-frame-handles::after {
+    right: -3.5px;
+    bottom: -3.5px;
+  }
+
+  :root[data-js] .pj-frame[data-selected] {
+    z-index: 3;
+  }
+
+  :root[data-js] .pj-frame[data-selected] .pj-frame-handles,
+  :root[data-js] .pj-frame[data-hover] .pj-frame-handles {
+    display: block;
+  }
+
+  :root[data-js] .pj-board[data-leaving] .pj-board-layers,
+  :root[data-js] .pj-board[data-leaving] .pj-board-head {
+    translate: calc(-1 * (var(--left) + var(--edge) * 2)) 0;
+    opacity: 0;
+  }
+
+  :root[data-js] .pj-board[data-leaving] .pj-board-inspector {
+    translate: calc(var(--right) + var(--edge) * 2) 0;
+    opacity: 0;
+  }
+
+  :root[data-js] .pj-board[data-leaving] .pj-board-zoom,
+  :root[data-js] .pj-board[data-leaving] .pj-sec-label,
+  :root[data-js] .pj-board[data-leaving] .pj-frame-name,
+  :root[data-js] .pj-board[data-leaving] .pj-frame-handles {
+    opacity: 0;
+  }
+
+  :root[data-js] .pj-board-head {
+    transition:
+      translate var(--duration-slow) var(--ease-in-out),
+      opacity var(--duration-base) var(--ease-out);
+  }
+
+  :root[data-js] .pj-board-zoom {
+    position: absolute;
+    top: var(--top);
+    right: calc(var(--right) + var(--edge) * 2);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 0.25rem;
+    border-radius: 999px;
+    background: var(--surface);
+    box-shadow: var(--control-raise);
+    font: 500 0.8125rem/1 var(--mono);
+    transition: opacity var(--duration-base) var(--ease-out);
+  }
+
+  .pj-board-zoom button {
+    min-width: 1.875rem;
+    height: 1.75rem;
+    padding-inline: 0.5rem;
+    border-radius: 999px;
+    color: var(--muted);
+  }
+
+  .pj-board-zoom span {
+    min-width: 2.75rem;
+    text-align: center;
+  }
+
+  @media (hover: hover) {
+    .pj-board-zoom button:hover {
+      background: var(--raised);
+      color: var(--ink);
+    }
+  }
+}
+
+@media (min-width: 64rem) and (max-width: 82.5rem) {
+  :root[data-js] .pj-board {
+    --left: 12.25rem;
+    --right: 14.5rem;
+  }
+}

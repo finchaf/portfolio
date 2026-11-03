@@ -1,8 +1,8 @@
 import { LOCALES } from "../src/i18n/locales";
 import { localizedPath } from "../src/i18n/localized-path";
-import { PAGE_PATHS } from "../src/lib/pages";
+import { EVERY_PATH } from "../src/lib/pages";
 
 /** Every address of the site: each page in each language. */
-export const ADDRESSES = PAGE_PATHS.flatMap((path) =>
+export const ADDRESSES = EVERY_PATH.flatMap((path) =>
   LOCALES.map((locale) => localizedPath(locale, path)),
 );

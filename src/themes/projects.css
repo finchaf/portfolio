@@ -1,7 +1,10 @@
 /*
  * Projects: Catppuccin, Latte in the light and Mocha in the dark, by the roles of its style guide.
- * Mauve rather than the guide's blue for links, and Subtext 1 rather than 0 for secondary text:
- * Latte's blue and Subtext 0 fall short of AA on Base, and the guide puts legibility first.
+ * Green is the accent, by the owner's choice, and Subtext 1 rather than 0 is the secondary text:
+ * Subtext 0 falls short of AA on Base, and the guide puts legibility first. The guide's rule for
+ * text on an accent is Base, which is light in Latte: so on Latte the words stay light and the fill
+ * goes deeper. Latte's Green is #40a02b at 2.96:1 with Base; a fill with words on it is #2f7d20 at
+ * 4.6:1, the same hue, and the bare accent is a step deeper than the palette's to reach 3:1.
  * Catppuccin recommends no typeface, so Nunito and JetBrains Mono are this site's choice.
  */
 :root:has([data-world="projects"]),
@@ -12,8 +15,8 @@
   --ink: light-dark(#4c4f69, #cdd6f4); /* Text */
   --muted: light-dark(#5c5f77, #bac2de); /* Subtext 1 */
   --line: light-dark(#bcc0cc, #45475a); /* Surface 1 */
-  --accent: light-dark(#8839ef, #cba6f7); /* Mauve */
-  --accent-strong: light-dark(#8839ef, #cba6f7);
+  --accent: light-dark(#3e9d2a, #a6e3a1); /* Green */
+  --accent-strong: light-dark(#2f7d20, #a6e3a1);
   --on-accent: light-dark(#eff1f5, #1e1e2e); /* Base */
   --success: light-dark(#40a02b, #a6e3a1); /* Green */
   --warning: light-dark(#df8e1d, #f9e2af); /* Yellow */
@@ -23,29 +26,54 @@
   --teal: light-dark(#179299, #94e2d5);
   --blue: light-dark(#1e66f5, #89b4fa);
   --pink: light-dark(#ea76cb, #f5c2e7);
+  /* The tiles of a project's name, the same in both modes, as on the link picture: Mocha's. */
+  --tile-pink: light-dark(#f5c2e7, #f5c2e7);
+  --tile-teal: light-dark(#94e2d5, #94e2d5);
+  --on-tile: light-dark(#1e1e2e, #1e1e2e);
 
-  /* Controls: the plain pill, until this theme gets a skin of its own (ADR-0011). */
-  --control-face: var(--sans);
-  --control-text: 1;
-  --control-text-small: 0.875;
+  /*
+   * A page of a PDF. In the dark it is the page as the owner's Zathura shows it: recoloured into
+   * Mocha's Base and Text, the recolor-lightcolor and recolor-darkcolor of his config.
+   */
+  --pdf: light-dark(#ffffff, #1e1e2e);
+  --pdf-ink: light-dark(#000000, #cdd6f4);
+
+  /* Layers the palette keeps for what is not a page. */
+  --crust: light-dark(#dce0e8, #11111b);
+  --surface-2: light-dark(#acb0be, #585b70);
+
+  /*
+   * Controls: a status line, as tmux and lualine draw it. A module is a body on Surface with a
+   * coloured cap at its end, and what is chosen takes the accent whole (ADR-0011).
+   */
+  --control-face: var(--mono);
+  --control-text: 0.875;
+  --control-text-small: 0.8125;
   --control-radius: 999px;
-  --control-fill: var(--accent-strong);
-  --on-control: var(--on-accent);
+  --control-fill: var(--raised);
+  --on-control: var(--ink);
   --control-mark: var(--on-accent);
-  --control-open: "";
+  --control-open: ">";
   --control-close: "";
-  --control-hover: -1px;
+  --control-close-gap: 0;
+  --control-hover: 0px;
   --control-rules: 0 0 transparent;
-  --control-well: var(--surface);
+  --control-well: var(--raised);
   --control-thumb: var(--page);
   --control-line: transparent;
   --control-surface: var(--surface);
-  --control-raise:
-    0 0 0 1px var(--line),
-    0 4px 6px -1px light-dark(color-mix(in srgb, var(--ink) 10%, transparent), transparent),
-    0 2px 4px -2px light-dark(color-mix(in srgb, var(--ink) 10%, transparent), transparent);
-  --control-current: var(--page);
+  --control-raise: 0 0 0 1px var(--raised);
+  --control-current: var(--accent-strong);
+  --control-current-ink: var(--on-accent);
   --control-current-line: 0 0 transparent;
+  --control-clip: hidden;
+  --control-cap: var(--accent-strong);
+  --control-cap-room: 1;
+  --control-cap-quiet: var(--surface-2);
+  --control-cap-quiet-ink: var(--ink);
+  --capsule-cap: ">";
+  --capsule-narrow: var(--accent-strong);
+  --capsule-narrow-ink: var(--on-accent);
 }
 
 :root:has([data-world="projects"]),

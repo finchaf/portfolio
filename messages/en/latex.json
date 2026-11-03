@@ -1,0 +1,200 @@
+{
+  "meta": {
+    "title": "LaTeX — Danil Zablotsky",
+    "description": "Lecture notes typed in Neovim, a thesis released on GitHub and product documents built from data. All of it in LaTeX.",
+    "shareTitle": "LaTeX: notes, a thesis and documents",
+    "imageAlt": "A coloured tile with the folder name latex over stripes of the palette."
+  },
+  "back": "Projects",
+  "layers": "Layers",
+  "properties": "Properties",
+  "section": "This section: {name}",
+  "open": "Links",
+  "pdf": "Download the thesis, PDF",
+  "title": "LaTeX",
+  "lead": "Since my first year at university I have written in LaTeX: lecture notes in Neovim, a thesis kept as a repository with releases, and my product's documents, whose figures come from data.",
+  "brief": {
+    "what": "What it is",
+    "whatText": "Three pieces of work in one tool: notes from 2022–2025, a thesis in 2026 and the documents of Pora na paru since September 2026.",
+    "how": "How it was made",
+    "howText": "I built the notes and their setup by hand: there were no agents then. The thesis and the product's documents were made in 2026 with Claude Code: I set the structure and the rules, the tool did the typing.",
+    "open": "What is open",
+    "openText": "The thesis' sources and releases are on GitHub. The documents' repository is private: shown here are how it works and pages of an invented example."
+  },
+  "typing": {
+    "file": "les-17.tex",
+    "pdf": "master.pdf",
+    "keys": "keys",
+    "chars": "characters",
+    "replay": "Type it again",
+    "insert": "INSERT",
+    "normal": "NORMAL",
+    "pressed": "pressed"
+  },
+  "pages": {
+    "label": "Pages of the notes",
+    "back": "Previous page",
+    "next": "Next page",
+    "calculus": {
+      "title": "Calculus",
+      "detail": "Lecture 1, 01.09.2023",
+      "alt": "A page of the notes: the directional derivative, a note and a definition in coloured boxes."
+    },
+    "taylor": {
+      "title": "Calculus",
+      "detail": "Lecture 2: Taylor's formula",
+      "alt": "A page with Taylor's formula for a function of two variables."
+    },
+    "graphs": {
+      "title": "Graph theory",
+      "detail": "Exam questions",
+      "alt": "A page with graphs drawn in Inkscape."
+    },
+    "sphere": {
+      "title": "Complex analysis",
+      "detail": "Lecture 1: the Riemann sphere",
+      "alt": "A drawing of the Riemann sphere and the formulas of the stereographic projection."
+    },
+    "contour": {
+      "title": "Complex analysis",
+      "detail": "Lecture 5: the integral over a triangle",
+      "alt": "A page with a contour of integration and a bound on the integral."
+    },
+    "proofs": {
+      "title": "Proofs for the exam",
+      "detail": "Calculus, 85 pages",
+      "alt": "The title page and contents of a collection of proofs for an exam."
+    }
+  },
+  "origin": {
+    "castel": {
+      "name": "Gilles Castel",
+      "role": "Mathematics PhD student at KU Leuven",
+      "died": "Died on 18 July 2022.",
+      "source": "Source",
+      "notes": "How I'm able to take notes in mathematics lectures using LaTeX and Vim",
+      "figures": "How I draw figures for my mathematical lecture notes using Inkscape",
+      "note": "As of 03.11.2026 castel.dev does not open: the links lead to the archive."
+    },
+    "mastnak": {
+      "name": "Elijan Mastnak",
+      "role": "Author of a guide to LaTeX in Vim and Neovim",
+      "guide": "Supercharged LaTeX using Vim/Neovim, VimTeX, and snippets",
+      "mirror": "A copy of Castel's articles on his site",
+      "note": "The guide opens with a link to Castel's article."
+    }
+  },
+  "thesis": {
+    "label": "View of the page",
+    "lens": "Lens",
+    "fields": "Margins",
+    "sourceView": "Source",
+    "hint": "Move the lens over the page: its source lies under it, paragraph for paragraph.",
+    "top": "2 cm",
+    "bottom": "2 cm",
+    "left": "3 cm",
+    "right": "1 cm",
+    "indent": "indent 1.25 cm",
+    "spacing": "14 pt, 1.5 spacing",
+    "alt": "Page 69 of the thesis: the section on the web application.",
+    "source": {
+      "b0": "\\subsection{Web-приложение}",
+      "b1": "В настоящем разделе изложена реализация веб-составляющей платформы <<ВКурсе>>. Как и для мобильных клиентов (см.~п.~\\ref{subsec:impl-ios},~п.~\\ref{subsec:impl-android}), проектные обоснования принятых решений и их трассировка к требованиям первой главы приведены в главе~2 и здесь не дублируются; в фокусе раздела --- технологический стек, имена ключевых файлов и компонентов в кодовой базе, конфигурация сборки и развёртывания. Веб-составляющая, в отличие от мобильных клиентов, охватывает сразу три функциональные роли --- лендинг, публичное приложение просмотра расписания и закрытый сервис администрирования; раздельная подача этих ролей соответствует разграничению, принятому в п.~\\ref{subsubsec:client-components}.",
+      "b2": "\\subsubsection{Технологический стек, моно-репо и общие средства}",
+      "b3": "Веб-составляющая реализована как единый Next.js-проект~\\cite{nextjs} версии~16.1.6 на основе App Router; целевой исполняемой средой является Node.js~20+ (контейнерная сборка использует образ \\texttt{node:22-alpine}). В качестве библиотеки представления используется React~19.2.3~\\cite{react}; язык разработки --- TypeScript~5~\\cite{typescript} в режиме \\texttt{strict}. Стилизация выполнена средствами Tailwind CSS версии~4.1.18 (используется PostCSS-плагин \\texttt{@tailwindcss/\\allowbreak postcss}); набор пользовательских компонентов --- shadcn/ui (около 36 компонентов в каталоге \\texttt{src/\\allowbreak components/\\allowbreak ui}, построенных поверх примитивов Radix UI и \\texttt{@base-ui/\\allowbreak react}). Иконки --- \\texttt{lucide-react}; шрифты --- Geist и Geist~Mono, подключаемые через \\texttt{next/\\allowbreak font/\\allowbreak google}.",
+      "b4": "Все три функциональные роли веб-составляющей размещены в единой структуре каталогов App Router под локализационным сегментом \\texttt{src/\\allowbreak app/\\allowbreak [locale]} и разделены тремя \\emph{маршрутными группами} (\\texttt{route groups}) Next.js: \\texttt{(landing)} --- маркетинговый лендинг и блог, \\texttt{(schedule)} --- публичное приложение просмотра расписания, \\texttt{(service)} --- закрытый сервис администрирования. Маршрутные группы обеспечивают разные корневые макеты (\\texttt{layout.\\allowbreak tsx}) для каждой роли при сохранении общего сегмента локали в URL.",
+      "b5": "Локализация выполнена средствами \\texttt{next-intl}~4.7.0; поддерживаются два языка интерфейса --- русский и английский, сообщения организованы трёхуровневой иерархией (\\texttt{messages/\\allowbreak \\{en,ru\\}/\\allowbreak \\{common,components,pages\\}/\\allowbreak <namespace>.json}). На стороне серверных компонентов используется \\texttt{getTranslations()}, на стороне клиентских --- хук \\texttt{useTranslations()}. Темизация --- через \\texttt{next-themes}~0.4.6 с тремя режимами: \\texttt{light}, \\texttt{dark} и \\texttt{system}; тема применяется добавлением класса \\texttt{.dark} к корневому элементу документа и распространяется на все три функциональные роли. В отличие от мобильных клиентов, веб-составляющая работает в единой фирменной палитре без дополнительных акцентных цветовых схем (соответствующее проектное решение зафиксировано в п.~\\ref{subsubsec:design-web})."
+    }
+  },
+  "releases": {
+    "label": "Release",
+    "pages": "pages",
+    "date": "Date",
+    "words": "Words",
+    "size": "File",
+    "kb": "{value} KB",
+    "mb": "{value} MB",
+    "pipe": {
+      "release": "checks that everything is committed and builds the PDF",
+      "tag": "a tag with the date goes to GitHub",
+      "action": "the tag starts the build",
+      "container": "a full TeX Live with CMU Serif, the command make build",
+      "asset": "the PDF is attached to the release"
+    },
+    "alt": "Every page of release"
+  },
+  "documents": {
+    "caption": "Severny Mayak, the invented company of the repository's examples: a table's request and the pages built from it.",
+    "chartAlt": "A page of the register: a chart by city and the start of a table.",
+    "tableAlt": "A page of the register: the end of the table, the date the data was checked and the numbers of its sources."
+  },
+  "checks": {
+    "verdict": {
+      "ok": "the quote and the value are on the page",
+      "valuesOnPage": "the quote is not word for word, but the values are on the page",
+      "quoteNotOnPage": "the quote is not on the page",
+      "valueNotOnPage": "the value is not on the page",
+      "pageEmpty": "the page is empty or did not come",
+      "tls": "the machine does not trust the site's certificate, and the check is never switched off",
+      "noUrl": "no address of a page",
+      "noQuote": "no quote"
+    },
+    "pdf": {
+      "glyph": "a letter the font does not have",
+      "overfull": "a line wider than its column by more than 2 pt",
+      "reference": "an undefined reference or citation",
+      "font": "a font not found or substituted",
+      "rerun": "LaTeX asks for another run",
+      "embedded": "a font not embedded in the PDF"
+    }
+  },
+  "sections": {
+    "notes": {
+      "name": "Notes",
+      "title": "Formulas at the speed of a lecture",
+      "p1": "In my first year I started taking mathematics notes on a laptop: by hand it was slow, Word cannot keep up with formulas, and the notes my classmates kept in Notion were not enough for me. The first attempts are lost; the repository starts with the second year.",
+      "p2": "A note is written in Neovim. vimtex builds the PDF, and LuaSnip expands abbreviations as I type: <c>ff</c> becomes a fraction, <c>;e</c> an epsilon, and <c>{le}</c> the sign ⩽ that Russian texts use. The config has {all} snippets: {auto} expand by themselves, {math} work only inside formulas.",
+      "p3": "Below is line 259 of calculus lecture 17, 19.11.2023, typed again with the same snippets. The PDF updates when I leave insert mode and press <c>␣c</c>: the file is saved and built once."
+    },
+    "pages": {
+      "name": "Pages",
+      "title": "{pages} pages in two years",
+      "p1": "From September 2023 to June 2025 the repository holds {lecturePdfs} sets of lecture notes, {lecturePages} pages, and {examPdfs} collections for exams and tests, {examPages} pages. {figures} figures are drawn in Inkscape and placed in the PDF with labels set by LaTeX itself.",
+      "p2": "My group prepared for exams with these notes and collections, and so did younger students when they reached the same subjects.",
+      "p3": "In the dark theme the pages are recoloured as Zathura showed them with my Catppuccin config."
+    },
+    "origin": {
+      "name": "Origin",
+      "title": "The method is not mine",
+      "p1": "This is how Gilles Castel took notes: in 2019 he described typing mathematics lectures in Vim and drawing their figures in Inkscape. Elijan Mastnak turned it into a detailed guide to the setup. I spent months building my config from their writing and looked for answers on Reddit: there were no agents to do it for me then.",
+      "p2": "From them the config has vimtex with LuaSnip, the layout of its files, the rules of the triggers and the preamble of the first notes. Mine are the colours of the boxes around definitions and theorems, the Russian names with their snippets, the lecture's date from the <c>lesson</c> command, ⩽ and ⩾ in place of ≤ and ≥, and a Russian dictionary. For this setup I moved from Windows to macOS, and installed Arch Linux on my home computer.",
+      "p3": "In my fourth year I wrote to the guide's author, showed him pictures of my setup and thanked him. He replied."
+    },
+    "thesis": {
+      "name": "Thesis",
+      "title": "Its source lies under the page",
+      "p1": "I kept my graduation thesis as a repository: the text in <c>.tex</c> files, built by LuaLaTeX through latexmk, the university's requirements in a file of their own that the preamble follows. The topic: “Development of the client applications of the VCourse SaaS platform for managing teaching schedules”.",
+      "p2": "The requirements are set once: A4, margins of 2, 2, 3 and 1 cm, 14 points, 1.5 spacing, a 1.25 cm indent. That is five lines, and all {thesisPages} pages take their look from them. The bibliography follows GOST 7.0.5 without BibTeX, and the title page is built from a file of data."
+    },
+    "releases": {
+      "name": "Releases",
+      "title": "Ten releases, from 3 pages to 130",
+      "p1": "<c>make release</c> checks that everything is committed, builds the PDF and puts a tag with the date. The tag starts GitHub Actions: the PDF is built in a container with a full TeX Live and attached to the release, and the link to the latest one stays the same.",
+      "p2": "Each release below is a real PDF from GitHub. On 22 May the screenshots of the apps went in: the file grew from 391 KB to 21.2 MB in one release."
+    },
+    "documents": {
+      "name": "Documents",
+      "title": "The product's documents are built from data",
+      "p1": "Pora na paru has many documents that live longer than a week: registers of universities and colleges, overviews, policies. I refused to keep them in Word or in a tracker's editor, and since 30 September 2026 they are a LaTeX repository.",
+      "p2": "One class gives every document its look, and a type is told by its label, not by a colour: overview, status report, policy, register, brief, agreement. Tables and figures are never typed by hand: a document asks the data for them in <c>document.json</c>, and under every table the build prints the day the data was checked and where it came from.",
+      "p3": "Every document has a level of access, and the build will not let a document take a column or a source of a more closed level. An issued version goes into a journal with the hash of its PDF: different content cannot be issued under the same number."
+    },
+    "checks": {
+      "name": "Checks",
+      "title": "Agents collect, the build does not trust them",
+      "p1": "The registers are collected by Claude Code agents: they go through official sites and bring, for every fact, the address of the page and a verbatim quote. The repository itself was written with Claude Code too, in all {commits} commits.",
+      "p2": "An agent's word is not taken. A script fetches every page itself and looks for the quote and the value on it, a person settles what is in doubt, and only the import writes to the data.",
+      "p3": "LaTeX finishes without an error even when the PDF is already broken. So the build is held by {gates} checks and {tests} tests: it fails on a letter the font does not have, on a line wider than its column by more than 2 pt, on an undefined reference and on a font not embedded in the PDF."
+    }
+  }
+}

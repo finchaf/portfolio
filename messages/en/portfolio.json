@@ -1,0 +1,146 @@
+{
+  "meta": {
+    "title": "This site — Danil Zablotsky",
+    "description": "How this site is built: themes on one component, a lens over the code, 14 checks and an atomic release.",
+    "shareTitle": "This site: how it is built",
+    "imageAlt": "A coloured tile named after the folder portfolio, on bands of the palette."
+  },
+  "back": "Projects",
+  "layers": "Layers",
+  "properties": "Properties",
+  "section": "This section: {name}",
+  "title": "This site",
+  "lead": "A portfolio built as a product: a static build, a look of its own for every page, an open log of decisions and checks before every commit.",
+  "briefLabel": "In short",
+  "brief": {
+    "what": "What it is",
+    "whatText": "A site in two languages. Home, Flow and Projects are done, Pora na Paru is still a stub. It is plain files with no application server, served by Caddy.",
+    "role": "My role",
+    "roleText": "Design, front end, motion, infrastructure and copy.",
+    "open": "What is open",
+    "openText": "The code, the log of decisions and the plan are on GitHub. Each section links to its files."
+  },
+  "open": "Files and decisions",
+  "demo": {
+    "replay": "Run again",
+    "ofAll": "{passed} of {all}, {minutes} min {seconds} s",
+    "commitsByDay": "Commits to main by day",
+    "text": "text on the page",
+    "soft": "secondary text",
+    "control": "button label",
+    "sample": "A page heading",
+    "sampleText": "The same paragraph, the same markup, the same components.",
+    "sampleAction": "Get in touch",
+    "sampleQuiet": "Site code",
+    "theme": "Theme",
+    "mode": "Mode",
+    "light": "Light",
+    "dark": "Dark",
+    "lensHint": "Move the lens over the frame",
+    "lensDesign": "Design",
+    "lensCode": "Code",
+    "lensBoth": "Lens",
+    "before": "Before",
+    "after": "After",
+    "play": "Play",
+    "beforeNote": "The whole document as one layer: the browser squeezes it to the screen.",
+    "afterNote": "Only the screen is captured, and the new page arrives along the slash.",
+    "pageA": "One page",
+    "pageB": "Another page",
+    "deploy": "Release a new build",
+    "rollback": "Roll back",
+    "current": "current",
+    "newRelease": "new build",
+    "budget": "First-load JavaScript budget, gzip",
+    "budgetHome": "Home",
+    "budgetFlow": "Flow",
+    "budgetOther": "Other pages",
+    "kilobytes": "{value} KB",
+    "budgetTitle": "{title}, {date}",
+    "budgetLimitLine": "limit: {value} KB"
+  },
+  "steps": {
+    "refuse": "Refuses unless on main, with a clean tree, level with GitHub",
+    "gates": "Every check and the build",
+    "copy": "A copy in a folder of the commit under releases/, equal files as hard links",
+    "switch": "An atomic switch of the current link",
+    "verify": "A check of the real domain: codes, CSP, redirects",
+    "back": "If it fails, the link returns to the last release"
+  },
+  "sections": {
+    "form": {
+      "name": "Form",
+      "title": "Every page has a form of its own",
+      "p1": "A portfolio usually describes the work in words. Here a page is built like the work itself: home is a stage that scrolls down and sideways, Flow looks like Obsidian because that case was a base of notes, and Projects looks like an editor because I am a designer.",
+      "p2": "The price of that form is an engine per page. To keep them from growing together, pages are split by boundaries: a feature does not import another, and what they share moves down to <c>ui/</c> and <c>lib/</c>. It is an ESLint rule rather than an agreement: an import across a boundary fails the check."
+    },
+    "themes": {
+      "name": "Themes",
+      "title": "One component, four themes",
+      "p1": "Each page declares a theme, and the theme changes colours, typefaces and the look of controls. There are two modes, so eight combinations. A component knows nothing of themes: it reads tokens, and the values live in the theme's file. A new theme is one file.",
+      "p2": "A colour outside the contract does not compile: the Tailwind palette is off. A test measures contrast, and that is why a theme has two accents. <c>accent</c> is the exact brand colour for fills, <c>accent-strong</c> is the one for text. White on the product's blue gives 3.7:1, too little for text.",
+      "p3": "The theme is declared in the markup and read through <c>:has()</c>, so it is in the first HTML and the page does not flash. <c>\\Get in touch</c> on home and <c>[[Get in touch]]</c> on Flow are one component, and the capsule changes its skin on the fly when a chapter of another theme arrives on home. The values below are read from the sample at every switch."
+    },
+    "lens": {
+      "name": "Lens",
+      "title": "Design and code on one screen",
+      "p1": "The first screen is two layers: the design and its blueprint, with sizes and real lines of code. A test finds those lines in the sources, so the blueprint cannot drift from the code.",
+      "p2": "The layers match to the pixel: every block of the blueprint stands where the real one does, because the block itself lies inside it, hidden, and sets its size. The lens only opens the second layer with <c>clip-path</c>. It reaches the capsule too, though that lies outside the first screen: a script writes it the same variables in its own coordinates.",
+      "p3": "The first screen never waits for animation. The name is in the HTML and drawn from the first frame, and the assembly only wipes an outline off it. The real controls lie under the code layer and take the clicks, and keyboard focus lifts them above it."
+    },
+    "motion": {
+      "name": "Motion",
+      "title": "A page change along the slash of the logo",
+      "p1": "Each tool has its zone: CSS does hover and focus, <c>ViewTransition</c> the page change, GSAP the scenes on scroll, canvas the graphs and lines. Durations and curves live in tokens, so an effect's code holds no numbers.",
+      "p2": "The first page change looked bad. A <c>ViewTransition</c> around the page makes one layer as tall as the page, 34,678 px on home on 03.11.2026, and the browser squeezes it to the screen. Now only the screen is captured, and the new page arrives along a 20.2° line, the lean of the slash in the logo. A step back in the capsule runs the other way.",
+      "p3": "In Firefox the shape stood at its end for the whole change: it does not interpolate a registered <c>@property</c> variable on these pseudo-elements. So the shapes are written out in <c>polygon</c> keyframes. WebDriver's screenshot does not show this, so that frame comes from a system capture of a real browser window."
+    },
+    "gates": {
+      "name": "Checks",
+      "title": "14 checks, one command",
+      "p1": "<c>python3 scripts/check.py</c> runs before every commit, and CI runs the same command on a PR. Below is a real run of {date}: {unit} unit tests and {browser} browser tests.",
+      "p2": "The browser checks run behind a real Caddy, the same image digest as the server: addresses, headers, CSP, accessibility in both modes, scenes with reduced motion and without JavaScript. A check must be able to fail: the scaffold was tested with a deliberate import across a boundary and with text in the markup.",
+      "foundTitle": "What turned up along the way",
+      "found1": "On the Flow card the graph's simulation ends on different coordinates on arm64 and x64. It was green on the laptop and red in CI. Now the hash counts what the graph is made of, not where it lands.",
+      "found2": "The test config differed from production, so the gate stayed green while the server's 404 would have named itself and lost HSTS. The header block now matches line for line, and the gate looks at the 404's headers.",
+      "found3": "Gecko loses a thin diagonal gradient at random, and the hatching fell apart in Firefox. It is now an SVG mask, and a test keeps such gradients out of the stylesheets.",
+      "found4": "Shadows took the colour of the text, which on a dark page is a glow. In the dark mode a shadow is now transparent."
+    },
+    "decisions": {
+      "name": "Decisions",
+      "title": "The decision first, the code next",
+      "p1": "Whatever is expensive to undo is written down before the code: the context, the options, the choice and when to revisit it. An accepted record is never rewritten, a different decision is a new record.",
+      "p2": "Static was not chosen to save money: the server had room. It is faster, more reliable and safer for the neighbour on that server, and the animation lives in the browser anyway. The repository has been open since the first commit, because what enters a history stays in old commits. The code is MIT, the texts and images are reserved, and GSAP stays a dependency that is never copied in."
+    },
+    "release": {
+      "name": "Release",
+      "title": "A release is one switch",
+      "p1": "The site is a folder of files on a shared server, beside another product. A release touches neither Caddy nor the containers: a new build lands in a folder of its own, then one operation switches the <c>current</c> link. There is no downtime.",
+      "p2": "The last three releases are kept, and <c>--rollback</c> returns the previous one in a second. GitHub holds no key to the server: CI only checks, and a release runs from the laptop. That is a price paid on purpose: there is one developer, and the site can be rebuilt from any commit."
+    },
+    "stage": {
+      "name": "Stage",
+      "title": "What is not done yet",
+      "p1": "The site is a work in progress, and the plan in the repository shows it.",
+      "item1": "The Pora na Paru page is still a stub.",
+      "item2": "The story's photographs are over budget: 2.12 MB in all against a limit of 1.5 MB, measured 01.11.2026.",
+      "item3": "The page change and the Flow chapter have not been tested on a real phone or in real Safari yet."
+    }
+  },
+  "journal": {
+    "a0001": "A knowledge base in docs/",
+    "a0002": "A static build, served by Caddy",
+    "a0003": "One app, no monorepo",
+    "a0004": "CSS, Motion, GSAP and WebGL, each with its zone",
+    "a0005": "An atomic release by switching a link",
+    "a0006": "The domain, a guard .ru and mail",
+    "a0007": "Gates from one command",
+    "a0008": "The repository is open",
+    "a0009": "A page is a feature, with import boundaries",
+    "a0010": "A theme per page, two modes, one contract",
+    "a0011": "Control skins are theme tokens",
+    "a0012": "Link previews from the site's tokens",
+    "a0013": "Flow as a vault of notes",
+    "a0014": "Projects as an editor"
+  }
+}

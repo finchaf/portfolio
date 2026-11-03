@@ -1,10 +1,115 @@
 {
   "meta": {
     "title": "Projects — Danil Zablotsky",
-    "description": "Beside the product: this open-source site and a LaTeX thesis.",
-    "shareTitle": "Projects: this site and a LaTeX thesis",
-    "imageAlt": "Two coloured tiles named after folders, portfolio and bachelor-thesis, on bands of the palette."
+    "description": "Besides the product: this site, its code open, and everything I do in LaTeX.",
+    "shareTitle": "Projects: this site and LaTeX",
+    "imageAlt": "Two coloured tiles with the folder names portfolio and latex over stripes of the palette."
   },
   "title": "Projects",
-  "lead": "Personal projects and experiments."
+  "lead": "Personal projects and experiments.",
+  "layers": "Layers",
+  "properties": "Properties",
+  "canvas": "Canvas of projects",
+  "fit": "All",
+  "zoomIn": "Zoom in",
+  "zoomOut": "Zoom out",
+  "open": "Open project",
+  "openSection": "Open section",
+  "code": "Code on GitHub",
+  "site": "Open the site",
+  "asOf": "On {date}, branch main and a check.py run",
+  "hint": "A double click opens the project",
+  "portfolio": {
+    "chip": "portfolio/",
+    "title": "This site",
+    "state": "In progress",
+    "summary": "A portfolio as a product: a static Next.js build, a theme system of its own, an open log of decisions and checks before every commit.",
+    "period": "Period",
+    "periodValue": "since 30.10.2026",
+    "address": "Address",
+    "stack": "Stack",
+    "commits": "commits",
+    "decisions": "decisions",
+    "checks": "checks",
+    "tests": "tests",
+    "themes": "themes",
+    "languages": "languages",
+    "stackValue": "Next.js, TypeScript, Tailwind, GSAP, Caddy",
+    "addressValue": "finchaf.com",
+    "code": "Code on GitHub"
+  },
+  "frames": {
+    "home": {
+      "name": "Home",
+      "text": "The first screen: the design and its blueprint match, and the lens opens the second layer."
+    },
+    "phone": {
+      "name": "Flow, phone",
+      "text": "Another page, another form: on a phone it is one note, with a sheet for the tree."
+    },
+    "themes": {
+      "name": "Themes",
+      "text": "Four themes in two modes on the same components."
+    },
+    "release": {
+      "name": "deploy.py",
+      "text": "A release is a switch of one link, with the last three beside it."
+    },
+    "gates": {
+      "name": "check.py",
+      "text": "A real run of all 14 checks."
+    },
+    "flow": {
+      "name": "Flow",
+      "text": "The page built as a base of notes in Obsidian."
+    },
+    "journal": {
+      "name": "Decisions",
+      "text": "An open log of what was chosen and why, before the first line of code."
+    },
+    "notes": {
+      "name": "Calculus, lecture 1",
+      "text": "A page of notes typed in Neovim during the lecture."
+    },
+    "snippets": {
+      "name": "Snippets",
+      "text": "Abbreviations that expand into LaTeX as they are typed."
+    },
+    "thesis": {
+      "name": "Thesis, p. 69",
+      "text": "A page of the thesis with its source under it."
+    },
+    "document": {
+      "name": "Document",
+      "text": "The cover of an example document: an invented company, the real class."
+    },
+    "wall": {
+      "name": "130 pages",
+      "text": "Every page of the thesis' last release."
+    },
+    "verify": {
+      "name": "collect_verify.py",
+      "text": "What the check says of a fact an agent brought."
+    }
+  },
+  "selectedFrame": "Selected: {name}",
+  "propertiesOf": "Properties: {name}",
+  "latex": {
+    "chip": "latex/",
+    "title": "LaTeX",
+    "state": "Since 2022",
+    "code": "Thesis sources",
+    "summary": "Lecture notes typed in Neovim, a thesis released on GitHub and product documents built from data.",
+    "period": "Period",
+    "periodValue": "since 2022",
+    "stack": "Stack",
+    "stackValue": "Neovim, vimtex, LuaSnip, Inkscape, LuaLaTeX",
+    "notesPages": "pages of notes",
+    "snippets": "snippets",
+    "thesisPages": "pages of the thesis",
+    "releases": "thesis releases",
+    "types": "document types",
+    "gates": "build checks",
+    "asOf": "As of {date}, from the repositories"
+  }
 }

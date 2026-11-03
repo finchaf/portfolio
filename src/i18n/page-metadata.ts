@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 
-import { PAGES, type PagePath } from "../lib/pages";
+import { EVERY_PAGE, type AnyPagePath } from "../lib/pages";
 import { SHARE_IMAGE, shareImagePath } from "../lib/share-images";
 import { SITE_NAME, SITE_ORIGIN } from "../lib/site";
 import { alternates } from "./alternates";
@@ -17,10 +17,13 @@ const OPEN_GRAPH_LOCALE: Record<Locale, string> = { ru: "ru_RU", en: "en_US" };
  *
  * @param params the page's route parameters: a language that is not the site's is a 404
  */
-export async function pageMetadata(params: { locale: string }, path: PagePath): Promise<Metadata> {
+export async function pageMetadata(
+  params: { locale: string },
+  path: AnyPagePath,
+): Promise<Metadata> {
   const { locale } = params;
   if (!isLocale(locale)) notFound();
-  const t = await getTranslations({ locale, namespace: `${PAGES[path]}.meta` });
+  const t = await getTranslations({ locale, namespace: `${EVERY_PAGE[path]}.meta` });
   const links = alternates(locale, path);
   return {
     title: { absolute: t("title") },
@@ -39,7 +42,7 @@ export async function pageMetadata(params: { locale: string }, path: PagePath): 
       images: [
         {
           ...SHARE_IMAGE,
-          url: `${SITE_ORIGIN}${shareImagePath(locale, PAGES[path])}`,
+          url: `${SITE_ORIGIN}${shareImagePath(locale, EVERY_PAGE[path])}`,
           alt: t("imageAlt"),
         },
       ],

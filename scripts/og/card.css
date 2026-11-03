@@ -341,13 +341,22 @@ body {
 }
 
 /* Projects: the palette itself, which keeps the page apart from Flow's violet, and two folders. */
-.card-projects .zone {
+.card-projects .zone,
+.card-portfolio .zone,
+.card-latex .zone {
   --sign-mark: var(--warning);
 }
 
 .card-projects .sign {
   right: 288px;
   font-size: 32px;
+}
+
+/* A page inside Projects: the same palette, its one folder, and a longer argument. */
+.card-portfolio .sign,
+.card-latex .sign {
+  right: 60px;
+  font-size: 30px;
 }
 
 .band {
@@ -403,7 +412,16 @@ body {
   background: var(--pink);
 }
 
-.folder-thesis {
+.folder-latex {
   top: 330px;
+  background: var(--teal);
+}
+
+.folder-only {
+  top: 251px;
+  background: var(--pink);
+}
+
+.folder-only.folder-teal {
   background: var(--teal);
 }

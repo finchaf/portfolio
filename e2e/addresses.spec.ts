@@ -137,6 +137,10 @@ test("the header moves between pages without a reload and marks the current one"
 
 test("the language link keeps the page", async ({ page }) => {
   await page.goto("/ru/projects");
+  // The board fills the screen and holds the footer under itself until the reader gets there.
+  await page.evaluate(() => {
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "instant" });
+  });
   await page.getByRole("link", { name: "English" }).click();
   await expect(page).toHaveURL(/\/en\/projects$/);
   await expect(page.locator("html")).toHaveAttribute("lang", "en");

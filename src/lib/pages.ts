@@ -13,3 +13,15 @@ export const PAGES = {
 export type PagePath = keyof typeof PAGES;
 
 export const PAGE_PATHS = Object.keys(PAGES) as PagePath[];
+
+/** Pages inside a page: not in the capsule, in everything else that walks over the pages. */
+export const SUBPAGES = {
+  "/projects/portfolio": "portfolio",
+  "/projects/latex": "latex",
+} as const;
+
+export const EVERY_PAGE = { ...PAGES, ...SUBPAGES };
+
+export type AnyPagePath = keyof typeof EVERY_PAGE;
+
+export const EVERY_PATH = Object.keys(EVERY_PAGE) as AnyPagePath[];

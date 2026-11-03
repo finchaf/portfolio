@@ -93,7 +93,13 @@ test("the default is the system, and a choice beats it and survives a reload", a
   await expect(page).toHaveURL(/\/ru\/projects$/);
   await expect.poll(() => background(page)).toBe(pageColor("projects", "dark"));
 
-  await page.getByTitle("Система", { exact: true }).click();
+  // The change of page puts the scroll back at the top when it ends, and the board hides the footer.
+  await expect(async () => {
+    await page.evaluate(() => {
+      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "instant" });
+    });
+    await page.getByTitle("Система", { exact: true }).click({ timeout: 1000 });
+  }).toPass();
   await expect(page.locator("html")).not.toHaveAttribute("data-theme");
   expect(await background(page)).toBe(pageColor("projects", "light"));
 });

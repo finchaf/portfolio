@@ -43,6 +43,7 @@ export function Header() {
     <header
       className="fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom))] left-1/2 z-30 flex max-w-[calc(100vw-1rem)] -translate-x-1/2 items-center p-1 text-ink transition-colors duration-(--duration-slow) lg:top-3.5 lg:bottom-auto"
       data-capsule
+      style={{ "--write-chars": t("shell.write").length }}
     >
       <i aria-hidden className="capsule-surface absolute inset-0" />
       <div className="capsule-items" data-capsule-items>
@@ -54,6 +55,7 @@ export function Header() {
             {PAGE_PATHS.map((path) => (
               <li key={path}>
                 <NavLink
+                  chars={path === "" ? undefined : t(`${PAGES[path]}.title`).length}
                   href={localizedPath(locale, path)}
                   label={path === "" ? t("home.title") : undefined}
                 >
@@ -94,7 +96,12 @@ export function Header() {
               <CodeFace
                 className="control-shape"
                 shape={
-                  <span className="capsule-link">
+                  <span
+                    className="capsule-link"
+                    style={
+                      path === "" ? undefined : { "--chars": t(`${PAGES[path]}.title`).length }
+                    }
+                  >
                     {path === "" ? <Mark /> : t(`${PAGES[path]}.title`)}
                   </span>
                 }

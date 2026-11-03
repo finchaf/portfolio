@@ -7,10 +7,14 @@
     "en/flow.html",
     "en/poranaparu.html",
     "en/projects.html",
+    "en/projects/latex.html",
+    "en/projects/portfolio.html",
     "ru.html",
     "ru/flow.html",
     "ru/poranaparu.html",
-    "ru/projects.html"
+    "ru/projects.html",
+    "ru/projects/latex.html",
+    "ru/projects/portfolio.html"
   ],
   "firstLoadJsBudgetKb": 280
 }

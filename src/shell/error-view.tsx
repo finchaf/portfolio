@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 
-import { CATALOG } from "@/i18n/catalog";
+import { SHELL } from "@/i18n/shell-catalog";
 import { DEFAULT_LOCALE, isLocale } from "@/i18n/locales";
 import { PageTitle } from "@/ui/page-title";
 
@@ -12,7 +12,7 @@ import { PageTitle } from "@/ui/page-title";
  */
 export function ErrorView({ retry }: { retry: () => void }) {
   const { locale } = useParams<{ locale: string }>();
-  const { error } = CATALOG[isLocale(locale) ? locale : DEFAULT_LOCALE].shell;
+  const { error } = SHELL[isLocale(locale) ? locale : DEFAULT_LOCALE];
   return (
     <div className="flex flex-col items-start gap-3 px-4 pt-[calc(var(--header)+1rem)] pb-[calc(var(--dock)+1rem)] lg:px-8">
       <PageTitle>{error.title}</PageTitle>

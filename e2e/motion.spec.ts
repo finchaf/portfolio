@@ -1512,3 +1512,338 @@ test.describe("a change of page", () => {
     });
   });
 });
+
+test.describe("the board of projects", () => {
+  /** The camera has taken the board once it has written the zoom. */
+  const ready = (page: Page) => expect(page.locator("[data-zoom-value]")).toHaveText(/\d+%/);
+
+  test.describe("without JavaScript", () => {
+    test.use({ javaScriptEnabled: false });
+
+    test("is a list of what lies on it, each frame a link into the project", async ({ page }) => {
+      await page.goto("/ru/projects");
+      await expect(page.getByRole("heading", { level: 2, name: "portfolio/" })).toBeVisible();
+      await expect(page.locator("[data-frame]")).toHaveCount(13);
+      await expect(page.locator('[data-frame="gates"]')).toHaveAttribute(
+        "href",
+        "/ru/projects/portfolio#gates",
+      );
+      await expect(page.locator('[data-frame="thesis"]')).toHaveAttribute(
+        "href",
+        "/ru/projects/latex#thesis",
+      );
+      await expect(page.locator(".pj-board-layers")).toBeHidden();
+    });
+
+    test("puts each project's properties under its frames", async ({ page }) => {
+      await page.goto("/ru/projects");
+      const panels = page.locator(".pj-board-inspector");
+      await expect(panels).toHaveCount(2);
+      await expect(panels.nth(1)).toBeVisible();
+      await expect(panels.nth(1).getByRole("heading", { level: 2 })).toHaveText("LaTeX");
+    });
+  });
+
+  test("a click selects a frame and leaves the address alone", async ({ page }) => {
+    await page.goto("/ru/projects");
+    await ready(page);
+    await page.locator('[data-frame="themes"]').click();
+    await expect(page.locator('[data-frame="themes"]')).toHaveAttribute("data-selected", "");
+    await expect(page.locator('[data-inspect="themes"]')).toBeVisible();
+    await expect(page).toHaveURL(/\/ru\/projects$/);
+  });
+
+  test("a frame moves under the hand and the panel reads where it went", async ({ page }) => {
+    await page.goto("/ru/projects");
+    await ready(page);
+    const box = await page.locator('[data-frame="gates"]').boundingBox();
+    if (!box) throw new Error("no frame");
+    await page.mouse.move(box.x + 20, box.y + 20);
+    await page.mouse.down();
+    await page.mouse.move(box.x + 60, box.y + 40, { steps: 4 });
+    await page.mouse.up();
+    await expect(page.locator('[data-inspect="gates"] [data-axis="x"]')).not.toHaveText("24");
+  });
+
+  test("the wheel hands over to the page at the board's lower edge", async ({ page }) => {
+    await page.goto("/ru/projects");
+    await ready(page);
+    await page.mouse.move(700, 450);
+    await page.mouse.wheel(0, 400);
+    await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(0);
+  });
+
+  test("the project opens and the way back returns to the board", async ({ page }) => {
+    await page.goto("/ru/projects");
+    await ready(page);
+    await page.locator(".pj-board-inspector[data-current] [data-open]").click();
+    await expect(page).toHaveURL(/\/ru\/projects\/portfolio$/);
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await page.locator(".pj-back").click();
+    await expect(page).toHaveURL(/\/ru\/projects$/);
+    await ready(page);
+  });
+
+  test("a click on another project's frame turns the panel to that project", async ({ page }) => {
+    await page.goto("/ru/projects");
+    await ready(page);
+    await expect(page.locator(".pj-board-inspector[data-current]")).toHaveAttribute(
+      "data-project",
+      "portfolio",
+    );
+    await page.locator('[data-frame="verify"]').click();
+    await expect(page.locator(".pj-board-inspector[data-current]")).toHaveAttribute(
+      "data-project",
+      "latex",
+    );
+    await expect(page.locator('[data-inspect="verify"]')).toBeVisible();
+    await expect(page.locator(".pj-board-inspector")).toHaveCount(2);
+    await expect(page.locator(".pj-board-inspector:visible")).toHaveCount(1);
+  });
+
+  test("the way back from a project opens the board on that project", async ({ page }) => {
+    await page.goto("/ru/projects");
+    await ready(page);
+    await page.locator('[data-layer="latex"]').click();
+    await page.locator(".pj-board-inspector[data-current] [data-open]").click();
+    await expect(page).toHaveURL(/\/ru\/projects\/latex$/);
+    await page.locator(".pj-back").click();
+    await expect(page).toHaveURL(/\/ru\/projects$/);
+    await ready(page);
+    await expect(page.locator(".pj-board-inspector[data-current]")).toHaveAttribute(
+      "data-project",
+      "latex",
+    );
+  });
+
+  test("keeps its shape after the styles of another page have loaded", async ({ page }) => {
+    await page.goto("/ru/projects");
+    await ready(page);
+    const before = await page.locator('[data-sec="latex"]').boundingBox();
+    await page.locator('[data-capsule] nav a[href$="/flow"]').click();
+    await expect(page).toHaveURL(/\/ru\/flow$/);
+    await page.locator('[data-capsule] nav a[href$="/projects"]').click();
+    await expect(page).toHaveURL(/\/ru\/projects$/);
+    await ready(page);
+    await expect(page.locator('[data-frame="themes"]')).toHaveCSS("position", "absolute");
+    await expect.poll(() => page.locator('[data-sec="latex"]').boundingBox()).toEqual(before);
+  });
+
+  test("keeps typed code as typed, with no joined signs", async ({ page }) => {
+    await page.goto("/ru/projects");
+    await expect(page.locator('[data-frame="snippets"] .pj-lines')).toHaveCSS(
+      "font-variant-ligatures",
+      "none",
+    );
+  });
+
+  test.describe("on a phone", () => {
+    test.use({ viewport: { width: 390, height: 664 } });
+
+    test("a frame is a plain link", async ({ page }) => {
+      await page.goto("/ru/projects");
+      await page.locator('[data-frame="journal"]').click();
+      await expect(page).toHaveURL(/\/ru\/projects\/portfolio#decisions$/);
+    });
+  });
+});
+
+test.describe("the project's page", () => {
+  test("the outline and the inspector follow the section in view", async ({ page }) => {
+    await page.goto("/ru/projects/portfolio");
+    await page.locator("#gates").scrollIntoViewIfNeeded();
+    await page.evaluate(() => {
+      document.getElementById("gates")?.scrollIntoView({ block: "center", behavior: "instant" });
+    });
+    await expect(page.locator('[data-goto="gates"]')).toHaveAttribute("aria-current", "true");
+    await expect(page.locator('[data-inspect="gates"]')).toBeVisible();
+  });
+
+  test("the sample of themes takes the mode it is given", async ({ page }) => {
+    await page.emulateMedia({ colorScheme: "light" });
+    await page.goto("/ru/projects/portfolio");
+    const sample = page.locator(".pj-themes-sample");
+    const before = await sample.evaluate((node) => getComputedStyle(node).backgroundColor);
+    await page.locator(".pj-themes-demo").getByRole("button", { name: "Тёмная" }).click();
+    await expect
+      .poll(() => sample.evaluate((node) => getComputedStyle(node).backgroundColor))
+      .not.toBe(before);
+    await expect(page.locator(".pj-themes-read")).toContainText(/\d,\d:1/);
+  });
+
+  test("a release moves the link and a rollback returns it", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/ru/projects/portfolio");
+    const live = page.locator(".pj-release-folders [data-live] span");
+    const before = await live.textContent();
+    await page.getByRole("button", { name: "Выкатить новый релиз" }).click();
+    await expect(live).not.toHaveText(before ?? "");
+    await page.getByRole("button", { name: "Откатить" }).click();
+    await expect(live).toHaveText(before ?? "");
+  });
+});
+
+test.describe("the LaTeX project's page", () => {
+  test("types the line of the lecture and shows the last compile", async ({ page }) => {
+    await page.goto("/ru/projects/latex");
+    const demo = page.locator(".pj-tx");
+    await demo.scrollIntoViewIfNeeded();
+    await expect(demo).toHaveAttribute("data-render-at", "2", { timeout: 20_000 });
+    await expect(page.locator(".pj-tx-code")).toContainText("m(E) = 0$.");
+    await expect(page.locator('.pj-tx-render[data-render="2"]')).toBeVisible();
+  });
+
+  test.describe("without JavaScript", () => {
+    test.use({ javaScriptEnabled: false });
+
+    test("shows the finished line and the last release", async ({ page }) => {
+      await page.goto("/ru/projects/latex");
+      await expect(page.locator(".pj-tx")).toHaveAttribute("data-render-at", "2");
+      await expect(page.locator(".pj-walls-tag")).toHaveText("v2026.06.10");
+      await expect(page.locator(".pj-thesis-code")).toBeHidden();
+    });
+  });
+
+  test("the slider picks a release", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/ru/projects/latex");
+    const range = page.locator(".pj-walls-range");
+    await range.fill("0");
+    await expect(page.locator(".pj-walls-tag")).toHaveText("v2026.05.12");
+    await expect(page.locator(".pj-walls-pages b")).toHaveText("3");
+  });
+
+  test("the lens shows the page's source under the pointer", async ({ page }) => {
+    await page.goto("/ru/projects/latex");
+    const paper = page.locator(".pj-thesis-paper");
+    await paper.scrollIntoViewIfNeeded();
+    const box = await paper.boundingBox();
+    if (!box) throw new Error("no page");
+    await page.mouse.move(box.x + box.width * 0.3, box.y + box.height * 0.6, { steps: 4 });
+    await expect
+      .poll(() => page.locator(".pj-thesis-code").evaluate((node) => node.style.clipPath))
+      .toMatch(/^circle\(/);
+    await page.locator(".pj-thesis").getByRole("button", { name: "Поля" }).click();
+    await expect(page.locator(".pj-thesis-fields")).toBeVisible();
+  });
+});
+
+test.describe("the capsule", () => {
+  const geometry = (page: Page) =>
+    page.evaluate(() => {
+      const capsule = document.querySelector("[data-capsule]");
+      return {
+        width: capsule?.getBoundingClientRect().width,
+        cells: [...(capsule?.querySelectorAll("nav a, [data-write]") ?? [])].map((cell) =>
+          Math.round(cell.getBoundingClientRect().left * 10),
+        ),
+      };
+    });
+
+  for (const language of ["ru", "en"]) {
+    test(`stands the same on every page, ${language}`, async ({ page }) => {
+      const seen = [];
+      for (const path of [
+        "",
+        "/poranaparu",
+        "/flow",
+        "/projects",
+        "/projects/portfolio",
+        "/projects/latex",
+      ]) {
+        await page.goto(`/${language}${path}`);
+        await expect(page.locator("html")).not.toHaveAttribute("data-intro");
+        await page.evaluate(() => document.fonts.ready);
+        seen.push(await geometry(page));
+      }
+      expect(new Set(seen.map((each) => JSON.stringify(each))).size).toBe(1);
+    });
+  }
+
+  test("does not stir between the board and a project", async ({ page }) => {
+    await page.goto("/ru/projects");
+    await expect(page.locator("[data-zoom-value]")).toHaveText(/\d+%/);
+    await page.evaluate(() => {
+      const seen = new Set<string>();
+      Object.assign(window, { seen });
+      const look = () => {
+        const capsule = document.querySelector("[data-capsule]");
+        const surface = capsule?.querySelector(".capsule-surface");
+        if (capsule && surface) {
+          const { opacity, scale } = getComputedStyle(surface);
+          seen.add(`${String(capsule.getBoundingClientRect().width)} ${opacity} ${scale}`);
+        }
+        requestAnimationFrame(look);
+      };
+      look();
+    });
+    await page.locator(".pj-board-inspector[data-current] [data-open]").click();
+    await expect(page).toHaveURL(/\/ru\/projects\/portfolio$/);
+    await page.locator(".pj-back").click();
+    await expect(page).toHaveURL(/\/ru\/projects$/);
+    const seen = await page.evaluate(() => (window as unknown as { seen: Set<string> }).seen.size);
+    expect(seen).toBe(1);
+  });
+
+  test("plays nothing after the slash has gone", async ({ page }) => {
+    await page.goto("/ru");
+    await expect(page.locator("html")).not.toHaveAttribute("data-intro");
+    await page.evaluate(() => {
+      window.scrollTo({ top: 1400, behavior: "instant" });
+    });
+    await expect(page.locator("html")).toHaveAttribute("data-scrolled");
+    await page.locator('[data-capsule] nav a[href$="/flow"]').click();
+    await expect(page).toHaveURL(/\/ru\/flow$/);
+    await expect(page.locator("html")).not.toHaveAttribute("data-scrolled");
+    await expect(page.locator("html")).not.toHaveAttribute("data-page-change");
+    const running = await page
+      .locator("[data-capsule]")
+      .evaluate((node) => node.getAnimations({ subtree: true }).length);
+    expect(running).toBe(0);
+  });
+
+  test("keeps the logo legible in a chapter that fills the chosen cell", async ({ page }) => {
+    await page.goto("/ru");
+    await expect(page.locator("html")).not.toHaveAttribute("data-intro");
+    await expect(async () => {
+      await page.evaluate(() => {
+        const chapter = document.querySelector("#work-projects");
+        const top = (chapter?.getBoundingClientRect().top ?? 0) + window.scrollY + 500;
+        window.scrollTo({ top, behavior: "instant" });
+      });
+      await expect(page.locator("[data-capsule]")).toHaveAttribute("data-tint", "projects", {
+        timeout: 1000,
+      });
+    }).toPass();
+    // The capsule's colours ease in, so the two are compared once they have settled.
+    await expect
+      .poll(() =>
+        page.locator("[data-capsule] nav a[aria-current]").evaluate((node) => {
+          const logo = node.querySelector(".fill-ink");
+          return logo && getComputedStyle(logo).fill === getComputedStyle(node).color;
+        }),
+      )
+      .toBe(true);
+  });
+
+  test("the board keeps the reader's dot, with no hand over it", async ({ page }) => {
+    await page.goto("/ru/projects");
+    await expect(page.locator("[data-zoom-value]")).toHaveText(/\d+%/);
+    await page.mouse.move(640, 640);
+    await expect(page.locator("html")).toHaveAttribute("data-pointer");
+    await expect(page.locator(".pj-board-canvas")).toHaveCSS("cursor", "none");
+  });
+
+  test.describe("on the narrowest phone", () => {
+    test.use({ viewport: { width: 320, height: 568 } });
+
+    for (const language of ["ru", "en"]) {
+      test(`fits with nothing to scroll, ${language}`, async ({ page }) => {
+        await page.goto(`/${language}/projects`);
+        const nav = page.locator("[data-capsule] nav");
+        const fits = await nav.evaluate((node) => node.scrollWidth <= node.clientWidth);
+        expect(fits).toBe(true);
+      });
+    }
+  });
+});

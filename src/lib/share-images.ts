@@ -1,8 +1,8 @@
 import type { Locale } from "../i18n/locales";
 import images from "./share-images.json" with { type: "json" };
-import type { PAGES } from "./pages";
+import type { EVERY_PAGE } from "./pages";
 
-type Card = (typeof PAGES)[keyof typeof PAGES];
+type Card = (typeof EVERY_PAGE)[keyof typeof EVERY_PAGE];
 
 /** The size of every link picture, and what the pictures are. */
 export const SHARE_IMAGE = { width: 1200, height: 630, type: "image/png" } as const;
