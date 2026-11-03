@@ -1244,18 +1244,6 @@
   width: min(100%, 13rem);
 }
 
-.project-frame {
-  display: flex;
-  flex-direction: column;
-  gap: 0.375rem;
-  width: min(100%, 40rem);
-  margin-inline: auto;
-  padding: 0.75rem;
-  border-radius: 1.25rem;
-  background: var(--page);
-  box-shadow: 0 0 0 1px var(--line);
-}
-
 @media (min-width: 64rem) {
   .stop {
     grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
@@ -2016,6 +2004,20 @@
       background-size: 1.5rem 1.5rem;
     }
 
+    /* On a touch screen a flick settles on the nearest rest of a chapter: `chapter-snap.ts`. */
+    &[data-snap] {
+      scroll-snap-type: y proximity;
+    }
+
+    .chapter-snap {
+      position: absolute;
+      left: 0;
+      width: 1px;
+      height: 1px;
+      pointer-events: none;
+      scroll-snap-align: start;
+    }
+
     .chapter-stops {
       position: absolute;
       inset: 0;
@@ -2060,6 +2062,12 @@
 
     .stop:not([data-active]) {
       pointer-events: none;
+    }
+
+    /* What a stop moves and fades is a layer of its own, so a phone moves it without painting. */
+    [data-stop-copy],
+    [data-stop-visual] {
+      will-change: transform, opacity;
     }
 
     /* Opacity alone: a keyboard and a screen reader keep what the eye has yet to reach. */

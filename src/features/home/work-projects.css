@@ -1,0 +1,584 @@
+/*
+ * The Projects chapter: the board of the Projects page under a camera, and the chapter's bar as
+ * the theme's status line. Plain, it is a section: the words of each stop one under another and
+ * the board after them as a picture. The scene and the status line are under `[data-js]` and the
+ * motion query, as the other chapters' are. Prefix `desk-`.
+ */
+
+.desk {
+  --desk-copy: min(31rem, 34vw);
+  display: grid;
+  gap: 2.5rem;
+}
+
+.desk-copies {
+  display: grid;
+  gap: 3rem;
+}
+
+.desk-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.desk-view {
+  order: 2;
+}
+
+.desk-world {
+  --section-ratio: 680 / 826;
+  --z: 1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.desk-focus,
+.desk-crumbs,
+.desk-meter {
+  display: none;
+}
+
+.desk-kicker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* A project and a frame in it, as a path: the project's tile, then the frame's name. */
+.desk-path {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.desk-path > span:last-child:not(.pj-chip) {
+  overflow: hidden;
+  color: var(--muted);
+  font: 500 0.875rem/1 var(--mono);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.desk-path > span:last-child:not(.pj-chip)::before {
+  content: "› " / "";
+  color: var(--surface-2);
+}
+
+.desk-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.75rem;
+  margin-top: 0.25rem;
+}
+
+.desk-facts b {
+  display: block;
+  font: 600 clamp(1.5rem, 2.2vw, 2.125rem) / 1 var(--mono);
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.desk-facts span {
+  display: block;
+  margin-top: 0.3125rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.desk-as-of {
+  margin-top: -0.375rem;
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
+.desk-open {
+  margin-top: 0.25rem;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.3em;
+  transition: color var(--duration-quick) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .desk-open:hover {
+    color: var(--accent-strong);
+  }
+}
+
+@media (max-width: 40rem) {
+  .desk-world {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :root[data-js] {
+    /* ---------- the scene ---------- */
+
+    .desk {
+      position: absolute;
+      inset: 0;
+      display: block;
+    }
+
+    .desk-view {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      /* The board runs on under the words and fades there, and it ducks under the capsule. */
+      mask: linear-gradient(
+        180deg,
+        transparent calc(var(--bar) + var(--desk-fade, var(--desk-words, 46svh)) + 0.25rem),
+        #000 calc(var(--bar) + var(--desk-fade, var(--desk-words, 46svh)) + 2.5rem)
+      );
+    }
+
+    .desk-world {
+      position: absolute;
+      top: 0;
+      left: 0;
+      grid-template-columns: repeat(2, 680px);
+      gap: 28px;
+      width: 1388px;
+      transform-origin: 0 0;
+      will-change: transform;
+    }
+
+    .desk-world .pj-sec {
+      margin: 0;
+    }
+
+    .desk-copies {
+      position: absolute;
+      z-index: 2;
+      top: calc(var(--bar) + 0.75rem);
+      right: var(--gutter);
+      left: var(--gutter);
+      display: block;
+      height: var(--desk-words, 46svh);
+    }
+
+    .desk-copy {
+      position: absolute;
+      inset: 0;
+      gap: 0.625rem;
+      will-change: transform, opacity;
+    }
+
+    /* Opacity alone: a keyboard and a screen reader keep what the eye has yet to reach. */
+    .desk-copy:not(:first-child) {
+      opacity: 0;
+    }
+
+    .desk-copy:not([data-active]) {
+      pointer-events: none;
+    }
+
+    .desk .stop-title {
+      font-size: 1.875rem;
+    }
+
+    .desk .stop-title-large {
+      font-size: 3.25rem;
+    }
+
+    .desk .stop-text {
+      font-size: 0.9375rem;
+      line-height: 1.4;
+    }
+
+    .desk-facts {
+      gap: 1.25rem;
+    }
+
+    .desk-facts b {
+      font-size: 1.375rem;
+    }
+
+    .desk-facts span {
+      margin-top: 0.1875rem;
+      font-size: 0.75rem;
+    }
+
+    .desk-as-of {
+      display: none;
+    }
+
+    .desk-open {
+      font-size: 0.875rem;
+    }
+
+    /* Where the camera sets what it frames: under the words on a phone, beside them on a screen. */
+    .desk-focus {
+      position: absolute;
+      top: calc(var(--bar) + var(--desk-words, 46svh) + 3rem);
+      right: var(--gutter);
+      bottom: calc(var(--dock) + 1.25rem);
+      left: var(--gutter);
+      display: block;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    /* ---------- the board under the camera: the page's selection, at the camera's scale ---------- */
+
+    .desk-world .pj-sec-label {
+      margin-bottom: calc(0.5rem / var(--z));
+      transform: scale(calc(1 / var(--z)));
+      transform-origin: 0 100%;
+    }
+
+    .desk-world .pj-sec {
+      outline: calc(2px / var(--z)) solid transparent;
+      outline-offset: calc(3px / var(--z));
+      transition: outline-color var(--duration-base) var(--ease-out);
+    }
+
+    .desk-world .pj-sec[data-selected] {
+      outline-color: var(--accent-strong);
+    }
+
+    .desk-world .pj-frame-name {
+      position: absolute;
+      bottom: 100%;
+      left: 0;
+      display: block;
+      overflow: hidden;
+      max-width: calc(100% * var(--z));
+      margin-bottom: calc(0.1875rem / var(--z));
+      color: var(--muted);
+      font-size: 0.6875rem;
+      line-height: 1.2;
+      text-overflow: ellipsis;
+      transform: scale(calc(1 / var(--z)));
+      transform-origin: 0 100%;
+      white-space: nowrap;
+      transition: color var(--duration-base) var(--ease-out);
+    }
+
+    .desk-world .pj-frame-handles {
+      position: absolute;
+      inset: 0;
+      outline: calc(1.5px / var(--z)) solid var(--accent-strong);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--duration-base) var(--ease-out);
+    }
+
+    .desk-world .pj-frame-handles::before,
+    .desk-world .pj-frame-handles::after {
+      content: "";
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      background: var(--page);
+      box-shadow: 0 0 0 1.5px var(--accent-strong);
+      transform: scale(calc(1 / var(--z)));
+    }
+
+    .desk-world .pj-frame-handles::before {
+      top: -3.5px;
+      left: -3.5px;
+    }
+
+    .desk-world .pj-frame-handles::after {
+      right: -3.5px;
+      bottom: -3.5px;
+    }
+
+    .desk-world .pj-frame[data-selected] {
+      z-index: 3;
+    }
+
+    .desk-world .pj-frame[data-selected] .pj-frame-handles {
+      opacity: 1;
+    }
+
+    .desk-world .pj-frame[data-selected] .pj-frame-name {
+      color: var(--accent-strong);
+    }
+
+    /* Under a selection its size, as an editor writes it, in the board's own units. */
+    .desk-world .pj-sec::after,
+    .desk-world .pj-frame::after {
+      content: attr(data-size);
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      z-index: 4;
+      margin-top: calc(0.5rem / var(--z));
+      padding: 0.1875rem 0.4375rem;
+      border-radius: 0.3125rem;
+      background: var(--accent-strong);
+      color: var(--on-accent);
+      font: 700 0.6875rem/1.2 var(--mono);
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(-50%) scale(calc(1 / var(--z)));
+      transform-origin: 0 0;
+      transition: opacity var(--duration-base) var(--ease-out);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .desk-world .pj-sec[data-selected]::after,
+    .desk-world .pj-frame[data-selected]::after {
+      opacity: 1;
+    }
+
+    @media (hover: hover) {
+      .desk-world .pj-frame:hover .pj-frame-handles {
+        opacity: 1;
+      }
+
+      .desk-world .pj-frame:hover .pj-frame-name {
+        color: var(--ink);
+      }
+    }
+
+    /* ---------- the bar as the status line of tmux and lualine ---------- */
+
+    .chapter[data-bar="status"] {
+      --bar: 3rem;
+    }
+
+    .chapter[data-bar="status"] .chapter-bar {
+      gap: 0.5rem;
+      padding-inline: 0.5rem;
+      background: var(--surface);
+      font-family: var(--mono);
+      /* Typed signs stay as typed: the face would join the cat's ^= into one. */
+      font-variant-ligatures: none;
+    }
+
+    .chapter[data-bar="status"] .chapter-name {
+      order: 0;
+      flex: none;
+      align-self: center;
+      gap: 0;
+      height: 2rem;
+      overflow: hidden;
+      border-radius: 999px;
+      background: var(--raised);
+      font-size: 0.8125rem;
+    }
+
+    .chapter[data-bar="status"] .chapter-name > span:first-child {
+      display: grid;
+      place-items: center;
+      align-self: stretch;
+      padding-inline: 0.625rem;
+      background: var(--accent-strong);
+      color: var(--on-accent);
+      font-size: inherit;
+      font-weight: 700;
+    }
+
+    .chapter[data-bar="status"] .chapter-name > span:last-child {
+      padding: 0 0.875rem 0 0.625rem;
+      font-family: var(--mono);
+      font-weight: 700;
+    }
+
+    .chapter[data-bar="status"] .chapter-actions {
+      order: 4;
+      flex: none;
+      gap: 0.5rem;
+    }
+
+    .desk-crumbs {
+      order: 2;
+      display: none;
+    }
+
+    .desk-meter {
+      order: 3;
+    }
+
+    .chapter[data-bar="status"] .chapter-rail {
+      order: 1;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (min-width: 64rem) {
+  :root[data-js] {
+    .desk-view {
+      mask:
+        linear-gradient(
+          90deg,
+          transparent calc(var(--edge) + var(--desk-copy) - 2rem),
+          #000 calc(var(--edge) + var(--desk-copy) + 6rem)
+        ),
+        linear-gradient(
+          180deg,
+          transparent calc(var(--header) + 0.25rem),
+          #000 calc(var(--header) + 3.25rem)
+        );
+      mask-composite: intersect;
+    }
+
+    .desk-copies {
+      top: var(--header);
+      right: auto;
+      bottom: var(--bar);
+      left: var(--edge);
+      width: var(--desk-copy);
+      height: auto;
+    }
+
+    .desk-copy {
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .desk .stop-title {
+      font-size: clamp(2rem, 3.9vw, 3.75rem);
+    }
+
+    .desk .stop-title-large {
+      font-size: clamp(3rem, 8vw, 8.5rem);
+    }
+
+    .desk .stop-text {
+      max-width: 30rem;
+      font-size: clamp(1rem, 1.25vw, 1.1875rem);
+      line-height: 1.45;
+    }
+
+    .desk-facts {
+      gap: 1.75rem;
+    }
+
+    .desk-facts b {
+      font-size: clamp(1.5rem, 2.2vw, 2.125rem);
+    }
+
+    .desk-facts span {
+      margin-top: 0.3125rem;
+      font-size: 0.875rem;
+    }
+
+    .desk-as-of {
+      display: block;
+    }
+
+    .desk-open {
+      font-size: 0.9375rem;
+    }
+
+    .desk-focus {
+      top: calc(var(--header) + 3.5rem);
+      right: var(--edge);
+      bottom: calc(var(--bar) + 2rem);
+      left: calc(var(--edge) + var(--desk-copy) + 3rem);
+    }
+
+    /* The status line: a session, its windows, the path of the selection, the zoom, the ways out. */
+    .chapter[data-bar="status"] .chapter-rail {
+      gap: 0.25rem;
+      font-size: 0.8125rem;
+    }
+
+    .chapter[data-bar="status"] .chapter-rail button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4375rem;
+      height: 2rem;
+      padding-inline: 0.75rem;
+      border-radius: 999px;
+      color: var(--muted);
+      font-weight: 600;
+      transition:
+        background-color var(--duration-base) var(--ease-out),
+        color var(--duration-base) var(--ease-out);
+    }
+
+    .chapter[data-bar="status"] .chapter-rail button > span {
+      color: var(--surface-2);
+      transition: color var(--duration-base) var(--ease-out);
+    }
+
+    .chapter[data-bar="status"] .chapter-rail li[data-active] button {
+      background: var(--accent-strong);
+      color: var(--on-accent);
+    }
+
+    .chapter[data-bar="status"] .chapter-rail li[data-active] button > span {
+      color: inherit;
+    }
+
+    @media (hover: hover) {
+      .chapter[data-bar="status"] .chapter-rail li:not([data-active]) button:hover {
+        background: var(--raised);
+        color: var(--ink);
+      }
+    }
+
+    .desk-crumbs {
+      display: grid;
+      flex: 1;
+      min-width: 0;
+      padding-left: 0.5rem;
+    }
+
+    .desk-crumbs > li {
+      grid-area: 1 / 1;
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      opacity: 0;
+      translate: 0 0.375rem;
+      transition:
+        opacity var(--duration-base) var(--ease-out),
+        translate var(--duration-base) var(--ease-out);
+    }
+
+    .desk-crumbs > li[data-active] {
+      opacity: 1;
+      translate: 0 0;
+    }
+
+    .desk-crumbs .pj-chip {
+      padding: 0.3125rem 0.5625rem;
+      font-size: 0.75rem;
+    }
+
+    .desk-meter {
+      display: flex;
+      flex: none;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.8125rem;
+    }
+
+    .desk-meter > span {
+      color: var(--muted);
+    }
+
+    .desk-meter > b {
+      display: inline-grid;
+      place-items: center;
+      min-width: 4.25rem;
+      height: 2rem;
+      padding-inline: 0.75rem;
+      border-radius: 999px;
+      background: var(--raised);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .chapter[data-bar="status"] .chapter-next {
+      display: inline-flex;
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import { gsap, ScrollTrigger } from "@/motion/gsap";
 
+import { snapToRests } from "./chapter-snap";
 import {
   buildMap,
   LAST_STOP,
@@ -150,6 +151,7 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
   let lastRung = -1;
   let drawn = -1;
   let camera: Camera | null = null;
+  let snap: ReturnType<typeof snapToRests> | null = null;
 
   /** Reads the theme's colours as computed: `light-dark()` stays unresolved in a custom property. */
   function readColours() {
@@ -767,6 +769,37 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
     }
   }
 
+  /* ---------- the status line ---------- */
+
+  const status = chapter.querySelector<HTMLElement>("[data-map-status]");
+  const counted = status
+    ? {
+        words: status.querySelector("[data-map-words]"),
+        chars: status.querySelector("[data-map-chars]"),
+      }
+    : null;
+  const forms = JSON.parse(status?.dataset.forms ?? "{}") as Partial<
+    Record<"words" | "chars", Record<string, string>>
+  >;
+  const language = document.documentElement.lang || "ru";
+  const plurals = new Intl.PluralRules(language);
+  const numbers = new Intl.NumberFormat(language);
+  const said = (count: number, unit: "words" | "chars") => {
+    const form = forms[unit] ?? {};
+    return `${numbers.format(count)} ${form[plurals.select(count)] ?? form.other ?? ""}`;
+  };
+
+  /** What Obsidian counts at the bottom right, of the note the scene stands on: its words, its characters. */
+  function tell(stop: number) {
+    if (!counted) return;
+    const text = (items[stop]?.querySelector(".map-copy")?.textContent ?? "")
+      .replace(/\s+/g, " ")
+      .trim();
+    const words = text.split(" ").filter((word) => /[\p{L}\p{N}]/u.test(word)).length;
+    if (counted.words) counted.words.textContent = said(words, "words");
+    if (counted.chars) counted.chars.textContent = said(text.length, "chars");
+  }
+
   /* ---------- every frame ---------- */
 
   function frame(time: number) {
@@ -775,7 +808,7 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
     const x = stop + inOut(move);
     const gathering =
       stop === LAST_STOP ? 1 : stop === LAST_STOP - 1 ? inOut(between(0.04, 1, move)) : 0;
-    const loop = stop === LAST_STOP ? inOut(between(0.2, 0.8, rest)) : 0;
+    const loop = stop === LAST_STOP ? inOut(between(0.05, 0.75, rest)) : 0;
     if (!map.settled) settleMap(map, gathering > 0 ? 200 : 6);
     runTerminal(x, now);
     if (pointer.on || hovered) {
@@ -788,6 +821,7 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
       rail.forEach((tick, index) => {
         tick.toggleAttribute("data-active", index === nearest);
       });
+      tell(nearest);
     }
     const settling =
       pointer.on && Math.abs(pointer.x - pointer.nearX) + Math.abs(pointer.y - pointer.nearY) > 0.5;
@@ -891,7 +925,10 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
       end: () => `+=${String(chapter.offsetHeight - 2 * window.innerHeight)}`,
       scrub,
       invalidateOnRefresh: true,
-      onRefresh: measure,
+      onRefresh: () => {
+        measure();
+        snap?.place();
+      },
     },
   });
   const onScreen = ScrollTrigger.create({
@@ -917,12 +954,36 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
   stage.addEventListener("pointerleave", onLeave);
   window.addEventListener("wheel", onWheel, { passive: true });
   window.addEventListener("keydown", onKey);
+  snap = snapToRests(chapter, () =>
+    map.stops.map((_, stop) => start() + progressOf(stop) * length()),
+  );
+  /*
+   * The graph's shape is worked out while the page is idle, long before the reader gets here: a
+   * piece of it in every frame of the scroll costs a phone its frames just as Flow rises.
+   */
+  let idle = 0;
+  const settleIdle = (deadline?: IdleDeadline) => {
+    const budget = Math.max(2, Math.min(8, deadline?.timeRemaining() ?? 6));
+    if (!settleMap(map, budget)) idle = later(settleIdle);
+  };
+  // Safari has no idle callback: there a short pause between pieces does the same.
+  const later = (run: (deadline?: IdleDeadline) => void): number =>
+    "requestIdleCallback" in window
+      ? window.requestIdleCallback(run, { timeout: 400 })
+      : Number(setTimeout(run, 40));
+  idle = window.setTimeout(() => {
+    idle = later(settleIdle);
+  }, 1500);
   void document.fonts.ready.then(measure);
+  tell(0);
   readColours();
   measure();
   if (onScreen.isActive) gsap.ticker.add(frame);
 
   return () => {
+    snap.undo();
+    window.clearTimeout(idle);
+    if ("cancelIdleCallback" in window) window.cancelIdleCallback(idle);
     gsap.ticker.remove(frame);
     theme.disconnect();
     scheme.removeEventListener("change", readColours);

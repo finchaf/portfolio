@@ -361,33 +361,34 @@
         }
       },
       "figuresDate": "As of 01.11.2026, counted over the checklists.",
-      "hubUnit": "rules"
+      "hubUnit": "rules",
+      "status": {
+        "words": {
+          "one": "word",
+          "few": "words",
+          "many": "words",
+          "other": "words"
+        },
+        "chars": {
+          "one": "character",
+          "few": "characters",
+          "many": "characters",
+          "other": "characters"
+        }
+      }
     },
     "projects": {
       "name": "Projects",
-      "label": "Everything else",
-      "text": "What I make beside the product: one screen for each project.",
+      "label": "Besides the product",
+      "text": "Two projects of my own: this site and everything I do in LaTeX. On their page they lie on a board, like mockups in an editor.",
       "ticks": {
         "intro": "About",
         "site": "This site",
-        "thesis": "LaTeX thesis"
+        "latex": "LaTeX"
       },
-      "site": {
-        "title": "This site",
-        "state": "In progress",
-        "text": "A portfolio built like a product: Next.js, GSAP, a theme system of its own, strict checks before every commit.",
-        "link": "Code on GitHub",
-        "file": "portfolio/",
-        "mock": "Screen recording: site"
-      },
-      "thesis": {
-        "title": "A thesis in LaTeX",
-        "state": "Defended, 2026",
-        "text": "A bachelor's thesis as a code project: LuaLaTeX, GOST formatting, PDF builds and releases through GitHub Actions.",
-        "link": "Sources on GitHub",
-        "file": "bachelor-thesis/",
-        "mock": "Pages of the thesis"
-      }
+      "themes": "Every page declares its theme: colours, typefaces and the look of controls. Two modes make eight combinations. A component reads tokens and knows nothing of themes.",
+      "releases": "The thesis came out in releases, like a program. Each release is a dated tag: GitHub Actions builds the PDF in a container with TeX Live and attaches it to the release.",
+      "section": "The “{name}” section"
     }
   }
 }

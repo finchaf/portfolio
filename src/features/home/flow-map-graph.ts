@@ -5,10 +5,18 @@ export const STOPS = ["intro", "brief", "research", "screens", "handoff", "rule"
 
 export const LAST_STOP = STOPS.length - 1;
 
-/** How long the scene rests on each stop, as a share of the move between two stops. */
-const RESTS = [0.5, 0.8, 0.8, 1.5, 0.8, 2.6, 1.8] as const;
+/**
+ * How long the scene rests on each stop and how long each flight to the next one takes, in one
+ * unit of scroll (`--length` over their sum). The rule rests longest: its history steps through
+ * five rungs. The last flight gathers the strip into the base and the base rests briefly: the
+ * chapter hands over to Projects right after.
+ */
+const RESTS = [0.6, 1, 1, 1.6, 1, 2.4, 0.7] as const;
+const MOVES = [1, 1, 1, 1, 1, 0.7] as const;
 
-const total = RESTS.reduce<number>((sum, rest) => sum + rest, 0) + LAST_STOP;
+const total =
+  RESTS.reduce<number>((sum, rest) => sum + rest, 0) +
+  MOVES.reduce<number>((sum, move) => sum + move, 0);
 
 export interface Moment {
   /** The stop the scene rests on or is leaving. */
@@ -27,8 +35,9 @@ export function momentAt(progress: number): Moment {
     if (left < rest) return { stop, move: 0, rest: left / rest };
     left -= rest;
     if (stop === LAST_STOP) break;
-    if (left < 1) return { stop, move: left, rest: 0 };
-    left -= 1;
+    const flight = MOVES[stop] as number;
+    if (left < flight) return { stop, move: left / flight, rest: 0 };
+    left -= flight;
   }
   return { stop: LAST_STOP, move: 0, rest: 1 };
 }
@@ -36,7 +45,9 @@ export function momentAt(progress: number): Moment {
 /** The share of the scroll at which a reader is settled on a stop. */
 export function progressOf(stop: number) {
   let at = 0;
-  for (let index = 0; index < stop; index += 1) at += (RESTS[index] as number) + 1;
+  for (let index = 0; index < stop; index += 1) {
+    at += (RESTS[index] as number) + (MOVES[index] as number);
+  }
   return (at + (RESTS[stop] as number) * 0.3) / total;
 }
 

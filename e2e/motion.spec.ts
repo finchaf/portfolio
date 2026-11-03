@@ -36,8 +36,9 @@ const topOf = (page: Page, selector: string) =>
 
 const HOME = "/ru";
 const CHAPTERS = 9;
-const STOPS = 8;
+const STOPS = 5;
 const PANELS = 7;
+const DESK = 5;
 
 test.describe("the home page without JavaScript", () => {
   test.use({ javaScriptEnabled: false });
@@ -53,6 +54,10 @@ test.describe("the home page without JavaScript", () => {
     await expect(page.locator(".story-photo img").first()).toHaveAttribute("loading", "lazy");
     await expect(page.locator(".stop")).toHaveCount(STOPS);
     for (const stop of await page.locator(".stop").all()) await expect(stop).toBeVisible();
+    await expect(page.locator(".desk-copy")).toHaveCount(DESK);
+    for (const copy of await page.locator(".desk-copy").all()) await expect(copy).toBeVisible();
+    await expect(page.locator(".desk-world .pj-sec").first()).toBeVisible();
+    await expect(page.locator("#work-projects [data-go]").first()).toBeHidden();
     await expect(page.locator(".map-stop")).toHaveCount(PANELS);
     for (const stop of await page.locator(".map-stop").all()) await expect(stop).toBeVisible();
     await expect(page.locator("[data-map-canvas]")).toBeHidden();
@@ -1015,6 +1020,23 @@ test.describe("the home page in motion", () => {
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(
       await page.evaluate(() => document.documentElement.clientWidth),
     );
+  });
+
+  test("flies over the Projects board and names the selection in its status line", async ({
+    page,
+  }) => {
+    await page.goto(HOME);
+    const chapter = page.locator("#work-projects");
+    await jump(page, (await topOf(page, "#work-projects")) + (await height(page)));
+    await chapter.locator("[data-go]").nth(2).click();
+    await expect(chapter.locator('[data-sec="latex"]')).toHaveAttribute("data-selected", "");
+    await expect(chapter.locator("[data-crumb]").nth(3)).toHaveAttribute("data-active", "");
+    await expect(chapter.locator("[data-tick]").nth(2)).toHaveAttribute("data-active", "");
+    // A link of a stop the eye has not reached brings the camera to it.
+    await chapter.getByRole("link", { name: "Раздел «Темы»" }).focus();
+    await expect(chapter.locator('[data-frame="themes"]')).toHaveAttribute("data-selected", "");
+    await expect(chapter.locator('[data-sec="latex"]')).not.toHaveAttribute("data-selected");
+    await expect(chapter.locator("[data-desk-zoom]")).toHaveText(/^\d+%$/);
   });
 
   test("goes along Flow's stops by the rail and the arrows", async ({ page }) => {

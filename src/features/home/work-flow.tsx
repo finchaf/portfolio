@@ -2,6 +2,7 @@ import "@/themes/flow-looks.css";
 import "@/ui/app-screens.css";
 import "./flow-map.css";
 
+import { ChevronsUpDown } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
@@ -24,6 +25,9 @@ import { Chapter } from "./chapter";
 import { STOPS } from "./flow-map-graph";
 
 const RUNGS = ["s0", "s1", "s2", "s3", "s4"] as const;
+
+/** The plural forms the status line counts with, as `Intl.PluralRules` names them. */
+const FORMS = ["one", "few", "many", "other"] as const;
 const WIRES = [
   <WelcomeWire key="a" />,
   <PaywallWire key="b" />,
@@ -249,6 +253,8 @@ export function WorkFlow() {
   const hubs = Object.fromEntries(CHECKLISTS.map(([id]) => [id, names(id)]));
   const ticks = STOPS.map((stop) => f(`ticks.${stop}`));
   const facts = ["period", "volume", "rules"] as const;
+  const plural = (unit: "words" | "chars") =>
+    Object.fromEntries(FORMS.map((form) => [form, f(`status.${unit}.${form}`)]));
   const figures = ["rules", "scripted", "repeated"] as const;
   return (
     <Chapter
@@ -260,6 +266,23 @@ export function WorkFlow() {
       path="/flow"
       ticks={ticks}
       world="flow"
+      bar={{
+        skin: "vault",
+        mark: (
+          <ChevronsUpDown aria-hidden className="map-vault-mark" size={14} strokeWidth={1.75} />
+        ),
+        right: (
+          <p
+            aria-hidden
+            className="map-status"
+            data-forms={JSON.stringify({ words: plural("words"), chars: plural("chars") })}
+            data-map-status
+          >
+            <span data-map-words />
+            <span data-map-chars />
+          </p>
+        ),
+      }}
     >
       <div className="map" data-map>
         <canvas

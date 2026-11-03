@@ -5,10 +5,12 @@ import { useRef, type ReactNode } from "react";
 import { gsap, MOTION_ALLOWED, ScrollTrigger, useGSAP } from "@/motion/gsap";
 import { SCENE } from "@/motion/tokens";
 
+import { snapToRests } from "./chapter-snap";
+import { runDesk } from "./desk-scene";
 import { runFlowMap } from "./flow-map-scene";
 
 /** The corners of a sheet rising over the page, and how far what it covers sinks. */
-const SHEET = { radius: "2rem", sunk: 0.93, dimmed: 0.55 };
+const SHEET = { radius: "2rem", sunk: 0.93, dimmed: 0.55, lastStretch: 0.06 };
 
 /** Both, so that a window or a tablet crossing the line builds the scene again. */
 const WIDTHS = {
@@ -40,32 +42,38 @@ function marker(chapter: HTMLElement) {
   };
 }
 
-/** A sheet coming up over a stage: its corners straighten, and what it covers sinks. */
+/**
+ * A sheet coming up over a stage: its corners straighten, and what it covers sinks. A changing
+ * corner repaints the whole sheet on every frame, which a phone cannot afford for a screen of
+ * scroll: there the corners stay round and straighten only over the last stretch, at the top.
+ */
 function rise(sheet: HTMLElement, rounded: HTMLElement, under: HTMLElement | null) {
   const scene = gsap.timeline({
     defaults: { ease: "none" },
     scrollTrigger: { trigger: sheet, start: "top bottom", end: "top top", scrub: true },
   });
+  const straighten = ScrollTrigger.isTouch === 1 ? SHEET.lastStretch : 1;
   scene.fromTo(
     rounded,
     { borderTopLeftRadius: SHEET.radius, borderTopRightRadius: SHEET.radius },
-    { borderTopLeftRadius: 0, borderTopRightRadius: 0 },
-    0,
+    { borderTopLeftRadius: 0, borderTopRightRadius: 0, duration: straighten },
+    1 - straighten,
   );
-  if (under) scene.to(under, { scale: SHEET.sunk, opacity: SHEET.dimmed }, 0);
+  if (under) scene.to(under, { scale: SHEET.sunk, opacity: SHEET.dimmed, duration: 1 }, 0);
 }
 
 /**
- * Stops one over another, resting long enough to read. The old one leaves upward and the new one
- * comes from below; with `stack` what is shown stays on the canvas, under the next one.
+ * Stops one over another, resting long enough to read: the old one leaves upward and the new one
+ * comes from below.
  */
-function runStops(chapter: HTMLElement, start: () => string, end: () => string, stack: boolean) {
+function runStops(chapter: HTMLElement, start: () => string, end: () => string) {
   const stops = gsap.utils.toArray<HTMLElement>("[data-stop]", chapter);
   const progress = chapter.querySelector("[data-chapter-progress]");
   const mark = marker(chapter);
   const part = (stop: HTMLElement | undefined, name: "copy" | "visual") =>
     stop?.querySelector(`[data-stop-${name}]`) ?? null;
   const arrivals = [0];
+  let snap: ReturnType<typeof snapToRests> | null = null;
 
   const scene = gsap.timeline({
     defaults: { ease: SCENE.move },
@@ -78,6 +86,9 @@ function runStops(chapter: HTMLElement, start: () => string, end: () => string, 
       end,
       scrub: follow(),
       invalidateOnRefresh: true,
+      onRefresh: () => {
+        snap?.place();
+      },
     },
   });
 
@@ -86,15 +97,7 @@ function runStops(chapter: HTMLElement, start: () => string, end: () => string, 
     const leaving = stops[index];
     const at = scene.duration();
     scene.to(part(leaving, "copy"), { yPercent: -35, opacity: 0, duration: LEAVING }, at);
-    if (stack) {
-      scene.to(
-        part(leaving, "visual"),
-        { scale: 0.86, rotation: -3, yPercent: -8, opacity: 0.4, duration: 1 },
-        at,
-      );
-    } else {
-      scene.to(part(leaving, "visual"), { yPercent: -45, opacity: 0, duration: LEAVING }, at);
-    }
+    scene.to(part(leaving, "visual"), { yPercent: -45, opacity: 0, duration: LEAVING }, at);
     scene.fromTo(
       part(stop, "copy"),
       { yPercent: 35, opacity: 0 },
@@ -103,8 +106,8 @@ function runStops(chapter: HTMLElement, start: () => string, end: () => string, 
     );
     scene.fromTo(
       part(stop, "visual"),
-      { yPercent: 60, scale: 0.94, opacity: 0, rotation: stack ? 4 : 0 },
-      { yPercent: 0, scale: 1, opacity: 1, rotation: 0, duration: 1 },
+      { yPercent: 60, scale: 0.94, opacity: 0 },
+      { yPercent: 0, scale: 1, opacity: 1, duration: 1 },
       at,
     );
     arrivals.push(at + 1);
@@ -122,8 +125,18 @@ function runStops(chapter: HTMLElement, start: () => string, end: () => string, 
     window.scrollTo({ top: trigger.labelToScroll(`stop-${index}`), behavior: "instant" });
   };
   chapter.addEventListener("focusin", meet);
+  // Each stop rests from its label for `SCENE.rest`: a flick settles a third of the way in.
+  snap = snapToRests(chapter, () => {
+    const trigger = scene.scrollTrigger;
+    if (!trigger) return [];
+    return stops.map((_, index) => {
+      const at = (scene.labels[`stop-${String(index)}`] ?? 0) + SCENE.rest * 0.3;
+      return trigger.start + (at / scene.duration()) * (trigger.end - trigger.start);
+    });
+  });
   return () => {
     chapter.removeEventListener("focusin", meet);
+    snap.undo();
   };
 }
 
@@ -218,15 +231,14 @@ export function WorkScene({ children }: { children: ReactNode }) {
           pora,
           () => "top top",
           () => `+=${pora.offsetHeight - 2 * window.innerHeight}`,
-          false,
         );
         const undoFlow = runFlowMap(flow, follow());
         handOver(flow, projects);
-        const undoProjects = runStops(
+        const undoProjects = runDesk(
           projects,
-          () => `top top-=${window.innerHeight}`,
-          () => `+=${projects.offsetHeight - 3 * window.innerHeight}`,
-          true,
+          () => `top top-=${String(window.innerHeight)}`,
+          () => `+=${String(projects.offsetHeight - 3 * window.innerHeight)}`,
+          follow(),
         );
 
         const poraStage = stage(pora);
