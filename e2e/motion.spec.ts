@@ -1687,8 +1687,13 @@ test.describe("the LaTeX project's page", () => {
   test("types the line of the lecture and shows the last compile", async ({ page }) => {
     await page.goto("/ru/projects/latex");
     const demo = page.locator(".pj-tx");
+    const replay = demo.locator(".pj-mini");
+    // The finished line is in the HTML, so its last compile shows before the typing starts: wait
+    // for the typing to start, then for it to end, or the check reads the page before the play.
     await demo.scrollIntoViewIfNeeded();
-    await expect(demo).toHaveAttribute("data-render-at", "2", { timeout: 20_000 });
+    await expect(replay).toBeDisabled();
+    await expect(replay).toBeEnabled({ timeout: 20_000 });
+    await expect(demo).toHaveAttribute("data-render-at", "2");
     await expect(page.locator(".pj-tx-code")).toContainText("m(E) = 0$.");
     await expect(page.locator('.pj-tx-render[data-render="2"]')).toBeVisible();
   });
