@@ -2,8 +2,8 @@
 
 Personal site of Danil Zablotsky, live at `finchaf.com`: a statically exported Next.js app with
 rich motion and interactive demos, served by Caddy. The home page and Flow are live in two
-languages, behind every gate; the other two pages are still placeholders. Check the plan before
-assuming what exists.
+languages, behind every gate; Projects and the page of this site inside it are built and wait for
+release; Pora na Paru is a placeholder. Check the plan before assuming what exists.
 
 ## Read this first — `docs/` is the source of truth
 
@@ -30,6 +30,8 @@ texts, cases or what the site may show. Commit there separately.
   ESLint holds this. Every page is in `src/lib/pages.ts`.
 - **No text in the markup.** Strings live in `messages/`, in both languages.
 - **Only theme tokens** (ADR-0010). Colours and fonts come from `src/themes/`, in both modes.
+- **A feature's classes carry its prefix** (`pj-` for Projects, `map-` for the Flow chapter). The
+  stylesheets of every page visited stay loaded, so a short name breaks another page on a route.
 - **The first screen never waits for animation.** Content is in the HTML and visible without
   JavaScript; every effect honours `prefers-reduced-motion`.
 - **Fonts and media only with clear rights.** GSAP stays an npm dependency: its files are never
@@ -47,7 +49,10 @@ is not yet in `main`, `/si` lands it, `/rf` ports a reference. Tasks live in the
 else touches it until the run is over.
 
 A choice of how something looks is made on a live page before the site changes: options in real
-tokens, in `docs/private/prototype/`, with a recommendation. A release is `python3 scripts/deploy.py`
-from `main`. A card's colours or strings changed: `pnpm og`, or the Unit gate goes red. The laptop is
-arm64 and CI is x64, so a simulation ends on different numbers: a hash never covers such a result.
-What `/si` reports is checked against `git` and `gh`, and a release is checked on the live site.
+tokens, in `docs/private/prototype/`, with a recommendation. The owner looks in Zen, which is Gecko:
+a visual change is checked in real Gecko too, mouse included, since some bugs live only there.
+
+A release is `python3 scripts/deploy.py` from `main`. A card's colours or strings changed: `pnpm og`,
+or the Unit gate goes red. The laptop is arm64 and CI is x64, so a simulation ends on different
+numbers: a hash never covers such a result. What `/si` reports is checked against `git` and `gh`,
+and a release is checked on the live site.
