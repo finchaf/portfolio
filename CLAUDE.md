@@ -1,9 +1,9 @@
 # Portfolio
 
 Personal site of Danil Zablotsky, live at `finchaf.com`: a statically exported Next.js app with
-rich motion and interactive demos, served by Caddy. The home page and Flow are live in two
-languages, behind every gate; Projects and the page of this site inside it are built and wait for
-release; Pora na Paru is a placeholder. Check the plan before assuming what exists.
+rich motion and interactive demos, served by Caddy. The home page, Flow and Projects are live in
+two languages, behind every gate: Projects is a board of two projects, this site and LaTeX, each
+with a page of its own. Pora na Paru is a placeholder. Check the plan before assuming what exists.
 
 ## Read this first — `docs/` is the source of truth
 
