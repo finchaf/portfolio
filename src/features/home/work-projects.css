@@ -7,6 +7,8 @@
 
 .desk {
   --desk-copy: min(31rem, 34vw);
+  /* Between the words and the board: the board's fade starts in it. */
+  --desk-gap: 3rem;
   display: grid;
   gap: 2.5rem;
 }
@@ -417,7 +419,7 @@
         linear-gradient(
           90deg,
           transparent calc(var(--edge) + var(--desk-copy) - 2rem),
-          #000 calc(var(--edge) + var(--desk-copy) + 6rem)
+          #000 calc(var(--edge) + var(--desk-copy) + var(--desk-gap) + 3rem)
         ),
         linear-gradient(
           180deg,
@@ -445,8 +447,9 @@
       font-size: clamp(2rem, 3.9vw, 3.75rem);
     }
 
+    /* The large word fits its column: «Проекты» is 4.4 of its size wide. */
     .desk .stop-title-large {
-      font-size: clamp(3rem, 8vw, 8.5rem);
+      font-size: clamp(3rem, calc(var(--desk-copy) / 4.7), 8.5rem);
     }
 
     .desk .stop-text {
@@ -480,7 +483,7 @@
       top: calc(var(--header) + 3.5rem);
       right: var(--edge);
       bottom: calc(var(--bar) + 2rem);
-      left: calc(var(--edge) + var(--desk-copy) + 3rem);
+      left: calc(var(--edge) + var(--desk-copy) + var(--desk-gap));
     }
 
     /* The status line: a session, its windows, the path of the selection, the zoom, the ways out. */
@@ -580,5 +583,27 @@
     .chapter[data-bar="status"] .chapter-next {
       display: inline-flex;
     }
+  }
+}
+
+/*
+ * A large monitor: the page's content stops at 87.5rem, but a board under a camera has no reason to
+ * stay small in the middle of a wide screen. The chapter keeps margins that grow with the screen, and
+ * the words, the gap and so the board grow with it.
+ */
+@media (prefers-reduced-motion: no-preference) and (min-width: 100rem) {
+  :root[data-js] .desk {
+    --edge: clamp(var(--gutter), 4vw, 7rem);
+    --desk-copy: min(40rem, 29vw);
+    --desk-gap: clamp(3rem, 4vw, 7rem);
+  }
+
+  :root[data-js] .desk .stop-text {
+    max-width: 34rem;
+    font-size: clamp(1.1875rem, 1vw, 1.375rem);
+  }
+
+  :root[data-js] .desk .stop-title {
+    font-size: clamp(3.75rem, 3vw, 4.5rem);
   }
 }
