@@ -180,43 +180,72 @@
   },
   "experience": {
     "title": "Experience",
+    "portrait": "Portrait of Danil Zablotsky",
+    "about": "I care about where design meets code: one person holding both the decision and how it works.",
     "rows": {
       "pora": {
         "years": "since 2026",
         "place": "Pora na paru",
-        "role": "Co-founder and CEO: design, iOS, Android, web"
-      },
-      "first": {
-        "years": "since 2024",
-        "place": "VCourse",
-        "role": "Creator: design and client development"
+        "role": "Co-founder and CEO: design, iOS, Android, web",
+        "fact": "2,642 commits across three clients, 2 June to 31 October 2026"
       },
       "team": {
         "years": "2026",
         "place": "iOS apps team",
-        "role": "Designer"
+        "role": "Designer",
+        "fact": "1–2 new apps a week, 234 rules in 16 checklists",
+        "link": "The Flow case"
       },
       "freelance": {
         "years": "2025",
         "place": "Freelance",
-        "role": "Web designer, under contract"
+        "role": "Web designer, under contract",
+        "fact": "A website for a salad dressing maker, delivered"
+      },
+      "first": {
+        "years": "since 2024",
+        "place": "VCourse",
+        "role": "Creator: design and client development",
+        "fact": "Apps in three stores, 3,428 App Store downloads by 4 October 2026"
       }
     },
     "educationTitle": "Education",
-    "educationMasters": "Central University, master's in Human Experience Design, since 2026",
-    "educationBachelors": "Omsk State University, applied mathematics and computer science, 2022–2026",
+    "education": {
+      "masters": {
+        "years": "since 2026",
+        "place": "Central University",
+        "role": "Master's in Human Experience Design"
+      },
+      "bachelors": {
+        "years": "2022–2026",
+        "place": "Omsk State University",
+        "role": "Bachelor's in applied mathematics and computer science",
+        "fact": "A thesis on the VCourse clients, typeset in LaTeX",
+        "link": "The LaTeX project"
+      }
+    },
     "notesTitle": "Also",
     "grant": "Student Startup grant, second stage participant, 2026",
     "pitch": "Pitch to investors, Tramplin tech park, April 2026",
     "english": "English B2",
-    "aboutTitle": "About me",
-    "about": "I live in Moscow. I care about where design meets code: one person holding both the decision and how it works.",
-    "portrait": "Portrait of Danil Zablotsky"
+    "toolsTitle": "Tools",
+    "tools": "Figma, SwiftUI, Jetpack Compose, TypeScript, React, Next.js, LaTeX"
   },
   "finale": {
     "title": "Let's talk",
     "text": "Telegram is the fastest way to reach me.",
-    "write": "Write to me"
+    "mail": "Email",
+    "github": "GitHub",
+    "ways": "Other ways",
+    "chat": {
+      "label": "A Telegram chat",
+      "service": "Telegram",
+      "day": "today",
+      "hello": "Hello! Write here, I answer in this chat.",
+      "draft": "Hi Danil! We'd like to talk about working on a product.",
+      "send": "Write on Telegram",
+      "scan": "Or point your camera"
+    }
   },
   "work": {
     "title": "Work",

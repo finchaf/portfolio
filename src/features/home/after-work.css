@@ -1,0 +1,570 @@
+/*
+ * The two blocks after the works: a short CV, then the last call with every way open. Both stand on
+ * the page's own ground. Prefixes: `exp-` for the CV, `talk-` for the call.
+ */
+
+/* ---------- shared: the status line ---------- */
+
+.exp-live {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.exp-dot {
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--success);
+}
+
+.exp-where {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+/* ---------- the CV ---------- */
+
+.exp {
+  padding: 3.5rem var(--gutter) 4rem;
+}
+
+/* On a phone the heading comes first; on a wide screen it stands over the rows, beside the person. */
+.exp-in {
+  display: grid;
+  grid-template-areas: "title" "profile" "main";
+  gap: 2rem;
+  max-width: var(--content);
+  margin-inline: auto;
+}
+
+.exp-title {
+  grid-area: title;
+}
+
+.exp-profile {
+  grid-area: profile;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/*
+ * The portrait stands on two rules, as a signature on a form. The figure ends where its shoulders
+ * would meet the frame, at 89 % of the picture's height, and the rules are drawn under that edge.
+ */
+.exp-photo {
+  position: relative;
+  width: min(100%, 20rem);
+  aspect-ratio: 800 / 641;
+  margin: 0 0 1.25rem;
+  overflow: hidden;
+  box-shadow:
+    0 2px 0 var(--ink),
+    0 5px 0 var(--page),
+    0 6px 0 var(--ink);
+}
+
+.exp-portrait {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+}
+
+.exp-name {
+  font: 800 2.25rem/1 var(--display);
+  letter-spacing: -0.02em;
+}
+
+.exp-role-line {
+  color: var(--muted);
+}
+
+.exp-role-line > span + span::before {
+  content: " · " / "";
+}
+
+.exp-about {
+  max-width: 24rem;
+  line-height: 1.5;
+}
+
+.exp-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  padding-top: 0.25rem;
+}
+
+.exp-main {
+  grid-area: main;
+}
+
+.exp-title {
+  padding-bottom: 0.75rem;
+  font: 700 clamp(2.25rem, 4.5vw, 3.5rem)/1 var(--display);
+}
+
+.exp-sub {
+  padding: 2.25rem 0 0.375rem;
+  font: 600 1.125rem/1.3 var(--display);
+}
+
+/* A row: the years on the margin, the place, the role, and a fact with a number and its date. */
+.exp-row {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: 0.25rem 1rem;
+  padding-block: 0.875rem;
+  border-top: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+}
+
+.exp-rows > .exp-row:first-child {
+  border-top: 0;
+}
+
+.exp-years {
+  padding-top: 0.15rem;
+  font: 600 0.9375rem/1.4 var(--mono);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.exp-what {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.exp-place {
+  font: 600 1.0625rem/1.35 var(--display);
+}
+
+.exp-role {
+  color: var(--muted);
+}
+
+.exp-fact {
+  margin-top: 0.25rem;
+  font-size: 0.9375rem;
+}
+
+.exp-more {
+  color: var(--accent-strong);
+  font: 500 0.8125rem/1 var(--mono);
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+  white-space: nowrap;
+}
+
+.exp-more::after {
+  content: " →" / "";
+}
+
+.exp-pair {
+  display: grid;
+  gap: 0 2.5rem;
+}
+
+.exp-notes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  color: var(--muted);
+}
+
+.exp-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem 0.875rem;
+  font: 400 0.8125rem/1.5 var(--mono);
+}
+
+.exp-tools li::before {
+  content: "\\" / "";
+  color: var(--accent-strong);
+}
+
+@media (min-width: 64rem) {
+  .exp {
+    padding-block: 7rem 6rem;
+  }
+
+  .exp-in {
+    grid-template: "profile title" auto "profile main" 1fr / minmax(0, 5fr) minmax(0, 7fr);
+    gap: 0 5rem;
+  }
+
+  .exp-title {
+    align-self: end;
+  }
+
+  /* The person holds while the rows pass. */
+  .exp-profile {
+    position: sticky;
+    top: calc(var(--header) + 2.5rem);
+    align-self: start;
+  }
+
+  .exp-photo {
+    width: min(100%, 22rem);
+  }
+
+  .exp-name {
+    font-size: clamp(2.5rem, 3.6vw, 3.25rem);
+  }
+
+  .exp-row {
+    grid-template-columns: 7rem minmax(0, 1fr);
+    padding-block: 1.125rem;
+  }
+
+  .exp-place {
+    font-size: 1.25rem;
+  }
+
+  .exp-pair {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ---------- the last call ---------- */
+
+.talk {
+  padding: 0 var(--gutter) 4.5rem;
+}
+
+/* Two rules part the call from the CV, the rules the controls of this page are drawn between. */
+.talk-in {
+  position: relative;
+  display: grid;
+  gap: 3rem;
+  max-width: var(--content);
+  margin-inline: auto;
+  padding-top: 3.5rem;
+}
+
+.talk-in::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 6px;
+  border-top: 2px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+
+.talk-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.talk .talk-title {
+  font-size: clamp(3rem, 7vw, 7.5rem);
+  line-height: 0.95;
+}
+
+.talk-lead {
+  font-size: 1.125rem;
+}
+
+.talk-ways {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.75rem;
+}
+
+.talk-way {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding-block: 1rem;
+  border-top: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
+}
+
+.talk-way-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.talk-key {
+  color: var(--muted);
+  font: 400 0.8125rem/1.4 var(--mono);
+}
+
+.talk-value {
+  font: 700 clamp(1.5rem, 2.8vw, 2.25rem)/1.1 var(--display);
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+}
+
+.talk-way-link .talk-value {
+  position: relative;
+}
+
+/* A way under the pointer takes the slash of the command, as the footer's ways do. */
+.talk-way-link .talk-value::before {
+  content: "\\" / "";
+  position: absolute;
+  right: 100%;
+  margin-right: 0.12em;
+  color: var(--accent-strong);
+  font-family: var(--mono);
+  opacity: 0;
+  translate: 0.3em 0;
+  transition:
+    opacity var(--duration-quick) var(--ease-out),
+    translate var(--duration-base) var(--ease-out);
+}
+
+@media (hover: hover) and (min-width: 40rem) {
+  .talk-way-link:hover .talk-value::before {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* The chat as it will open: the window is the link, the code beside it opens it on a phone. */
+.talk-chat {
+  position: relative;
+  justify-self: center;
+  width: min(100%, 25rem);
+}
+
+.talk-window {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background: var(--surface);
+  box-shadow:
+    0 0 0 1px light-dark(transparent, var(--line)),
+    0 2rem 3rem -2rem light-dark(color-mix(in srgb, var(--ink) 40%, transparent), transparent);
+  color: var(--ink);
+  transition: translate var(--duration-base) var(--ease-out);
+}
+
+.talk-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.talk-avatar {
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: var(--raised);
+  object-fit: cover;
+  object-position: 50% 0;
+}
+
+.talk-who {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9375rem;
+}
+
+.talk-who b {
+  font-weight: 600;
+}
+
+.talk-who > span {
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
+.talk-service::before {
+  content: " · " / "";
+}
+
+.talk-thread {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  min-height: 15rem;
+  padding: 1rem 1.25rem 1.25rem;
+}
+
+.talk-day {
+  align-self: center;
+  padding: 0.25rem 0.625rem;
+  background: var(--raised);
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.talk-in-line,
+.talk-out-line {
+  max-width: 85%;
+  padding: 0.625rem 0.875rem;
+  border-radius: 1.125rem;
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+
+.talk-in-line {
+  align-self: flex-start;
+  border-bottom-left-radius: 0.375rem;
+  background: var(--page);
+}
+
+.talk-time {
+  margin-left: 0.5rem;
+  color: var(--muted);
+  font-size: 0.6875rem;
+}
+
+.talk-out-line {
+  align-self: flex-end;
+  margin-top: auto;
+  border-bottom-right-radius: 0.375rem;
+  background: var(--accent-strong);
+  color: var(--on-accent);
+}
+
+.talk-draft {
+  position: relative;
+  display: block;
+}
+
+.talk-draft-room {
+  visibility: hidden;
+}
+
+.talk-draft-typed {
+  position: absolute;
+  inset: 0;
+}
+
+.talk-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 1px;
+  vertical-align: -0.15em;
+  background: currentColor;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .talk-caret {
+    animation: talk-blink 1s steps(1) infinite;
+  }
+}
+
+@keyframes talk-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.talk-send {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0.75rem 0.75rem;
+  padding: 0.5rem 0.5rem 0.5rem 1.125rem;
+  border-radius: 999px;
+  background: var(--page);
+  color: var(--muted);
+  font-size: 0.9375rem;
+  transition: color var(--duration-quick) var(--ease-out);
+}
+
+.talk-send b {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: var(--accent-strong);
+  color: var(--on-accent);
+  transition: rotate var(--duration-base) var(--ease-out);
+}
+
+.talk-send svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+@media (hover: hover) {
+  .talk-window:hover {
+    translate: 0 -2px;
+  }
+
+  .talk-window:hover .talk-send {
+    color: var(--ink);
+  }
+
+  .talk-window:hover .talk-send b {
+    rotate: 45deg;
+  }
+}
+
+/* A code stuck to the window's corner: only on a wide screen, as a phone cannot read its own. */
+.talk-sticker {
+  position: absolute;
+  top: -2.25rem;
+  right: -3.25rem;
+  display: none;
+  flex-direction: column;
+  gap: 0.375rem;
+  width: 8.5rem;
+  margin: 0;
+  padding: 0.625rem;
+  background: var(--paper);
+  box-shadow:
+    0 0 0 1px light-dark(transparent, var(--line)),
+    0 0.75rem 1.5rem -0.75rem
+      light-dark(color-mix(in srgb, var(--ink) 45%, transparent), transparent);
+  color: var(--muted);
+  font: 400 0.6875rem/1.2 var(--mono);
+  rotate: 7deg;
+}
+
+.talk-code {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: light-dark(var(--page), var(--ink));
+}
+
+.talk-code .write-code-module,
+.talk-code .write-code-mark {
+  fill: light-dark(var(--ink), var(--page));
+}
+
+.talk-code .write-code-mark:last-child {
+  fill: var(--accent-strong);
+}
+
+@media (min-width: 64rem) {
+  .talk {
+    padding-bottom: 7rem;
+  }
+
+  .talk-in {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 5rem;
+    padding-top: 5rem;
+  }
+
+  .talk-sticker {
+    display: flex;
+  }
+}

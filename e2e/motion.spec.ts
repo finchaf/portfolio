@@ -711,6 +711,18 @@ test.describe("the home page in motion", () => {
     await expect(page.locator("#experience-title > span")).not.toHaveCount(0);
   });
 
+  test("holds the person while the rows of the CV pass", async ({ page }) => {
+    await page.goto(HOME);
+    const top = await topOf(page, "#experience");
+    const profile = page.locator(".exp-profile");
+    await jump(page, top + 250);
+    const held = (await profile.boundingBox())?.y ?? 0;
+    await jump(page, top + 450);
+    await expect
+      .poll(async () => Math.round((await profile.boundingBox())?.y ?? 0))
+      .toBe(Math.round(held));
+  });
+
   test("lays the photographs on the page with nothing around them", async ({ page }) => {
     await page.goto(HOME);
     const print = page.locator(".story-print").first();
@@ -1209,17 +1221,32 @@ test.describe("the sheet out of the capsule", () => {
     await expect(page.locator(".write-sheet")).toBeHidden();
   });
 
-  test("the button toggles it, and the last call opens the same sheet", async ({ page }) => {
+  test("the button toggles it", async ({ page }) => {
     await page.goto(HOME);
     await write(page).click();
     await expect(page.locator(".write-sheet")).toBeVisible();
     await write(page).click();
     await expect(page.locator(".write-sheet")).toBeHidden();
-    await jump(page, await topOf(page, "#contact"));
-    await page.locator("#contact [data-write]").click();
-    await expect(page.locator(".write-sheet")).toBeVisible();
-    await expect(page.locator(".write-sheet")).toBeInViewport();
   });
+
+  test("is not needed at the last call: every way is open there", async ({ context, page }) => {
+    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+    await page.goto(HOME);
+    const call = page.locator("#contact");
+    await expect(call.getByRole("link", { name: "Написать в Telegram @finchaf" })).toHaveAttribute(
+      "href",
+      /^https:\/\/t\.me\//,
+    );
+    await expect(call.getByRole("link", { name: /work@finchaf\.com/ })).toHaveAttribute(
+      "href",
+      /^mailto:/,
+    );
+    await jump(page, await topOf(page, "#contact"));
+    await call.getByRole("button", { name: "Скопировать" }).click();
+    await expect(call.getByRole("button", { name: "Скопировано" })).toBeVisible();
+    expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("work@finchaf.com");
+  });
+
   test("copies the address and says so", async ({ context, page }) => {
     await context.grantPermissions(["clipboard-read", "clipboard-write"]);
     await page.goto(HOME);

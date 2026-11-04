@@ -11,8 +11,11 @@ function subscribe(onChange: () => void): () => void {
   };
 }
 
-/** The time in Moscow, once a browser can tell it: the HTML is built long before anyone reads it. */
-export function LocalClock({ locale }: { locale: string }) {
+/**
+ * The time in Moscow, once a browser can tell it: the HTML is built long before anyone reads it.
+ * It follows a city by default, after a comma; `bare` gives the time alone.
+ */
+export function LocalClock({ locale, bare = false }: { locale: string; bare?: boolean }) {
   const time = useSyncExternalStore(
     subscribe,
     () =>
@@ -24,5 +27,5 @@ export function LocalClock({ locale }: { locale: string }) {
       }),
     () => "",
   );
-  return <span className="tabular-nums">{time && `, ${time}`}</span>;
+  return <span className="tabular-nums">{time && (bare ? time : `, ${time}`)}</span>;
 }

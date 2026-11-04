@@ -22,7 +22,14 @@ function finder(x: number, y: number) {
  * The way to the chat as a code a phone reads, with the logo's slash in its middle. Drawn during the
  * build from the same address the links use, so the page carries a picture and no library.
  */
-export function TelegramCode({ label }: { label: string }) {
+export function TelegramCode({
+  label,
+  className = "write-code",
+}: {
+  label: string;
+  /** Where it stands: the sheet's look by default. */
+  className?: string;
+}) {
   const { size, data } = create(TELEGRAM_URL, { errorCorrectionLevel: "H" }).modules;
   const start = (size - MARK) / 2;
   const inFinder = (x: number, y: number) =>
@@ -42,7 +49,7 @@ export function TelegramCode({ label }: { label: string }) {
   return (
     <svg
       aria-label={label}
-      className="write-code"
+      className={className}
       role="img"
       viewBox={`${String(-QUIET)} ${String(-QUIET)} ${String(size + 2 * QUIET)} ${String(size + 2 * QUIET)}`}
     >

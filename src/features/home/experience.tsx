@@ -1,78 +1,174 @@
+import "./after-work.css";
+
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
+
+import { isLocale } from "@/i18n/locales";
+import { localizedPath } from "@/i18n/localized-path";
+import { GITHUB_URL, TELEGRAM_HANDLE, TELEGRAM_URL } from "@/lib/site";
+import { LocalClock } from "@/ui/local-clock";
 
 import { DriftTitle } from "./drift-title";
 import portrait from "./portrait.webp";
 
-const ROWS = ["pora", "first", "team", "freelance"] as const;
+/** The rows of work, by the year each began, the latest first; a path is where the fact goes on. */
+const ROWS = [
+  { key: "pora" },
+  { key: "team", path: "/flow" },
+  { key: "freelance" },
+  { key: "first" },
+] as const;
+
 const NOTES = ["grant", "pitch", "english"] as const;
 
 /** How far the heading starts from its place, in pixels of the wide screen. */
 const TITLE_DEPTH = 160;
 
-/** The dates a reader in a hurry came for, and a person behind them. */
+interface Line {
+  years: string;
+  place: string;
+  role: string;
+  fact?: string;
+  more?: { href: string; label: string };
+}
+
+/** One line of the CV: the years on the margin, the place, the role, and a fact with its date. */
+function CvRow({ line }: { line: Line }) {
+  return (
+    <li className="exp-row">
+      <span className="exp-years">{line.years}</span>
+      <span className="exp-what">
+        <span className="exp-place">{line.place}</span>
+        <span className="exp-role">{line.role}</span>
+        {line.fact ? (
+          <span className="exp-fact">
+            {line.fact}
+            {line.more ? (
+              <>
+                {" "}
+                <Link className="exp-more" href={line.more.href}>
+                  {line.more.label}
+                </Link>
+              </>
+            ) : null}
+          </span>
+        ) : null}
+      </span>
+    </li>
+  );
+}
+
+/**
+ * A short CV: on the left the person, standing on two rules, held while the rows pass on the right.
+ * The portrait has no ground of its own; its shoulders meet the frame only in its lowest tenth, and
+ * the rules keep that part out of sight.
+ */
 export function Experience() {
   const t = useTranslations("home.experience");
+  const hero = useTranslations("home.hero");
+  const current = useLocale();
+  const locale = isLocale(current) ? current : "ru";
+  const rows: Line[] = ROWS.map((row) => ({
+    years: t(`rows.${row.key}.years`),
+    place: t(`rows.${row.key}.place`),
+    role: t(`rows.${row.key}.role`),
+    fact: t(`rows.${row.key}.fact`),
+    more:
+      "path" in row
+        ? { href: localizedPath(locale, row.path), label: t("rows.team.link") }
+        : undefined,
+  }));
+  const education: Line[] = [
+    {
+      years: t("education.masters.years"),
+      place: t("education.masters.place"),
+      role: t("education.masters.role"),
+    },
+    {
+      years: t("education.bachelors.years"),
+      place: t("education.bachelors.place"),
+      role: t("education.bachelors.role"),
+      fact: t("education.bachelors.fact"),
+      more: {
+        href: localizedPath(locale, "/projects/latex"),
+        label: t("education.bachelors.link"),
+      },
+    },
+  ];
   return (
-    <section
-      aria-labelledby="experience-title"
-      className="mx-auto grid w-full max-w-(--content) gap-10 px-(--gutter) py-10 lg:grid-cols-[3fr_2fr] lg:gap-16 lg:pt-24 lg:pb-16"
-      id="experience"
-    >
-      <div className="flex flex-col gap-8">
-        <div className="flex flex-col gap-4">
-          <DriftTitle
-            className="font-display text-3xl font-bold lg:text-5xl"
-            depth={TITLE_DEPTH}
-            id="experience-title"
-          >
-            {t("title")}
-          </DriftTitle>
-          <ul>
-            {ROWS.map((row) => (
-              <li
-                className="grid gap-x-6 border-t border-line py-3 sm:grid-cols-[6.5rem_1fr]"
-                key={row}
-              >
-                <span className="font-mono text-sm text-muted sm:pt-0.5">
-                  {t(`rows.${row}.years`)}
-                </span>
-                <span className="flex flex-col">
-                  <span className="font-semibold">{t(`rows.${row}.place`)}</span>
-                  <span className="text-muted">{t(`rows.${row}.role`)}</span>
-                </span>
-              </li>
+    <section aria-labelledby="experience-title" className="exp" id="experience">
+      <div className="exp-in">
+        <DriftTitle className="exp-title" depth={TITLE_DEPTH} id="experience-title">
+          {t("title")}
+        </DriftTitle>
+        <aside className="exp-profile">
+          <figure className="exp-photo">
+            <Image
+              alt={t("portrait")}
+              className="exp-portrait"
+              draggable={false}
+              sizes="(min-width: 64rem) 22rem, 20rem"
+              src={portrait}
+              unoptimized
+            />
+          </figure>
+          <p className="exp-name">{hero("name")}</p>
+          <p className="exp-role-line">
+            <span>{hero("role")}</span>
+            <span>{hero("roleNote")}</span>
+          </p>
+          <p className="exp-live">
+            <span aria-hidden className="exp-dot" />
+            <span>{hero("status")}</span>
+            <span className="exp-where">
+              {hero("city")}
+              <LocalClock locale={locale} />
+            </span>
+          </p>
+          <p className="exp-about">{t("about")}</p>
+          <p className="exp-links">
+            <a className="control-link" href={TELEGRAM_URL}>
+              {TELEGRAM_HANDLE}
+            </a>
+            <a className="control-link" href={GITHUB_URL}>
+              {hero("github")}
+            </a>
+          </p>
+        </aside>
+
+        <div className="exp-main">
+          <ul className="exp-rows">
+            {rows.map((line) => (
+              <CvRow key={line.place} line={line} />
             ))}
           </ul>
-        </div>
-        <div className="grid gap-6 sm:grid-cols-2">
-          <div className="flex flex-col gap-1">
-            <h3 className="font-display font-semibold">{t("educationTitle")}</h3>
-            <ul className="flex flex-col gap-1 text-muted">
-              <li>{t("educationMasters")}</li>
-              <li>{t("educationBachelors")}</li>
-            </ul>
+          <h3 className="exp-sub">{t("educationTitle")}</h3>
+          <ul className="exp-rows">
+            {education.map((line) => (
+              <CvRow key={line.place} line={line} />
+            ))}
+          </ul>
+          <div className="exp-pair">
+            <div>
+              <h3 className="exp-sub">{t("notesTitle")}</h3>
+              <ul className="exp-notes">
+                {NOTES.map((note) => (
+                  <li key={note}>{t(note)}</li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="exp-sub">{t("toolsTitle")}</h3>
+              <ul className="exp-tools">
+                {t("tools")
+                  .split(", ")
+                  .map((tool) => (
+                    <li key={tool}>{tool}</li>
+                  ))}
+              </ul>
+            </div>
           </div>
-          <div className="flex flex-col gap-1">
-            <h3 className="font-display font-semibold">{t("notesTitle")}</h3>
-            <ul className="flex flex-col gap-1 text-muted">
-              {NOTES.map((note) => (
-                <li key={note}>{t(note)}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-col gap-4 lg:pt-14">
-        <Image
-          alt={t("portrait")}
-          className="size-32 rounded-3xl object-cover lg:size-48"
-          src={portrait}
-          unoptimized
-        />
-        <div className="flex flex-col gap-1">
-          <h3 className="font-display font-semibold">{t("aboutTitle")}</h3>
-          <p className="max-w-prose text-muted">{t("about")}</p>
         </div>
       </div>
     </section>

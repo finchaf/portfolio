@@ -5,8 +5,8 @@ import { useTranslations } from "next-intl";
 import { EMAIL, TELEGRAM_HANDLE, TELEGRAM_URL } from "@/lib/site";
 import { ButtonLink } from "@/ui/button-link";
 import { CopyAddress } from "@/ui/copy-address";
+import { TelegramCode } from "@/ui/telegram-code";
 
-import { TelegramCode } from "./telegram-code";
 import { WriteSheet } from "./write-sheet";
 
 /** What «Написать» opens: both ways at once, Telegram with a code for a phone beside the screen. */

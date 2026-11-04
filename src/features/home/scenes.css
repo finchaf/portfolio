@@ -2104,11 +2104,12 @@
       justify-items: center;
     }
 
+    /* `clip`, not `hidden`: a scroll box here would stop the CV's profile from holding with `sticky`. */
     .after-work {
       position: relative;
       z-index: 3;
       margin-top: -100svh;
-      overflow: hidden;
+      overflow: clip;
       background: var(--page);
       box-shadow: var(--sheet-shadow);
     }
