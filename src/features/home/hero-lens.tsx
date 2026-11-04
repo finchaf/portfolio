@@ -7,7 +7,7 @@ import { DURATION, PAGE_MOVED, SCENE } from "@/motion/tokens";
 
 import { HERO_FACE } from "./hero-source";
 import { HeroSettings, type HeroSettingsProps } from "./hero-settings";
-import { Segmented } from "./segmented";
+import { Segmented } from "@/ui/segmented";
 
 type Layer = "design" | "code";
 

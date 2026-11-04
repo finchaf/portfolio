@@ -8,10 +8,12 @@ const CONFIRMED = 1600;
 export interface CopyAddressProps {
   address: string;
   labels: Record<"copy" | "copied", string>;
+  /** The button's look where it stands: the sheet's own, or a control of the theme. */
+  className?: string;
 }
 
 /** Puts the address on the clipboard: `mailto:` opens nothing on a computer with no mail program. */
-export function CopyAddress({ address, labels }: CopyAddressProps) {
+export function CopyAddress({ address, labels, className = "write-copy" }: CopyAddressProps) {
   const [copied, setCopied] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
@@ -33,7 +35,7 @@ export function CopyAddress({ address, labels }: CopyAddressProps) {
 
   return (
     <button
-      className="write-copy"
+      className={className}
       onClick={() => {
         void copy();
       }}

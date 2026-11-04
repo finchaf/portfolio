@@ -1,0 +1,130 @@
+/*
+ * The theme's skin decides the look (ADR-0011): a well and a thumb, two rules and a line, the windows
+ * of a status line. Every `--tab*` variable is optional, and its fallback is the home page's skin.
+ */
+.segmented {
+  display: flex;
+  gap: var(--tabs-gap, 0);
+  width: fit-content;
+  height: var(--tabs-height, auto);
+  padding: var(--tabs-pad, 0.125rem);
+  border-radius: var(--tabs-radius, var(--control-radius));
+  background: var(--tabs-well, var(--control-well));
+  box-shadow: var(--tabs-rules, var(--control-rules));
+  font-family: var(--tab-face, var(--control-face));
+  font-size: var(--tab-text, calc(var(--control-text-small) * 1rem));
+  font-weight: var(--tab-weight, 400);
+  font-variant-ligatures: none;
+}
+
+.segmented-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--tab-gap, 0);
+  min-height: var(--tab-height, auto);
+  padding: var(--tab-pad, 0.25rem 0.625rem);
+  border: 1px solid transparent;
+  border-width: var(--tab-border-width, 0);
+  border-radius: var(--tab-radius, var(--control-radius));
+  color: var(--tab-ink, var(--muted));
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color var(--duration-base) var(--ease-out),
+    background-color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+}
+
+.segmented-option::before {
+  content: var(--tab-mark, var(--control-open)) / "";
+  color: var(--accent-strong);
+}
+
+/* The line under the choice is drawn from its start, rather than switched on. */
+.segmented-option::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -0.1875rem;
+  left: 0;
+  height: 2px;
+  background: var(--tab-line, var(--control-line));
+  scale: 0 1;
+  transform-origin: 0 50%;
+  transition: scale var(--duration-base) var(--ease-out);
+}
+
+/* tmux numbers its windows; other themes keep the number out of sight. */
+.segmented-number {
+  display: var(--tab-number, none);
+  color: var(--tab-number-ink, var(--muted));
+  transition: color var(--duration-base) var(--ease-out);
+}
+
+.segmented-glyph {
+  display: var(--tab-glyph, none);
+  flex: none;
+  opacity: var(--tab-glyph-opacity, 1);
+}
+
+.segmented-glyph > svg {
+  width: var(--tab-glyph-size, 1rem);
+  height: var(--tab-glyph-size, 1rem);
+}
+
+/* A theme that shows the mark alone keeps the word for a screen reader: it is only made 0 wide. */
+.segmented-glyph + .segmented-label {
+  margin-inline-start: var(--tab-glyph-gap, 0);
+  font-size: var(--tab-glyph-label, 1em);
+}
+
+.segmented-option:has(.segmented-glyph) {
+  padding: var(--tab-glyph-pad, var(--tab-pad, 0.25rem 0.625rem));
+}
+
+@media (hover: hover) {
+  .segmented-option:hover {
+    background: var(--tab-hover, transparent);
+    color: var(--tab-hover-ink, var(--ink));
+  }
+}
+
+/* A choice is a radio button, a link to where the reader already is, or a button that stands open. */
+.segmented-option:is(:has(:checked), [aria-current="true"], [aria-expanded="true"]) {
+  border-color: var(--tab-current-border, transparent);
+  background: var(--tab-current, var(--control-thumb));
+  box-shadow: var(--tab-current-shadow, none);
+  color: var(--tab-current-ink, var(--ink));
+}
+
+.segmented-option:is(:has(:checked), [aria-current="true"]) .segmented-number {
+  color: inherit;
+}
+
+.segmented-option:is(:has(:checked), [aria-current="true"]) .segmented-glyph {
+  opacity: 1;
+}
+
+.segmented-option:is(:has(:checked), [aria-current="true"], [aria-expanded="true"])::after {
+  scale: 1 1;
+}
+
+.segmented-option:is(:has(:focus-visible), :focus-visible) {
+  outline: 2px solid var(--accent-strong);
+}
+
+/* A mark instead of a word: no slash before it, and more room for a finger than it shows. */
+.segmented-icon {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  padding-block: 0;
+  padding-inline: 0.4375rem;
+}
+
+.segmented-icon::before {
+  content: "";
+  position: absolute;
+  inset: -0.5rem -0.25rem;
+}

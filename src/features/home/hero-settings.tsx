@@ -9,7 +9,7 @@ import { PAGE_MOVED } from "@/motion/tokens";
 import { THEMES, type Theme } from "@/themes/theme";
 import { useTheme } from "@/themes/use-theme";
 
-import { Segmented } from "./segmented";
+import { Segmented } from "@/ui/segmented";
 import { SettingsIcon } from "./settings-icon";
 
 export interface HeroSettingsProps {

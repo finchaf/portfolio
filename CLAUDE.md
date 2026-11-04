@@ -31,7 +31,7 @@ texts, cases or what the site may show. Commit there separately.
 - **No text in the markup.** Strings live in `messages/`, in both languages.
 - **Only theme tokens** (ADR-0010). Colours and fonts come from `src/themes/`, in both modes.
 - **A feature's classes carry its prefix** (`pj-` for Projects and the shared board in `src/ui/board/`, `map-` for the
-  Flow chapter, `desk-` for the Projects chapter). The stylesheets of every page visited stay loaded, so a short name
+  Flow chapter, `desk-` for the Projects chapter, `footer-` for the footer). The stylesheets of every page visited stay loaded, so a short name
   breaks another page on a route.
 - **The first screen never waits for animation.** Content is in the HTML and visible without
   JavaScript; every effect honours `prefers-reduced-motion`.

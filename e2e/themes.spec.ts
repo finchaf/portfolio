@@ -89,7 +89,10 @@ test("the default is the system, and a choice beats it and survives a reload", a
   await expect(page.getByRole("radio", { name: "Тёмная" })).toBeChecked();
   expect(await background(page)).toBe(pageColor("flow", "dark"));
 
-  await page.getByRole("navigation").getByRole("link", { name: "Проекты" }).click();
+  await page
+    .getByRole("navigation", { name: "Разделы сайта" })
+    .getByRole("link", { name: "Проекты" })
+    .click();
   await expect(page).toHaveURL(/\/ru\/projects$/);
   await expect.poll(() => background(page)).toBe(pageColor("projects", "dark"));
 

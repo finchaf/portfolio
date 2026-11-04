@@ -74,6 +74,32 @@
   --capsule-cap: ">";
   --capsule-narrow: var(--accent-strong);
   --capsule-narrow-ink: var(--on-accent);
+
+  /* Tabs: the windows of the status line, numbered, the active one filled with the accent. */
+  --tabs-well: transparent;
+  --tabs-rules: 0 0 transparent;
+  --tabs-pad: 0;
+  --tabs-gap: 0.25rem;
+  --tab-face: var(--mono);
+  --tab-text: 0.8125rem;
+  --tab-weight: 600;
+  --tab-gap: 0.4375rem;
+  --tab-pad: 0 0.75rem;
+  --tab-height: 2rem;
+  --tab-radius: 999px;
+  --tab-mark: "";
+  --tab-line: transparent;
+  --tab-number: inline;
+  --tab-number-ink: var(--surface-2);
+  --tab-hover: var(--raised);
+  --tab-current: var(--accent-strong);
+  --tab-current-ink: var(--on-accent);
+
+  /*
+   * Links and URLs are Blue by the style guide. Latte's Blue is 4.0:1 on Mantle, so text takes a
+   * deeper step of the same hue, as the green does: #1959dc is 4.9:1. Mocha's Blue is exact.
+   */
+  --link: light-dark(#1959dc, #89b4fa);
 }
 
 :root:has([data-world="projects"]),

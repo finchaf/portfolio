@@ -395,9 +395,15 @@ test.describe("the home page in motion", () => {
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     await expect(root).not.toHaveAttribute("data-intro");
     await expect.poll(() => lens(page, "--lens-r")).toBeGreaterThan(0);
-    await page.getByRole("navigation").getByRole("link", { name: "Флоу" }).click();
+    await page
+      .getByRole("navigation", { name: "Разделы сайта" })
+      .getByRole("link", { name: "Флоу" })
+      .click();
     await page.waitForURL("**/ru/flow");
-    await page.getByRole("navigation").getByRole("link", { name: "Главная" }).click();
+    await page
+      .getByRole("navigation", { name: "Разделы сайта" })
+      .getByRole("link", { name: "Главная" })
+      .click();
     await page.waitForURL(`**${HOME}`);
     await expect(root).not.toHaveAttribute("data-intro");
     await page.goto("/ru/flow");
@@ -1133,7 +1139,14 @@ test.describe("the shell", () => {
     const footer = page.locator("footer");
     await expect(footer.getByRole("radio", { name: "Тёмная" })).toBeAttached();
     await expect(footer.getByRole("link", { name: "English" })).toHaveAttribute("href", "/en");
+    await expect(footer.getByRole("link", { name: "Русский" })).toHaveAttribute(
+      "aria-current",
+      "true",
+    );
     await expect(footer.getByRole("link", { name: "Telegram" })).toBeAttached();
+    // The address is on the screen whole, and the button beside it copies it.
+    await expect(footer.getByRole("link", { name: "Почта" })).toContainText("work@finchaf.com");
+    await expect(footer.getByRole("button", { name: "Скопировать" })).toBeAttached();
   });
 });
 
@@ -1207,7 +1220,6 @@ test.describe("the sheet out of the capsule", () => {
     await expect(page.locator(".write-sheet")).toBeVisible();
     await expect(page.locator(".write-sheet")).toBeInViewport();
   });
-
   test("copies the address and says so", async ({ context, page }) => {
     await context.grantPermissions(["clipboard-read", "clipboard-write"]);
     await page.goto(HOME);
@@ -1320,7 +1332,9 @@ test.describe("the home page on a phone", () => {
 
   test("gives the logo the width it draws", async ({ page }) => {
     await page.goto(HOME);
-    const link = page.getByRole("navigation").getByRole("link", { name: "Главная" });
+    const link = page
+      .getByRole("navigation", { name: "Разделы сайта" })
+      .getByRole("link", { name: "Главная" });
     const box = await link.boundingBox();
     const drawing = await link.locator("svg:visible").boundingBox();
     expect(box?.width).toBeGreaterThanOrEqual(drawing?.width ?? Infinity);
@@ -1362,7 +1376,7 @@ test.describe("the home page on a phone", () => {
     await page.setViewportSize({ width: 360, height: 700 });
     await page.goto(HOME);
     const capsule = await page.locator("[data-capsule]").boundingBox();
-    const nav = page.getByRole("navigation");
+    const nav = page.getByRole("navigation", { name: "Разделы сайта" });
     expect(capsule?.width).toBeLessThanOrEqual(360);
     expect(await nav.evaluate((node) => node.scrollWidth - node.clientWidth)).toBeLessThanOrEqual(
       1,

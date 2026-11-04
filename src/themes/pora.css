@@ -40,6 +40,32 @@
     0 2px 4px -2px light-dark(color-mix(in srgb, var(--ink) 10%, transparent), transparent);
   --control-current: var(--page);
   --control-current-line: 0 0 transparent;
+
+  /* Tabs: TabsList and TabsTrigger of the product's ui package, a mark and a word on a thumb. */
+  --tabs-well: var(--raised);
+  --tabs-rules: 0 0 transparent;
+  --tabs-radius: 0.625rem;
+  --tabs-pad: 3px;
+  --tabs-height: 2.25rem;
+  --tab-face: var(--sans);
+  --tab-text: 0.875rem;
+  --tab-weight: 500;
+  --tab-pad: 0 0.625rem;
+  --tab-radius: 0.5rem;
+  --tab-border-width: 1px;
+  --tab-mark: "";
+  --tab-line: transparent;
+  --tab-glyph: block;
+  --tab-glyph-gap: 0.4em;
+  --tab-ink: light-dark(color-mix(in srgb, #09090b 60%, transparent), #a1a1aa);
+  --tab-current: light-dark(var(--page), rgb(255 255 255 / 0.045));
+  --tab-current-border: light-dark(transparent, rgb(255 255 255 / 0.15));
+  /* The outline Button of the ui package: the border and the fill of an input in the dark. */
+  --outline-line: light-dark(var(--line), rgb(255 255 255 / 0.15));
+  --outline-fill: light-dark(var(--page), rgb(255 255 255 / 0.045));
+  --tab-current-shadow:
+    0 1px 3px 0 light-dark(rgb(0 0 0 / 0.1), transparent),
+    0 1px 2px -1px light-dark(rgb(0 0 0 / 0.1), transparent);
 }
 
 :root:has([data-world="pora"]),

@@ -1,0 +1,838 @@
+/*
+ * The footer of every page. One markup, and the page's theme dresses it: its tabs and buttons read
+ * the theme's tokens (ADR-0011), and what is a shape rather than a value, the last line above all,
+ * answers to the page's world on :root, as the colophon does. The home page's dress is the default:
+ * a page without a world, such as the 404, wears it.
+ */
+.footer {
+  --footer-gutter: 1rem;
+  --footer-rule: var(--line);
+  position: relative;
+  padding-bottom: var(--dock);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+@media (min-width: 64rem) {
+  .footer {
+    --footer-gutter: 2rem;
+  }
+}
+
+/* Uncovered from under the page only where the whole of it fits the screen. */
+@media (min-width: 64rem) and (min-height: 48rem) {
+  .footer {
+    position: sticky;
+    bottom: 0;
+  }
+}
+
+.footer-in {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  max-width: 87.5rem;
+  margin-inline: auto;
+  padding: 2.5rem var(--footer-gutter) 1rem;
+}
+
+@media (min-width: 64rem) {
+  .footer-in {
+    gap: 3rem;
+    padding-top: 3.5rem;
+  }
+}
+
+.footer-mark {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.footer-key {
+  color: var(--muted);
+  font: 400 0.8125rem/1.4 var(--mono);
+  font-variant-ligatures: none;
+}
+
+/* ---------- the reach: who, where, and the ways, whole and large ---------- */
+
+.footer-top {
+  display: grid;
+  gap: 2.5rem;
+}
+
+@media (min-width: 64rem) {
+  .footer-top {
+    grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 5rem;
+  }
+}
+
+.footer-reach {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.footer-live {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.5rem;
+  font-weight: 500;
+}
+
+.footer-dot {
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--success);
+}
+
+.footer-where {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.footer-way {
+  position: relative;
+  padding-block: 0.75rem;
+  border-top: 1px solid var(--footer-rule);
+}
+
+.footer-way:last-child {
+  border-bottom: 1px solid var(--footer-rule);
+}
+
+.footer-way-link {
+  display: grid;
+  gap: 0.375rem;
+  justify-items: start;
+}
+
+.footer-value {
+  position: relative;
+  font: 700 1.5rem/1.2 var(--display);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  transition:
+    color var(--duration-quick) var(--ease-out),
+    text-decoration-color var(--duration-quick) var(--ease-out);
+}
+
+/* On a phone the aside stands on the key's line, and the address has the row to itself. */
+.footer-aside {
+  position: absolute;
+  top: 0.75rem;
+  right: 0;
+  display: flex;
+  align-items: center;
+  height: 1.125rem;
+  font-size: 0.875rem;
+}
+
+.footer-reply {
+  display: none;
+}
+
+@media (min-width: 40rem) {
+  .footer-way {
+    display: grid;
+    grid-template-columns: 6.5rem minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 1rem;
+  }
+
+  .footer-way-link {
+    grid-column: 1 / 3;
+    grid-template-columns: subgrid;
+    align-items: baseline;
+  }
+
+  .footer-value {
+    font-size: clamp(1.75rem, 2.5vw, 2.375rem);
+  }
+
+  .footer-aside {
+    position: static;
+    height: auto;
+    justify-content: end;
+    text-align: right;
+  }
+
+  .footer-reply {
+    display: flex;
+    color: var(--muted);
+  }
+}
+
+.footer-link {
+  position: relative;
+  transition:
+    color var(--duration-quick) var(--ease-out),
+    text-decoration-color var(--duration-quick) var(--ease-out);
+}
+
+/* ---------- the settings and the sections ---------- */
+
+.footer-side {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.footer-settings {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-setting {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 0.625rem;
+  padding-block: 0.875rem;
+}
+
+.footer-setting + .footer-setting {
+  border-top: 1px solid var(--footer-rule);
+}
+
+@media (min-width: 40rem) {
+  .footer-setting {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+  }
+}
+
+.footer-sections {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.375rem 1.25rem;
+}
+
+.footer-sections ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem 1.25rem;
+}
+
+/* The page the reader is on, by the page's world: the footer is the layout's, one for all pages. */
+:root:has([data-world="home"]) .footer-link[data-section="home"],
+:root:has([data-world="pora"]) .footer-link[data-section="pora"],
+:root:has([data-world="flow"]) .footer-link[data-section="flow"],
+:root:has([data-world="projects"]) .footer-link[data-section="projects"] {
+  --footer-here: 1;
+}
+
+/* ---------- the last line ---------- */
+
+.footer-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem 1.5rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.footer-module {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer-module > b {
+  font-weight: inherit;
+}
+
+.footer-own > b,
+.footer-up > b {
+  display: none;
+}
+
+.footer-colophon {
+  flex: 1 1 auto;
+}
+
+/* ================= Главная: «Набор», typeset like the logo ================= */
+
+.footer {
+  --footer-rule: color-mix(in srgb, var(--ink) 16%, transparent);
+}
+
+/* A link under the pointer takes the slash of the command; the page the reader is on keeps it. */
+.footer-value::before,
+.footer-sections .footer-link::before {
+  content: "\\" / "";
+  position: absolute;
+  right: 100%;
+  margin-right: 0.12em;
+  color: var(--accent-strong);
+  font-family: var(--mono);
+  font-weight: 700;
+  opacity: calc(var(--footer-here, 0));
+  translate: calc(0.3em * (1 - var(--footer-here, 0))) 0;
+  transition:
+    opacity var(--duration-quick) var(--ease-out),
+    translate var(--duration-base) var(--ease-out);
+}
+
+/* On a phone the slash would hang at the edge of the screen: the page the reader is on takes it in line. */
+@media (width < 40rem) {
+  .footer-value::before {
+    display: none;
+  }
+
+  .footer-sections .footer-link::before {
+    position: static;
+    display: inline-block;
+    width: calc(0.6em * var(--footer-here, 0));
+    margin-right: calc(0.12em * var(--footer-here, 0));
+    overflow: hidden;
+    vertical-align: bottom;
+    translate: none;
+  }
+}
+
+@media (hover: hover) {
+  .footer-way-link:hover .footer-value::before,
+  .footer-sections .footer-link:hover::before {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (hover: hover) {
+  .footer-aside .footer-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.25rem;
+  }
+}
+
+/* The last line between the two rules of the controls, in the logo's face. */
+.footer-bar {
+  padding: 0.6875rem 0 0.5rem;
+  box-shadow:
+    0 -2px 0 var(--ink),
+    0 1px 0 var(--ink);
+  font: 400 0.8125rem/1.4 var(--mono);
+}
+
+.footer-build > b {
+  color: var(--ink);
+}
+
+.footer-build > b::before {
+  content: "{" / "";
+  color: var(--accent-strong);
+}
+
+.footer-build > b::after {
+  content: "}" / "";
+  color: var(--accent-strong);
+}
+
+.footer-up {
+  color: var(--ink);
+}
+
+.footer-up > span::before {
+  content: var(--control-open) / "";
+  color: var(--accent-strong);
+}
+
+.footer-up > span::after {
+  content: var(--control-close) / "";
+  display: inline-block;
+  margin-left: var(--control-close-gap, 0.375em);
+  opacity: 0.55;
+  transition:
+    opacity var(--duration-quick) var(--ease-out),
+    translate var(--duration-base) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .footer-up:hover > span::after {
+    opacity: 1;
+    translate: 0.1875rem 0;
+  }
+
+  .footer-build:hover > span {
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 0.25rem;
+  }
+}
+
+/* ================= Пора на пару: the product's own components ================= */
+
+:root:has([data-world="pora"]) {
+  .footer {
+    --footer-rule: var(--line);
+    font-size: 0.9375rem;
+  }
+
+  .footer-key {
+    font: 500 0.8125rem/1.4 var(--sans);
+  }
+
+  .footer-value {
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+
+  .footer-value::before,
+  .footer-sections .footer-link::before {
+    content: none;
+  }
+
+  .footer-link {
+    color: color-mix(in srgb, var(--muted) calc(100% - 100% * var(--footer-here, 0)), var(--ink));
+  }
+
+  @media (hover: hover) {
+    .footer-link:hover,
+    a.footer-module:hover {
+      color: var(--ink);
+    }
+
+    .footer-way-link:hover .footer-value {
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 0.2em;
+    }
+  }
+
+  /* A settings card of the product: a border, a radius, rows inside. */
+  .footer-settings {
+    padding-inline: 1rem;
+    border: 1px solid var(--line);
+    border-radius: 0.875rem;
+    background: var(--page);
+  }
+
+  /* The outline Button of the ui package. */
+  .footer-copy {
+    border: 1px solid var(--outline-line);
+    border-radius: 0.625rem;
+    background: var(--outline-fill);
+  }
+
+  @media (hover: hover) {
+    .footer-copy:hover {
+      translate: 0 0;
+      background: var(--raised);
+    }
+  }
+
+  .footer-bar {
+    padding: 1.25rem 0 0;
+    border-top: 1px solid var(--line);
+    box-shadow: none;
+    font: 400 0.875rem/1.4 var(--sans);
+  }
+
+  /* The Badge of the ui package, its outline variant. */
+  .footer-build > b {
+    padding: 0.125rem 0.5rem;
+    border: 1px solid var(--line);
+    border-radius: 0.375rem;
+    font: 500 0.75rem/1.3 var(--mono);
+  }
+
+  .footer-build > b::before,
+  .footer-build > b::after,
+  .footer-up > span::before {
+    content: none;
+  }
+
+  .footer-up {
+    color: inherit;
+  }
+
+  .footer-up > span::after {
+    content: "↑" / "";
+    margin-left: 0.25em;
+    opacity: 1;
+  }
+}
+
+/* ================= Флоу: Obsidian, read from its app.css ================= */
+
+:root:has([data-world="flow"]) {
+  .footer {
+    --footer-rule: var(--line);
+    font-size: 15px;
+  }
+
+  .footer-key {
+    color: var(--ink);
+    font: 400 13px/1.4 var(--sans);
+  }
+
+  .footer-value {
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  .footer-value::before,
+  .footer-sections .footer-link::before {
+    content: none;
+  }
+
+  /* A link of a note: the accent, underlined. One that leaves the vault carries the app's arrow. */
+  .footer-value,
+  .footer-link {
+    color: var(--accent-strong);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.15em;
+  }
+
+  .footer-value {
+    text-decoration-thickness: 2px;
+  }
+
+  [data-external] :is(.footer-value)::after,
+  .footer-link[data-external]::after {
+    content: "" / "";
+    display: inline-block;
+    width: 0.825em;
+    height: 0.825em;
+    margin-left: 0.1em;
+    vertical-align: 0.05em;
+    background: var(--external-mark);
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='9.38%25'%3E%3Cpath d='M14 9 L3 9 3 29 23 29 23 18 M18 4 L28 4 28 14 M28 4 L14 18'/%3E%3C/svg%3E")
+      center / contain no-repeat;
+  }
+
+  [data-external] .footer-value::after {
+    width: 0.5em;
+    height: 0.5em;
+    margin-left: 0.15em;
+    vertical-align: 0.4em;
+  }
+
+  .footer-sections .footer-link[data-section] {
+    color: color-mix(
+      in srgb,
+      var(--accent-strong) calc(100% - 100% * var(--footer-here, 0)),
+      var(--ink)
+    );
+    font-weight: calc(400 + 200 * var(--footer-here, 0));
+    text-decoration-color: color-mix(
+      in srgb,
+      currentColor calc(100% - 100% * var(--footer-here, 0)),
+      transparent
+    );
+  }
+
+  @media (hover: hover) {
+    .footer-way-link:hover .footer-value,
+    .footer-link:hover {
+      color: var(--accent);
+    }
+  }
+
+  /* A group of the app's settings: rounded, the rows split by an inset divider. */
+  .footer-settings {
+    border-radius: 12px;
+    background: var(--page);
+  }
+
+  .footer-setting {
+    padding: 14px 16px;
+  }
+
+  .footer-setting + .footer-setting {
+    border: 0;
+  }
+
+  .footer-setting + .footer-setting::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 16px;
+    left: 16px;
+    border-top: 1px solid var(--line);
+  }
+
+  /* The app's status bar: small, muted, its items washed under the pointer. */
+  .footer-bar {
+    gap: 4px;
+    margin: 0 calc(-1 * var(--footer-gutter));
+    padding: 4px 8px 4px 4px;
+    border-top: 1px solid var(--line);
+    box-shadow: none;
+    background: var(--surface);
+    font: 400 12px/1 var(--sans);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .footer-bar > * {
+    padding: 3px 4px;
+    border-radius: 4px;
+  }
+
+  .footer-colophon {
+    flex: 0 1 auto;
+  }
+
+  .footer-build > b {
+    color: inherit;
+  }
+
+  .footer-build > b::before,
+  .footer-build > b::after {
+    content: none;
+  }
+
+  .footer-up {
+    color: inherit;
+  }
+
+  .footer-up > span::before,
+  .footer-up > span::after {
+    color: color-mix(in srgb, var(--muted) 60%, transparent);
+    opacity: 1;
+  }
+
+  @media (hover: hover) {
+    a.footer-module:hover {
+      background: color-mix(in oklch, var(--ink) 6.7%, transparent);
+      color: var(--ink);
+    }
+
+    .footer-build:hover > span {
+      text-decoration: none;
+    }
+
+    .footer-up:hover > span::after {
+      translate: 0 0;
+    }
+  }
+
+  /* On a phone the bar is the bottom of the screen, under the capsule's dock. */
+  @media (width < 64rem) {
+    .footer {
+      padding-bottom: 0;
+    }
+
+    .footer-in {
+      padding-bottom: 0;
+    }
+
+    /* The terminal's line stands over the capsule here, as under the notes. */
+    .footer-bar {
+      padding-bottom: calc(var(--dock) + 4.5rem);
+    }
+  }
+
+  /* On a wide screen it stands in its corner of the window, as in the app. */
+  @media (min-width: 64rem) {
+    .footer-in {
+      padding-bottom: 3rem;
+    }
+
+    .footer-bar {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      margin: 0;
+      border-width: 1px 0 0 1px;
+      border-style: solid;
+      border-color: var(--line);
+      border-radius: 8px 0 0;
+    }
+  }
+}
+
+/* ================= Проекты: Catppuccin by its guide, a tmux status line ================= */
+
+:root:has([data-world="projects"]) {
+  .footer {
+    --footer-rule: var(--line);
+  }
+
+  .footer-value {
+    font-weight: 800;
+  }
+
+  .footer-value::before,
+  .footer-sections .footer-link::before {
+    content: none;
+  }
+
+  /* Links and URLs are Blue by the guide. */
+  .footer-value,
+  .footer-link {
+    color: var(--link);
+    text-decoration-line: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  .footer-value {
+    text-decoration-thickness: 2px;
+  }
+
+  @media (hover: hover) {
+    .footer-way-link:hover .footer-value,
+    .footer-link:hover {
+      text-decoration-color: currentColor;
+    }
+  }
+
+  /* The page the reader is on is text, with the dot of a running window. */
+  .footer-sections .footer-link[data-section] {
+    color: color-mix(in srgb, var(--link) calc(100% - 100% * var(--footer-here, 0)), var(--ink));
+  }
+
+  .footer-sections .footer-link[data-section]::after {
+    content: "●" / "";
+    margin-left: 0.3em;
+    color: var(--accent);
+    font-size: 0.625em;
+    vertical-align: 0.25em;
+    opacity: var(--footer-here, 0);
+  }
+
+  /* A panel of the board: Base on Mantle, round. */
+  .footer-settings {
+    padding-inline: 1rem;
+    border-radius: 0.75rem;
+    background: var(--page);
+  }
+
+  /* The bar: modules of tmux on Crust, a cap and a body each. */
+  .footer-bar {
+    gap: 0.5rem;
+    margin: 0 calc(-1 * var(--footer-gutter));
+    padding: 0.5rem;
+    box-shadow: none;
+    background: var(--crust);
+    font: 600 0.8125rem/1 var(--mono);
+    font-variant-ligatures: none;
+  }
+
+  .footer-module {
+    gap: 0;
+    height: 2rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--raised);
+    color: var(--ink);
+  }
+
+  .footer-module > b,
+  .footer-own > b,
+  .footer-up > b {
+    display: grid;
+    place-items: center;
+    align-self: stretch;
+    min-width: 2rem;
+    padding-inline: 0.625rem;
+    background: var(--accent-strong);
+    color: var(--on-accent);
+    font-weight: 700;
+  }
+
+  .footer-module > span {
+    padding: 0 0.875rem 0 0.625rem;
+  }
+
+  .footer-build {
+    flex-direction: row-reverse;
+  }
+
+  /* A quiet cap: Subtext under Base, as Overlay under Text falls short of 4.5:1 in Latte. */
+  .footer-build > b {
+    background: var(--muted);
+    color: var(--on-accent);
+  }
+
+  .footer-build > b::before,
+  .footer-build > b::after,
+  .footer-up > span::before,
+  .footer-up > span::after {
+    content: none;
+  }
+
+  .footer-up > b::before {
+    content: ">" / "";
+  }
+
+  /* The session's name is the site's mark, in the colour of the cap. */
+  .footer-own-mark {
+    width: auto;
+    height: 0.75rem;
+  }
+
+  .footer-own-mark path {
+    fill: currentColor;
+  }
+
+  .footer-colophon {
+    padding-inline: 0.5rem;
+    color: var(--muted);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  @media (hover: hover) {
+    a.footer-module:hover {
+      background: var(--line);
+    }
+
+    .footer-build:hover > span {
+      text-decoration: none;
+    }
+  }
+
+  /* On a phone the line is the bottom of the screen, under the capsule's dock. */
+  @media (width < 64rem) {
+    .footer {
+      padding-bottom: 0;
+    }
+
+    .footer-in {
+      padding-bottom: 0;
+    }
+
+    .footer-bar {
+      padding-bottom: calc(var(--dock) + 0.5rem);
+    }
+  }
+
+  /* On a wide screen it is the bottom of the window, edge to edge. */
+  @media (min-width: 64rem) {
+    .footer-in {
+      padding-bottom: 6rem;
+    }
+
+    .footer-bar {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      flex-wrap: nowrap;
+      margin: 0;
+    }
+
+    .footer-colophon {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}

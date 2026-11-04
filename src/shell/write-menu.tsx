@@ -4,8 +4,8 @@ import { useTranslations } from "next-intl";
 
 import { EMAIL, TELEGRAM_HANDLE, TELEGRAM_URL } from "@/lib/site";
 import { ButtonLink } from "@/ui/button-link";
+import { CopyAddress } from "@/ui/copy-address";
 
-import { CopyAddress } from "./copy-address";
 import { TelegramCode } from "./telegram-code";
 import { WriteSheet } from "./write-sheet";
 

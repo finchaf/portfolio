@@ -24,6 +24,9 @@ export const EMAIL = "work@finchaf.com";
 
 export const GITHUB_URL = "https://github.com/finchaf";
 
+/** The same account as its name reads. */
+export const GITHUB_HANDLE = "finchaf";
+
 /** This site's code: it is part of the portfolio. */
 export const REPOSITORY_URL = "https://github.com/finchaf/portfolio";
 

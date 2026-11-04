@@ -19,6 +19,9 @@
   --warning: light-dark(#ec7500, #e9973f);
   --danger: light-dark(#e93147, #fb464c);
 
+  /* The arrow after a link that leaves the vault: the app draws it the same grey in both modes. */
+  --external-mark: light-dark(#888888, #888888);
+
   /* The blue of the app's callouts, for this theme alone: not in the contract of themes. */
   --info: light-dark(#086ddd, #027aff);
   --info-text: light-dark(#0a64c9, #5aa9ff);
@@ -47,6 +50,32 @@
     0 4px 12px -4px light-dark(color-mix(in srgb, var(--ink) 14%, transparent), transparent);
   --control-current: color-mix(in srgb, var(--accent) 16%, transparent);
   --control-current-line: 0 0 transparent;
+
+  /*
+   * Tabs: the app's clickable icons, read from its app.css. Transparent, a light wash under the
+   * pointer, the accent at a tenth when active; a choice with a mark shows the mark alone.
+   */
+  --tabs-well: transparent;
+  --tabs-rules: 0 0 transparent;
+  --tabs-pad: 0;
+  --tabs-gap: 2px;
+  --tab-face: var(--sans);
+  --tab-text: 13px;
+  --tab-pad: 4px 8px;
+  --tab-glyph-pad: 5px 7px;
+  --tab-height: 1.75rem;
+  --tab-radius: 4px;
+  --tab-mark: "";
+  --tab-line: transparent;
+  --tab-glyph: block;
+  --tab-glyph-gap: 0.4em;
+  --tab-glyph-size: 18px;
+  --tab-glyph-opacity: 0.85;
+  --tab-glyph-label: 0;
+  --tab-hover: color-mix(in oklch, var(--ink) 6.7%, transparent);
+  --tab-current: color-mix(in oklch, var(--accent) 10%, transparent);
+  /* The app's accent on its own tint falls short of 4.5:1 in the light: a deeper step of the hue. */
+  --tab-current-ink: light-dark(#6a3fe4, var(--accent-strong));
 }
 
 :root:has([data-world="flow"]),
