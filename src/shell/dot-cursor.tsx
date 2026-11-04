@@ -4,11 +4,17 @@ import "./dot-cursor.css";
 
 import { useEffect, useRef } from "react";
 
+import { TOP_LAYER_EVENT } from "@/ui/top-layer";
+
 /** A screen with a real pointer: a finger has no cursor to replace. */
 const POINTER = "(hover: hover) and (pointer: fine)";
 const ACTIVE = "a, button, label, summary";
 
-/** Follows the pointer exactly: any delay would read as a slow site. */
+/**
+ * Follows the pointer exactly: any delay would read as a slow site. It lives in the browser's top
+ * layer as a manual popover, so a modal window does not cover it; when a page opens one, the cursor
+ * is shown again, which lays it on top of the window.
+ */
 export function DotCursor() {
   const dot = useRef<HTMLDivElement>(null);
 
@@ -16,6 +22,12 @@ export function DotCursor() {
     const node = dot.current;
     if (!node || !matchMedia(POINTER).matches) return;
     const root = document.documentElement;
+    const raise = () => {
+      if (!("showPopover" in node)) return;
+      if (node.matches(":popover-open")) node.hidePopover();
+      node.showPopover();
+    };
+    raise();
 
     const move = (event: PointerEvent) => {
       if (event.pointerType === "touch") {
@@ -43,7 +55,9 @@ export function DotCursor() {
     window.addEventListener("pointerdown", press, { passive: true });
     window.addEventListener("pointerup", release, { passive: true });
     root.addEventListener("pointerleave", leave);
+    document.addEventListener(TOP_LAYER_EVENT, raise);
     return () => {
+      document.removeEventListener(TOP_LAYER_EVENT, raise);
       window.removeEventListener("pointermove", move);
       window.removeEventListener("pointerover", over);
       window.removeEventListener("pointerdown", press);
@@ -54,7 +68,7 @@ export function DotCursor() {
   }, []);
 
   return (
-    <div aria-hidden className="dot-cursor" ref={dot}>
+    <div aria-hidden className="dot-cursor" popover="manual" ref={dot}>
       <i />
     </div>
   );

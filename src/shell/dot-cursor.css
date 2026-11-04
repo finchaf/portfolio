@@ -14,6 +14,19 @@
   will-change: transform;
 }
 
+/* A popover in the top layer: none of the browser's box for one, only the dot. */
+.dot-cursor[popover] {
+  inset: 0 auto auto 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  background: none;
+  color: inherit;
+}
+
 .dot-cursor > i {
   position: absolute;
   top: -0.4375rem;

@@ -15,6 +15,7 @@ import { ScrollMark } from "@/shell/scroll-mark";
 import { SkipLink } from "@/shell/skip-link";
 import { StillImages } from "@/shell/still-images";
 import { ThemeScript } from "@/themes/theme-script";
+import { ScrollBar } from "@/ui/scroll-bar";
 
 // Tells the browser both modes exist before the stylesheet arrives.
 export const viewport: Viewport = { colorScheme: "light dark" };
@@ -57,6 +58,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
         </main>
         <Footer />
         <ScrollMark />
+        <ScrollBar page />
         <DotCursor />
         <StillImages />
         <PageChange />

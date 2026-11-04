@@ -1,0 +1,59 @@
+/*
+ * The product's ScrollArea bar: a track 10 px wide with a pixel of room, a round thumb in the
+ * theme's line. It lies over the content and takes none of its width. The browser's own bar is
+ * gone from the document: the drawn one is in its place on every page.
+ */
+html {
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-bar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  width: 0.625rem;
+  padding: 1px;
+  border-left: 1px solid transparent;
+  opacity: 0;
+  touch-action: none;
+  user-select: none;
+  pointer-events: none;
+  transition: opacity 150ms ease;
+}
+
+.scroll-bar[data-page] {
+  position: fixed;
+  z-index: 90;
+}
+
+.scroll-bar[data-shown]:not([data-empty]),
+.scroll-bar[data-dragged] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.scroll-bar > i {
+  flex: none;
+  width: 100%;
+  border-radius: 999px;
+  background: var(--line);
+  will-change: translate;
+}
+
+.scroll-bar:hover > i,
+.scroll-bar[data-dragged] > i {
+  background: color-mix(in srgb, var(--ink) 22%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-bar {
+    transition: none;
+  }
+}
