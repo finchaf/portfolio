@@ -399,15 +399,29 @@ function slideBleeds(section: HTMLElement, move: gsap.core.Tween) {
 
 /**
  * A browser holds a lazy picture until it reaches the screen, and a ribbon clipped by its stage gets
- * there too late: the chapters ahead are asked for early, and only once the story is near.
+ * there too late: the chapters ahead are asked for early, and only once the story is near. The
+ * reach is counted from where the scroll sends the ribbon, not only from where it stands: after a
+ * jump the scrub is still on its way, and no scroll comes when it gets there.
  */
-function wakeAhead(section: HTMLElement, track: HTMLElement) {
+function wakeAhead(
+  section: HTMLElement,
+  track: HTMLElement,
+  move: gsap.core.Tween,
+  distance: () => number,
+) {
   const chapters = gsap.utils.toArray<HTMLElement>(
     "[data-collage], [data-chapter-of-story]",
     section,
   );
+  const heading = () => {
+    const along = move.scrollTrigger;
+    if (!along) return 0;
+    const share = (along.scroll() - along.start) / Math.max(1, along.end - along.start);
+    return gsap.utils.clamp(0, 1, share) * distance();
+  };
   const wake = () => {
-    const reach = AHEAD * window.innerWidth - Number(gsap.getProperty(track, "x"));
+    const passed = Math.max(-Number(gsap.getProperty(track, "x")), heading());
+    const reach = AHEAD * window.innerWidth + passed;
     chapters.forEach((chapter) => {
       if (chapter.offsetLeft > reach) return;
       chapter.querySelectorAll("img").forEach((image) => {
@@ -555,7 +569,7 @@ function runRibbon(section: HTMLElement, track: HTMLElement, mark: Mark) {
     start: "left 85%",
   }));
   slideBleeds(section, move);
-  wakeAhead(section, track);
+  wakeAhead(section, track, move, distance);
   const stopLines = moveLines(
     section,
     (element) => ({
