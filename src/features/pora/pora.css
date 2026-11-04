@@ -1,0 +1,1776 @@
+/*
+ * «Пора на пару»: the page as the product's web schedule (schedule.poranaparu.com). The grid, the
+ * cards, today's tint and the line of the time are the product's, drawn larger: here a card is a
+ * chapter to be read, not a lesson to be glanced at. Below the wide layout the week is the product's
+ * own phone list of days. The colours are the theme's: `src/themes/pora.css`.
+ */
+
+.pora-page {
+  padding-bottom: calc(var(--dock) + 3rem);
+  color: var(--ink);
+}
+
+.pora-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* A lesson's type and its colour */
+
+.pora-page [data-type="lecture"] {
+  --type: var(--lesson-lecture);
+}
+
+.pora-page [data-type="practice"] {
+  --type: var(--lesson-practice);
+}
+
+.pora-page [data-type="lab"] {
+  --type: var(--lesson-lab);
+}
+
+.pora-page [data-type="seminar"] {
+  --type: var(--lesson-seminar);
+}
+
+.pora-page [data-type="interactive"] {
+  --type: var(--lesson-interactive);
+}
+
+.pora-page [data-type="consultation"] {
+  --type: var(--lesson-consultation);
+}
+
+.pora-page [data-type="test"] {
+  --type: var(--lesson-test);
+}
+
+.pora-page [data-type="exam"] {
+  --type: var(--lesson-exam);
+}
+
+.pora-page [data-type="retake"] {
+  --type: var(--lesson-retake);
+}
+
+.pora-page [data-type="other"] {
+  --type: var(--lesson-other);
+}
+
+.pora-badge {
+  display: inline-flex;
+  flex-shrink: 1;
+  align-items: center;
+  gap: 0.3125rem;
+  min-width: 0;
+  height: 1.5625rem;
+  padding: 0.15625rem 0.625rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.25rem;
+  white-space: nowrap;
+}
+
+.pora-badge i {
+  flex: none;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background: var(--type);
+}
+
+/* The time left of the lesson going on, with its ring */
+
+.pora-left {
+  display: none;
+  align-items: center;
+  gap: 0.375rem;
+  margin-left: auto;
+  color: var(--accent-strong);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+[data-now] .pora-left {
+  display: inline-flex;
+}
+
+.pora-ring {
+  width: 1rem;
+  height: 1rem;
+  rotate: -90deg;
+  fill: none;
+  stroke-width: 2.5;
+}
+
+.pora-ring circle:first-child {
+  stroke: var(--now-ring);
+}
+
+.pora-ring circle:last-child {
+  stroke: var(--accent);
+  stroke-linecap: round;
+}
+
+/* The week, on a wide screen */
+
+.pora-days,
+.pora-rows {
+  display: none;
+}
+
+.pora-list {
+  padding: calc(var(--header) + 1.75rem) 1rem 0;
+}
+
+@media (min-width: 64rem) {
+  .pora-list {
+    display: none;
+  }
+
+  /*
+   * The product's room after the last day: 12 px past Friday, with no line, hold the page's drawn
+   * scrollbar (src/ui/scroll-bar.tsx), clear of the cards.
+   */
+  .pora-days,
+  .pora-rows {
+    display: grid;
+    grid-template-columns: 9rem repeat(5, minmax(0, 1fr));
+    padding-right: 0.75rem;
+  }
+
+  /*
+   * The week begins at the top of the page: its lines run up to the edge, and the capsule floats in
+   * the days' bar. The bar stays at the top as the week scrolls.
+   */
+  .pora-days {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    border-bottom: 1px solid var(--line);
+    background: var(--page);
+  }
+
+  .pora-days > * {
+    border-right: 1px solid var(--line);
+  }
+
+  .pora-days > :last-child,
+  .pora-rows > :nth-child(6n) {
+    border-right: 0;
+  }
+
+  .pora-day {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4375rem;
+    min-width: 0;
+    padding: calc(var(--header) + 0.875rem) 1.25rem 0.875rem;
+    font-size: 0.9375rem;
+    white-space: nowrap;
+  }
+
+  .pora-day b {
+    font-weight: 500;
+  }
+
+  .pora-day span {
+    overflow: hidden;
+    color: var(--muted);
+    text-overflow: ellipsis;
+  }
+
+  .pora-day time {
+    margin-left: auto;
+    color: var(--accent-strong);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pora-day[data-today] {
+    background: var(--today-head);
+  }
+
+  .pora-day[data-today] b,
+  .pora-day[data-today] span {
+    color: var(--accent-strong);
+  }
+
+  /*
+   * The week fills the screen at least: its last row takes what is left, and the columns' lines run
+   * on to the footer, with no line under the last row.
+   */
+  .pora-page {
+    padding-bottom: 0;
+  }
+
+  .pora-week {
+    display: flex;
+    flex-direction: column;
+    min-height: 100svh;
+  }
+
+  .pora-rows {
+    flex: 1;
+    grid-template-rows: repeat(4, minmax(12.75rem, auto)) minmax(12.75rem, 1fr);
+  }
+
+  .pora-rows > :nth-last-child(-n + 6) {
+    border-bottom: 0;
+  }
+
+  .pora-time,
+  .pora-cell {
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .pora-time {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1.125rem 1rem 1rem 2rem;
+  }
+
+  .pora-time b {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+
+  .pora-time span {
+    color: var(--muted);
+    font-size: 0.8125rem;
+  }
+
+  .pora-cell {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 0.625rem;
+  }
+
+  .pora-cell[data-today] {
+    background: var(--today);
+  }
+}
+
+/*
+ * A lesson, made a chapter: the product's card (apps/schedule, lesson-card.tsx) with every size of it
+ * times 1.25. The product's 12 px inside, 8 between blocks and 4 inside a block are 15, 10 and 5;
+ * its label 14/20 is 17.5/25, its rows 12/16 are 15/20, in the regular weight: the product's 500 reads as
+ * bold this large. The line under the title is this page's, in the title's block.
+ */
+.pora-card {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.625rem;
+  width: 100%;
+  min-width: 0;
+  padding: 0.9375rem;
+  border: 1px solid var(--line);
+  border-radius: 1.09375rem;
+  background: var(--card);
+  box-shadow:
+    0 4px 6px -1px var(--shade),
+    0 2px 4px -2px var(--shade);
+  transition:
+    box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 300ms cubic-bezier(0.4, 0, 0.2, 1),
+    translate 300ms cubic-bezier(0.4, 0, 0.2, 1),
+    scale 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pora-card:hover {
+  box-shadow:
+    0 10px 15px -3px var(--shade),
+    0 4px 6px -4px var(--shade);
+}
+
+.pora-card:active {
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--shade) 50%, transparent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pora-card:hover {
+    translate: 0 -0.3125rem;
+  }
+
+  .pora-card:active {
+    translate: 0 0;
+    scale: 0.98;
+  }
+}
+
+.pora-card[data-now] {
+  border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+  box-shadow:
+    0 4px 6px -1px var(--shade),
+    0 2px 4px -2px var(--shade),
+    0 0 0 3px var(--now-ring);
+}
+
+.pora-card-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3125rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.pora-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.625rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.pora-card-title {
+  display: -webkit-box;
+  overflow: hidden;
+  font: 500 1.09375rem / 1.5625rem var(--sans);
+  hyphens: auto;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.pora-card-text {
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.25rem;
+  text-wrap: pretty;
+}
+
+.pora-card-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3125rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.pora-card-row {
+  display: flex;
+  align-items: center;
+  gap: 0.3125rem;
+  min-width: 0;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.25rem;
+}
+
+.pora-card-row svg {
+  flex: none;
+  width: 0.9375rem;
+  height: 0.9375rem;
+}
+
+.pora-card-row span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The line of the time: pale across the week, bright with a dot in today's column. */
+.pora-now {
+  position: absolute;
+  top: calc(var(--at) * 100%);
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: var(--now-line);
+  pointer-events: none;
+}
+
+.pora-cell[data-today] .pora-now {
+  height: 2px;
+  margin-top: -1px;
+  background: var(--accent);
+}
+
+.pora-cell[data-today] .pora-now::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* The week on a phone: the product's list of days */
+
+.pora-range {
+  display: flex;
+  align-items: baseline;
+  gap: 0.375rem;
+  margin-bottom: 0.875rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.pora-range span {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.pora-list-day {
+  margin-bottom: 0.75rem;
+  padding: 0 1.125rem;
+  border: 1px solid var(--line);
+  border-radius: 1.125rem;
+  background: var(--card);
+}
+
+.pora-list-day[data-today] {
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.pora-list-day h2 {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0 0.875rem;
+  border-bottom: 1px solid var(--line);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.pora-list-day[data-today] h2 {
+  color: var(--accent-strong);
+}
+
+.pora-list-day h2 time {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.pora-list-item {
+  padding: 1.125rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.pora-list-item:last-child {
+  border-bottom: 0;
+}
+
+.pora-list-when {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.pora-list-when b {
+  font-weight: 500;
+}
+
+[data-now] .pora-list-when b {
+  color: var(--accent-strong);
+}
+
+.pora-list-slot {
+  margin-top: 0.125rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.pora-list-item h3 {
+  margin: 0.625rem 0 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.pora-list-text {
+  margin-bottom: 0.625rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+.pora-list-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+/* A card that opens: a button, the product's focus ring on it */
+
+button.pora-card,
+button.pora-list-item {
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pora-card-text,
+.pora-list-when,
+.pora-list-slot,
+.pora-list-title,
+.pora-list-text,
+.pora-list-meta {
+  display: block;
+}
+
+button.pora-card:focus-visible {
+  border-color: var(--accent);
+  outline: none;
+  box-shadow:
+    0 4px 6px -1px var(--shade),
+    0 2px 4px -2px var(--shade),
+    0 0 0 3px color-mix(in srgb, var(--accent) 50%, transparent);
+}
+
+button.pora-list-item {
+  width: 100%;
+  border-top: 0;
+  border-right: 0;
+  border-left: 0;
+  background: none;
+}
+
+button.pora-list-item:focus-visible {
+  border-radius: 0.5rem;
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/*
+ * The lesson's window: the product's «Окно пары» (lesson-dialog.tsx), its sizes times 1.25 — the
+ * stub's 168 is 210, its 20 and 16 inside are 25 and 20 — and wider than the product's 560: a chapter
+ * is read here, so the text gets a column of its own and the numbers, the timeline, the people and
+ * the places one beside it. Nova's dialog comes in 100 ms, from 95 % and clear, over a veil of black
+ * at a tenth, blurred; the next lesson slides in over the same veil.
+ */
+
+.pora-page {
+  --pora-noise: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27180%27%20height%3D%27180%27%3E%3Cfilter%20id%3D%27n%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.9%27%20numOctaves%3D%272%27%20stitchTiles%3D%27stitch%27/%3E%3CfeColorMatrix%20values%3D%270%200%200%200%200%20%200%200%200%200%200%20%200%200%200%200%200%20%202.2%200%200%200%20-0.75%27/%3E%3C/filter%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url%28%23n%29%27/%3E%3C/svg%3E");
+}
+
+/* One window for every lesson, of one size: a turn changes the page and never the frame. */
+.pora-window {
+  width: min(62rem, calc(100vw - 6rem));
+  max-width: none;
+  height: min(46.25rem, calc(100dvh - 5rem));
+  max-height: none;
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
+  border-radius: 1.09375rem;
+  background: var(--card);
+  color: var(--ink);
+}
+
+.pora-window[open] {
+  display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+}
+
+/* The pages lie in one cell; while a page turns the new one is drawn over the old. */
+.pora-window-page {
+  z-index: 1;
+  display: flex;
+  grid-area: 1 / 1;
+  min-width: 0;
+  min-height: 0;
+  background: var(--card);
+}
+
+.pora-window-page[hidden] {
+  display: none;
+}
+
+.pora-window-page[data-leaving] {
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* No blur behind the window: see `--scrim` in src/themes/pora.css. */
+.pora-window::backdrop {
+  background: var(--scrim);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pora-window[open] {
+    animation: pora-window-in 100ms ease;
+  }
+
+  .pora-window[open]::backdrop {
+    animation: pora-veil-in 100ms ease;
+  }
+
+  .pora-window[data-closing] {
+    animation: pora-window-out 100ms ease forwards;
+  }
+
+  .pora-window[data-closing]::backdrop {
+    animation: pora-veil-out 100ms ease forwards;
+  }
+}
+
+@keyframes pora-window-in {
+  from {
+    opacity: 0;
+    scale: 0.95;
+  }
+}
+
+@keyframes pora-window-out {
+  to {
+    opacity: 0;
+    scale: 0.95;
+  }
+}
+
+@keyframes pora-veil-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes pora-veil-out {
+  to {
+    opacity: 0;
+  }
+}
+
+/* The paper of the stub and the footer: the sidebar's grey, its specks, the type's tone at 7 %. */
+.pora-grain,
+.pora-tone {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.pora-grain {
+  background: var(--grain);
+  -webkit-mask: var(--pora-noise) 0 0 / 225px;
+  mask: var(--pora-noise) 0 0 / 225px;
+}
+
+.pora-tone {
+  background: var(--type);
+  opacity: 0.07;
+}
+
+.pora-stub {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.25rem;
+  width: 13.125rem;
+  padding: 1.5625rem 1.25rem 1.5625rem 1.5625rem;
+  border-right: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.pora-stub-top {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.pora-stub-slot {
+  display: flex;
+  align-items: center;
+  gap: 0.46875rem;
+  font-size: 0.9375rem;
+  line-height: 1.25rem;
+}
+
+.pora-stub-slot i {
+  flex: none;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background: var(--type);
+}
+
+.pora-stub-time {
+  display: flex;
+  flex-direction: column;
+  font: 600 2.8125rem / 3.4375rem var(--sans);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.pora-stub-time span:last-child {
+  color: var(--muted);
+}
+
+.pora-stub-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3125rem;
+  font-size: 1.09375rem;
+  line-height: 1.5625rem;
+}
+
+.pora-stub-left {
+  display: none;
+  font-size: 0.9375rem;
+  line-height: 1.25rem;
+}
+
+.pora-window-page[data-now] .pora-stub-left {
+  display: block;
+}
+
+/* How far the lesson has gone: the stub's edge fills from the top in the type's colour. */
+.pora-stub-progress {
+  position: absolute;
+  top: 0;
+  right: -1px;
+  bottom: 0;
+  display: none;
+  width: 2.5px;
+}
+
+.pora-stub-progress::before,
+.pora-stub-progress i {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--type);
+}
+
+.pora-stub-progress::before {
+  opacity: 0.2;
+}
+
+.pora-stub-progress i {
+  bottom: auto;
+  height: calc(var(--pora-share, 0) * 100%);
+}
+
+.pora-window-page[data-now] .pora-stub-progress {
+  display: block;
+}
+
+.pora-window-x {
+  display: none;
+}
+
+.pora-window-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* The chapter's scrolling, with the drawn bar over its right edge (src/ui/scroll-bar.tsx). */
+.pora-window-area {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.pora-window-scroll {
+  flex: 1;
+  min-width: 0;
+  padding: 1.5625rem 0.9375rem 1.5625rem;
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  outline: none;
+  scrollbar-width: none;
+  container-type: inline-size;
+}
+
+.pora-window-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* The chapter has the keys when the window opens from a key: its ring follows the window's corner. */
+.pora-window-scroll:focus-visible {
+  border-radius: 0 calc(1.09375rem - 1px) 0 0;
+  box-shadow: inset 0 0 0 2px var(--accent-strong);
+}
+
+/* The chapter in one column, and from 46rem of window the facts in a second one beside it. */
+.pora-window-columns {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5625rem;
+}
+
+@container (min-width: 46rem) {
+  .pora-window-columns {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 17.5rem;
+    align-items: start;
+    gap: 1.875rem;
+  }
+}
+
+.pora-window-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.pora-window-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3125rem;
+  padding: 0 0.9375rem 0.3125rem;
+}
+
+.pora-window-type {
+  color: var(--muted);
+  font: 500 0.9375rem / 1.25rem var(--mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.pora-window-head h2 {
+  font: 600 1.5625rem / 2.1875rem var(--sans);
+  letter-spacing: -0.005em;
+  overflow-wrap: break-word;
+}
+
+.pora-window-lead {
+  margin-top: 0.625rem;
+  padding: 0 0.9375rem;
+  font-size: 1.25rem;
+  line-height: 1.875rem;
+  text-wrap: pretty;
+}
+
+.pora-window-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  margin-top: 1.5625rem;
+  padding: 0 0.9375rem;
+  font-size: 1.09375rem;
+  line-height: 1.5625rem;
+  text-wrap: pretty;
+}
+
+.pora-window-section h3 {
+  font: 600 1.09375rem / 1.5625rem var(--sans);
+}
+
+/* The launch, by day: the bars in the lesson's colour, the peak named. */
+.pora-window-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  margin: 1.5625rem 0.9375rem 0;
+  padding: 0.9375rem;
+  border: 1px solid var(--line);
+  border-radius: 1.09375rem;
+}
+
+.pora-window-chart figcaption {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.25rem;
+}
+
+.pora-window-chart figcaption b {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.pora-window-bars {
+  display: grid;
+  grid-template-columns: repeat(14, minmax(0, 1fr));
+  align-items: end;
+  gap: 0.3125rem;
+  height: 10rem;
+  padding-top: 1.5625rem;
+}
+
+.pora-window-bars i {
+  position: relative;
+  height: calc(var(--share) * 100%);
+  min-height: 3px;
+  border-radius: 0.3125rem 0.3125rem 0.125rem 0.125rem;
+  background: color-mix(in srgb, var(--type) 35%, var(--raised));
+}
+
+.pora-window-bars i[data-peak] {
+  background: var(--type);
+}
+
+.pora-window-bars i[data-peak]::after {
+  content: attr(data-value);
+  position: absolute;
+  bottom: calc(100% + 0.3125rem);
+  left: 50%;
+  translate: -50% 0;
+  font-size: 0.9375rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.25rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.pora-window-axis {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.25rem;
+}
+
+/* The side: cmdk's group heading and the product's rows, 1.25 times. */
+.pora-window-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-width: 0;
+}
+
+.pora-window-group {
+  padding: 0 0.3125rem;
+}
+
+.pora-window-group h3 {
+  padding: 0.46875rem 0.625rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+}
+
+.pora-window-date {
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.25rem;
+}
+
+.pora-window-facts {
+  display: flex;
+  flex-direction: column;
+  margin: 0.15625rem 0.625rem 0;
+  border: 1px solid var(--line);
+  border-radius: 1.09375rem;
+}
+
+.pora-window-facts li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15625rem;
+  padding: 0.78125rem 0.9375rem;
+}
+
+.pora-window-facts li + li {
+  border-top: 1px solid var(--line);
+}
+
+.pora-window-facts b {
+  font: 600 1.5625rem / 2rem var(--sans);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.pora-window-facts li > span {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  font-size: 0.9375rem;
+  line-height: 1.3125rem;
+  text-wrap: pretty;
+}
+
+/* The timeline: dates on a line in the lesson's colour, the last one filled. */
+.pora-window-timeline {
+  display: flex;
+  flex-direction: column;
+  margin: 0.15625rem 0.625rem 0;
+}
+
+.pora-window-timeline li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding: 0 0 0.9375rem 1.5625rem;
+  font-size: 0.9375rem;
+  line-height: 1.3125rem;
+}
+
+.pora-window-timeline li::before {
+  content: "";
+  position: absolute;
+  top: 0.40625rem;
+  left: 0.1875rem;
+  width: 0.5625rem;
+  height: 0.5625rem;
+  border: 2px solid var(--type);
+  border-radius: 50%;
+  background: var(--card);
+}
+
+.pora-window-timeline li:last-child::before {
+  background: var(--type);
+}
+
+.pora-window-timeline li + li::after,
+.pora-window-timeline li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 1.125rem;
+  bottom: -0.25rem;
+  left: 0.4375rem;
+  width: 1px;
+  background: color-mix(in srgb, var(--type) 45%, var(--line));
+}
+
+.pora-window-timeline li:last-child {
+  padding-bottom: 0;
+}
+
+.pora-window-timeline li:last-child::after {
+  content: none;
+}
+
+.pora-window-row {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-width: 0;
+  padding: 0.46875rem 0.625rem;
+  border-radius: 0.78125rem;
+  color: var(--ink);
+  font-size: 1.09375rem;
+  line-height: 1.5625rem;
+  text-decoration: none;
+}
+
+.pora-window-row > svg {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--muted);
+}
+
+.pora-window-row > span {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.pora-window-row > span > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pora-window-row > span > span:last-child {
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.25rem;
+}
+
+a.pora-window-row:hover {
+  background: var(--raised);
+}
+
+a.pora-window-row:hover > svg {
+  color: var(--ink);
+}
+
+a.pora-window-row:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+/* The footer: the product's hint on the left, the lessons before and after on the right. */
+.pora-window-foot {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 2.8125rem;
+  padding: 0.3125rem 0.625rem 0.3125rem 1.25rem;
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--hint);
+  font-size: 0.9375rem;
+}
+
+.pora-window-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.46875rem;
+  white-space: nowrap;
+}
+
+.pora-window-foot kbd {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5625rem;
+  height: 1.5625rem;
+  padding: 0 0.3125rem;
+  border-radius: 0.46875rem;
+  background: var(--page);
+  color: var(--muted);
+  font: 500 0.9375rem / 1 var(--sans);
+}
+
+.pora-window-foot kbd svg {
+  width: 0.9375rem;
+  height: 0.9375rem;
+}
+
+.pora-window-steps {
+  display: flex;
+  gap: 0.3125rem;
+  min-width: 0;
+  margin-left: auto;
+}
+
+.pora-window-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  height: 2.1875rem;
+  padding: 0 0.3125rem;
+  border-radius: 0.625rem;
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.pora-window-step:hover {
+  background: color-mix(in srgb, var(--ink) 6%, transparent);
+}
+
+.pora-window-step:focus-visible {
+  outline: 2px solid var(--accent);
+}
+
+.pora-window-step > i {
+  flex: none;
+  width: 0.5625rem;
+  height: 0.5625rem;
+  border-radius: 50%;
+  background: var(--type);
+}
+
+.pora-window-step > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* On a phone the window is a column: the stub a strip over the chapter, a close button in its corner. */
+@media (max-width: 47.99rem) {
+  .pora-window {
+    width: calc(100vw - 1rem);
+    height: calc(100dvh - 1rem);
+  }
+
+  .pora-window-page {
+    flex-direction: column;
+  }
+
+  .pora-stub {
+    flex-flow: row wrap;
+    align-items: flex-end;
+    width: auto;
+    padding: 1.125rem 3.75rem 1rem 1.25rem;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .pora-stub-top {
+    gap: 0.375rem;
+  }
+
+  .pora-stub-time {
+    flex-direction: row;
+    gap: 0.5rem;
+    font-size: 1.75rem;
+    line-height: 2.125rem;
+  }
+
+  .pora-stub-time span:last-child::before {
+    content: "— ";
+  }
+
+  .pora-stub-bottom {
+    font-size: 0.9375rem;
+    line-height: 1.25rem;
+  }
+
+  .pora-stub-progress {
+    top: auto;
+    right: 0;
+    bottom: -1px;
+    left: 0;
+    width: auto;
+    height: 2.5px;
+  }
+
+  .pora-stub-progress i {
+    right: auto;
+    bottom: 0;
+    width: calc(var(--pora-share, 0) * 100%);
+    height: auto;
+  }
+
+  .pora-window-x {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.625rem;
+    color: var(--muted);
+  }
+
+  .pora-window-x svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .pora-window-x:focus-visible {
+    outline: 2px solid var(--accent);
+  }
+
+  .pora-window-scroll {
+    padding-top: 1.25rem;
+  }
+
+  .pora-window-scroll:focus-visible {
+    border-radius: 0;
+  }
+
+  .pora-window-lead {
+    font-size: 1.125rem;
+    line-height: 1.6875rem;
+  }
+
+  .pora-window-hint {
+    display: none;
+  }
+
+  .pora-window-foot {
+    padding-left: 0.625rem;
+  }
+
+  .pora-window-steps {
+    justify-content: space-between;
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+/*
+ * Pictures in a chapter: a row of thumbnails in the product's card frame, the whole picture at a
+ * glance, pressed to be seen at the size of the screen (picture-viewer.tsx). Both modes are in the
+ * HTML; the one the stylesheet hides has no box and is never fetched.
+ */
+.pora-only-dark {
+  display: none;
+}
+
+:root[data-theme="dark"] .pora-only-light {
+  display: none;
+}
+
+:root[data-theme="dark"] .pora-only-dark {
+  display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .pora-only-light {
+    display: none;
+  }
+
+  :root:not([data-theme="light"]) .pora-only-dark {
+    display: block;
+  }
+}
+
+.pora-window-figure {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  margin: 1.5625rem 0.9375rem 0;
+}
+
+.pora-window-pictures {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9375rem;
+}
+
+.pora-window-picture {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 0.9375rem;
+  background: var(--raised);
+  box-shadow: var(--shade);
+  cursor: zoom-in;
+  transition:
+    translate 150ms ease,
+    box-shadow 150ms ease;
+}
+
+/* A phone's screen keeps a phone's corners; a row of them stays a row of phones, not of tiles. */
+.pora-window-picture[data-shape="phone"] {
+  flex: 0 1 11.25rem;
+  border-radius: 1.5625rem;
+}
+
+.pora-window-picture img {
+  width: 100%;
+  height: auto;
+}
+
+.pora-window-picture::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--ink);
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.pora-window-picture > svg {
+  position: absolute;
+  top: 0.625rem;
+  right: 0.625rem;
+  z-index: 1;
+  width: 1.875rem;
+  height: 1.875rem;
+  padding: 0.4375rem;
+  border-radius: 0.625rem;
+  background: var(--card);
+  box-shadow: var(--shade);
+  color: var(--ink);
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.pora-window-picture:hover {
+  translate: 0 -0.3125rem;
+}
+
+.pora-window-picture:hover::after {
+  opacity: 0.04;
+}
+
+.pora-window-picture:hover > svg,
+.pora-window-picture:focus-visible > svg {
+  opacity: 1;
+}
+
+.pora-window-picture:active {
+  scale: 0.98;
+}
+
+.pora-window-figure figcaption {
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.25rem;
+  text-wrap: pretty;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pora-window-picture,
+  .pora-window-picture::after,
+  .pora-window-picture > svg {
+    transition: none;
+  }
+
+  .pora-window-picture:hover {
+    translate: none;
+  }
+}
+
+/*
+ * The viewer: a second modal over the window, the picture as large as the screen holds with room
+ * for its words below, on a veil dark in both modes, as a picture is looked at.
+ */
+.pora-viewer {
+  width: 100vw;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  background: transparent;
+  color: var(--viewer-ink);
+}
+
+.pora-viewer[open] {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+
+.pora-viewer::backdrop {
+  background: var(--viewer-veil);
+}
+
+.pora-viewer-stage {
+  display: grid;
+  place-items: center;
+  min-height: 0;
+  padding: 1.5rem 1.5rem 0;
+  outline: none;
+}
+
+.pora-viewer-image {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  border-radius: 0.9375rem;
+  outline: 1px solid var(--viewer-edge);
+  outline-offset: -1px;
+  transform-origin: 0 0;
+  cursor: default;
+}
+
+.pora-viewer-image[data-shape="phone"] {
+  border-radius: 1.875rem;
+}
+
+.pora-viewer-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  width: min(62rem, 100%);
+  margin: 0 auto;
+  padding: 1rem 1.5rem 1.25rem;
+}
+
+.pora-viewer-words {
+  display: flex;
+  gap: 0.75rem;
+  min-width: 0;
+  font-size: 0.9375rem;
+  line-height: 1.25rem;
+  text-wrap: pretty;
+}
+
+.pora-viewer-count {
+  flex: none;
+  color: var(--viewer-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.pora-viewer[data-alone] .pora-viewer-count,
+.pora-viewer[data-alone] [data-pora-viewer-go] {
+  display: none;
+}
+
+.pora-viewer-tools {
+  display: flex;
+  flex: none;
+  gap: 0.5rem;
+}
+
+.pora-viewer-button {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  background: var(--viewer-button);
+  color: var(--viewer-ink);
+  transition: background-color 150ms ease;
+}
+
+.pora-viewer-button:hover {
+  background: var(--viewer-button-hover);
+}
+
+.pora-viewer-button:focus-visible {
+  outline: 2px solid var(--viewer-ring);
+  outline-offset: 2px;
+}
+
+.pora-viewer-button svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pora-viewer[open]::backdrop {
+    animation: pora-veil-in 200ms ease;
+  }
+
+  .pora-viewer[open] .pora-viewer-bar {
+    animation: pora-veil-in 200ms ease;
+  }
+
+  .pora-viewer[data-leaving]::backdrop,
+  .pora-viewer[data-leaving] .pora-viewer-bar {
+    animation: pora-veil-out 180ms ease forwards;
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .pora-window-pictures {
+    gap: 0.625rem;
+  }
+
+  .pora-viewer-stage {
+    padding: 0.75rem 0.75rem 0;
+  }
+
+  .pora-viewer-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    padding: 0.75rem 0.75rem 1rem;
+  }
+
+  .pora-viewer-tools {
+    justify-content: flex-end;
+  }
+}
+
+/* Three frames: the first across the column, the other two under it, side by side. */
+.pora-window-pictures[data-count="3"] {
+  flex-wrap: wrap;
+}
+
+.pora-window-pictures[data-count="3"] > :first-child {
+  flex-basis: 100%;
+}
+
+/* The lesson types' colours: a dot of the type, its name, the shade and both values. */
+.pora-window-hues {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: 0.3125rem 0.9375rem;
+  padding: 0.9375rem;
+  border: 1px solid var(--line);
+  border-radius: 1.09375rem;
+}
+
+.pora-window-hues li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 0.625rem;
+  padding: 0.3125rem 0;
+  font-size: 0.9375rem;
+  line-height: 1.25rem;
+}
+
+.pora-window-hues i {
+  grid-row: span 2;
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: 0.625rem;
+  background: var(--type);
+}
+
+.pora-window-hues code {
+  display: flex;
+  gap: 0.5rem;
+  color: var(--muted);
+  font: 400 0.8125rem / 1.125rem var(--mono);
+}
+
+/* The clients' commits by month: three bars a month, in the colours of their posters. */
+.pora-window-months {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.9375rem;
+}
+
+.pora-window-months > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.25rem;
+  text-align: center;
+}
+
+.pora-window-month-bars {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
+  gap: 0.1875rem;
+  height: 10rem;
+  padding-top: 1.5625rem;
+}
+
+.pora-window-month-bars i,
+.pora-window-legend i {
+  background: var(--client);
+}
+
+.pora-window-month-bars i {
+  position: relative;
+  height: calc(var(--share) * 100%);
+  min-height: 2px;
+  border-radius: 0.25rem 0.25rem 0.125rem 0.125rem;
+}
+
+.pora-window-month-bars i[data-value]::after {
+  content: attr(data-value);
+  position: absolute;
+  bottom: calc(100% + 0.25rem);
+  left: 50%;
+  translate: -50% 0;
+  color: var(--ink);
+  font-size: 0.75rem;
+  font-style: normal;
+  line-height: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-client="ios"] {
+  --client: var(--lesson-seminar);
+}
+
+[data-client="android"] {
+  --client: var(--lesson-test);
+}
+
+[data-client="web"] {
+  --client: var(--accent);
+}
+
+.pora-window-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9375rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.25rem;
+}
+
+.pora-window-legend span {
+  display: flex;
+  align-items: center;
+  gap: 0.4375rem;
+}
+
+.pora-window-legend i {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+}
+
+/* Numbered steps: the product's rows, a numeral in the lesson's tone. */
+.pora-window-flow {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 1.09375rem;
+}
+
+.pora-window-flow li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9375rem;
+  padding: 0.9375rem;
+}
+
+.pora-window-flow li + li {
+  border-top: 1px solid var(--line);
+}
+
+.pora-window-flow b {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--type) 15%, transparent);
+  color: var(--ink);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.pora-window-flow li > span {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  font-size: 0.9375rem;
+  line-height: 1.25rem;
+}
+
+.pora-window-flow li > span > span:first-child {
+  font-size: 1.09375rem;
+  font-weight: 500;
+  line-height: 1.5625rem;
+}
+
+.pora-window-flow li > span > span:last-child {
+  color: var(--muted);
+}
+
+@media (max-width: 47.99rem) {
+  .pora-window-months {
+    gap: 0.5rem;
+  }
+
+  .pora-window-month-bars i[data-value]::after {
+    display: none;
+  }
+}
+
+/* A figure inside a section stands in its column, under its words. */
+.pora-window-section > .pora-window-figure,
+.pora-window-section > .pora-window-chart {
+  margin: 0.3125rem 0 0;
+}

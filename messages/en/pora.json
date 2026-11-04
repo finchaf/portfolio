@@ -6,5 +6,883 @@
     "imageAlt": "One lesson block close up on a blue field: its day, start time and subject."
   },
   "title": "Pora na paru",
-  "lead": "A schedule product for universities, from the idea to the apps."
+  "week": {
+    "label": "This week",
+    "grid": "A week: chapters about the product, one lesson each",
+    "slot": "Lesson {n}",
+    "span": "{start}—{end}",
+    "spanShort": "{start}–{end}",
+    "minutes": "{m} min",
+    "hours": "{h} h {m} min",
+    "days": {
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri"
+    },
+    "daysFull": {
+      "mon": "Monday",
+      "tue": "Tuesday",
+      "wed": "Wednesday",
+      "thu": "Thursday",
+      "fri": "Friday"
+    },
+    "types": {
+      "lecture": "Lecture",
+      "practice": "Practice",
+      "lab": "Lab",
+      "seminar": "Seminar",
+      "interactive": "Workshop",
+      "consultation": "Office hours",
+      "test": "Pass/fail test",
+      "exam": "Exam",
+      "retake": "Retake",
+      "other": "Other"
+    },
+    "pairs": {
+      "about": {
+        "title": "About the product",
+        "text": "A schedule service for universities and apps for students.",
+        "who": "Zablotsky D.A.",
+        "where": "iOS, Android, web",
+        "window": {
+          "lead": "A service where a university keeps its schedule, and apps where students and teachers see it. This is the product's new version: all three clients were written anew from 2 June 2026.",
+          "sections": {
+            "what": {
+              "title": "What it is",
+              "p1": "At a university the schedule is made by the academic office. In Pora na paru it lives in one place, and its changes reach the iPhone and Android apps, the widgets and the site at once. A group, a teacher and a room each have a schedule of their own."
+            },
+            "now": {
+              "title": "What already works",
+              "p1": "The schedule in a browser has been open since 16 October 2026: the week of any group, teacher or room by a link, nothing to install. Since 27 September the iPhone app has reached testers as the store build, with real data. The Android app is in development; the site poranaparu.com has been live since 30 September.",
+              "p2": "The editor for universities is being designed: there the schedule will be made and published to every app with one button."
+            },
+            "role": {
+              "title": "My part",
+              "p1": "I am the co-founder and CEO. I design the interfaces in Figma and write all three clients myself: iOS in SwiftUI, Android in Jetpack Compose, the web in Next.js. The backend and the server are my co-founder's."
+            },
+            "how": {
+              "title": "How the work goes",
+              "p1": "Each client is a repository of its own with its own knowledge base: feature specs, a log of decisions and automatic checks. Decisions go into the log, so one sees not only how a thing was made but why.",
+              "p2": "The lesson types' colours are set once and shared by the three platforms: the same on the iPhone and the web, and on Android the seeds of its Material 3 palettes."
+            }
+          },
+          "facts": {
+            "commits": {
+              "n": "2,642",
+              "l": "commits in the three clients: iOS 1,450, Android 907, web 285",
+              "d": "2 June — 31 October 2026"
+            },
+            "decisions": {
+              "n": "89",
+              "l": "decisions in the clients' logs: iOS 19, Android 50, web 20",
+              "d": "as of 4 November 2026"
+            },
+            "specs": {
+              "n": "45",
+              "l": "feature specs in the three clients",
+              "d": "as of 4 November 2026"
+            }
+          },
+          "timeline": {
+            "start": {
+              "date": "2 June 2026",
+              "text": "The first commits of the three clients"
+            },
+            "android": {
+              "date": "11 August",
+              "text": "The Android app's frame"
+            },
+            "alpha": {
+              "date": "27 September",
+              "text": "Alpha: the iOS store build with testers"
+            },
+            "site": {
+              "date": "30 September",
+              "text": "The site poranaparu.com"
+            },
+            "web": {
+              "date": "16 October",
+              "text": "The schedule in a browser"
+            }
+          },
+          "people": {
+            "me": {
+              "name": "Zablotsky D.A.",
+              "line": "Co-founder and CEO: design, iOS, Android and the web"
+            },
+            "partner": {
+              "name": "Co-founder",
+              "line": "The backend and the server"
+            }
+          },
+          "places": {
+            "site": {
+              "name": "poranaparu.com",
+              "line": "The product's site"
+            },
+            "channel": {
+              "name": "t.me/poranaparu",
+              "line": "The product's Telegram channel"
+            }
+          }
+        }
+      },
+      "origin": {
+        "title": "The start: VCourse",
+        "text": "The first version. Launched on 1 September 2025, 632 downloads in three days.",
+        "who": "Zablotsky D.A.",
+        "where": "App Store, Google Play, RuStore",
+        "window": {
+          "lead": "The product's first version. On it the idea was tried by real users.",
+          "sections": {
+            "why": {
+              "title": "Where the idea came from",
+              "p1": "Checking the schedule of my own lessons was awkward. Some universities had apps of their own for it, and from 2023 a classmate and I talked about one for ours, but kept putting it off: the idea seemed too big."
+            },
+            "build": {
+              "title": "How we made it",
+              "p1": "In our third year, in September 2024, we were given a semester for a product of our own idea. I took product design and the front end, my classmate the backend and DevOps. I had no experience in mobile development at all: the first semester went on Swift, SwiftUI, Xcode and Apple's guidelines.",
+              "p2": "The next semester and the summer went on polishing. The app was rewritten from scratch several times."
+            },
+            "launch": {
+              "title": "The launch",
+              "p1": "On 1 September 2025 a post came out in the university's Telegram channel, and strangers began to download the app. In the first three days: 632 downloads, 411 of them on 2 September.",
+              "p2": "Within a semester of the launch came Android and the site, and five more institutions joined. Then came the question of what would keep the product going: that is «The fork», on Tuesday."
+            }
+          },
+          "facts": {
+            "impressions": {
+              "n": "2,800",
+              "l": "App Store impressions",
+              "d": "1–3 September 2025"
+            },
+            "pageViews": {
+              "n": "1,287",
+              "l": "product page views",
+              "d": "1–3 September 2025"
+            },
+            "firstDays": {
+              "n": "632",
+              "l": "downloads in the first three days",
+              "d": "1–3 September 2025"
+            },
+            "rank": {
+              "n": "57",
+              "l": "place among education apps in the Russian App Store",
+              "d": "at launch, September 2025"
+            },
+            "total": {
+              "n": "3,428",
+              "l": "App Store downloads",
+              "d": "by 4 October 2026"
+            }
+          },
+          "timeline": {
+            "idea": {
+              "date": "2023",
+              "text": "The idea, talks with a classmate"
+            },
+            "start": {
+              "date": "September 2024",
+              "text": "A semester for a product of our own"
+            },
+            "launch": {
+              "date": "1 September 2025",
+              "text": "The launch: a post in the university's channel"
+            },
+            "after": {
+              "date": "The semester after",
+              "text": "Android, the site and five more institutions"
+            }
+          },
+          "chart": {
+            "title": "Downloads by day",
+            "source": "App Store Connect",
+            "from": "1 September",
+            "to": "14 September 2025",
+            "summary": "VCourse App Store downloads by day, 1–14 September 2025: 632 in the first three days, 411 of them on 2 September."
+          },
+          "people": {
+            "me": {
+              "name": "Zablotsky D.A.",
+              "line": "The product's author: design, iOS, Android and the web"
+            },
+            "partner": {
+              "name": "Co-founder",
+              "line": "The backend and DevOps"
+            }
+          },
+          "places": {
+            "appStore": {
+              "name": "App Store",
+              "line": "VCourse for iPhone",
+              "href": "https://apps.apple.com/app/id6747290631"
+            },
+            "googlePlay": {
+              "name": "Google Play",
+              "line": "VCourse for Android",
+              "href": "https://play.google.com/store/apps/details?id=app.vcourse.vcourse"
+            },
+            "ruStore": {
+              "name": "RuStore",
+              "line": "VCourse for Android",
+              "href": "https://www.rustore.ru/catalog/app/app.vcourse.vcourse"
+            },
+            "thesis": {
+              "name": "The thesis on the VCourse clients",
+              "line": "The LaTeX project on this site"
+            }
+          }
+        }
+      },
+      "fork": {
+        "title": "The fork",
+        "text": "Ads in the app or a service for universities. We chose the service.",
+        "who": "Zablotsky D.A., co-founder",
+        "where": "Academic offices",
+        "window": {
+          "lead": "After VCourse launched we had to decide what would carry the product: ads in the students' app or a service for universities. We chose the service.",
+          "sections": {
+            "question": {
+              "title": "The question",
+              "p1": "In the semester after the launch the Android app and the site came out and five more schools joined. The app was free and had no ads, and we could not develop it seriously while earning nothing from it."
+            },
+            "ceiling": {
+              "title": "The app's ceiling",
+              "p1": "VCourse took the schedule from the universities' websites. Any redesign of such a site broke the schedule in the app, and the app gave the university itself nothing.",
+              "p2": "The only way to earn from it was ads. We did not want to put them in."
+            },
+            "heard": {
+              "title": "What we heard",
+              "p1": "Students learn about changes from chats, from their group leads or once they are in the room: the official schedule does not show last-minute changes.",
+              "p2": "In an academic office the standard system cannot make a one-off replacement of a teacher: the lesson is cancelled and the dean's office phones the students. The interviews with students and academic offices were done by the team."
+            },
+            "choice": {
+              "title": "What we chose",
+              "p1": "A service in which the academic office makes the schedule itself and publishes it to every app at once. The university becomes the source of the data, and the students' apps become part of the service.",
+              "p2": "VCourse has not been updated since February 2026. In April we pitched to investors at the Tramplin technopark with the service for universities, and on 2 June we started the new version, Pora na paru."
+            }
+          },
+          "facts": {
+            "schools": {
+              "n": "6",
+              "l": "schools in VCourse",
+              "d": "the semester after the launch"
+            },
+            "ads": {
+              "n": "0 ₽",
+              "l": "spent on ads at the launch: three Telegram posts and word of mouth",
+              "d": "September 2025"
+            }
+          },
+          "timeline": {
+            "launch": {
+              "date": "1 September 2025",
+              "text": "VCourse launches"
+            },
+            "after": {
+              "date": "The semester after",
+              "text": "Android, the site and five more schools"
+            },
+            "frozen": {
+              "date": "February 2026",
+              "text": "The last VCourse update"
+            },
+            "pitch": {
+              "date": "April 2026",
+              "text": "A pitch to investors with the service for universities"
+            },
+            "start": {
+              "date": "2 June 2026",
+              "text": "The new version's first commits"
+            }
+          },
+          "people": {
+            "me": {
+              "name": "Zablotsky D.A.",
+              "line": "Co-founder and CEO"
+            },
+            "partner": {
+              "name": "Co-founder",
+              "line": "We decided together"
+            },
+            "team": {
+              "name": "The team",
+              "line": "Interviews with students and academic offices"
+            }
+          }
+        }
+      },
+      "ios": {
+        "title": "The iPhone app",
+        "text": "SwiftUI, a Live Activity and widgets. The build is in TestFlight.",
+        "who": "Zablotsky D.A.",
+        "where": "TestFlight",
+        "window": {
+          "lead": "A native app in SwiftUI: the schedule, notes, widgets, Live Activity and Siri shortcuts. Since 27 September 2026 its store build has been with testers in TestFlight.",
+          "sections": {
+            "what": {
+              "title": "What it does",
+              "p1": "The week of a group, a teacher or a room, subgroups, search across six directories and in Spotlight. A lesson can carry a note with photos and a reminder.",
+              "p2": "The schedule is kept on the phone and opens offline: the Storage screen shows what is saved and how much room it takes."
+            },
+            "outside": {
+              "title": "Outside the app",
+              "p1": "Live Activity keeps the current lesson on the lock screen and in the Dynamic Island and moves on by itself from the lesson to the break and the end of the day. The server sends no updates yet, so the card carries its next phase in advance and switches to it by the schedule it already knows.",
+              "p2": "There are nine widgets: six on the lock screen and three on the home screen — notes that can be ticked off in the widget, favourites and a calendar of lessons. Plus eight Siri shortcuts and quick actions on the icon."
+            },
+            "reminders": {
+              "title": "Reminders",
+              "p1": "Notifications are set by rules rather than a bell on each lesson: reminders of notes, a morning and an evening summary of the day, and important lessons — office hours, tests and exams. The system allows an app 64 scheduled notifications; the app keeps its queue at 60."
+            },
+            "how": {
+              "title": "How it is built",
+              "p1": "Swift 6 and SwiftUI, iOS 17 and later, Liquid Glass on iOS 26. Six modules on Tuist, storage on SwiftData, and one outside dependency: a snapshot testing library.",
+              "p2": "The store build and the internal one, with made-up data, are two different targets: the test data cannot reach the store even by mistake."
+            }
+          },
+          "figures": {
+            "screens": "Home, a group's week, appearance, Live Activity and the lesson calendar widget. Made-up data; a poster for the alpha test, September 2026."
+          },
+          "pictures": {
+            "poster": "Four screens of the iPhone app: home, a group's week, appearance in the dark theme, Live Activity and the lesson calendar widget on the lock screen"
+          },
+          "facts": {
+            "commits": {
+              "n": "1,450",
+              "l": "commits",
+              "d": "2 June — 31 October 2026"
+            },
+            "tests": {
+              "n": "1,182",
+              "l": "tests in Swift Testing",
+              "d": "as of 4 November 2026"
+            },
+            "snapshots": {
+              "n": "132",
+              "l": "reference snapshots: light and dark, iOS 18 and 26",
+              "d": "as of 4 November 2026"
+            },
+            "decisions": {
+              "n": "19",
+              "l": "decisions in the log and 20 feature specs",
+              "d": "as of 4 November 2026"
+            }
+          },
+          "timeline": {
+            "start": {
+              "date": "2 June 2026",
+              "text": "The first commit"
+            },
+            "tuist": {
+              "date": "4 June",
+              "text": "The project on Tuist"
+            },
+            "internal": {
+              "date": "2 August",
+              "text": "Two builds: the store's and an internal one"
+            },
+            "snapshots": {
+              "date": "8 August",
+              "text": "Snapshot tests: 132 references"
+            },
+            "alpha": {
+              "date": "27 September",
+              "text": "The store build with testers"
+            }
+          },
+          "people": {
+            "me": {
+              "name": "Zablotsky D.A.",
+              "line": "Design and code"
+            }
+          }
+        }
+      },
+      "android": {
+        "title": "The Android app",
+        "text": "Compose and Material 3 Expressive, the current lesson in a widget.",
+        "who": "Zablotsky D.A.",
+        "where": "Android",
+        "window": {
+          "lead": "A native app in Jetpack Compose with Material 3 Expressive. The alpha reaches testers through a closed test in Google Play.",
+          "sections": {
+            "what": {
+              "title": "What it does",
+              "p1": "The same as on the iPhone, by Android's rules: the week of a group, a teacher or a room, subgroups, search across the directories, notes with photos and notifications. A building has its map.",
+              "p2": "The schedule is kept on the phone and opens offline."
+            },
+            "widgets": {
+              "title": "Widgets",
+              "p1": "Four widgets on Glance: favourites, a calendar of lessons, notes that can be ticked off without opening the app, and a first version of the current lesson's widget. Android has no Live Activity, so a widget shows the current lesson: the system's timer counts the minutes, and the progress bar steps once a minute."
+            },
+            "colour": {
+              "title": "Colour",
+              "p1": "Seventeen accents to choose from. From each one Material 3 builds a light and a dark scheme; all 34 schemes are exported from the generator in advance rather than computed on the phone."
+            },
+            "how": {
+              "title": "How it is built",
+              "p1": "Kotlin, Compose, Android 10 and later. Eleven Gradle modules, Hilt, Room and Navigation 3. In tests an interceptor of network requests stands in for the server, and the store build is checked for having no test data in it.",
+              "p2": "The privacy check found seven permissions in the build instead of two: libraries had added five of them."
+            }
+          },
+          "figures": {
+            "screens": "Home, a note with photos, appearance and notifications. Made-up data; a poster for the alpha test, September 2026."
+          },
+          "pictures": {
+            "poster": "Four screens of the Android app: home with the current lesson, a note with photos, appearance in the dark theme and notifications"
+          },
+          "facts": {
+            "commits": {
+              "n": "907",
+              "l": "commits",
+              "d": "2 June — 31 October 2026"
+            },
+            "tests": {
+              "n": "1,547",
+              "l": "tests in JUnit",
+              "d": "as of 4 November 2026"
+            },
+            "decisions": {
+              "n": "50",
+              "l": "decisions in the log and 17 feature specs",
+              "d": "as of 4 November 2026"
+            },
+            "modules": {
+              "n": "11",
+              "l": "Gradle modules",
+              "d": "as of 4 November 2026"
+            }
+          },
+          "timeline": {
+            "scaffold": {
+              "date": "10 August 2026",
+              "text": "The project's frame"
+            },
+            "play": {
+              "date": "7 September",
+              "text": "The app in Google Play Console"
+            },
+            "schedule": {
+              "date": "18 September",
+              "text": "The whole schedule"
+            },
+            "widgets": {
+              "date": "1–4 October",
+              "text": "Four widgets"
+            },
+            "build": {
+              "date": "6 October",
+              "text": "The fifth build"
+            }
+          },
+          "people": {
+            "me": {
+              "name": "Zablotsky D.A.",
+              "line": "Design and code"
+            }
+          }
+        }
+      },
+      "web": {
+        "title": "The schedule in a browser",
+        "text": "The whole week by a link, nothing to install. Live since 16 October 2026.",
+        "who": "Zablotsky D.A.",
+        "where": "schedule.poranaparu.com",
+        "window": {
+          "lead": "The week of any group, teacher or room by a link, nothing to install. Live since 16 October 2026.",
+          "sections": {
+            "what": {
+              "title": "What it does",
+              "p1": "The week's grid by the university's bells: today is tinted, the current lesson has a ring and the time left, and a line shows the hour. The page opens already scrolled to the nearest lesson, and the weeks page years forward and back.",
+              "p2": "Search on ⌘K looks through groups, teachers, rooms, faculties, departments and buildings. A lesson has its window, a room has its building's map, and subgroups switch by tabs."
+            },
+            "time": {
+              "title": "The university's time",
+              "p1": "“Now”, “today” and the time left are counted in the university's time zone: a student looking at the schedule from another city sees what the room sees."
+            },
+            "how": {
+              "title": "How it is built",
+              "p1": "Next.js 16, React 19, Tailwind CSS 4 and shadcn/ui on Radix. The pages are rendered on the server and refreshed every five minutes, and only the server talks to the API.",
+              "p2": "17 automatic checks: accessibility to WCAG 2.2 AA in both themes, addresses, SEO and the JavaScript budget. The schedule screen is allowed 250 KB gzip; the week's grid weighed 196.6 KB on 18 October 2026."
+            },
+            "phone": {
+              "title": "On a phone",
+              "p1": "For now it is a plain list of lessons by day. A full phone screen is ahead, and the pages stay closed to search engines until the schedule takes its final shape."
+            }
+          },
+          "figures": {
+            "screens": "A group's week, a lesson's window and search. The product's build on made-up data, Thursday 11:31, taken 4 November 2026."
+          },
+          "pictures": {
+            "week": "A group's week in the browser: today is tinted, the current lesson has a ring and the time left",
+            "lesson": "A lesson's window: the time, the teacher and the room",
+            "search": "Search across the university's directories, the Teachers section"
+          },
+          "facts": {
+            "commits": {
+              "n": "285",
+              "l": "commits in the web: the site and the schedule, nearly all since 29 September",
+              "d": "2 June — 31 October 2026"
+            },
+            "schedule": {
+              "n": "106",
+              "l": "of them in the schedule",
+              "d": "16–31 October 2026"
+            },
+            "budget": {
+              "n": "196.6 KB",
+              "l": "of first-load JavaScript, against a budget of 250",
+              "d": "18 October 2026"
+            },
+            "gates": {
+              "n": "17",
+              "l": "automatic checks",
+              "d": "as of 4 November 2026"
+            }
+          },
+          "timeline": {
+            "start": {
+              "date": "29 September 2026",
+              "text": "Work on the web"
+            },
+            "site": {
+              "date": "30 September",
+              "text": "The site poranaparu.com"
+            },
+            "launch": {
+              "date": "16 October",
+              "text": "The schedule in production"
+            },
+            "grid": {
+              "date": "18 October",
+              "text": "The week's grid and paging"
+            },
+            "search": {
+              "date": "26 October",
+              "text": "Search on ⌘K"
+            },
+            "window": {
+              "date": "28 October",
+              "text": "The lesson's window"
+            },
+            "now": {
+              "date": "31 October",
+              "text": "The time line and the university's clock"
+            }
+          },
+          "people": {
+            "me": {
+              "name": "Zablotsky D.A.",
+              "line": "Design and code"
+            }
+          }
+        }
+      },
+      "system": {
+        "title": "The design system",
+        "text": "One set of tokens from Figma and lesson colours on every platform.",
+        "who": "Zablotsky D.A.",
+        "where": "Figma → code",
+        "window": {
+          "lead": "One palette and one set of lesson type colours on the iPhone, on Android and in the web. Each platform has its own way of getting there.",
+          "sections": {
+            "one": {
+              "title": "A lesson's type is a colour",
+              "p1": "A lecture, a practice or an exam is known by its colour on any screen: in a card, in a widget, in a lesson's window. In the light theme it is shade 500 of the Tailwind palette, in the dark one 300."
+            },
+            "figma": {
+              "title": "From Figma to code",
+              "p1": "Figma's variables are exported as a snapshot in the W3C Design Tokens format: 527 tokens in 11 files. A script builds the web's CSS from the snapshot, with pairs for the light and the dark theme.",
+              "p2": "The Tokens check lets no commit through if the CSS has drifted from the snapshot: a colour is changed in Figma, not in the code."
+            },
+            "platforms": {
+              "title": "Three platforms",
+              "p1": "On the iPhone the same values are written in Swift. Android takes the shade as a seed: the Material 3 generator builds the roles for the light and the dark theme from it, and a check forbids colours and sizes in the code outside the design system's module.",
+              "p2": "What the three clients share is the palette and the match of lesson type to shade. The rest each platform does by its own rules: HIG on the iPhone, Material 3 Expressive on Android."
+            },
+            "here": {
+              "title": "On this page",
+              "p1": "The week and the lesson windows here are built on the same values: the brand's blue, zinc greys, the type colours and the Geist typeface. The sizes are 1.25 times larger."
+            }
+          },
+          "figures": {
+            "hues": "The lesson types' colours: the palette's shade and its value in the light and in the dark theme. From the product's tokens, 4 November 2026."
+          },
+          "facts": {
+            "tokens": {
+              "n": "527",
+              "l": "tokens in 11 files",
+              "d": "as of 4 November 2026"
+            },
+            "types": {
+              "n": "10",
+              "l": "lesson type colours",
+              "d": "as of 4 November 2026"
+            },
+            "schemes": {
+              "n": "34",
+              "l": "Material 3 schemes: 17 accents, light and dark",
+              "d": "as of 4 November 2026"
+            },
+            "components": {
+              "n": "23",
+              "l": "web components",
+              "d": "as of 4 November 2026"
+            }
+          },
+          "timeline": {
+            "neutral": {
+              "date": "26 August 2026",
+              "text": "Android: the type Other takes the neutral roles"
+            },
+            "zinc": {
+              "date": "5–11 October",
+              "text": "Web: the Geist typeface and zinc greys"
+            },
+            "tokens": {
+              "date": "11 October",
+              "text": "A snapshot of Figma's variables in the code"
+            },
+            "nova": {
+              "date": "26 October",
+              "text": "shadcn/ui in the Nova style"
+            }
+          },
+          "people": {
+            "me": {
+              "name": "Zablotsky D.A.",
+              "line": "The design system in Figma and in three clients"
+            }
+          }
+        }
+      },
+      "editor": {
+        "title": "The editor",
+        "text": "Catches conflicts before publishing. Still being designed.",
+        "who": "Zablotsky D.A.",
+        "where": "University dashboard",
+        "window": {
+          "lead": "A workspace where the academic office will make the schedule and publish it to every app at once. It is being designed; there is no code yet.",
+          "sections": {
+            "what": {
+              "title": "What it will be",
+              "p1": "The features for the release were named on 29 September 2026: the schedule editor, the directories, publishing to every app, notifications of changes, import and integrations, and roles.",
+              "p2": "In the editor lessons are dragged, weeks are built from templates, and subgroups and replacements are part of the schedule. A room or a teacher booked for two lessons at once is highlighted before publishing."
+            },
+            "pain": {
+              "title": "Where it starts",
+              "p1": "The first scenario is a methodologist replacing a teacher who is ill. Today the standard system cannot make such a replacement, and the design starts with it."
+            },
+            "before": {
+              "title": "What VCourse taught",
+              "p1": "I designed the first editor of this kind for VCourse. A conflict there was only a clash of resources: one teacher, room or group in two places at once. Subgroups studying side by side were not a conflict.",
+              "p2": "Any edit could be undone, and publishing went in two steps: a summary of all the changes, a check on the server, and only then one transaction. A contradictory schedule could not be published. The server's check was my co-founder's."
+            },
+            "now": {
+              "title": "Now",
+              "p1": "The workspace will come after sign-in with an account. The scenarios' screens are being drawn in Figma."
+            }
+          },
+          "figures": {
+            "flow": {
+              "edit": {
+                "title": "An edit",
+                "text": "A lesson moved, a teacher replaced"
+              },
+              "check": {
+                "title": "A conflict highlighted",
+                "text": "A room or a teacher booked for two lessons at once"
+              },
+              "publish": {
+                "title": "Publishing",
+                "text": "One button to the iPhone, Android and the browser"
+              },
+              "caption": "How an edit will reach the students. A diagram after the workspace's spec, 29 September 2026."
+            }
+          },
+          "facts": {
+            "abilities": {
+              "n": "6",
+              "l": "features of the workspace at the release",
+              "d": "named 29 September 2026"
+            }
+          },
+          "timeline": {
+            "first": {
+              "date": "2026",
+              "text": "A conflict-free editor for VCourse"
+            },
+            "abilities": {
+              "date": "29 September 2026",
+              "text": "The workspace's features named"
+            },
+            "now": {
+              "date": "Now",
+              "text": "The scenarios' screens in Figma"
+            }
+          },
+          "people": {
+            "me": {
+              "name": "Zablotsky D.A.",
+              "line": "Product and design"
+            },
+            "partner": {
+              "name": "Co-founder",
+              "line": "The server's check in VCourse"
+            }
+          }
+        }
+      },
+      "numbers": {
+        "title": "Numbers",
+        "text": "VCourse downloads and the clients' commits, each number with its date.",
+        "who": "App Store Connect, git log",
+        "where": "September 2025 — October 2026",
+        "window": {
+          "lead": "The page's numbers in one place. Each has its date and its source.",
+          "sections": {
+            "launch": {
+              "title": "VCourse's launch",
+              "p1": "On 1 September 2025 a post came out in the university's Telegram channel. In the first three days there were 632 downloads, 411 of them on 2 September. By 4 October 2026 there were 3,428 downloads in the App Store."
+            },
+            "code": {
+              "title": "The new version's code",
+              "p1": "2,642 commits in three clients over five months. iOS came first, Android started on 10 August and the web on 29 September, and the months show the work moving from one client to the next."
+            },
+            "sources": {
+              "title": "Where the numbers come from",
+              "p1": "Downloads, impressions and the chart position come from App Store Connect's export. Commits come from git log in the clients' repositories, without Dependabot's. Tests, decisions and specs are counted from the repositories' files.",
+              "p2": "Usage numbers are published with my co-founder's consent. They are counted again before each publication."
+            }
+          },
+          "downloads": {
+            "title": "VCourse downloads by day",
+            "source": "App Store Connect",
+            "from": "1 September",
+            "to": "14 September 2025",
+            "summary": "VCourse downloads in the App Store by day, 1–14 September 2025: 632 in the first three days, 411 of them on 2 September."
+          },
+          "figures": {
+            "commits": {
+              "title": "Commits by month",
+              "source": "git log",
+              "summary": "Commits in the Pora na paru clients by month, June to October 2026. iOS: 294, 700, 392, 39, 25. Android: 1 in June, 451 in August, 404 in September, 51 in October. Web: 1 in June, 50 in September, 234 in October.",
+              "months": {
+                "jun": "June",
+                "jul": "July",
+                "aug": "August",
+                "sep": "September",
+                "oct": "October"
+              },
+              "clients": {
+                "ios": "iOS",
+                "android": "Android",
+                "web": "Web"
+              }
+            }
+          },
+          "facts": {
+            "firstDays": {
+              "n": "632",
+              "l": "VCourse downloads in the first three days",
+              "d": "1–3 September 2025"
+            },
+            "total": {
+              "n": "3,428",
+              "l": "VCourse downloads in the App Store",
+              "d": "by 4 October 2026"
+            },
+            "rank": {
+              "n": "57",
+              "l": "place among education apps in the Russian App Store",
+              "d": "at the launch, September 2025"
+            },
+            "commits": {
+              "n": "2,642",
+              "l": "commits in three clients: iOS 1,450, Android 907, web 285",
+              "d": "2 June — 31 October 2026"
+            },
+            "tests": {
+              "n": "2,729",
+              "l": "tests in the iPhone and Android clients: 1,182 and 1,547",
+              "d": "as of 4 November 2026"
+            },
+            "decisions": {
+              "n": "89",
+              "l": "decisions in the clients' logs: iOS 19, Android 50, web 20",
+              "d": "as of 4 November 2026"
+            }
+          }
+        }
+      },
+      "next": {
+        "title": "What's next",
+        "text": "The new version goes to the stores, then the university dashboard.",
+        "who": "Zablotsky D.A., co-founder",
+        "where": "poranaparu.com",
+        "window": {
+          "lead": "The new version goes to the stores, and the university's workspace follows.",
+          "sections": {
+            "stores": {
+              "title": "The stores",
+              "p1": "Every feature of the iPhone app is done. Ahead are checks on devices with iOS 17, 18 and 26 and the release in the App Store.",
+              "p2": "The Android app is in an alpha test through a closed test in Google Play. Live Activity on the iPhone will start updating from the server once the server can send the updates."
+            },
+            "web": {
+              "title": "The web",
+              "p1": "In the browser a full phone screen and search on it are ahead. The schedule's pages will open to search engines once it takes its final shape."
+            },
+            "cabinet": {
+              "title": "The university's workspace",
+              "p1": "Then the workspace, where the academic office makes the schedule and publishes it to every app with one button, and conflicts show before publishing. It is the subject of The editor on Thursday."
+            }
+          },
+          "people": {
+            "me": {
+              "name": "Zablotsky D.A.",
+              "line": "Co-founder and CEO: design, iOS, Android and web"
+            },
+            "partner": {
+              "name": "Co-founder",
+              "line": "We decide together"
+            }
+          },
+          "places": {
+            "site": {
+              "name": "poranaparu.com",
+              "line": "The product's site"
+            },
+            "channel": {
+              "name": "t.me/poranaparu",
+              "line": "The product's Telegram channel: news of the release"
+            }
+          }
+        }
+      }
+    },
+    "window": {
+      "close": "Close",
+      "escape": "Esc",
+      "left": "{time} left",
+      "people": "Who made it",
+      "facts": "Numbers",
+      "timeline": "Timeline",
+      "links": "Links",
+      "previous": "Previous lesson",
+      "next": "Next lesson",
+      "when": "{day}, {slot}",
+      "look": "Open full screen: {what}",
+      "hue": "{light} · {dark}"
+    },
+    "viewer": {
+      "label": "Picture viewer",
+      "close": "Close the viewer",
+      "previous": "Previous picture",
+      "next": "Next picture",
+      "count": "{n} of {count}"
+    }
+  }
 }

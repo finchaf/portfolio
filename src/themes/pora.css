@@ -1,7 +1,7 @@
 /*
  * «Пора на пару»: the colours and typeface of its site. The values are the design system's
- * (poranaparu/web, packages/ui/tokens), zinc and blue. `accent` is its brand colour; the brand's
- * light value is too pale for text, so `accent-strong` there is its blue-600. Geist.
+ * (poranaparu/web, packages/ui/tokens), Tailwind 4's zinc and blue. `accent` is its brand colour;
+ * the brand's light value is too pale for text, so `accent-strong` there is its blue-600. Geist.
  */
 :root:has([data-world="pora"]),
 [data-tint="pora"] {
@@ -9,14 +9,51 @@
   --surface: light-dark(#fafafa, #18181b);
   --raised: light-dark(#f4f4f5, #27272a);
   --ink: light-dark(#09090b, #fafafa);
-  --muted: light-dark(#71717a, #a1a1aa);
+  --muted: light-dark(#71717b, #9f9fa9);
   --line: light-dark(#e4e4e7, rgb(255 255 255 / 0.1));
-  --accent: light-dark(#3b82f6, #93c5fd);
-  --accent-strong: light-dark(#2563eb, #93c5fd);
+  --accent: light-dark(#2b7fff, #8ec5ff);
+  --accent-strong: light-dark(#155dfc, #8ec5ff);
   --on-accent: light-dark(#ffffff, #09090b);
   --success: light-dark(#16a34a, #4ade80);
   --warning: light-dark(#d97706, #fbbf24);
   --danger: light-dark(#dc2626, #f87171);
+
+  /* The web schedule's lesson card, and its shadow, only in the light. */
+  --card: light-dark(#ffffff, #18181b);
+  --shade: light-dark(rgb(0 0 0 / 0.1), transparent);
+  /* A lesson's type, as the product colours it everywhere: 500 in the light, 300 in the dark. */
+  --lesson-lecture: light-dark(#00a6f4, #74d4ff);
+  --lesson-practice: light-dark(#ff2056, #ffa1ad);
+  --lesson-lab: light-dark(#00bc7d, #5ee9b5);
+  --lesson-seminar: light-dark(#fe9a00, #ffd230);
+  --lesson-interactive: light-dark(#f6339a, #fda5d5);
+  --lesson-consultation: light-dark(#ad46ff, #dab2ff);
+  --lesson-test: light-dark(#7ccf00, #bbf451);
+  --lesson-exam: light-dark(#ff6900, #ffb86a);
+  --lesson-retake: light-dark(#00bba7, #46ecd5);
+  --lesson-other: light-dark(#71717b, #9f9fa9);
+  /* Today and the lesson going on, the web schedule's tints of the brand. */
+  --today: light-dark(rgb(43 127 255 / 0.04), rgb(142 197 255 / 0.07));
+  --today-head: light-dark(rgb(43 127 255 / 0.09), rgb(142 197 255 / 0.12));
+  --now-ring: light-dark(rgb(43 127 255 / 0.15), rgb(142 197 255 / 0.15));
+  --now-line: light-dark(rgb(43 127 255 / 0.3), rgb(142 197 255 / 0.3));
+  /*
+   * The lesson's window: the veil over the page, the specks of the paper, the hints of its footer.
+   * The product's veil is 10 % black and a 4 px blur; Gecko blurs the whole screen again for every
+   * frame that changes over it, the window ran at half its frames, so the veil is a little darker
+   * instead and blurs nothing.
+   */
+  --scrim: light-dark(rgb(0 0 0 / 0.2), rgb(0 0 0 / 0.5));
+  /* The picture viewer: dark in both modes, as a picture is looked at. */
+  --viewer-veil: light-dark(rgb(9 9 11 / 0.92), rgb(9 9 11 / 0.92));
+  --viewer-ink: light-dark(#fafafa, #fafafa);
+  --viewer-muted: light-dark(#9f9fa9, #9f9fa9);
+  --viewer-button: light-dark(rgb(255 255 255 / 0.1), rgb(255 255 255 / 0.1));
+  --viewer-button-hover: light-dark(rgb(255 255 255 / 0.18), rgb(255 255 255 / 0.18));
+  --viewer-ring: light-dark(#8ec5ff, #8ec5ff);
+  --viewer-edge: light-dark(rgb(255 255 255 / 0.12), rgb(255 255 255 / 0.12));
+  --grain: light-dark(rgb(0 0 0 / 0.08), rgb(255 255 255 / 0.07));
+  --hint: light-dark(color-mix(in srgb, #09090b 60%, transparent), #9f9fa9);
 
   /* Controls: the plain pill, until this theme gets a skin of its own (ADR-0011). */
   --control-face: var(--sans);
@@ -57,7 +94,7 @@
   --tab-line: transparent;
   --tab-glyph: block;
   --tab-glyph-gap: 0.4em;
-  --tab-ink: light-dark(color-mix(in srgb, #09090b 60%, transparent), #a1a1aa);
+  --tab-ink: light-dark(color-mix(in srgb, #09090b 60%, transparent), #9f9fa9);
   --tab-current: light-dark(var(--page), rgb(255 255 255 / 0.045));
   --tab-current-border: light-dark(transparent, rgb(255 255 255 / 0.15));
   /* The outline Button of the ui package: the border and the fill of an input in the dark. */

@@ -1,8 +1,5 @@
-/**
- * App Store downloads per day, 1 to 14 September 2025. From App Store Connect's export, as is: the
- * chart draws them and the text beside it adds them up, and story-data.test.ts keeps the two equal.
- */
-export const LAUNCH_DOWNLOADS = [160, 411, 61, 38, 25, 14, 13, 28, 18, 20, 11, 7, 8, 9] as const;
+/** The launch's downloads per day live in `src/lib/product.ts`: the Pora page draws them too. */
+export { LAUNCH_DOWNLOADS } from "@/lib/product";
 
 /** The file behind the first chapter as one wall: how many frames stand in each row of it. */
 const WALL = [10, 10, 10, 10, 7];
