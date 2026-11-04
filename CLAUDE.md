@@ -53,7 +53,7 @@ A choice of how something looks is made on a live page before the site changes: 
 tokens, in `docs/private/prototype/`, with a recommendation. The owner looks in Zen, which is Gecko:
 a visual change is checked in real Gecko too, mouse included, since some bugs live only there.
 
-A release is `python3 scripts/deploy.py` from `main`. A card's colours or strings changed: `pnpm og`,
-or the Unit gate goes red. The laptop is arm64 and CI is x64, so a simulation ends on different
+A release is `python3 scripts/deploy.py` from `main`. A card's colours or strings changed: `pnpm og`; a line
+of the CV: `pnpm cv`; or the Unit gate goes red. The laptop is arm64 and CI is x64, so a simulation ends on different
 numbers: a hash never covers such a result. What `/si` reports is checked against `git` and `gh`,
 and a release is checked on the live site.

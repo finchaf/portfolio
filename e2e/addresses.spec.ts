@@ -146,3 +146,12 @@ test("the language link keeps the page", async ({ page }) => {
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
   await expect(page.getByRole("heading", { level: 1, name: "Projects" })).toBeVisible();
 });
+
+for (const locale of ["ru", "en"]) {
+  test(`the CV in ${locale} is a PDF, as a reader downloads it`, async ({ request }) => {
+    const response = await request.get(`/cv/${locale}.pdf`, DIRECT);
+    expect(response.status()).toBe(200);
+    expect(response.headers()["content-type"]).toContain("application/pdf");
+    expect((await response.body()).subarray(0, 5).toString()).toBe("%PDF-");
+  });
+}

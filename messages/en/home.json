@@ -419,5 +419,38 @@
       "releases": "The thesis came out in releases, like a program. Each release is a dated tag: GitHub Actions builds the PDF in a container with TeX Live and attaches it to the release.",
       "section": "The “{name}” section"
     }
+  },
+  "cv": {
+    "download": "CV, PDF",
+    "file": "Danil Zablotsky, CV.pdf",
+    "title": "Danil Zablotsky, CV",
+    "contacts": "Contact",
+    "languages": "Languages",
+    "telegram": "Telegram",
+    "mail": "Email",
+    "site": "Site",
+    "github": "GitHub",
+    "russian": "Russian, native",
+    "english": "English, B2",
+    "rows": {
+      "pora": {
+        "one": "A schedule product for universities, from the idea to the apps",
+        "two": "2,642 commits across three clients, 2 June to 31 October 2026"
+      },
+      "team": {
+        "one": "1–2 new apps a week",
+        "two": "Built a system on agents: 234 rules in 16 checklists, a machine checked 89 of them, as of 1 Nov 2026",
+        "link": "The Flow case: finchaf.com/flow"
+      },
+      "freelance": {
+        "one": "A website for a salad dressing maker, delivered"
+      },
+      "first": {
+        "one": "Apps in three stores, 3,428 App Store downloads by 4 October 2026",
+        "two": "632 downloads in the first three days after launch, September 2025"
+      }
+    },
+    "latexLink": "finchaf.com/projects/latex",
+    "updated": "Updated {date}"
   }
 }

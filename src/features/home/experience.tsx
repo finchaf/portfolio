@@ -67,6 +67,7 @@ function CvRow({ line }: { line: Line }) {
 export function Experience() {
   const t = useTranslations("home.experience");
   const hero = useTranslations("home.hero");
+  const cv = useTranslations("home.cv");
   const current = useLocale();
   const locale = isLocale(current) ? current : "ru";
   const rows: Line[] = ROWS.map((row) => ({
@@ -128,6 +129,14 @@ export function Experience() {
           </p>
           <p className="exp-about">{t("about")}</p>
           <p className="exp-links">
+            <a
+              className="control-button control-primary control-small"
+              download={cv("file")}
+              href={`/cv/${locale}.pdf`}
+              type="application/pdf"
+            >
+              {cv("download")}
+            </a>
             <a className="control-link" href={TELEGRAM_URL}>
               {TELEGRAM_HANDLE}
             </a>

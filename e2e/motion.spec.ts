@@ -711,6 +711,17 @@ test.describe("the home page in motion", () => {
     await expect(page.locator("#experience-title > span")).not.toHaveCount(0);
   });
 
+  test("gives the CV as a PDF in the reader's language", async ({ page }) => {
+    await page.goto(HOME);
+    const link = page.locator("#experience").getByRole("link", { name: "Резюме, PDF" });
+    await expect(link).toHaveAttribute("href", "/cv/ru.pdf");
+    await expect(link).toHaveAttribute("download", "Данил Заблоцкий, резюме.pdf");
+    await page.goto("/en");
+    await expect(
+      page.locator("#experience").getByRole("link", { name: "CV, PDF" }),
+    ).toHaveAttribute("href", "/cv/en.pdf");
+  });
+
   test("holds the person while the rows of the CV pass", async ({ page }) => {
     await page.goto(HOME);
     const top = await topOf(page, "#experience");
