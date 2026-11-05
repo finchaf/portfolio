@@ -35,7 +35,7 @@ texts, cases or what the site may show. Commit there separately.
   breaks another page on a route.
 - **No browser scrollbar** (ADR-0016): the document hides it, and a new scrolling area puts `ScrollBar` from `src/ui/` right
   after its scroller. A modal layer calls `announceTopLayer()` from `src/ui/top-layer.ts` after `showModal()`, or the site's
-  cursor stays under it; no `backdrop-filter` under anything that moves (Gecko re-blurs every frame, ADR-0015).
+  cursor stays under it; no full-screen `backdrop-filter` under anything that moves (Gecko re-blurs every frame, ADR-0015); a small glass, as the Pora capsule's, is measured in Zen first (ADR-0011).
 - **The first screen never waits for animation.** Content is in the HTML and visible without
   JavaScript; every effect honours `prefers-reduced-motion`.
 - **Fonts and media only with clear rights.** GSAP stays an npm dependency: its files are never
