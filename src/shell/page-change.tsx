@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useLayoutEffect, useRef, ViewTransition } from "react";
 
 import { PAGE_PATHS, type PagePath } from "@/lib/pages";
+import { markPageShown } from "@/motion/scene";
 import { DURATION } from "@/motion/tokens";
 
 /** How long, in milliseconds, a quiet change holds off the slash: past the browser's swap. */
@@ -34,8 +35,10 @@ export function PageChange() {
   const settle = useRef(0);
 
   // React drops the picture of the whole page unless the name is already set on the element.
+  // It also runs after the first page's scenes have started: any scene after it came by a change.
   useLayoutEffect(() => {
     document.documentElement.style.viewTransitionName = "root";
+    markPageShown();
   }, []);
 
   useLayoutEffect(() => {

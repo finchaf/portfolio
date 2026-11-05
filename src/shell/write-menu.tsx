@@ -38,6 +38,7 @@ export function WriteMenu() {
           </ButtonLink>
           <CopyAddress
             address={EMAIL}
+            className="write-copy control-button control-quiet control-small"
             labels={{ copy: t("contact.copy"), copied: t("contact.copied") }}
           />
         </div>

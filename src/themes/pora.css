@@ -21,6 +21,10 @@
   /* The web schedule's lesson card, and its shadow, only in the light. */
   --card: light-dark(#ffffff, #18181b);
   --shade: light-dark(rgb(0 0 0 / 0.1), transparent);
+  /* The product's buttons: primary in zinc, outline on the page, `bg-input/30` and `/50` in the dark. */
+  --button: light-dark(#18181b, #e4e4e7);
+  --on-button: light-dark(#fafafa, #18181b);
+  --button-outline-hover: light-dark(#f4f4f5, rgb(255 255 255 / 0.075));
   /* A lesson's type, as the product colours it everywhere: 500 in the light, 300 in the dark. */
   --lesson-lecture: light-dark(#00a6f4, #74d4ff);
   --lesson-practice: light-dark(#ff2056, #ffa1ad);
@@ -53,21 +57,29 @@
   --viewer-ring: light-dark(#8ec5ff, #8ec5ff);
   --viewer-edge: light-dark(rgb(255 255 255 / 0.12), rgb(255 255 255 / 0.12));
   --grain: light-dark(rgb(0 0 0 / 0.08), rgb(255 255 255 / 0.07));
+  /* The specks of the sidebar's matte paper, a mask for `--grain` (the product's PaperGrain). */
+  --paper-noise: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27180%27%20height%3D%27180%27%3E%3Cfilter%20id%3D%27n%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.9%27%20numOctaves%3D%272%27%20stitchTiles%3D%27stitch%27/%3E%3CfeColorMatrix%20values%3D%270%200%200%200%200%20%200%200%200%200%200%20%200%200%200%200%200%20%202.2%200%200%200%20-0.75%27/%3E%3C/filter%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url%28%23n%29%27/%3E%3C/svg%3E");
   --hint: light-dark(color-mix(in srgb, #09090b 60%, transparent), #9f9fa9);
 
-  /* Controls: the plain pill, until this theme gets a skin of its own (ADR-0011). */
+  /*
+   * Controls: the Button of the product's ui package (ADR-0011). Primary in zinc, outline on the
+   * page with the input's border, radius `lg`; no lift on hover, the fill gives way as at `/80`.
+   */
   --control-face: var(--sans);
   --control-text: 1;
   --control-text-small: 0.875;
-  --control-radius: 999px;
-  --control-fill: var(--accent-strong);
-  --on-control: var(--on-accent);
-  --control-mark: var(--on-accent);
+  --control-radius: 0.625rem;
+  --control-fill: var(--button);
+  --on-control: var(--on-button);
+  --control-mark: var(--on-button);
   --control-open: "";
   --control-close: "";
-  --control-hover: -1px;
-  --control-rules: 0 0 transparent;
-  --control-well: var(--surface);
+  --control-close-gap: 0;
+  --control-hover: 0px;
+  --control-wash: light-dark(rgb(255 255 255 / 0.2), rgb(9 9 11 / 0.2));
+  --control-quiet-wash: light-dark(#f4f4f5, rgb(255 255 255 / 0.075));
+  --control-rules: 0 0 0 1px var(--outline-line);
+  --control-well: var(--outline-fill);
   --control-thumb: var(--page);
   --control-line: transparent;
   --control-surface: var(--surface);
@@ -77,6 +89,39 @@
     0 2px 4px -2px light-dark(color-mix(in srgb, var(--ink) 10%, transparent), transparent);
   --control-current: var(--page);
   --control-current-line: 0 0 transparent;
+
+  /*
+   * The capsule as the web schedule's sidebar: its matte paper, `sidebar` with the grain, a 1 px
+   * highlight along the top and a soft shadow, and the time column's glass under it, 85 % over a
+   * 16 px blur. Square corners as shadcn's: the items `rounded-md`, the bar round them by its 4 px.
+   * A page is a menu item of the sidebar, its hover the foreground at 7 % in the light; «Написать»
+   * is the product's primary Button (the owner, 05.11.2026).
+   */
+  --capsule-radius: 0.75rem;
+  --capsule-link-radius: 0.5rem;
+  --capsule-paper: light-dark(rgb(250 250 250 / 0.85), rgb(24 24 27 / 0.85));
+  --capsule-glass: blur(16px);
+  --capsule-grain: var(--grain);
+  --capsule-edge:
+    0 0 0 1px light-dark(#e4e4e7, rgb(255 255 255 / 0.1)),
+    inset 0 1px 0 light-dark(rgb(255 255 255 / 0.7), rgb(255 255 255 / 0.06)),
+    0 4px 16px rgb(0 0 0 / 0.06);
+  --capsule-current: light-dark(color-mix(in oklab, #09090b 7%, transparent), #27272a);
+  --capsule-hover: light-dark(
+    color-mix(in oklab, #09090b 4%, transparent),
+    rgb(255 255 255 / 0.05)
+  );
+  --capsule-write-fill: var(--button);
+  --capsule-write-ink: var(--on-button);
+  --capsule-write-edge: 0 0 transparent;
+  --capsule-write-wash: var(--control-wash);
+  /* The sheet «Написать» opens: the product's popover, labels in its sans. */
+  --sheet-corner: 0.75rem;
+  --sheet-surface: var(--card);
+  --sheet-face: var(--sans);
+  --sheet-shadow:
+    0 4px 6px -1px light-dark(rgb(0 0 0 / 0.1), transparent),
+    0 2px 4px -2px light-dark(rgb(0 0 0 / 0.1), transparent);
 
   /* Tabs: TabsList and TabsTrigger of the product's ui package, a mark and a word on a thumb. */
   --tabs-well: var(--raised);

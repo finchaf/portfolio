@@ -24,7 +24,7 @@
   place-items: center;
   height: 2rem;
   padding-inline: var(--capsule-pad);
-  border-radius: var(--control-radius);
+  border-radius: var(--capsule-link-radius, var(--control-radius));
   font-family: var(--control-face);
   font-size: calc(var(--control-text-small) * 1rem);
   font-weight: 500;
@@ -35,8 +35,13 @@
   width: calc(var(--chars) * var(--capsule-advance) + 2 * var(--capsule-pad));
 }
 
+/*
+ * A theme may give the capsule a look of its own over the controls': `--capsule-*` set the corners,
+ * the chosen page, a hover, the surface's paper, glass, grain and edge, and the way to write. Each
+ * falls back to the controls' value, so a theme without them keeps the capsule its controls give.
+ */
 [data-capsule] .capsule-link[aria-current] {
-  background: var(--control-current);
+  background: var(--capsule-current, var(--control-current));
   box-shadow: var(--control-current-line);
   color: var(--control-current-ink, var(--ink));
 }
@@ -50,8 +55,14 @@
   fill: var(--control-current-ink, var(--accent));
 }
 
+@media (hover: hover) {
+  [data-capsule] .capsule-link:not([aria-current]):hover {
+    background: var(--capsule-hover, transparent);
+  }
+}
+
 .capsule-write {
-  border-radius: var(--control-radius);
+  border-radius: var(--capsule-link-radius, var(--control-radius));
   font-family: var(--control-face);
   font-size: calc(var(--control-text-small) * 1rem);
   font-weight: 500;
@@ -59,13 +70,20 @@
 }
 
 .capsule-action {
-  background: var(--capsule-narrow, var(--control-fill));
-  color: var(--capsule-narrow-ink, var(--on-control));
-  transition: translate var(--duration-quick) var(--ease-out);
+  background: var(--capsule-narrow, var(--capsule-write-fill, var(--control-fill)));
+  box-shadow: var(--capsule-write-edge, none);
+  color: var(--capsule-narrow-ink, var(--capsule-write-ink, var(--on-control)));
+  transition:
+    translate var(--duration-quick) var(--ease-out),
+    background-image var(--duration-quick) var(--ease-out);
 }
 
 @media (hover: hover) {
   .capsule-action:hover {
+    background-image: linear-gradient(
+      var(--capsule-write-wash, transparent),
+      var(--capsule-write-wash, transparent)
+    );
     translate: 0 var(--control-hover);
   }
 }
@@ -85,9 +103,22 @@
 }
 
 .capsule-surface {
-  border-radius: var(--control-radius);
-  background: var(--control-surface);
-  box-shadow: var(--control-rules), var(--control-raise);
+  border-radius: var(--capsule-radius, var(--control-radius));
+  background: var(--capsule-paper, var(--control-surface));
+  box-shadow: var(--capsule-edge, var(--control-rules), var(--control-raise));
+  -webkit-backdrop-filter: var(--capsule-glass, none);
+  backdrop-filter: var(--capsule-glass, none);
+}
+
+/* The paper's specks over its colour, when a theme gives it a grain. */
+.capsule-surface::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--capsule-grain, transparent);
+  -webkit-mask: var(--paper-noise, none) 0 0 / 225px;
+  mask: var(--paper-noise, none) 0 0 / 225px;
 }
 
 /* Inside: the row scrolls on a tight screen, and would cut a ring around the link. */
@@ -150,8 +181,8 @@
   }
 
   .capsule-action {
-    background: var(--control-fill);
-    color: var(--on-control);
+    background: var(--capsule-write-fill, var(--control-fill));
+    color: var(--capsule-write-ink, var(--on-control));
   }
 
   /* A skin with a cap: the word moves over, and the cell stays the size it is in every theme. */

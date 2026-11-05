@@ -245,11 +245,19 @@
   }
 }
 
-/* A page that has moved its own camera swaps without the slash. */
+/*
+ * A page that has moved its own camera swaps without the slash. The lead's picture is a bare strip
+ * of the accent: unclipped it would fill the screen for the frame of the swap, a flash of green on
+ * the way into a project.
+ */
 :root[data-page-quiet]::view-transition-group(*),
 :root[data-page-quiet]::view-transition-old(*),
 :root[data-page-quiet]::view-transition-new(*) {
   animation: none !important;
+}
+
+:root[data-page-quiet]::view-transition-new(page-lead) {
+  display: none;
 }
 
 /* The arriving page shows the capsule in its final state: nothing is left to play after the slash. */

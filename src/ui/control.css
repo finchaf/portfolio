@@ -66,6 +66,23 @@
   translate: 0 1px;
 }
 
+/* A theme may darken or lighten a button under the pointer instead of lifting it. */
+@media (hover: hover) {
+  .control-primary:hover {
+    background-image: linear-gradient(
+      var(--control-wash, transparent),
+      var(--control-wash, transparent)
+    );
+  }
+
+  .control-quiet:hover {
+    background-image: linear-gradient(
+      var(--control-quiet-wash, transparent),
+      var(--control-quiet-wash, transparent)
+    );
+  }
+}
+
 .control-primary {
   background: var(--control-fill);
   color: var(--on-control);
