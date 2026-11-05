@@ -1,26 +1,10 @@
-import { PRODUCT_CHANNEL_URL, PRODUCT_SITE_URL } from "@/lib/product";
+import { PRODUCT_SITE_URL } from "@/lib/product";
+import { DAYS, type Lesson, LESSONS, type LessonType, SLOTS } from "@/lib/product-week";
 
 import { type Picture, PICTURES } from "./pictures";
 
-/**
- * The page's week. Every lesson is a chapter about the product; its type says what kind: a lecture
- * tells, a practice is an app, a lab is the engineering, an exam is the numbers. The times are a
- * real university's, Omsk State University's, from the product's own fixtures. Today and the
- * lesson going on are the reader's own: the week runs by the reader's clock, wherever they are.
- */
-
-export const DAYS = ["mon", "tue", "wed", "thu", "fri"] as const;
-
-export const SLOTS = [
-  ["08:45", "10:20"],
-  ["10:30", "12:05"],
-  ["12:45", "14:20"],
-  ["14:30", "16:05"],
-  ["16:15", "17:50"],
-] as const;
-
-export type LessonType =
-  "lecture" | "practice" | "lab" | "seminar" | "interactive" | "consultation" | "test" | "exam";
+// The week itself lives in lib: the page's link picture draws it too (scripts/og).
+export { DAYS, LESSONS, SLOTS, type Lesson, type LessonType };
 
 /**
  * The product's colours of the lesson types, both modes: Tailwind 4's 500 in the light, 300 in the
@@ -39,37 +23,6 @@ export const LESSON_HUES = [
   { type: "retake", hue: "teal", light: "#00bba7", dark: "#46ecd5" },
   { type: "other", hue: "zinc", light: "#71717b", dark: "#9f9fa9" },
 ] as const;
-
-export interface Lesson {
-  id:
-    | "about"
-    | "origin"
-    | "fork"
-    | "ios"
-    | "android"
-    | "web"
-    | "system"
-    | "editor"
-    | "numbers"
-    | "next";
-  type: LessonType;
-  day: number;
-  slot: number;
-}
-
-/** In reading order: the week from Monday's first lesson reads the case from its start. */
-export const LESSONS: readonly Lesson[] = [
-  { id: "about", type: "lecture", day: 0, slot: 0 },
-  { id: "origin", type: "seminar", day: 0, slot: 2 },
-  { id: "fork", type: "consultation", day: 1, slot: 1 },
-  { id: "ios", type: "practice", day: 1, slot: 3 },
-  { id: "android", type: "practice", day: 2, slot: 0 },
-  { id: "web", type: "lecture", day: 2, slot: 2 },
-  { id: "system", type: "lab", day: 3, slot: 1 },
-  { id: "editor", type: "interactive", day: 3, slot: 3 },
-  { id: "numbers", type: "exam", day: 4, slot: 1 },
-  { id: "next", type: "test", day: 4, slot: 3 },
-];
 
 export const minutes = (time: string): number => {
   const [hours = 0, rest = 0] = time.split(":").map(Number);
@@ -97,7 +50,29 @@ export type Figure =
   | { kind: "hues"; key: string }
   | { kind: "commits"; key: string }
   | { kind: "downloads"; key: string }
-  | { kind: "steps"; key: string; steps: readonly string[] };
+  | { kind: "steps"; key: string; steps: readonly string[] }
+  | { kind: "install"; key: string; steps: readonly InstallStep[]; code?: string };
+
+/**
+ * A step of getting the alpha: its words under the figure's key, where its button goes, and whether
+ * that button is the one the step is about. `code` draws the address for a phone's camera beside the
+ * steps, for a reader at a computer whose way in is a link to open on the phone.
+ */
+export interface InstallStep {
+  key: string;
+  href: string;
+  main?: boolean;
+}
+
+/**
+ * The alpha's open doors, as the testers' group in Telegram gives them (owner, 05.11.2026): TestFlight
+ * by a public link, Google Play by a closed test whose testers are an open Google group.
+ */
+const TESTFLIGHT_APP = "https://apps.apple.com/app/testflight/id899247664";
+const TESTFLIGHT_INVITE = "https://testflight.apple.com/join/e5SW2PhR";
+const PLAY_TESTERS = "https://groups.google.com/g/pora-na-paru-alpha-test";
+const PLAY_TEST = "https://play.google.com/apps/testing/net.theoremos.poranaparu";
+const PLAY_APP = "https://play.google.com/store/apps/details?id=net.theoremos.poranaparu";
 
 /**
  * What a lesson's window holds: its sections, their paragraphs and figures, the facts, the
@@ -117,10 +92,7 @@ export interface LessonWindowSpec {
   places: readonly { key: string; href?: string; page?: "/projects/latex" }[];
 }
 
-const PRODUCT_PLACES = [
-  { key: "site", href: PRODUCT_SITE_URL },
-  { key: "channel", href: PRODUCT_CHANNEL_URL },
-] as const;
+const PRODUCT_PLACES = [{ key: "site", href: PRODUCT_SITE_URL }] as const;
 
 export const WINDOWS: Partial<Record<Lesson["id"], LessonWindowSpec>> = {
   about: {
@@ -128,7 +100,7 @@ export const WINDOWS: Partial<Record<Lesson["id"], LessonWindowSpec>> = {
       { key: "what", paragraphs: ["p1"] },
       { key: "now", paragraphs: ["p1", "p2"] },
       { key: "role", paragraphs: ["p1"] },
-      { key: "how", paragraphs: ["p1", "p2"] },
+      { key: "how", paragraphs: ["p1"] },
     ],
     facts: ["commits", "decisions", "specs"],
     timeline: ["start", "android", "alpha", "site", "web"],
@@ -147,6 +119,7 @@ export const WINDOWS: Partial<Record<Lesson["id"], LessonWindowSpec>> = {
     chart: true,
     people: ["me", "partner"],
     places: [
+      { key: "site" },
       { key: "appStore" },
       { key: "googlePlay" },
       { key: "ruStore" },
@@ -169,6 +142,19 @@ export const WINDOWS: Partial<Record<Lesson["id"], LessonWindowSpec>> = {
   ios: {
     sections: [
       {
+        key: "try",
+        paragraphs: ["p1"],
+        figure: {
+          kind: "install",
+          key: "install",
+          steps: [
+            { key: "testflight", href: TESTFLIGHT_APP },
+            { key: "invite", href: TESTFLIGHT_INVITE, main: true },
+          ],
+          code: TESTFLIGHT_INVITE,
+        },
+      },
+      {
         key: "what",
         paragraphs: ["p1", "p2"],
         figure: { kind: "pictures", key: "screens", pictures: [PICTURES.iosPoster] },
@@ -178,13 +164,26 @@ export const WINDOWS: Partial<Record<Lesson["id"], LessonWindowSpec>> = {
       { key: "how", paragraphs: ["p1", "p2"] },
     ],
     facts: ["commits", "tests", "snapshots", "decisions"],
-    timeline: ["start", "tuist", "internal", "snapshots", "alpha"],
+    timeline: ["start", "tuist", "internal", "snapshots", "alpha", "link"],
     chart: false,
     people: ["me"],
     places: [],
   },
   android: {
     sections: [
+      {
+        key: "try",
+        paragraphs: ["p1"],
+        figure: {
+          kind: "install",
+          key: "install",
+          steps: [
+            { key: "group", href: PLAY_TESTERS },
+            { key: "test", href: PLAY_TEST },
+            { key: "install", href: PLAY_APP, main: true },
+          ],
+        },
+      },
       {
         key: "what",
         paragraphs: ["p1", "p2"],
@@ -195,7 +194,7 @@ export const WINDOWS: Partial<Record<Lesson["id"], LessonWindowSpec>> = {
       { key: "how", paragraphs: ["p1", "p2"] },
     ],
     facts: ["commits", "tests", "decisions", "modules"],
-    timeline: ["scaffold", "play", "schedule", "widgets", "build"],
+    timeline: ["scaffold", "play", "schedule", "closed", "widgets", "build"],
     chart: false,
     people: ["me"],
     places: [],

@@ -38,6 +38,22 @@ export function WindowLauncher() {
     const current = () =>
       dialog.querySelector<HTMLElement>(".pora-window-page:not([hidden], [data-leaving])");
     const scrollOf = (page: HTMLElement) => page.querySelector<HTMLElement>(".pora-window-scroll");
+    /**
+     * The chapter takes the keys when the window opens or turns, so the arrows and Space scroll it
+     * at once; that focus is ours, not the reader's, and draws no ring. A Tab back to it does.
+     */
+    const hand = (scroll: HTMLElement | null) => {
+      if (!scroll) return;
+      scroll.setAttribute("data-handed", "");
+      scroll.addEventListener(
+        "blur",
+        () => {
+          scroll.removeAttribute("data-handed");
+        },
+        { once: true },
+      );
+      scroll.focus({ preventScroll: true });
+    };
     /** The lesson's card where it is seen: the grid on a wide screen, the list on a phone. */
     const cardOf = (lesson: string) =>
       [...root.querySelectorAll<HTMLElement>(`[data-pora-opens][data-lesson="${lesson}"]`)].find(
@@ -71,7 +87,7 @@ export function WindowLauncher() {
       announceTopLayer();
       // The browser gives the focus to the first link inside, scrolled to: the chapter starts again.
       const body = scrollOf(page);
-      body?.focus({ preventScroll: true });
+      hand(body);
       body?.scrollTo({ top: 0, behavior: "instant" });
     };
 
@@ -120,7 +136,8 @@ export function WindowLauncher() {
       const step = byKey
         ? to.querySelector<HTMLElement>(`[data-pora-go][data-way="${way}"]`)
         : null;
-      (step ?? scrollOf(to))?.focus({ preventScroll: true });
+      if (step) step.focus({ preventScroll: true });
+      else hand(scrollOf(to));
 
       const motions: Animation[] = [];
       const end = () => {

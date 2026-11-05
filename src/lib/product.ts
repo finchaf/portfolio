@@ -11,9 +11,8 @@
  */
 export const LAUNCH_DOWNLOADS = [160, 411, 61, 38, 25, 14, 13, 28, 18, 20, 11, 7, 8, 9] as const;
 
-/** The product's site and its Telegram channel, the one its apps link to. */
+/** The product's site. */
 export const PRODUCT_SITE_URL = "https://poranaparu.com";
-export const PRODUCT_CHANNEL_URL = "https://t.me/poranaparu";
 
 /**
  * Commits in the three clients of the new version by month, June to October 2026, without

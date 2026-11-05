@@ -1,9 +1,9 @@
 {
   "meta": {
     "title": "Pora na paru — Danil Zablotsky",
-    "description": "My product from the idea to the apps: design, iOS, Android and the web. New version in development.",
+    "description": "My product from the idea to the apps: design, iOS, Android and the web. The page is a week of its schedule.",
     "shareTitle": "Pora na paru: a university schedule",
-    "imageAlt": "One lesson block close up on a blue field: its day, start time and subject."
+    "imageAlt": "A week of the Pora na paru schedule in a window on a blue field: lessons in their type colours, today and the site's capsule."
   },
   "title": "Pora na paru",
   "week": {
@@ -51,11 +51,11 @@
           "sections": {
             "what": {
               "title": "What it is",
-              "p1": "At a university the schedule is made by the academic office. In Pora na paru it lives in one place, and its changes reach the iPhone and Android apps, the widgets and the site at once. A group, a teacher and a room each have a schedule of their own."
+              "p1": "At a university the schedule is made by the academic office. In Pora na paru it lives in one place, and its changes reach the iOS and Android apps, the widgets and the site at once. A group, a teacher and a room each have a schedule of their own."
             },
             "now": {
               "title": "What already works",
-              "p1": "The schedule in a browser has been open since 16 October 2026: the week of any group, teacher or room by a link, nothing to install. Since 27 September the iPhone app has reached testers as the store build, with real data. The Android app is in development; the site poranaparu.com has been live since 30 September.",
+              "p1": "The schedule in a browser has been open since 16 October 2026: the week of any group, teacher or room by a link, nothing to install. The iOS and Android apps are in an alpha test: the iOS store build has reached testers through TestFlight since 27 September, the Android one through a closed test in Google Play since 30 September. Anyone can try them: the links are in these lessons' windows. The site poranaparu.com has been live since 30 September.",
               "p2": "The editor for universities is being designed: there the schedule will be made and published to every app with one button."
             },
             "role": {
@@ -64,8 +64,7 @@
             },
             "how": {
               "title": "How the work goes",
-              "p1": "Each client is a repository of its own with its own knowledge base: feature specs, a log of decisions and automatic checks. Decisions go into the log, so one sees not only how a thing was made but why.",
-              "p2": "The lesson types' colours are set once and shared by the three platforms: the same on the iPhone and the web, and on Android the seeds of its Material 3 palettes."
+              "p1": "Each client is a repository of its own with its own knowledge base: feature specs, a log of decisions and automatic checks. Decisions go into the log, so one sees not only how a thing was made but why."
             }
           },
           "facts": {
@@ -121,10 +120,6 @@
             "site": {
               "name": "poranaparu.com",
               "line": "The product's site"
-            },
-            "channel": {
-              "name": "t.me/poranaparu",
-              "line": "The product's Telegram channel"
             }
           }
         }
@@ -215,9 +210,14 @@
             }
           },
           "places": {
+            "site": {
+              "name": "vcourse.app",
+              "line": "VCourse's site",
+              "href": "https://vcourse.app/en"
+            },
             "appStore": {
               "name": "App Store",
-              "line": "VCourse for iPhone",
+              "line": "VCourse for iOS",
               "href": "https://apps.apple.com/app/id6747290631"
             },
             "googlePlay": {
@@ -316,13 +316,17 @@
         }
       },
       "ios": {
-        "title": "The iPhone app",
+        "title": "The iOS app",
         "text": "SwiftUI, a Live Activity and widgets. The build is in TestFlight.",
         "who": "Zablotsky D.A.",
         "where": "TestFlight",
         "window": {
           "lead": "A native app in SwiftUI: the schedule, notes, widgets, Live Activity and Siri shortcuts. Since 27 September 2026 its store build has been with testers in TestFlight.",
           "sections": {
+            "try": {
+              "title": "Try it",
+              "p1": "The alpha is open by a link: TestFlight, Apple's app for betas, installs and updates it. It needs an iPhone with iOS 17 or later."
+            },
             "what": {
               "title": "What it does",
               "p1": "The week of a group, a teacher or a room, subgroups, search across six directories and in Spotlight. A lesson can carry a note with photos and a reminder.",
@@ -344,10 +348,26 @@
             }
           },
           "figures": {
-            "screens": "Home, a group's week, appearance, Live Activity and the lesson calendar widget. Made-up data; a poster for the alpha test, September 2026."
+            "screens": "Home, a group's week, appearance, Live Activity and the lesson calendar widget. Made-up data; a poster for the alpha test, September 2026.",
+            "install": {
+              "testflight": {
+                "title": "Install TestFlight",
+                "text": "Apple's app, from the App Store",
+                "go": "TestFlight"
+              },
+              "invite": {
+                "title": "Accept the invitation",
+                "text": "On the iPhone: Accept, then Install",
+                "go": "Invitation"
+              },
+              "code": {
+                "label": "QR code of the TestFlight invitation",
+                "caption": "Point the iPhone's camera here: the invitation opens in TestFlight."
+              }
+            }
           },
           "pictures": {
-            "poster": "Four screens of the iPhone app: home, a group's week, appearance in the dark theme, Live Activity and the lesson calendar widget on the lock screen"
+            "poster": "Four screens of the iOS app: home, a group's week, appearance in the dark theme, Live Activity and the lesson calendar widget on the lock screen"
           },
           "facts": {
             "commits": {
@@ -391,6 +411,10 @@
             "alpha": {
               "date": "27 September",
               "text": "The store build with testers"
+            },
+            "link": {
+              "date": "30 September",
+              "text": "A public TestFlight link"
             }
           },
           "people": {
@@ -409,9 +433,13 @@
         "window": {
           "lead": "A native app in Jetpack Compose with Material 3 Expressive. The alpha reaches testers through a closed test in Google Play.",
           "sections": {
+            "try": {
+              "title": "Try it",
+              "p1": "The alpha installs from Google Play and updates like any other app. The closed test is open to anyone who joins the testers' group. It needs a phone with Android 10 or later and Google Play."
+            },
             "what": {
               "title": "What it does",
-              "p1": "The same as on the iPhone, by Android's rules: the week of a group, a teacher or a room, subgroups, search across the directories, notes with photos and notifications. A building has its map.",
+              "p1": "The same as on iOS, by Android's rules: the week of a group, a teacher or a room, subgroups, search across the directories, notes with photos and notifications. A building has its map.",
               "p2": "The schedule is kept on the phone and opens offline."
             },
             "widgets": {
@@ -429,7 +457,24 @@
             }
           },
           "figures": {
-            "screens": "Home, a note with photos, appearance and notifications. Made-up data; a poster for the alpha test, September 2026."
+            "screens": "Home, a note with photos, appearance and notifications. Made-up data; a poster for the alpha test, September 2026.",
+            "install": {
+              "group": {
+                "title": "Join the testers' group",
+                "text": "With the Google account the phone's Google Play uses",
+                "go": "Group"
+              },
+              "test": {
+                "title": "Become a tester",
+                "text": "On the test's page: Become a tester",
+                "go": "Test page"
+              },
+              "install": {
+                "title": "Install from Google Play",
+                "text": "The app shows up in the store for that account",
+                "go": "Google Play"
+              }
+            }
           },
           "pictures": {
             "poster": "Four screens of the Android app: home with the current lesson, a note with photos, appearance in the dark theme and notifications"
@@ -468,6 +513,10 @@
             "schedule": {
               "date": "18 September",
               "text": "The whole schedule"
+            },
+            "closed": {
+              "date": "30 September",
+              "text": "A closed test in Google Play"
             },
             "widgets": {
               "date": "1–4 October",
@@ -587,7 +636,7 @@
         "who": "Zablotsky D.A.",
         "where": "Figma → code",
         "window": {
-          "lead": "One palette and one set of lesson type colours on the iPhone, on Android and in the web. Each platform has its own way of getting there.",
+          "lead": "One palette and one set of lesson type colours on iOS, on Android and in the web. Each platform has its own way of getting there.",
           "sections": {
             "one": {
               "title": "A lesson's type is a colour",
@@ -600,8 +649,8 @@
             },
             "platforms": {
               "title": "Three platforms",
-              "p1": "On the iPhone the same values are written in Swift. Android takes the shade as a seed: the Material 3 generator builds the roles for the light and the dark theme from it, and a check forbids colours and sizes in the code outside the design system's module.",
-              "p2": "What the three clients share is the palette and the match of lesson type to shade. The rest each platform does by its own rules: HIG on the iPhone, Material 3 Expressive on Android."
+              "p1": "On iOS the same values are written in Swift. Android takes the shade as a seed: the Material 3 generator builds the roles for the light and the dark theme from it, and a check forbids colours and sizes in the code outside the design system's module.",
+              "p2": "What the three clients share is the palette and the match of lesson type to shade. The rest each platform does by its own rules: HIG on iOS, Material 3 Expressive on Android."
             },
             "here": {
               "title": "On this page",
@@ -698,7 +747,7 @@
               },
               "publish": {
                 "title": "Publishing",
-                "text": "One button to the iPhone, Android and the browser"
+                "text": "One button to the apps and the browser"
               },
               "caption": "How an edit will reach the students. A diagram after the workspace's spec, 29 September 2026."
             }
@@ -807,7 +856,7 @@
             },
             "tests": {
               "n": "2,729",
-              "l": "tests in the iPhone and Android clients: 1,182 and 1,547",
+              "l": "tests in the iOS and Android clients: 1,182 and 1,547",
               "d": "as of 4 November 2026"
             },
             "decisions": {
@@ -828,7 +877,7 @@
           "sections": {
             "stores": {
               "title": "The stores",
-              "p1": "Every feature of the iPhone app is done. Ahead are checks on devices with iOS 17, 18 and 26 and the release in the App Store.",
+              "p1": "Every feature of the iOS app is done. Ahead are checks on devices with iOS 17, 18 and 26 and the release in the App Store.",
               "p2": "The Android app is in an alpha test through a closed test in Google Play. Live Activity on the iPhone will start updating from the server once the server can send the updates."
             },
             "web": {
@@ -854,10 +903,6 @@
             "site": {
               "name": "poranaparu.com",
               "line": "The product's site"
-            },
-            "channel": {
-              "name": "t.me/poranaparu",
-              "line": "The product's Telegram channel: news of the release"
             }
           }
         }

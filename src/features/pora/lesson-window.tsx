@@ -14,6 +14,7 @@ import { useLocale, useTranslations } from "next-intl";
 
 import { localizedPath } from "@/i18n/localized-path";
 import { CLIENT_COMMITS, LAUNCH_DOWNLOADS } from "@/lib/product";
+import { LinkCode } from "@/ui/link-code";
 import { ScrollBar } from "@/ui/scroll-bar";
 
 import type { Picture } from "./pictures";
@@ -243,6 +244,43 @@ function LessonPage({
             </ol>
             <figcaption>{text(`figures.${shown.key}.caption`)}</figcaption>
           </figure>
+        );
+      case "install":
+        return (
+          <div className="pora-install">
+            <ol className="pora-window-flow pora-install-steps">
+              {shown.steps.map((each, index) => (
+                <li key={each.key}>
+                  <b aria-hidden>{index + 1}</b>
+                  <span>
+                    <span>{text(`figures.${shown.key}.${each.key}.title`)}</span>
+                    <span>{text(`figures.${shown.key}.${each.key}.text`)}</span>
+                  </span>
+                  <a
+                    className="pora-install-go"
+                    data-main={each.main ? "" : undefined}
+                    href={each.href}
+                    rel="noopener"
+                    target="_blank"
+                  >
+                    {text(`figures.${shown.key}.${each.key}.go`)}
+                    <ArrowUpRight aria-hidden />
+                  </a>
+                </li>
+              ))}
+            </ol>
+            {shown.code && (
+              <figure className="pora-install-code">
+                <LinkCode
+                  className="pora-install-qr"
+                  label={text(`figures.${shown.key}.code.label`)}
+                  mark={false}
+                  url={shown.code}
+                />
+                <figcaption>{text(`figures.${shown.key}.code.caption`)}</figcaption>
+              </figure>
+            )}
+          </div>
         );
     }
   };

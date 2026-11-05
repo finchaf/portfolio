@@ -567,10 +567,6 @@ button.pora-list-item:focus-visible {
  * at a tenth, blurred; the next lesson slides in over the same veil.
  */
 
-.pora-page {
-  --pora-noise: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27180%27%20height%3D%27180%27%3E%3Cfilter%20id%3D%27n%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.9%27%20numOctaves%3D%272%27%20stitchTiles%3D%27stitch%27/%3E%3CfeColorMatrix%20values%3D%270%200%200%200%200%20%200%200%200%200%200%20%200%200%200%200%200%20%202.2%200%200%200%20-0.75%27/%3E%3C/filter%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url%28%23n%29%27/%3E%3C/svg%3E");
-}
-
 /* One window for every lesson, of one size: a turn changes the page and never the frame. */
 .pora-window {
   width: min(62rem, calc(100vw - 6rem));
@@ -670,8 +666,8 @@ button.pora-list-item:focus-visible {
 
 .pora-grain {
   background: var(--grain);
-  -webkit-mask: var(--pora-noise) 0 0 / 225px;
-  mask: var(--pora-noise) 0 0 / 225px;
+  -webkit-mask: var(--paper-noise) 0 0 / 225px;
+  mask: var(--paper-noise) 0 0 / 225px;
 }
 
 .pora-tone {
@@ -811,8 +807,11 @@ button.pora-list-item:focus-visible {
   display: none;
 }
 
-/* The chapter has the keys when the window opens from a key: its ring follows the window's corner. */
-.pora-window-scroll:focus-visible {
+/*
+ * The chapter has the keys when the window opens or turns, without a ring (`data-handed`); a Tab
+ * back to it draws one, and it follows the window's corner.
+ */
+.pora-window-scroll:focus-visible:not([data-handed]) {
   border-radius: 0 calc(1.09375rem - 1px) 0 0;
   box-shadow: inset 0 0 0 2px var(--accent-strong);
 }
@@ -1773,4 +1772,131 @@ a.pora-window-row:focus-visible {
 .pora-window-section > .pora-window-figure,
 .pora-window-section > .pora-window-chart {
   margin: 0.3125rem 0 0;
+}
+
+/*
+ * How to get the alpha: the steps in the flow's card, each with the product's button, outline, and
+ * the one the step is about in the product's primary; every size the product's times 1.25. The
+ * buttons leave the page, as the testers' posts do. Beside a mouse, the invitation also stands as a
+ * code for the phone's camera, under the steps in the same card.
+ */
+.pora-install {
+  overflow: hidden;
+  margin: 0.3125rem 0 0;
+  border: 1px solid var(--line);
+  border-radius: 1.09375rem;
+}
+
+.pora-install .pora-install-steps {
+  border: 0;
+  border-radius: 0;
+}
+
+/* The button stands under its step's words, where they start: the same at every width. */
+.pora-install-steps li {
+  display: grid;
+  grid-template-columns: 1.875rem minmax(0, 1fr);
+  align-items: start;
+  gap: 0.625rem 0.9375rem;
+}
+
+.pora-install-steps li > b {
+  grid-row: 1 / span 2;
+}
+
+.pora-install-steps li > span,
+.pora-install-steps li > a {
+  grid-column: 2;
+}
+
+.pora-install-go {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.46875rem;
+  height: 2.5rem;
+  justify-self: start;
+  padding: 0 0.625rem 0 0.78125rem;
+  border: 1px solid var(--outline-line);
+  border-radius: 0.78125rem;
+  background: var(--outline-fill);
+  color: var(--ink);
+  font-size: 1.09375rem;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    background-color 150ms ease,
+    translate 150ms ease;
+}
+
+.pora-install-go svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.pora-install-go[data-main] {
+  border-color: transparent;
+  background: var(--button);
+  color: var(--on-button);
+}
+
+@media (hover: hover) {
+  .pora-install-go:hover {
+    background: var(--button-outline-hover);
+  }
+
+  .pora-install-go[data-main]:hover {
+    background: color-mix(in srgb, var(--button) 80%, transparent);
+  }
+}
+
+.pora-install-go:active {
+  translate: 0 1px;
+}
+
+.pora-install-go:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.pora-install-code {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pora-install-code {
+    display: flex;
+    align-items: center;
+    gap: 0.9375rem;
+    padding: 0.9375rem;
+    margin: 0;
+    border-top: 1px solid var(--line);
+  }
+}
+
+/* A camera reads dark on light, so the code keeps its paper light in the dark too. */
+.pora-install-qr {
+  display: block;
+  flex: none;
+  width: 6.25rem;
+  height: 6.25rem;
+  border-radius: 0.625rem;
+  background: light-dark(var(--page), var(--ink));
+}
+
+.pora-install-qr path {
+  fill: light-dark(var(--ink), var(--page));
+}
+
+.pora-install-code figcaption {
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.25rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pora-install-go {
+    transition: none;
+  }
 }
