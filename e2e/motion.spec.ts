@@ -352,7 +352,8 @@ test.describe("the home page in motion", () => {
     await expect(write).toHaveCSS("border-top-left-radius", "0px");
     await jump(page, await topOf(page, "#work-pora"));
     await expect(page.locator("[data-capsule]")).toHaveAttribute("data-tint", "pora");
-    await expect(write).toHaveCSS("border-top-left-radius", "999px");
+    // The capsule of «Пора на пару» is the web schedule's sidebar: shadcn's `rounded-md`.
+    await expect(write).toHaveCSS("border-top-left-radius", "8px");
     await jump(page, 0);
     await expect(write).toHaveCSS("border-top-left-radius", "0px");
   });

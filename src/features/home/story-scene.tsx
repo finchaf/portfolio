@@ -3,7 +3,8 @@
 import { useRef, type ReactNode } from "react";
 
 import { driftLines } from "@/motion/drift-lines";
-import { gsap, MOTION_ALLOWED, ScrollTrigger, useGSAP } from "@/motion/gsap";
+import { gsap, MOTION_ALLOWED, ScrollTrigger } from "@/motion/gsap";
+import { undo, useScene } from "@/motion/scene";
 import { DURATION, SCENE } from "@/motion/tokens";
 
 import { branchRoutes, type Line } from "./story-branches";
@@ -664,46 +665,43 @@ function runColumn(section: HTMLElement, mark: Mark) {
 export function StoryScene({ children }: { children: ReactNode }) {
   const scope = useRef<HTMLDivElement>(null);
 
-  useGSAP(
-    () => {
-      const section = scope.current?.querySelector<HTMLElement>("[id='story']");
-      const track = scope.current?.querySelector<HTMLElement>("[data-story-track]");
-      if (!section || !track) return;
-      const marks = gsap.utils.toArray<HTMLElement>("[data-story-mark]", section);
-      const mark: Mark = (index) => {
-        marks.forEach((each, at) => {
-          each.toggleAttribute("data-active", at === index);
+  useScene(() => {
+    const section = scope.current?.querySelector<HTMLElement>("[id='story']");
+    const track = scope.current?.querySelector<HTMLElement>("[data-story-track]");
+    if (!section || !track) return;
+    const marks = gsap.utils.toArray<HTMLElement>("[data-story-mark]", section);
+    const mark: Mark = (index) => {
+      marks.forEach((each, at) => {
+        each.toggleAttribute("data-active", at === index);
+      });
+    };
+
+    const motion = gsap.matchMedia();
+    const live = (run: () => () => void) => () => {
+      section.toggleAttribute("data-live", true);
+      mark(0);
+      turnToPaper(section);
+      const stop = run();
+      return () => {
+        stop();
+        section.toggleAttribute("data-live", false);
+        section.querySelectorAll("[data-seen]").forEach((element) => {
+          element.removeAttribute("data-seen");
         });
       };
-
-      const motion = gsap.matchMedia();
-      const live = (run: () => () => void) => () => {
-        section.toggleAttribute("data-live", true);
-        mark(0);
-        turnToPaper(section);
-        const stop = run();
-        return () => {
-          stop();
-          section.toggleAttribute("data-live", false);
-          section.querySelectorAll("[data-seen]").forEach((element) => {
-            element.removeAttribute("data-seen");
-          });
-        };
-      };
-      motion.add(
-        WIDE,
-        live(() => runRibbon(section, track, mark)),
-      );
-      motion.add(
-        NARROW,
-        live(() => runColumn(section, mark)),
-      );
-      return () => {
-        motion.revert();
-      };
-    },
-    { scope },
-  );
+    };
+    motion.add(
+      WIDE,
+      live(() => runRibbon(section, track, mark)),
+    );
+    motion.add(
+      NARROW,
+      live(() => runColumn(section, mark)),
+    );
+    return () => {
+      undo(motion);
+    };
+  }, scope);
 
   return <div ref={scope}>{children}</div>;
 }

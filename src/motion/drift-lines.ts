@@ -1,4 +1,5 @@
 import { gsap, SplitText } from "./gsap";
+import { leaving } from "./scene";
 
 /** The width of the screen the depths are written for. */
 const DESIGN_WIDTH = 1440;
@@ -57,6 +58,12 @@ export function driftLines(
     },
   });
   return () => {
+    // A page that leaves takes its text with it: nothing to put back.
+    if (leaving()) {
+      moving?.kill();
+      split.kill();
+      return;
+    }
     moving?.revert();
     split.revert();
   };

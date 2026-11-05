@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 
-import { gsap, MOTION_ALLOWED, ScrollTrigger, useGSAP } from "@/motion/gsap";
+import { gsap, MOTION_ALLOWED, ScrollTrigger } from "@/motion/gsap";
+import { undo, useScene } from "@/motion/scene";
 import { DURATION, PAGE_MOVED, SCENE } from "@/motion/tokens";
 
 import { HERO_FACE } from "./hero-source";
@@ -62,146 +63,143 @@ export function HeroLens({ labels, settings, children }: HeroLensProps) {
     });
   };
 
-  useGSAP(
-    () => {
-      const hero = scope.current;
-      if (!hero) return;
-      const root = document.documentElement;
-      const capsule = document.querySelector<HTMLElement>("[data-capsule]");
-      const items = capsule?.querySelector("[data-capsule-items]");
-      capsule?.setAttribute("data-lens", "");
-      const shown = () => (hero.dataset.layer === "code" ? "code" : "design");
+  useScene(() => {
+    const hero = scope.current;
+    if (!hero) return;
+    const root = document.documentElement;
+    const capsule = document.querySelector<HTMLElement>("[data-capsule]");
+    const items = capsule?.querySelector("[data-capsule-items]");
+    capsule?.setAttribute("data-lens", "");
+    const shown = () => (hero.dataset.layer === "code" ? "code" : "design");
 
-      const paint = () => {
-        const { x, y, r } = lens.current;
-        hero.style.setProperty("--lens-x", `${String(x)}px`);
-        hero.style.setProperty("--lens-y", `${String(y)}px`);
-        hero.style.setProperty("--lens-r", `${String(r)}px`);
-        hero.style.setProperty("--lens-seen", r > 1 ? "1" : "0");
-        if (!capsule || !items) return;
-        const screen = hero.getBoundingClientRect();
-        const box = items.getBoundingClientRect();
-        capsule.style.setProperty("--lens-x", `${String(x + screen.left - box.left)}px`);
-        capsule.style.setProperty("--lens-y", `${String(y + screen.top - box.top)}px`);
-        capsule.style.setProperty("--lens-r", `${String(r)}px`);
-      };
-      const painting = ScrollTrigger.create({
+    const paint = () => {
+      const { x, y, r } = lens.current;
+      hero.style.setProperty("--lens-x", `${String(x)}px`);
+      hero.style.setProperty("--lens-y", `${String(y)}px`);
+      hero.style.setProperty("--lens-r", `${String(r)}px`);
+      hero.style.setProperty("--lens-seen", r > 1 ? "1" : "0");
+      if (!capsule || !items) return;
+      const screen = hero.getBoundingClientRect();
+      const box = items.getBoundingClientRect();
+      capsule.style.setProperty("--lens-x", `${String(x + screen.left - box.left)}px`);
+      capsule.style.setProperty("--lens-y", `${String(y + screen.top - box.top)}px`);
+      capsule.style.setProperty("--lens-r", `${String(r)}px`);
+    };
+    const painting = ScrollTrigger.create({
+      trigger: hero,
+      onToggle: ({ isActive }) => {
+        if (isActive) {
+          gsap.ticker.add(paint);
+          return;
+        }
+        // A jump past the screen outruns the lens shutting: nothing may stay open behind it.
+        gsap.killTweensOf(lens.current, "r");
+        lens.current.r = 0;
+        paint();
+        gsap.ticker.remove(paint);
+      },
+    });
+    if (painting.isActive) gsap.ticker.add(paint);
+
+    let away = moved();
+    const turn = () => {
+      if (moved() === away) return;
+      away = !away;
+      if (!root.hasAttribute("data-intro")) open(shown(), DURATION.base);
+    };
+    window.addEventListener("scroll", turn, { passive: true });
+
+    const measure = () => {
+      const name = hero.querySelector<HTMLElement>("[data-hero-name]");
+      const box = hero.querySelector<HTMLElement>("[data-hero-box]");
+      if (!name || !box) return;
+      const face = parseFloat(getComputedStyle(name).fontSize);
+      box.dataset.size = `${size(name)} · ${HERO_FACE} · ${String(Math.round(face))}px`;
+      for (const plan of hero.querySelectorAll<HTMLElement>("[data-plan]")) {
+        plan.dataset.size = size(plan);
+      }
+      if (capsule) {
+        capsule.dataset.size = size(capsule);
+        for (const item of capsule.querySelectorAll<HTMLElement>("[data-measure]")) {
+          item.dataset.size = size(item);
+        }
+      }
+    };
+    measure();
+    ScrollTrigger.addEventListener("refresh", measure);
+    void document.fonts.ready.then(measure);
+
+    const motion = gsap.matchMedia();
+    motion.add(MOTION_ALLOWED, () => {
+      const assembling = root.hasAttribute("data-intro");
+      const { width, height } = hero.getBoundingClientRect();
+      lens.current.x = width * 0.34;
+      lens.current.y = height * 0.5;
+      lens.current.r = assembling || moved() ? 0 : resting();
+
+      const wander = gsap.to(lens.current, {
+        x: width * 0.72,
+        y: height * 0.42,
+        duration: WANDER,
+        ease: "sine.inOut",
+        repeat: -1,
+        yoyo: true,
+      });
+      const onScreen = ScrollTrigger.create({
         trigger: hero,
         onToggle: ({ isActive }) => {
-          if (isActive) {
-            gsap.ticker.add(paint);
-            return;
-          }
-          // A jump past the screen outruns the lens shutting: nothing may stay open behind it.
-          gsap.killTweensOf(lens.current, "r");
-          lens.current.r = 0;
-          paint();
-          gsap.ticker.remove(paint);
+          if (wander.isActive() || wander.paused()) wander.paused(!isActive);
         },
       });
-      if (painting.isActive) gsap.ticker.add(paint);
 
-      let away = moved();
-      const turn = () => {
-        if (moved() === away) return;
-        away = !away;
-        if (!root.hasAttribute("data-intro")) open(shown(), DURATION.base);
-      };
-      window.addEventListener("scroll", turn, { passive: true });
-
-      const measure = () => {
-        const name = hero.querySelector<HTMLElement>("[data-hero-name]");
-        const box = hero.querySelector<HTMLElement>("[data-hero-box]");
-        if (!name || !box) return;
-        const face = parseFloat(getComputedStyle(name).fontSize);
-        box.dataset.size = `${size(name)} · ${HERO_FACE} · ${String(Math.round(face))}px`;
-        for (const plan of hero.querySelectorAll<HTMLElement>("[data-plan]")) {
-          plan.dataset.size = size(plan);
-        }
-        if (capsule) {
-          capsule.dataset.size = size(capsule);
-          for (const item of capsule.querySelectorAll<HTMLElement>("[data-measure]")) {
-            item.dataset.size = size(item);
-          }
-        }
-      };
-      measure();
-      ScrollTrigger.addEventListener("refresh", measure);
-      void document.fonts.ready.then(measure);
-
-      const motion = gsap.matchMedia();
-      motion.add(MOTION_ALLOWED, () => {
-        const assembling = root.hasAttribute("data-intro");
-        const { width, height } = hero.getBoundingClientRect();
-        lens.current.x = width * 0.34;
-        lens.current.y = height * 0.5;
-        lens.current.r = assembling || moved() ? 0 : resting();
-
-        const wander = gsap.to(lens.current, {
-          x: width * 0.72,
-          y: height * 0.42,
-          duration: WANDER,
-          ease: "sine.inOut",
-          repeat: -1,
-          yoyo: true,
+      if (assembling) {
+        const plan = hero.querySelector("[data-hero-code]")?.getAnimations() ?? [];
+        void Promise.allSettled(plan.map(({ finished }) => finished)).then(() => {
+          root.removeAttribute("data-intro");
+          open(shown(), DURATION.slow);
         });
-        const onScreen = ScrollTrigger.create({
-          trigger: hero,
-          onToggle: ({ isActive }) => {
-            if (wander.isActive() || wander.paused()) wander.paused(!isActive);
-          },
+      }
+
+      // On the window: the capsule lies over the screen, and the pointer passes through it. The
+      // page moves under a still pointer too, so the scroll asks for the last place again.
+      let pointer: PointerEvent | undefined;
+      const follow = (event: PointerEvent) => {
+        pointer = event;
+        const box = hero.getBoundingClientRect();
+        if (event.clientY > box.bottom) return;
+        wander.kill();
+        gsap.to(lens.current, {
+          x: event.clientX - box.left,
+          y: event.clientY - box.top,
+          duration: SCENE.catchUp,
+          ease: "power3.out",
+          overwrite: "auto",
         });
-
-        if (assembling) {
-          const plan = hero.querySelector("[data-hero-code]")?.getAnimations() ?? [];
-          void Promise.allSettled(plan.map(({ finished }) => finished)).then(() => {
-            root.removeAttribute("data-intro");
-            open(shown(), DURATION.slow);
-          });
-        }
-
-        // On the window: the capsule lies over the screen, and the pointer passes through it. The
-        // page moves under a still pointer too, so the scroll asks for the last place again.
-        let pointer: PointerEvent | undefined;
-        const follow = (event: PointerEvent) => {
-          pointer = event;
-          const box = hero.getBoundingClientRect();
-          if (event.clientY > box.bottom) return;
-          wander.kill();
-          gsap.to(lens.current, {
-            x: event.clientX - box.left,
-            y: event.clientY - box.top,
-            duration: SCENE.catchUp,
-            ease: "power3.out",
-            overwrite: "auto",
-          });
-        };
-        const stay = () => {
-          if (pointer) follow(pointer);
-        };
-        window.addEventListener("pointermove", follow, { passive: true });
-        window.addEventListener("pointerdown", follow, { passive: true });
-        window.addEventListener("scroll", stay, { passive: true });
-        return () => {
-          onScreen.kill();
-          window.removeEventListener("pointermove", follow);
-          window.removeEventListener("pointerdown", follow);
-          window.removeEventListener("scroll", stay);
-        };
-      });
-      if (!matchMedia(MOTION_ALLOWED).matches) root.removeAttribute("data-intro");
-
+      };
+      const stay = () => {
+        if (pointer) follow(pointer);
+      };
+      window.addEventListener("pointermove", follow, { passive: true });
+      window.addEventListener("pointerdown", follow, { passive: true });
+      window.addEventListener("scroll", stay, { passive: true });
       return () => {
-        ScrollTrigger.removeEventListener("refresh", measure);
-        window.removeEventListener("scroll", turn);
-        gsap.ticker.remove(paint);
-        painting.kill();
-        motion.revert();
-        capsule?.removeAttribute("data-lens");
+        onScreen.kill();
+        window.removeEventListener("pointermove", follow);
+        window.removeEventListener("pointerdown", follow);
+        window.removeEventListener("scroll", stay);
       };
-    },
-    { scope },
-  );
+    });
+    if (!matchMedia(MOTION_ALLOWED).matches) root.removeAttribute("data-intro");
+
+    return () => {
+      ScrollTrigger.removeEventListener("refresh", measure);
+      window.removeEventListener("scroll", turn);
+      gsap.ticker.remove(paint);
+      painting.kill();
+      undo(motion);
+      capsule?.removeAttribute("data-lens");
+    };
+  }, scope);
 
   const choose = (next: Layer) => {
     setLayer(next);

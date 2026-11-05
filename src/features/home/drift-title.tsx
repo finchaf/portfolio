@@ -3,7 +3,8 @@
 import { useRef, type ReactNode } from "react";
 
 import { driftLines } from "@/motion/drift-lines";
-import { gsap, MOTION_ALLOWED, useGSAP } from "@/motion/gsap";
+import { gsap, MOTION_ALLOWED } from "@/motion/gsap";
+import { useScene } from "@/motion/scene";
 
 /** A heading whose lines come in from the side as it reaches the reader, and stay. */
 export function DriftTitle({
@@ -23,21 +24,18 @@ export function DriftTitle({
 }) {
   const title = useRef<HTMLHeadingElement>(null);
 
-  useGSAP(
-    () => {
-      gsap.matchMedia().add(MOTION_ALLOWED, () => {
-        const element = title.current;
-        if (!element) return;
-        return driftLines(element, {
-          depth,
-          cross,
-          path: "arrive",
-          scrollTrigger: { trigger: element, start: "top bottom", end: "top 45%" },
-        });
+  useScene(() => {
+    gsap.matchMedia().add(MOTION_ALLOWED, () => {
+      const element = title.current;
+      if (!element) return;
+      return driftLines(element, {
+        depth,
+        cross,
+        path: "arrive",
+        scrollTrigger: { trigger: element, start: "top bottom", end: "top 45%" },
       });
-    },
-    { scope: title },
-  );
+    });
+  }, title);
 
   return (
     <h2 className={className} id={id} ref={title}>

@@ -2,7 +2,8 @@
 
 import { useRef, type ReactNode } from "react";
 
-import { gsap, MOTION_ALLOWED, ScrollTrigger, useGSAP } from "@/motion/gsap";
+import { gsap, MOTION_ALLOWED, ScrollTrigger } from "@/motion/gsap";
+import { undo, useScene } from "@/motion/scene";
 import { SCENE } from "@/motion/tokens";
 
 import { snapToRests } from "./chapter-snap";
@@ -213,55 +214,52 @@ function lendTheme(chapters: HTMLElement[], after: HTMLElement | null) {
 export function WorkScene({ children }: { children: ReactNode }) {
   const scope = useRef<HTMLDivElement>(null);
 
-  useGSAP(
-    () => {
-      const chapters = gsap.utils.toArray<HTMLElement>("[data-chapter]", scope.current);
-      const after = document.querySelector<HTMLElement>("[data-after-work]");
-      const under = document.querySelector<HTMLElement>("[data-under]");
-      const stage = (chapter: HTMLElement | undefined) =>
-        chapter?.querySelector<HTMLElement>("[data-stage]") ?? null;
-      const undoTheme = lendTheme(chapters, after);
+  useScene(() => {
+    const chapters = gsap.utils.toArray<HTMLElement>("[data-chapter]", scope.current);
+    const after = document.querySelector<HTMLElement>("[data-after-work]");
+    const under = document.querySelector<HTMLElement>("[data-under]");
+    const stage = (chapter: HTMLElement | undefined) =>
+      chapter?.querySelector<HTMLElement>("[data-stage]") ?? null;
+    const undoTheme = lendTheme(chapters, after);
 
-      const motion = gsap.matchMedia();
-      motion.add(WIDTHS, ({ conditions }) => {
-        const [pora, flow, projects] = chapters;
-        if (!pora || !flow || !projects || !after) return;
+    const motion = gsap.matchMedia();
+    motion.add(WIDTHS, ({ conditions }) => {
+      const [pora, flow, projects] = chapters;
+      if (!pora || !flow || !projects || !after) return;
 
-        const undoPora = runStops(
-          pora,
-          () => "top top",
-          () => `+=${pora.offsetHeight - 2 * window.innerHeight}`,
-        );
-        const undoFlow = runFlowMap(flow, follow());
-        handOver(flow, projects);
-        const undoProjects = runDesk(
-          projects,
-          () => `top top-=${String(window.innerHeight)}`,
-          () => `+=${String(projects.offsetHeight - 3 * window.innerHeight)}`,
-          follow(),
-        );
+      const undoPora = runStops(
+        pora,
+        () => "top top",
+        () => `+=${pora.offsetHeight - 2 * window.innerHeight}`,
+      );
+      const undoFlow = runFlowMap(flow, follow());
+      handOver(flow, projects);
+      const undoProjects = runDesk(
+        projects,
+        () => `top top-=${String(window.innerHeight)}`,
+        () => `+=${String(projects.offsetHeight - 3 * window.innerHeight)}`,
+        follow(),
+      );
 
-        const poraStage = stage(pora);
-        const flowStage = stage(flow);
-        // On a phone the story is a long column: sinking it would throw its end far up the page.
-        const sinking = conditions?.wide ? under : null;
-        if (poraStage) rise(pora, poraStage, sinking);
-        if (flowStage) rise(flow, flowStage, poraStage);
-        rise(after, after, stage(projects));
-        return () => {
-          undoPora();
-          undoFlow();
-          undoProjects();
-        };
-      });
-
+      const poraStage = stage(pora);
+      const flowStage = stage(flow);
+      // On a phone the story is a long column: sinking it would throw its end far up the page.
+      const sinking = conditions?.wide ? under : null;
+      if (poraStage) rise(pora, poraStage, sinking);
+      if (flowStage) rise(flow, flowStage, poraStage);
+      rise(after, after, stage(projects));
       return () => {
-        undoTheme();
-        motion.revert();
+        undoPora();
+        undoFlow();
+        undoProjects();
       };
-    },
-    { scope },
-  );
+    });
+
+    return () => {
+      undoTheme();
+      undo(motion);
+    };
+  }, scope);
 
   return <div ref={scope}>{children}</div>;
 }
