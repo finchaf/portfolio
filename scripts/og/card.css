@@ -109,37 +109,303 @@ body {
   stroke-width: 1.15;
 }
 
-/* Pora na paru: one lesson, close up. */
-.card-pora {
-  --top: 400px;
+/*
+ * Pora na paru: the page itself, the product's week, in a window on the brand's blue, as Flow's is
+ * on its violet. Every size is the page's times 1.8 (`--z`), so the cards read in a chat; the first
+ * row of lessons stands whole and the second runs off the bottom. Wednesday is today, with the line
+ * of the time and the ring of the lesson going on; the capsule floats over the days, on its paper.
+ */
+.card-pora .field,
+.card-projects .field {
+  clip-path: none;
+}
+
+.pw {
+  position: absolute;
+  top: 64px;
+  left: 84px;
+  width: 1240px;
+  height: 640px;
+  overflow: hidden;
+  border-radius: 22px 0 0;
+  background: var(--page);
+  box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--line) 60%, transparent);
+  color: var(--ink);
+  color-scheme: light;
+  font-family: var(--sans);
+}
+
+.week {
+  --z: 1.8;
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: 130px repeat(2, 360px);
+  grid-template-columns: 214px repeat(5, 342px);
+}
+
+.cell {
+  position: relative;
+  border-right: calc(1px * var(--z)) solid var(--line);
+  border-bottom: calc(1px * var(--z)) solid var(--line);
+}
+
+.day {
+  display: flex;
+  align-items: flex-end;
+  padding: 0 calc(15px * var(--z)) calc(11px * var(--z));
+  font-size: calc(15px * var(--z));
+  font-weight: 500;
+}
+
+.today {
+  background: var(--today);
+}
+
+.day.today {
+  background: var(--today-head);
+  color: var(--accent-strong);
+}
+
+.slot-time {
+  display: flex;
+  flex-direction: column;
+  gap: calc(3px * var(--z));
+  padding: calc(15px * var(--z)) calc(12px * var(--z));
+}
+
+.slot-time b {
+  font: 600 calc(15px * var(--z)) / 1.2 var(--sans);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.slot-time i {
+  color: var(--muted);
+  font-size: calc(12px * var(--z));
+  font-style: normal;
+}
+
+.slot {
+  padding: calc(8px * var(--z));
+}
+
+[data-type="lecture"] {
+  --type: var(--lesson-lecture);
+}
+
+[data-type="practice"] {
+  --type: var(--lesson-practice);
+}
+
+[data-type="lab"] {
+  --type: var(--lesson-lab);
+}
+
+[data-type="seminar"] {
+  --type: var(--lesson-seminar);
+}
+
+[data-type="interactive"] {
+  --type: var(--lesson-interactive);
+}
+
+[data-type="consultation"] {
+  --type: var(--lesson-consultation);
+}
+
+[data-type="test"] {
+  --type: var(--lesson-test);
+}
+
+[data-type="exam"] {
+  --type: var(--lesson-exam);
 }
 
 .lesson {
-  position: absolute;
-  top: 158px;
-  left: 300px;
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  width: 600px;
-  height: 314px;
-  padding: 40px 44px;
-  border-radius: 40px;
-  background: var(--surface);
+  align-items: flex-start;
+  gap: calc(10px * var(--z));
+  padding: calc(15px * var(--z));
+  border: calc(1px * var(--z)) solid var(--line);
+  border-radius: calc(17.5px * var(--z));
+  background: var(--card);
+  box-shadow:
+    0 calc(4px * var(--z)) calc(6px * var(--z)) calc(-1px * var(--z)) var(--shade),
+    0 calc(2px * var(--z)) calc(4px * var(--z)) calc(-2px * var(--z)) var(--shade);
+}
+
+.lesson-now {
+  border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+  box-shadow: 0 0 0 calc(3px * var(--z)) var(--now-ring);
+}
+
+.lesson-head,
+.lesson-rows {
+  display: flex;
+  flex-direction: column;
+  gap: calc(5px * var(--z));
+  width: 100%;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: calc(5px * var(--z));
+  height: calc(25px * var(--z));
+  padding: 0 calc(10px * var(--z));
+  border: calc(1px * var(--z)) solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: calc(15px * var(--z));
+  white-space: nowrap;
+}
+
+.badge i {
+  width: calc(10px * var(--z));
+  height: calc(10px * var(--z));
+  border-radius: 50%;
+  background: var(--type);
+}
+
+.lesson-title {
+  font: 500 calc(17.5px * var(--z)) / calc(25px * var(--z)) var(--sans);
+}
+
+.lesson-text {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: calc(15px * var(--z));
+  line-height: calc(20px * var(--z));
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.lesson-rows span {
+  display: flex;
+  align-items: center;
+  gap: calc(5px * var(--z));
+  overflow: hidden;
+  color: var(--muted);
+  font-size: calc(15px * var(--z));
+  line-height: calc(20px * var(--z));
+  white-space: nowrap;
+}
+
+.lesson-rows svg {
+  flex: none;
+  width: calc(15px * var(--z));
+  height: calc(15px * var(--z));
+}
+
+.now-line {
+  position: absolute;
+  top: 62%;
+  right: 0;
+  left: 0;
+  height: calc(2px * var(--z));
+  background: var(--now-line);
+}
+
+.now-line.now-here {
+  z-index: 2;
+  background: var(--accent);
+}
+
+.now-here::before {
+  position: absolute;
+  top: 50%;
+  left: calc(-5px * var(--z));
+  width: calc(10px * var(--z));
+  height: calc(10px * var(--z));
+  border-radius: 50%;
+  background: var(--accent);
+  content: "";
+  translate: 0 -50%;
+}
+
+/*
+ * The capsule as the page has it, at `--k` times its size: the theme's skin, and on Pora na paru its
+ * paper of the web schedule's sidebar, the grain over the colour.
+ */
+.capsule {
+  position: absolute;
+  top: 16px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: calc(2px * var(--k));
+  padding: calc(4px * var(--k));
+  isolation: isolate;
   color: var(--ink);
-  color-scheme: light;
+  font: 500 calc(14px * var(--k)) / 1 var(--control-face);
+  white-space: nowrap;
+  translate: -50% 0;
 }
 
-.time {
-  color: var(--accent-strong);
-  font: 500 62px/1 var(--sans);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
+.capsule::before,
+.capsule::after {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: calc(var(--capsule-radius, var(--control-radius)) * var(--k));
+  content: "";
 }
 
-.subject {
-  font: 700 112px/1 var(--sans);
-  letter-spacing: -0.04em;
+.capsule::before {
+  background: var(--capsule-paper, var(--control-surface));
+  box-shadow: var(--capsule-edge, var(--control-rules), var(--control-raise));
+}
+
+.capsule::after {
+  background: var(--capsule-grain, transparent);
+  -webkit-mask: var(--paper-noise, none) 0 0 / 225px;
+  mask: var(--paper-noise, none) 0 0 / 225px;
+}
+
+.capsule > span {
+  display: flex;
+  align-items: center;
+  height: calc(32px * var(--k));
+  padding-inline: calc(12px * var(--k));
+  border-radius: calc(var(--capsule-link-radius, var(--control-radius)) * var(--k));
+  color: var(--muted);
+}
+
+.capsule > .capsule-on {
+  background: var(--capsule-current, var(--control-current));
+  color: var(--control-current-ink, var(--ink));
+}
+
+.capsule .capsule-mark {
+  width: calc(71px * var(--k));
+  height: calc(15px * var(--k));
+}
+
+.capsule > .capsule-write {
+  overflow: hidden;
+  margin-left: calc(4px * var(--k));
+  padding-inline: calc(14px * var(--k));
+  background: var(--capsule-write-fill, var(--control-fill));
+  color: var(--capsule-write-ink, var(--on-control));
+}
+
+.capsule > .capsule-write::before {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  width: calc(26px * var(--k) * var(--control-cap-room, 0));
+  margin: 0 calc(10px * var(--k) * var(--control-cap-room, 0)) 0
+    calc(-14px * var(--k) * var(--control-cap-room, 0));
+  background: var(--control-cap, transparent);
+  color: var(--control-mark);
+  content: var(--capsule-cap, "");
 }
 
 /*
@@ -340,19 +606,12 @@ body {
   fill: var(--accent-strong);
 }
 
-/* Projects: the palette itself, which keeps the page apart from Flow's violet, and two folders. */
-.card-projects .zone,
+/* A page inside Projects: the palette itself, which keeps it apart from Flow's violet, and its folder. */
 .card-portfolio .zone,
 .card-latex .zone {
   --sign-mark: var(--warning);
 }
 
-.card-projects .sign {
-  right: 288px;
-  font-size: 32px;
-}
-
-/* A page inside Projects: the same palette, its one folder, and a longer argument. */
 .card-portfolio .sign,
 .card-latex .sign {
   right: 60px;
@@ -407,16 +666,6 @@ body {
   white-space: nowrap;
 }
 
-.folder-site {
-  top: 176px;
-  background: var(--pink);
-}
-
-.folder-latex {
-  top: 330px;
-  background: var(--teal);
-}
-
 .folder-only {
   top: 251px;
   background: var(--pink);
@@ -424,4 +673,227 @@ body {
 
 .folder-only.folder-teal {
   background: var(--teal);
+}
+
+/*
+ * Projects: the page itself, the editor, in a window on the page's green, in Mocha. The layers on
+ * the left, the board with its two frames and their real pictures, the site's frame chosen, and the
+ * capsule in the skin «Строка» over the board. Sizes are the board's times `--z`.
+ */
+.card-projects .field {
+  color-scheme: dark;
+}
+
+.ed {
+  position: absolute;
+  top: 64px;
+  left: 84px;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  width: 1240px;
+  height: 640px;
+  overflow: hidden;
+  border-radius: 22px 0 0;
+  background: var(--page);
+  box-shadow: 0 0 0 1.5px var(--line);
+  color: var(--ink);
+  color-scheme: dark;
+  font-family: var(--sans);
+}
+
+.ed-side {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 30px 26px;
+  background: var(--surface);
+  box-shadow: inset -1.5px 0 var(--line);
+}
+
+.ed-side h3 {
+  font: 800 40px/1.05 var(--display);
+  letter-spacing: -0.01em;
+}
+
+.ed-side p {
+  margin-bottom: 16px;
+  color: var(--muted);
+  font-size: 20px;
+  line-height: 1.35;
+}
+
+.ed-layers {
+  align-self: flex-start;
+  margin-bottom: 10px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font: 700 16px/1 var(--mono);
+}
+
+.layer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 12px;
+  border-radius: 9px;
+  font: 600 22px/1 var(--mono);
+}
+
+.layer i {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  background: var(--tile);
+}
+
+.layer-on {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.layer-on i {
+  background: var(--on-accent);
+}
+
+.layer-in {
+  padding: 7px 12px 7px 36px;
+  color: var(--muted);
+  font-size: 21px;
+  line-height: 1;
+}
+
+.ed-board {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--page);
+  background-image: radial-gradient(circle, var(--raised) 2.6px, transparent 2.9px);
+  background-size: 35px 35px;
+}
+
+.pf {
+  --z: 1.5;
+  position: absolute;
+  top: 150px;
+  width: 400px;
+  height: 370px;
+  border-radius: calc(14px * var(--z));
+  background: color-mix(in srgb, var(--tile) 14%, var(--page));
+  box-shadow: 0 0 0 calc(1.5px * var(--z)) color-mix(in srgb, var(--tile) 45%, transparent);
+}
+
+.pf-site {
+  --tile: var(--tile-pink);
+  left: 44px;
+}
+
+.pf-tex {
+  --tile: var(--tile-teal);
+  left: 484px;
+}
+
+.layer-site {
+  --tile: var(--tile-pink);
+}
+
+.layer-tex {
+  --tile: var(--tile-teal);
+}
+
+.pf-chip {
+  position: absolute;
+  top: calc(-36px * var(--z));
+  left: 0;
+  padding: calc(6px * var(--z)) calc(10px * var(--z));
+  border-radius: calc(6px * var(--z));
+  background: var(--tile);
+  color: var(--on-tile);
+  font: 600 calc(14px * var(--z)) / 1 var(--mono);
+}
+
+.pf-box {
+  position: absolute;
+  overflow: hidden;
+  border-radius: calc(6px * var(--z));
+  background: var(--surface);
+  box-shadow: 0 0 0 calc(1px * var(--z)) var(--line);
+}
+
+.pf-box img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0;
+}
+
+.pf-name {
+  position: absolute;
+  overflow: hidden;
+  color: var(--muted);
+  font: 500 calc(11px * var(--z)) / 1 var(--sans);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pf-themes {
+  display: grid;
+  height: 100%;
+  grid-template-columns: repeat(4, 1fr);
+  gap: calc(4px * var(--z));
+  padding: calc(6px * var(--z));
+}
+
+.pf-themes i {
+  border-radius: calc(3px * var(--z));
+  background: var(--accent);
+  color-scheme: light;
+}
+
+.pf-chosen {
+  position: absolute;
+  top: 144px;
+  left: 38px;
+  width: 412px;
+  height: 382px;
+  border: 3px solid var(--accent);
+  border-radius: 23px;
+}
+
+.pf-chosen i {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 3px solid var(--accent);
+  border-radius: 3px;
+  background: var(--page);
+}
+
+.pf-chosen i:nth-child(1) {
+  top: -8px;
+  left: -8px;
+}
+
+.pf-chosen i:nth-child(2) {
+  top: -8px;
+  right: -8px;
+}
+
+.pf-chosen i:nth-child(3) {
+  bottom: -8px;
+  left: -8px;
+}
+
+.pf-chosen i:nth-child(4) {
+  right: -8px;
+  bottom: -8px;
+}
+
+.pointer {
+  position: absolute;
+  top: 420px;
+  left: 560px;
+  width: 33px;
+  height: 45px;
 }
