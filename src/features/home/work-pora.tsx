@@ -370,14 +370,16 @@ export function WorkPora() {
         />
       </ol>
       <div aria-hidden className="pair-fly" data-pair-fly>
-        <span className="pair-form" data-pair-form="web">
-          <Card alt={NONE} />
-        </span>
-        <span className="pair-form" data-pair-form="la">
-          <Both alt={NONE} dark={laDark} light={laLight} sizes={PHONE} />
-        </span>
-        <span className="pair-form" data-pair-form="android">
-          <Both alt={NONE} dark={androidCardDark} light={androidCardLight} sizes={PHONE} />
+        <span className="pair-forms" data-pair-forms>
+          <span className="pair-form" data-pair-form="web">
+            <Card alt={NONE} />
+          </span>
+          <span className="pair-form" data-pair-form="la">
+            <Both alt={NONE} dark={laDark} light={laLight} sizes={PHONE} />
+          </span>
+          <span className="pair-form" data-pair-form="android">
+            <Both alt={NONE} dark={androidCardDark} light={androidCardLight} sizes={PHONE} />
+          </span>
         </span>
       </div>
     </Chapter>

@@ -46,7 +46,8 @@ const share = (at: number, from: number, to: number) =>
 export function pairFlight(chapter: HTMLElement) {
   const stage = chapter.querySelector<HTMLElement>("[data-stage]");
   const fly = chapter.querySelector<HTMLElement>("[data-pair-fly]");
-  if (!stage || !fly) return undefined;
+  const cut = fly?.querySelector<HTMLElement>("[data-pair-forms]");
+  if (!stage || !fly || !cut) return undefined;
   const forms = new Map(
     gsap.utils
       .toArray<HTMLElement>("[data-pair-form]", fly)
@@ -59,6 +60,8 @@ export function pairFlight(chapter: HTMLElement) {
   );
   const boxes = new Map<string, Box>();
   const state = { at: 0, clash: 0 };
+  /** What the chapter last said of the lesson: written again only when it changes. */
+  let said = { landed: false, verdict: "" };
 
   /** A place where the layout puts it, transforms aside: the scene moves frames, not places. */
   const measure = () => {
@@ -96,7 +99,13 @@ export function pairFlight(chapter: HTMLElement) {
     // Published, the lesson stays in the editor's week: the card the frame holds takes its place
     // and leaves with the frame, as any other lesson of that week.
     const landed = state.at > EDITOR;
-    chapter.toggleAttribute("data-pair-landed", landed);
+    const verdict = state.at < EDITOR - 0.05 ? "" : state.clash < 0.5 ? "clash" : "published";
+    if (landed !== said.landed || verdict !== said.verdict) {
+      said = { landed, verdict };
+      chapter.toggleAttribute("data-pair-landed", landed);
+      if (verdict) chapter.dataset.pairState = verdict;
+      else delete chapter.dataset.pairState;
+    }
     const stop = Math.min(Math.floor(state.at), PATH.length - 1);
     const flight = state.at - stop;
     const from = boxOf(stop);
@@ -125,11 +134,9 @@ export function pairFlight(chapter: HTMLElement) {
     fly.style.transform = `translate3d(${box.x.toFixed(1)}px, ${box.y.toFixed(1)}px, 0)`;
     fly.style.width = `${box.w.toFixed(1)}px`;
     fly.style.height = `${box.h.toFixed(1)}px`;
-    fly.style.borderRadius = `${corner.toFixed(1)}px`;
+    cut.style.borderRadius = `${corner.toFixed(1)}px`;
     // Lifted off the page on the first stop, laid into each frame after it.
     fly.style.setProperty("--pair-lift", (stop === 0 ? 1 - eased : 0).toFixed(3));
-    if (state.at < EDITOR - 0.05) delete chapter.dataset.pairState;
-    else chapter.dataset.pairState = state.clash < 0.5 ? "clash" : "published";
   };
 
   const refresh = () => {
@@ -171,7 +178,9 @@ export function pairFlight(chapter: HTMLElement) {
       chapter.toggleAttribute("data-pair-live", false);
       chapter.toggleAttribute("data-pair-landed", false);
       delete chapter.dataset.pairState;
+      said = { landed: false, verdict: "" };
       fly.removeAttribute("style");
+      cut.removeAttribute("style");
       for (const form of forms.values()) form.removeAttribute("style");
     };
   };
