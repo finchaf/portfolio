@@ -1,9 +1,10 @@
 import { expect, test, type Page } from "@playwright/test";
 
+import { PAGE_PATHS } from "../src/lib/pages";
 import { openWriteSheet } from "./helpers";
 import { ADDRESSES } from "./pages";
 
-// The promise of ADR-0002: the page is in the HTML and never waits for animation.
+// The promise of ADR-0004: the page is in the HTML and never waits for animation.
 test.describe("without JavaScript", () => {
   test.use({ javaScriptEnabled: false });
 
@@ -11,7 +12,9 @@ test.describe("without JavaScript", () => {
     test(`${address} shows its heading and its links`, async ({ page }) => {
       await page.goto(address);
       await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-      await expect(page.locator("[data-capsule] nav").getByRole("link")).toHaveCount(4);
+      await expect(page.locator("[data-capsule] nav").getByRole("link")).toHaveCount(
+        PAGE_PATHS.length,
+      );
     });
   }
 });
@@ -710,6 +713,10 @@ test.describe("the home page in motion", () => {
   test("keeps lines going opposite ways inside their column", async ({ page }) => {
     await page.goto(HOME);
     await expect(page.locator(".story-rent .story-col")).toHaveCSS("clip-path", /^inset/);
+  });
+
+  test("splits the experience title into lines", async ({ page }) => {
+    await page.goto(HOME);
     await expect(page.locator("#experience-title > span")).not.toHaveCount(0);
   });
 
@@ -1513,7 +1520,7 @@ test.describe("the Flow vault", () => {
     await expect(page.locator("[data-capsule]")).toHaveCSS("top", "0px");
   });
 
-  test("draws the graph and answers with the note under the pointer", async ({ page }) => {
+  test("sizes the graph's canvas to the pane", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(`${FLOW}#graph`);
     await expect(page.locator("#graph-full")).toBeVisible();
