@@ -10,9 +10,10 @@ there are none, 1 otherwise. The private part in docs/private is another reposit
 2. Every document in docs/ is reached by links from docs/README.md.
 3. After the title and an ADR's or a spec's metadata comes a `>` lede.
 4. A document has more Cyrillic letters than Latin ones outside code: the base is Russian.
-5. Documents in 05-features/ and 07-roadmap/, READMEs of 07 aside, declare `**Статус:**`.
+5. Documents in 03-data/ to 07-roadmap/, the plan's index aside, declare `**Статус:**`.
 6. The ADR journal is coherent: numbered without a gap, titled by its number, with a status from
-   the vocabulary and a date, and its index lists exactly the records with their statuses.
+   the vocabulary and a date, and its index lists exactly the records with their titles and
+   statuses.
 """
 
 from __future__ import annotations
@@ -89,8 +90,12 @@ def check_orphans(findings: list[str]) -> None:
         reached.add(path)
         for target in links_of(path):
             resolved = resolve(path, target)
-            if resolved and resolved[0].suffix == ".md" and resolved[0].is_relative_to(DOCS):
-                queue.append(resolved[0])
+            if resolved is None:
+                continue
+            file = resolved[0]
+            # A missing file is check_links' finding; here it would only stop the walk.
+            if file.suffix == ".md" and file.is_relative_to(DOCS) and file.exists():
+                queue.append(file)
     for path in documents():
         if path not in reached:
             findings.append(f"{path.relative_to(REPO)}: nothing leads to it")
@@ -108,7 +113,9 @@ def check_shape(findings: list[str]) -> None:
         if len(re.findall(r"[а-яё]", body, re.I)) <= len(re.findall(r"[a-z]", body, re.I)):
             findings.append(f"{name}: more Latin than Cyrillic")
         section = path.relative_to(DOCS).parts[0]
-        declares = section == "05-features" or (section == "07-roadmap" and path.name != "README.md")
+        declares = section.startswith(("03-", "04-", "05-", "06-")) or (
+            section == "07-roadmap" and path.name != "README.md"
+        )
         status = re.search(r"^\*\*Статус:\*\* (\S+)", text, re.M)
         if declares and (status is None or status.group(1) not in STATUS_WORDS):
             findings.append(f"{name}: no `**Статус:**` from the vocabulary")
@@ -117,7 +124,9 @@ def check_shape(findings: list[str]) -> None:
 def check_journal(findings: list[str]) -> None:
     index = (DECISIONS / "README.md").read_text(encoding="utf8")
     records = sorted(p for p in DECISIONS.glob("*.md") if p.name != "README.md")
-    listed = dict(re.findall(r"^\| \[(\d{4})\]\([^)]+\) \|.*\| (\S+) \|$", index, re.M))
+    rows = re.findall(r"^\| \[(\d{4})\]\([^)]+\) \| (.+) \| (\S+) \|$", index, re.M)
+    titles = {code: title for code, title, _ in rows}
+    listed = {code: status for code, _, status in rows}
     for number, path in enumerate(records, start=1):
         code = f"{number:04d}"
         text = path.read_text(encoding="utf8")
@@ -126,6 +135,8 @@ def check_journal(findings: list[str]) -> None:
             findings.append(f"{name}: expected number {code}")
         if not text.startswith(f"# ADR-{code}: "):
             findings.append(f"{name}: the title does not carry {code}")
+        elif code in titles and text.split("\n", 1)[0] != f"# ADR-{code}: {titles[code]}":
+            findings.append(f"{name}: the index gives another title")
         status = re.search(r"^- \*\*Статус:\*\* (\S+)", text, re.M)
         if status is None or status.group(1) not in ADR_STATUSES:
             findings.append(f"{name}: no status from the vocabulary")
