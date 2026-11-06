@@ -28,6 +28,62 @@ describe("a leaving page's scene", () => {
     expect((context as unknown as { data: unknown[] }).data).toHaveLength(0);
   });
 
+  // Every scene keeps its work in a `gsap.matchMedia()`, which the context lists as one of its own.
+  // The key `all` matches without a window, so the media need not be faked.
+  it("drops the work of a matchMedia inside it, cleanups included", () => {
+    const target = { x: 0 };
+    const seen: boolean[] = [];
+    let media: gsap.MatchMedia | undefined;
+    const context = gsap.context(() => {
+      media = gsap.matchMedia();
+      media.add({ all: "all" }, () => {
+        gsap.to(target, { x: 100, duration: 1, paused: true }).progress(1);
+        return () => seen.push(leaving());
+      });
+    });
+    takeDown(context);
+    expect(target.x).toBe(100);
+    expect(seen).toEqual([true]);
+    const [made] = (media as unknown as { contexts: { data: unknown[] }[] }).contexts;
+    expect(made?.data).toHaveLength(0);
+  });
+
+  // A query that starts to match later runs outside the scene's context, which then knows its work
+  // only through the matchMedia's own list: `drop` has to walk it.
+  it("drops what a matchMedia started after the scene was set up", () => {
+    const target = { x: 0 };
+    const seen: boolean[] = [];
+    let media: gsap.MatchMedia | undefined;
+    const context = gsap.context(() => {
+      media = gsap.matchMedia();
+    });
+    media?.add({ all: "all" }, () => {
+      gsap.to(target, { x: 100, duration: 1, paused: true }).progress(1);
+      return () => seen.push(leaving());
+    });
+    takeDown(context);
+    expect(target.x).toBe(100);
+    expect(seen).toEqual([true]);
+  });
+
+  it("drops a matchMedia that a cleanup undoes while the page leaves", () => {
+    const target = { x: 0 };
+    const seen: boolean[] = [];
+    const context = gsap.context(() => {
+      const media = gsap.matchMedia();
+      media.add({ all: "all" }, () => {
+        gsap.to(target, { x: 100, duration: 1, paused: true }).progress(1);
+        return () => seen.push(leaving());
+      });
+      return () => {
+        undo(media);
+      };
+    });
+    takeDown(context);
+    expect(target.x).toBe(100);
+    expect(seen).toEqual([true]);
+  });
+
   it("is put back when the page stays", () => {
     const target = { x: 0 };
     const context = gsap.context(() => {
