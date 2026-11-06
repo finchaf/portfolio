@@ -32,9 +32,10 @@ for (const { address, theme, display } of WORLDS) {
       await page.goto(address);
       expect(await background(page)).toBe(pageColor(theme, mode));
       expect(
-        await page.evaluate(
-          () => getComputedStyle(document.querySelector("h1") as Element).fontFamily,
-        ),
+        await page
+          .locator("h1")
+          .first()
+          .evaluate((node) => getComputedStyle(node).fontFamily),
       ).toContain(display);
     });
   }

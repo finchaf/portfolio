@@ -4,6 +4,9 @@ import { PAGE_PATHS } from "../src/lib/pages";
 import { openWriteSheet } from "./helpers";
 import { ADDRESSES } from "./pages";
 
+/** What a test leaves on the page's window to read back: none of it is the site's. */
+type Probe = { change?: string[]; held?: string; done?: boolean; seen?: Set<string> };
+
 // The promise of ADR-0004: the page is in the HTML and never waits for animation.
 test.describe("without JavaScript", () => {
   test.use({ javaScriptEnabled: false });
@@ -622,9 +625,12 @@ test.describe("the home page in motion", () => {
   test("casts no shadow in the dark, and keeps it in the light", async ({ page }) => {
     const none = "rgba(0, 0, 0, 0)";
     const shadows = () =>
-      page.evaluate(() =>
-        [".chapter-stage", ".capsule-surface"].map(
-          (selector) => getComputedStyle(document.querySelector(selector) as Element).boxShadow,
+      Promise.all(
+        [".chapter-stage", ".capsule-surface"].map((selector) =>
+          page
+            .locator(selector)
+            .first()
+            .evaluate((node) => getComputedStyle(node).boxShadow),
         ),
       );
     await page.emulateMedia({ colorScheme: "dark" });
@@ -1538,7 +1544,7 @@ test.describe("a change of page", () => {
       const start = document.startViewTransition.bind(document) as (
         update: unknown,
       ) => ViewTransition;
-      const seen = window as unknown as { change?: string[]; held?: string; done?: boolean };
+      const seen = window as Window & Probe;
       delete seen.change;
       delete seen.done;
       Object.assign(document, {
@@ -1565,8 +1571,10 @@ test.describe("a change of page", () => {
       });
     });
 
-  const change = (page: Page) =>
-    page.waitForFunction(() => (window as unknown as { change?: string[] }).change);
+  const change = async (page: Page) => {
+    await page.waitForFunction(() => (window as Window & Probe).change);
+    return page.evaluate(() => (window as Window & Probe).change ?? []);
+  };
 
   const capsule = (page: Page, path: string) =>
     page.locator(`[data-capsule] a[href$="${path}"]`).first();
@@ -1585,17 +1593,17 @@ test.describe("a change of page", () => {
 
     await watch(page);
     await capsule(page, "/ru/projects").click();
-    const forward = (await (await change(page)).jsonValue()) as string[];
+    const forward = await change(page);
     expect(forward).toContain("::view-transition-new(root) page-slash-in");
     expect(forward).toContain("::view-transition-new(page-lead) page-lead-in");
     expect(forward).toContain("::view-transition-old(capsule) page-capsule-off");
     await expect(page).toHaveURL(/\/ru\/projects$/);
     await expect(page.locator("html")).not.toHaveAttribute("data-page-back");
 
-    await page.waitForFunction(() => (window as unknown as { done?: boolean }).done);
+    await page.waitForFunction(() => (window as Window & Probe).done);
     await watch(page);
     await capsule(page, "/ru").click();
-    const back = (await (await change(page)).jsonValue()) as string[];
+    const back = await change(page);
     expect(back).toContain("::view-transition-new(root) page-slash-back");
     expect(back).toContain("::view-transition-new(page-lead) page-lead-back");
     await expect(page.locator("html")).toHaveAttribute("data-page-back");
@@ -1608,7 +1616,7 @@ test.describe("a change of page", () => {
     await watch(page);
     await capsule(page, "/ru/flow").click();
     await change(page);
-    const held = await page.evaluate(() => (window as unknown as { held?: string }).held);
+    const held = await page.evaluate(() => (window as Window & Probe).held);
     expect(held).toBe("900px");
   });
 
@@ -1622,7 +1630,7 @@ test.describe("a change of page", () => {
 
     await watch(page);
     await open.click();
-    const run = (await (await change(page)).jsonValue()) as string[];
+    const run = await change(page);
     expect(run).toContain("::view-transition-old(world-flow) page-name-off");
     expect(run).toContain("::view-transition-new(world-flow) page-name-on");
   });
@@ -1635,7 +1643,7 @@ test.describe("a change of page", () => {
       await live(page);
       await watch(page);
       await capsule(page, "/ru/projects").click();
-      expect((await (await change(page)).jsonValue()) as string[]).toEqual([]);
+      expect(await change(page)).toEqual([]);
       await expect(page).toHaveURL(/\/ru\/projects$/);
     });
   });
@@ -1924,7 +1932,7 @@ test.describe("the capsule", () => {
     await expect(page).toHaveURL(/\/ru\/projects\/portfolio$/);
     await page.locator(".pj-back").click();
     await expect(page).toHaveURL(/\/ru\/projects$/);
-    const seen = await page.evaluate(() => (window as unknown as { seen: Set<string> }).seen.size);
+    const seen = await page.evaluate(() => (window as Window & Probe).seen?.size);
     expect(seen).toBe(1);
   });
 

@@ -5,6 +5,9 @@ import { ADDRESSES } from "./pages";
 
 const DIRECT = { maxRedirects: 0 };
 
+/** What a test leaves on the page's window to read back: none of it is the site's. */
+type Probe = { sameDocument?: boolean };
+
 // What Caddy answers, as a reader and a crawler meet it.
 for (const [language, target] of [
   ["ru-RU,ru;q=0.9", "/ru"],
@@ -152,7 +155,7 @@ test("the header moves between pages without a reload and marks the current one"
 }) => {
   await page.goto("/ru");
   await page.evaluate(() => {
-    (window as unknown as { sameDocument: boolean }).sameDocument = true;
+    (window as Window & Probe).sameDocument = true;
   });
 
   const header = page.locator("[data-capsule]");
@@ -162,9 +165,7 @@ test("the header moves between pages without a reload and marks the current one"
   await expect(header.getByRole("link", { name: "Флоу" })).toHaveAttribute("aria-current", "page");
   await expect(header.getByRole("link", { name: "Главная" })).not.toHaveAttribute("aria-current");
 
-  const sameDocument = await page.evaluate(
-    () => (window as unknown as { sameDocument?: boolean }).sameDocument,
-  );
+  const sameDocument = await page.evaluate(() => (window as Window & Probe).sameDocument);
   expect(sameDocument).toBe(true);
 });
 
