@@ -1,0 +1,15 @@
+finchaf.com — the site of Danil Zablotsky and its code
+Copyright (c) 2026 Danil Zablotsky
+
+The MIT License in LICENSE covers the source code of this repository only.
+
+Everything else is © Danil Zablotsky, all rights reserved, and is not licensed for reuse:
+
+- the texts of the site, in messages/, and the knowledge base, in docs/;
+- the case studies and what they show;
+- photographs, screenshots, pictures, link previews, video and the CV, in src/, public/ and
+  .github/;
+- the logo and the visual design of the site.
+
+Third-party parts keep their own licences: GSAP (https://gsap.com/standard-license), the fonts from
+Fontsource under the SIL Open Font License 1.1, and the npm dependencies listed in package.json.
