@@ -1,6 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
+import { openWriteSheet } from "./helpers";
 import { ADDRESSES } from "./pages";
 
 // What a machine can see of WCAG 2.2 AA. A screen reader and the feel of the keyboard are checked
@@ -41,7 +42,7 @@ for (const colorScheme of ["light", "dark"] as const) {
       await page.emulateMedia({ colorScheme });
       await page.goto(address);
       await expect(page.locator("html")).not.toHaveAttribute("data-intro");
-      await page.locator("[data-capsule] [data-write]").click();
+      await openWriteSheet(page);
       const sheet = page.locator(".write-sheet");
       await expect(sheet).toBeVisible();
       // Half way through its entrance it is half transparent, and axe would measure that.

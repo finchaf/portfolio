@@ -1,5 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
+import { openWriteSheet } from "./helpers";
 import { ADDRESSES } from "./pages";
 
 // The promise of ADR-0002: the page is in the HTML and never waits for animation.
@@ -687,7 +688,7 @@ test.describe("the home page in motion", () => {
       words: node.parentElement?.getBoundingClientRect().width ?? 0,
     }));
     expect(sizes.button).toBeLessThan(sizes.words / 2);
-    await write.click();
+    await openWriteSheet(page, { trigger: write });
     await expect(page.locator(".write-sheet")).toBeVisible();
   });
 
@@ -1234,8 +1235,7 @@ test.describe("the sheet out of the capsule", () => {
     await page.goto(HOME);
     const sheet = page.getByRole("dialog", { name: "Написать" });
     await expect(sheet).toBeHidden();
-    await write(page).focus();
-    await page.keyboard.press("Enter");
+    await openWriteSheet(page, { by: "key" });
     await expect(sheet).toBeVisible();
     await expect(sheet).toBeFocused();
     await expect(write(page)).toHaveAttribute("aria-expanded", "true");
@@ -1256,7 +1256,7 @@ test.describe("the sheet out of the capsule", () => {
 
   test("shuts with a click elsewhere, which still does what it was for", async ({ page }) => {
     await page.goto(HOME);
-    await write(page).click();
+    await openWriteSheet(page);
     await expect(page.locator(".write-sheet")).toBeVisible();
     await page.locator("[data-capsule] nav").getByRole("link", { name: "Флоу" }).click();
     await expect(page.locator(".write-sheet")).toBeHidden();
@@ -1265,7 +1265,7 @@ test.describe("the sheet out of the capsule", () => {
 
   test("shuts when a key leaves it", async ({ page }) => {
     await page.goto(HOME);
-    await write(page).click();
+    await openWriteSheet(page);
     await page.locator(".write-sheet").getByRole("button", { name: "Скопировать" }).focus();
     await page.keyboard.press("Tab");
     await expect(page.locator(".write-sheet")).toBeHidden();
@@ -1273,7 +1273,7 @@ test.describe("the sheet out of the capsule", () => {
 
   test("the button toggles it", async ({ page }) => {
     await page.goto(HOME);
-    await write(page).click();
+    await openWriteSheet(page);
     await expect(page.locator(".write-sheet")).toBeVisible();
     await write(page).click();
     await expect(page.locator(".write-sheet")).toBeHidden();
@@ -1300,7 +1300,7 @@ test.describe("the sheet out of the capsule", () => {
   test("copies the address and says so", async ({ context, page }) => {
     await context.grantPermissions(["clipboard-read", "clipboard-write"]);
     await page.goto(HOME);
-    await write(page).click();
+    await openWriteSheet(page);
     const sheet = page.locator(".write-sheet");
     await sheet.getByRole("button", { name: "Скопировать" }).click();
     await expect(sheet.getByRole("button", { name: "Скопировано" })).toBeVisible();
@@ -1315,7 +1315,7 @@ test.describe("the sheet out of the capsule", () => {
     await page.goto(HOME);
     await jump(page, await topOf(page, "#work-pora"));
     await expect(page.locator("[data-capsule]")).toHaveAttribute("data-tint", "pora");
-    await write(page).click();
+    await openWriteSheet(page);
     const sheet = page.locator(".write-sheet");
     await expect(sheet).toBeVisible();
     await expect(sheet.locator(".control-button").first()).toHaveCSS(
@@ -1330,7 +1330,7 @@ test.describe("the sheet out of the capsule", () => {
     const radius = () =>
       page.locator(".hero").evaluate((hero) => parseFloat(hero.style.getPropertyValue("--lens-r")));
     await expect.poll(radius).toBeGreaterThan(100);
-    await write(page).click();
+    await openWriteSheet(page);
     await expect(page.locator("html")).toHaveAttribute("data-writing");
     await expect.poll(radius).toBe(0);
     await page.keyboard.press("Escape");
@@ -1341,7 +1341,7 @@ test.describe("the sheet out of the capsule", () => {
   test("on a phone has no code to read, and stands above the capsule, whole", async ({ page }) => {
     await page.setViewportSize({ width: 360, height: 640 });
     await page.goto(HOME);
-    await write(page).click();
+    await openWriteSheet(page);
     const sheet = page.locator(".write-sheet");
     await expect(sheet).toBeVisible();
     await expect(sheet.locator(".write-code")).toBeHidden();
