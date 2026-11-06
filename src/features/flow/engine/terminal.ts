@@ -21,7 +21,7 @@ type Step =
   | { fin: "stage1Done" | "stage2Done" | "closed"; lane?: number };
 
 /** The run of the made-up task: the real step names of the two stages, in their real order. */
-const RUN: Step[] = [
+export const RUN: Step[] = [
   { cmd: "new-app 000", lane: 0 },
   { s: "s1.start", file: "state", lane: 1 },
   { s: "s1.brief", file: "brief" },
@@ -62,8 +62,9 @@ const RUN: Step[] = [
   { s: "harvest" },
   { fin: "closed" },
 ];
-const STAGE_TWO = 17;
-const CLOSING = 36;
+/** Where the `stage-2` and `done` commands start the run from. */
+export const STAGE_TWO = 17;
+export const CLOSING = 36;
 
 /** How far the run must be when a heading of the main note is reached. */
 const SCENES: Record<string, number> = { 0: 1, 1: 5, 2: 23, 3: 23, 4: 24, 5: RUN.length };
@@ -87,7 +88,19 @@ const COMMANDS = [
   "theme ",
 ];
 
-const stepKey = (id: string) => id.replace(/\.(\w)/, (_, letter: string) => letter.toUpperCase());
+/** The key of a step's words in the catalog: `s1.start` is `s1Start`. */
+export const stepKey = (id: string) =>
+  id.replace(/\.(\w)/, (_, letter: string) => letter.toUpperCase());
+
+/** What Tab finishes `value` into: the first command it begins, or `open` and the first note. */
+export function completion(value: string, noteIds: readonly string[]) {
+  if (!value) return "";
+  if (value.startsWith("open ")) {
+    const hit = noteIds.find((id) => id.startsWith(value.slice(5)));
+    return hit ? `open ${hit}` : "";
+  }
+  return COMMANDS.find((command) => command.startsWith(value)) ?? "";
+}
 
 function escape(text: string) {
   return text.replace(
@@ -515,16 +528,8 @@ export function makeTerminal(host: TerminalHost) {
     else if (!("open" in pane.dataset)) host.openSheet();
   }
 
-  function completion(value: string) {
-    if (!value) return "";
-    if (value.startsWith("open ")) {
-      const hit = host.noteIds.find((id) => id.startsWith(value.slice(5)));
-      return hit ? `open ${hit}` : "";
-    }
-    return COMMANDS.find((command) => command.startsWith(value)) ?? "";
-  }
   function paintGhost() {
-    const hit = completion(input.value);
+    const hit = completion(input.value, host.noteIds);
     ghost.textContent = hit && hit !== input.value ? hit : "";
   }
 
@@ -651,7 +656,7 @@ export function makeTerminal(host: TerminalHost) {
     "keydown",
     (event) => {
       if (event.key === "Tab") {
-        const hit = completion(input.value);
+        const hit = completion(input.value, host.noteIds);
         if (hit) {
           event.preventDefault();
           input.value = hit;
