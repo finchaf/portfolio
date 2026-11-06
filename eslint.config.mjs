@@ -1,6 +1,9 @@
 // Next.js's rules with Core Web Vitals, typed TypeScript rules, accessibility, the boundaries
 // between the folders of src/, and no text in the markup: every string a reader sees comes from
 // the catalogs in messages/ (docs/02-project-structure/repository.md).
+import { readdirSync } from "node:fs";
+import { join } from "node:path";
+
 import js from "@eslint/js";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import jsxA11y from "eslint-plugin-jsx-a11y";
@@ -20,7 +23,10 @@ const TEXT_ATTRIBUTES = [
   "title",
 ];
 
-const FEATURES = ["flow", "home", "pora", "projects"];
+// Every folder of src/features/ is a feature: a new one is held to the boundaries from the start.
+const FEATURES = readdirSync(join(import.meta.dirname, "src/features"), { withFileTypes: true })
+  .filter((entry) => entry.isDirectory())
+  .map((entry) => entry.name);
 
 // Who may import whom. Foundations know nothing of what is built on them, and a feature knows
 // nothing of another: what two features share moves down into ui/, motion/ or lib/.

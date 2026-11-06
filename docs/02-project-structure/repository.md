@@ -25,7 +25,8 @@ portfolio/
 ├── messages/<locale>/vault/*.md  заметки страницы «Флоу»
 ├── e2e/                         браузерные гейты Playwright
 ├── scripts/                     check.py и гейты, serve.py, compress.ts, deploy.py, og/ для картинок ссылок,
-│                                cv/ для резюме (pnpm cv), media/ для AVIF рядом с WebP, latex/ для набранной строки проекта LaTeX
+│                                cv/ для резюме (pnpm cv), print/ с общим для них кодом, media/ для AVIF рядом с WebP,
+│                                latex/ для набранной строки проекта LaTeX
 ├── deploy/Caddyfile.test        блок Caddy для гейтов и просмотра
 ├── docs/                        база знаний
 ├── .claude/                     скиллы `/nt`, `/si`, `/ar`, `/rf` и их агенты
@@ -40,7 +41,8 @@ portfolio/
 1. Строка в `src/lib/pages.ts`.
 2. `messages/ru/<имя>.json` и `messages/en/<имя>.json` с `meta` и `title`, подключить в
    `src/i18n/catalog.ts`.
-3. Фича в `src/features/<имя>/`, её имя в `FEATURES` в `eslint.config.mjs`, разметка в `<World>`.
+3. Фича в `src/features/<имя>/`, разметка в `<World>`. Границы ESLint берут папку сами: `FEATURES` в
+   `eslint.config.mjs` читает `src/features/`.
 4. Маршрут в `src/app/[locale]/<адрес>/page.tsx`.
 5. Страницы в `expected-build.json`.
 
