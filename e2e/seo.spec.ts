@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 import { LOCALES } from "../src/i18n/locales";
-import { PAGES } from "../src/lib/pages";
+import { EVERY_PAGE } from "../src/lib/pages";
 import { SHARE_IMAGE, shareImagePath } from "../src/lib/share-images";
 import { SITE_ICONS, SITE_ORIGIN } from "../src/lib/site";
 import { ADDRESSES } from "./pages";
@@ -79,7 +79,7 @@ test("every icon is served", async ({ request }) => {
 // Only a real answer shows this: a file a server cannot name a type for reaches no platform.
 test("every link picture is served as a picture", async ({ request }) => {
   const pictures = LOCALES.flatMap((locale) =>
-    Object.values(PAGES).map((card) => shareImagePath(locale, card)),
+    Object.values(EVERY_PAGE).map((card) => shareImagePath(locale, card)),
   );
   for (const picture of [...pictures, FIRST_PICTURE]) {
     const response = await request.get(picture);
