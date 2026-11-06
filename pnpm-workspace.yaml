@@ -7,6 +7,11 @@ minimumReleaseAge: 1440
 allowBuilds:
   "@parcel/watcher": false
   "@swc/core": false
-  esbuild: false
   sharp: false
   unrs-resolver: false
+
+# typescript-estree asks for minimatch 10, and only 11.0.1 closes its denial of service through
+# brace patterns (GHSA of 06.11.2026). It is lint-time code that reads our own globs; 11 keeps the
+# API typescript-estree uses, and the Lint gate proves it.
+overrides:
+  "minimatch@>=7 <11.0.1": "11.0.4"

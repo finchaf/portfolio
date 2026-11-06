@@ -10,11 +10,8 @@
 // Turbopack reads no size from an AVIF and gives it 100 × 100, so the sizes go to
 // src/ui/avif-sizes.json, which `Image` in src/ui/image.tsx reads (avif-sizes.test.ts holds it).
 import { existsSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { createRequire } from "node:module";
-import { basename, dirname, join } from "node:path";
-
-const require = createRequire(`${process.cwd()}/package.json`);
-const sharp = require(join(dirname(require.resolve("next/package.json")), "../sharp"));
+import { basename, join } from "node:path";
+import sharp from "sharp";
 
 const args = process.argv.slice(2);
 const screen = args.includes("--screen");
