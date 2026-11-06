@@ -2,8 +2,6 @@
 // logo and strings. build.ts photographs them; a unit test compares `digest` with the manifest, so a
 // change to any of these sources that leaves the pictures old fails the gates.
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
 
 import {
   Bookmark,
@@ -29,26 +27,23 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { LOCALES, type Locale } from "../../src/i18n/locales.ts";
 import { EVERY_PAGE, EVERY_PATH } from "../../src/lib/pages.ts";
 import { DAYS, LESSONS, SLOTS, type Lesson } from "../../src/lib/product-week.ts";
+import { escape, fontFaces, read, text } from "../print/html.ts";
 import { flowGraph, flowGraphSource } from "./flow-graph.ts";
-
-const read = (path: string) => readFileSync(fileURLToPath(new URL(path, import.meta.url)));
-const text = (path: string) => read(path).toString("utf8");
 
 const THEMES = ["home", "pora", "flow", "projects"];
 
-/** The faces the cards are set in, with the subsets they use. */
+/** The faces the cards are set in. */
 const FONTS = ["geist", "inter", "jetbrains-mono", "nunito"];
-const SUBSETS = /-(latin|cyrillic)-wght-normal\.woff2/;
 
 /** The day the week on Pora na paru's card is open on: a picture of a Wednesday, the third day. */
 const TODAY = 2;
 
 /** The board's frames on Projects' card, in the mode the card shows. */
 const SHOTS = {
-  home: "../../src/ui/board/shots/home-dark.webp",
-  phone: "../../src/ui/board/shots/phone-flow-dark.webp",
-  notes: "../../src/ui/board/paper/notes-calculus-dark.webp",
-  cover: "../../src/ui/board/paper/doc-cover-dark.webp",
+  home: "src/ui/board/shots/home-dark.webp",
+  phone: "src/ui/board/shots/phone-flow-dark.webp",
+  notes: "src/ui/board/paper/notes-calculus-dark.webp",
+  cover: "src/ui/board/paper/doc-cover-dark.webp",
 } as const;
 
 const picture = (path: string) => `data:image/webp;base64,${read(path).toString("base64")}`;
@@ -61,12 +56,9 @@ export const CARDS = LOCALES.flatMap((locale) =>
 
 type Card = (typeof CARDS)[number]["card"];
 
-const escape = (value: string) =>
-  value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-
 /** The strings of the cards, which the site already shows. */
 function strings(locale: Locale) {
-  const pora = JSON.parse(text(`../../messages/${locale}/pora.json`)) as {
+  const pora = JSON.parse(text(`messages/${locale}/pora.json`)) as {
     title: string;
     week: {
       days: Record<(typeof DAYS)[number], string>;
@@ -75,9 +67,9 @@ function strings(locale: Locale) {
       pairs: Record<Lesson["id"], { title: string; text: string; who: string; where: string }>;
     };
   };
-  const shell = JSON.parse(text(`../../messages/${locale}/shell.json`)) as { write: string };
+  const shell = JSON.parse(text(`messages/${locale}/shell.json`)) as { write: string };
   // The folders are named as the board of Projects names them.
-  const projects = JSON.parse(text(`../../messages/${locale}/projects.json`)) as {
+  const projects = JSON.parse(text(`messages/${locale}/projects.json`)) as {
     title: string;
     lead: string;
     layers: string;
@@ -90,14 +82,14 @@ function strings(locale: Locale) {
     folders,
     card,
     transcript,
-  } = JSON.parse(text(`../../messages/${locale}/flow.json`)) as {
+  } = JSON.parse(text(`messages/${locale}/flow.json`)) as {
     title: string;
     folders: { process: string; quality: string };
     card: { line: string; lead: string; link: string };
     transcript: { lines: string };
   };
   const title = (note: string) =>
-    /^title: (.+)$/m.exec(text(`../../messages/${locale}/vault/${note}.md`))?.[1] ?? note;
+    /^title: (.+)$/m.exec(text(`messages/${locale}/vault/${note}.md`))?.[1] ?? note;
   const [run = "", done = "", , asks = ""] = transcript.lines.split("\n");
   return {
     week: pora.week,
@@ -125,12 +117,14 @@ function strings(locale: Locale) {
   };
 }
 
+/** The outlines of the logo's word, as logo.tsx draws them: the slash first. */
+const LOGO = text("src/ui/logo.tsx");
+const WORD_SHAPES = [...LOGO.slice(LOGO.indexOf("Wordmark")).matchAll(/ d="([^"]+)"/g)].map(
+  ([, shape]) => shape ?? "",
+);
+
 /** The word of the logo in its own outlines. */
-function wordmark() {
-  const source = text("../../src/ui/logo.tsx");
-  const paths = [...source.slice(source.indexOf("Wordmark")).matchAll(/ d="([^"]+)"/g)];
-  return paths.map(([, shape]) => `<path d="${shape ?? ""}"/>`).join("");
-}
+const wordmark = () => WORD_SHAPES.map((shape) => `<path d="${shape}"/>`).join("");
 
 /** `\finchaf{flow}`: the logo is a command, and the argument is the page's own address. */
 function sign(card: Card) {
@@ -140,14 +134,9 @@ function sign(card: Card) {
 
 /** The logo inline, its slash in the accent: the capsule's first item. */
 function capsuleMark() {
-  const source = text("../../src/ui/logo.tsx");
-  const shapes = [...source.slice(source.indexOf("Wordmark")).matchAll(/ d="([^"]+)"/g)];
-  const paths = shapes
-    .map(
-      ([, shape], index) =>
-        `<path fill="var(${index === 0 ? "--accent" : "--ink"})" d="${shape ?? ""}"/>`,
-    )
-    .join("");
+  const paths = WORD_SHAPES.map(
+    (shape, index) => `<path fill="var(${index === 0 ? "--accent" : "--ink"})" d="${shape}"/>`,
+  ).join("");
   return `<svg class="capsule-mark" viewBox="0 0 4420 940">${paths}</svg>`;
 }
 
@@ -327,28 +316,10 @@ const BODIES: Record<Card, (words: ReturnType<typeof strings>, graph: () => stri
     ),
 };
 
-/** `@font-face` rules with the files inside them: a page set from a string can load nothing else. */
-function fontFaces() {
-  return FONTS.flatMap((font) => {
-    const directory = `../../node_modules/@fontsource-variable/${font}/`;
-    return text(`${directory}index.css`)
-      .split("@font-face")
-      .filter((rule) => SUBSETS.test(rule))
-      .map((rule) => {
-        const file = /url\(\.\/(files\/[^)]+)\)/.exec(rule)?.[1] ?? "";
-        const data = read(`${directory}${file}`).toString("base64");
-        return `@font-face${rule.replace(
-          /url\([^)]+\)/,
-          `url(data:font/woff2;base64,${data})`,
-        )}`.replace(/\/\*[^*]*\*\/\s*$/, "");
-      });
-  }).join("\n");
-}
-
 const STYLE = [
-  ...THEMES.map((theme) => text(`../../src/themes/${theme}.css`)),
-  fontFaces(),
-  text("./card.css"),
+  ...THEMES.map((theme) => text(`src/themes/${theme}.css`)),
+  fontFaces(FONTS),
+  text("scripts/og/card.css"),
 ].join("\n");
 
 const WORD = `<svg class="tile-defs"><symbol id="word" viewBox="0 0 4420 940">${wordmark()}</symbol></svg>`;

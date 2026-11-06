@@ -1,20 +1,11 @@
 // The graph of the Flow page for its link picture: the same notes, links and 16 checklists, under the
 // same forces from the same seed. The page lays them out in the browser; a picture needs the result.
-import { readFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-
 import { MAIN_NOTE, NOTE_IDS, TASK_NOTES } from "../../src/features/flow/notes.ts";
 import { CHECKLISTS, relax, type Body, type BodyKind } from "../../src/lib/base-graph.ts";
+import { text } from "../print/html.ts";
 
 interface Node extends Body {
   id: string;
-}
-
-export interface Drawn {
-  id: string;
-  kind: BodyKind;
-  x: number;
-  y: number;
 }
 
 function layout() {
@@ -46,8 +37,7 @@ function layout() {
   for (const id of NOTE_IDS) add(id, "note");
   const joined = new Set<string>();
   for (const id of NOTE_IDS) {
-    const path = fileURLToPath(new URL(`../../messages/ru/vault/${id}.md`, import.meta.url));
-    for (const [, target = ""] of readFileSync(path, "utf8").matchAll(/\[\[([\w-]+)/g)) {
+    for (const [, target = ""] of text(`messages/ru/vault/${id}.md`).matchAll(/\[\[([\w-]+)/g)) {
       const key = [id, target].sort().join("|");
       if (joined.has(key)) continue;
       joined.add(key);

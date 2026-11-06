@@ -3,8 +3,6 @@
 // test compares `digest` with the manifest, so a change to any of these sources that leaves the PDFs
 // old fails the gates.
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
 
 import { LOCALES, type Locale } from "../../src/i18n/locales.ts";
 import {
@@ -15,19 +13,13 @@ import {
   TELEGRAM_HANDLE,
   TELEGRAM_URL,
 } from "../../src/lib/site.ts";
+import { escape, fontFaces, read, text } from "../print/html.ts";
 
-const read = (path: string) => readFileSync(fileURLToPath(new URL(path, import.meta.url)));
-const text = (path: string) => read(path).toString("utf8");
-
-/** The faces the page is set in, with the subsets it uses. */
+/** The faces the page is set in. */
 const FONTS = ["geologica", "golos-text", "jetbrains-mono"];
-const SUBSETS = /-(latin|cyrillic)-wght-normal\.woff2/;
 
 /** The day of the build, as the footer of the site writes it: the short form reads two ways in English. */
 const DATE_STYLE: Record<Locale, "short" | "medium"> = { ru: "short", en: "medium" };
-
-const escape = (value: string) =>
-  value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 
 interface Place {
   years: string;
@@ -60,38 +52,19 @@ interface Home {
     github: string;
     russian: string;
     english: string;
-    rows: Record<
-      "pora" | "team" | "freelance" | "first",
-      { one: string; two?: string; link?: string }
-    >;
+    rows: Record<"pora" | "freelance" | "first", { one: string; two?: string }> & {
+      team: { one: string; two?: string; link: string };
+    };
     latexLink: string;
     updated: string;
   };
 }
 
-const strings = (locale: Locale) => JSON.parse(text(`../../messages/${locale}/home.json`)) as Home;
+const strings = (locale: Locale) => JSON.parse(text(`messages/${locale}/home.json`)) as Home;
 
-/** `@font-face` rules with the files inside them: a page set from a string can load nothing else. */
-function fontFaces() {
-  return FONTS.flatMap((font) => {
-    const directory = `../../node_modules/@fontsource-variable/${font}/`;
-    return text(`${directory}index.css`)
-      .split("@font-face")
-      .filter((rule) => SUBSETS.test(rule))
-      .map((rule) => {
-        const file = /url\(\.\/(files\/[^)]+)\)/.exec(rule)?.[1] ?? "";
-        const data = read(`${directory}${file}`).toString("base64");
-        return `@font-face${rule.replace(
-          /url\([^)]+\)/,
-          `url(data:font/woff2;base64,${data})`,
-        )}`.replace(/\/\*[^*]*\*\/\s*$/, "");
-      });
-  }).join("\n");
-}
+const STYLE = [text("src/themes/home.css"), fontFaces(FONTS), text("scripts/cv/cv.css")].join("\n");
 
-const STYLE = [text("../../src/themes/home.css"), fontFaces(), text("./cv.css")].join("\n");
-
-const PORTRAIT = `data:image/webp;base64,${read("../../src/features/home/portrait.webp").toString("base64")}`;
+const PORTRAIT = `data:image/webp;base64,${read("src/features/home/portrait.webp").toString("base64")}`;
 
 const head = (title: string) => `<h2 class="cv-head">${escape(title)}</h2>`;
 
@@ -148,7 +121,7 @@ export function cvPage(locale: Locale, updated: string) {
     <h2 class="cv-title">${escape(e.title)}</h2>
     <ul class="cv-rows">
       ${row(e.rows.pora, lines("pora"))}
-      ${row(e.rows.team, lines("team"), [cv.rows.team.link ?? "", `${site}/flow`])}
+      ${row(e.rows.team, lines("team"), [cv.rows.team.link, `${site}/flow`])}
       ${row(e.rows.freelance, lines("freelance"))}
       ${row(e.rows.first, lines("first"))}
     </ul>
