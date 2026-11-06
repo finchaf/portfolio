@@ -90,6 +90,9 @@ www.finchaf.com, finchaf.ru, www.finchaf.ru {
 8. Подтвердить домен в Яндекс Вебмастере и Search Console записями TXT и не удалять их.
 9. Снять `finchaf-portfolio.vercel.app`: старый адрес не должен жить рядом с новым.
 
+Шаги 7–9 сделаны 06.11.2026. Записи TXT `google-site-verification` и `yandex-verification` лежат в DNS `finchaf.com`
+рядом с SPF: без них поисковики снимут подтверждение.
+
 ## Посещения
 
 Сторонней аналитики нет: ни запросов на чужие серверы, ни cookie, ни баннера. Журнал Caddy уже пишет
