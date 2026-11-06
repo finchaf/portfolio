@@ -31,7 +31,7 @@ texts, cases or what the site may show. Commit there separately.
 - **No text in the markup.** Strings live in `messages/`, in both languages.
 - **Only theme tokens** (ADR-0010). Colours and fonts come from `src/themes/`, in both modes.
 - **A feature's classes carry its prefix** (`pj-` for Projects and the shared board in `src/ui/board/`, `pora-` for Pora na Paru, `pair-` for the Pora chapter, `map-` for the
-  Flow chapter, `desk-` for the Projects chapter, `exp-` and `talk-` for the CV and the last call, `footer-` for the footer). The stylesheets of every page visited stay loaded, so a short name
+  Flow chapter, `desk-` for the Projects chapter, `exp-` and `talk-` for the CV and the last call, `footer-` for the footer, `lost-` for the 404). The stylesheets of every page visited stay loaded, so a short name
   breaks another page on a route.
 - **No browser scrollbar** (ADR-0016): the document hides it, and a new scrolling area puts `ScrollBar` from `src/ui/` right
   after its scroller. A modal layer calls `announceTopLayer()` from `src/ui/top-layer.ts` after `showModal()`, or the site's

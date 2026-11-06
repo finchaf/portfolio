@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 import { CATALOG } from "@/i18n/catalog";
 import { DEFAULT_LOCALE, LOCALES } from "@/i18n/locales";
 import { SITE_ICONS } from "@/lib/site";
-import { NotFoundView } from "@/shell/not-found-view";
+import { LOST_SCRIPT, NotFoundView } from "@/shell/not-found-view";
 import { ThemeScript } from "@/themes/theme-script";
 
 export const metadata: Metadata = {
@@ -19,9 +19,11 @@ export default function GlobalNotFound() {
     <html lang={DEFAULT_LOCALE} suppressHydrationWarning>
       <head>
         <ThemeScript />
+        {/* A constant of ours, never input: the language of the 404 before it paints. */}
+        <script dangerouslySetInnerHTML={{ __html: LOST_SCRIPT }} id="lost" />
       </head>
-      <body className="flex min-h-dvh flex-col">
-        <main className="flex flex-1 flex-col gap-8 p-4" id="content">
+      <body className="flex min-h-dvh flex-col bg-page text-ink">
+        <main className="flex flex-1 flex-col" id="content">
           <NotFoundView />
         </main>
       </body>

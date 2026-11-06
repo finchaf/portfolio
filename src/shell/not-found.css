@@ -1,0 +1,80 @@
+/*
+ * The 404, in the home's theme: the number large, drawn as the first screen's code layer draws the
+ * name, and the words and the ways out under it as the first screen has its own. Prefix `lost-`.
+ */
+/* The home's margins: 1rem on a phone, 2rem from a wide screen, as `--gutter` there. */
+.lost {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  min-height: 100dvh;
+  padding: 1.5rem 1rem 2.5rem;
+}
+
+@media (min-width: 64rem) {
+  .lost {
+    padding-inline: 2rem;
+  }
+}
+
+.lost-mark {
+  align-self: flex-start;
+  padding-block: 0.375rem;
+}
+
+.lost-wordmark {
+  display: block;
+  width: auto;
+  height: 1.125rem;
+}
+
+/* The fill covers the inner half of the stroke, and with it the contours a variable font crosses. */
+.lost-code {
+  position: relative;
+  align-self: flex-start;
+  margin-block: auto;
+  color: var(--page);
+  font-size: clamp(8rem, 30vw, 36rem);
+  letter-spacing: -0.04em;
+  line-height: 0.8;
+  -webkit-text-stroke: 3px var(--accent);
+  paint-order: stroke fill;
+}
+
+/* The hatching over the fill, as its own layer; centred, since a line's box is taller than it. */
+.lost-hatch {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  padding-block: 0.2em;
+  background-clip: text;
+  color: transparent;
+  translate: 0 -50%;
+  -webkit-text-stroke: 0;
+}
+
+.lost-words {
+  display: grid;
+  justify-items: start;
+  gap: 0.75rem;
+}
+
+.lost-text {
+  max-width: 34rem;
+  color: var(--muted);
+  font-size: 1.0625rem;
+  line-height: 1.45;
+}
+
+.lost-ways {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+/* One language, once the script has read the address or the reader's; without it, both. */
+:root[data-lost="en"] [data-lost-lang="ru"],
+:root[data-lost="ru"] [data-lost-lang="en"] {
+  display: none;
+}

@@ -8,7 +8,9 @@
   },
   "notFound": {
     "title": "Page not found",
-    "home": "Go to the home page"
+    "text": "There is no page at this address. Start from the home page or open a section.",
+    "home": "Go to the home page",
+    "sections": "Sections of the site"
   },
   "error": {
     "title": "Something went wrong",

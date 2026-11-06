@@ -82,6 +82,21 @@ test("an unknown address is a 404 with the site's page, out of search", async ({
   await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible();
 });
 
+test("the 404 speaks the language its address asks for, and leads to every page", async ({
+  page,
+}) => {
+  await page.goto("/en/no-such-page");
+  await expect(page.getByRole("heading", { name: "Page not found" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Страница не найдена" })).toBeHidden();
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  const ways = page.getByRole("navigation", { name: "Sections of the site" }).getByRole("link");
+  await expect(ways).toHaveCount(4);
+  await expect(ways.first()).toHaveAttribute("href", "/en");
+  await page.goto("/ru/no-such-page");
+  await expect(page.getByRole("heading", { name: "Страница не найдена" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Page not found" })).toBeHidden();
+});
+
 test("HTML is revalidated, hashed files are kept for a year, and both arrive compressed", async ({
   page,
   request,
