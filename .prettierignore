@@ -1,9 +1,6 @@
-# Prettier owns the code. The knowledge base is hand-wrapped Russian prose, and the rest is generated.
+# Prettier owns the code, and it reads .gitignore as well: what is built or reported is left out
+# there. The knowledge base is hand-wrapped Russian prose, and the lockfile is pnpm's.
 docs/
-out/
-.next/
 pnpm-lock.yaml
-playwright-report/
-test-results/
 # The vault's notes are Obsidian Markdown: their front matter is not YAML to reflow.
 messages/*/vault/
