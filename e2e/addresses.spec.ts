@@ -112,13 +112,31 @@ test("HTML is revalidated, hashed files are kept for a year, and both arrive com
   expect(asset.headers()["content-encoding"]).toBe("gzip");
 });
 
+/** What a page may say or miss and still pass: each entry with the reason it is there. */
+const EXPECTED: readonly RegExp[] = [];
+
 for (const address of ADDRESSES) {
-  test(`${address} answers with its policy and breaks none of it`, async ({ page }) => {
+  test(`${address} answers with its policy and breaks none of it`, async ({ page, baseURL }) => {
+    // A broken policy, any other error in the console, a script that throws, and a file of the site
+    // answered with an error. A request that never ends is not counted: an aborted prefetch is one.
+    const origin = new URL(address, baseURL).origin;
     const violations: string[] = [];
+    const record = (text: string) => {
+      if (!EXPECTED.some((expected) => expected.test(text))) violations.push(text);
+    };
     page.on("console", (message) => {
-      if (/Content Security Policy/i.test(message.text())) violations.push(message.text());
+      if (message.type() === "error" || /Content Security Policy/i.test(message.text())) {
+        record(message.text());
+      }
     });
-    page.on("pageerror", (error) => violations.push(error.message));
+    page.on("pageerror", (error) => {
+      record(error.message);
+    });
+    page.on("response", (response) => {
+      if (response.status() >= 400 && new URL(response.url()).origin === origin) {
+        record(`${String(response.status())} ${response.url()}`);
+      }
+    });
 
     const response = await page.goto(address);
     expect(response?.status()).toBe(200);
