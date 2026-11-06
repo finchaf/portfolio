@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: A question about how something is built
+    url: https://github.com/finchaf/portfolio/discussions
+    about: Ask in Discussions; the decisions behind the site are in docs/01-architecture/decisions/.
+  - name: A security problem
+    url: https://github.com/finchaf/portfolio/security/advisories/new
+    about: Report it privately, never in a public issue.

@@ -1,0 +1,35 @@
+name: Something on the site is wrong
+description: A page that breaks, looks wrong or behaves oddly on finchaf.com.
+labels: [bug]
+body:
+  - type: input
+    id: address
+    attributes:
+      label: Address
+      description: The page where it happens.
+      placeholder: https://finchaf.com/en/flow
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and device
+      placeholder: Firefox 159 on macOS, Safari on iPhone 15
+    validations:
+      required: true
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Mode
+      options:
+        - Light
+        - Dark
+        - Both
+        - Not sure
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you saw, and what you expected instead. A screenshot or a short recording helps.
+    validations:
+      required: true
