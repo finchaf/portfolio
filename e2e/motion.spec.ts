@@ -1115,6 +1115,15 @@ test.describe("the home page in motion", () => {
     await expect(link).toHaveAttribute("href", "/ru/poranaparu");
   });
 
+  test("takes the reader to a stop pressed in the bar of «Пора на пару»", async ({ page }) => {
+    await page.goto(HOME);
+    const chapter = page.locator("#work-pora");
+    await jump(page, (await topOf(page, "#work-pora")) + 10);
+    await chapter.locator("[data-go]").nth(3).click();
+    await expect(chapter.locator("[data-tick]").nth(3)).toHaveAttribute("data-active", "");
+    await expect(chapter.locator("[data-stop]").nth(3)).toHaveAttribute("data-active", "");
+  });
+
   test("carries one lesson through the frames and publishes it past the clash", async ({
     page,
   }) => {

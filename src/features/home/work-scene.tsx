@@ -136,17 +136,26 @@ function runStops(
     window.scrollTo({ top: trigger.labelToScroll(`stop-${index}`), behavior: "instant" });
   };
   chapter.addEventListener("focusin", meet);
-  // Each stop rests from its label for `SCENE.rest`: a flick settles a third of the way in.
-  snap = snapToRests(chapter, () => {
+  // Each stop rests from its label for `SCENE.rest`: a flick settles a third of the way in, and a
+  // stop pressed in the bar is reached there too.
+  const restOf = (index: number) => {
     const trigger = scene.scrollTrigger;
-    if (!trigger) return [];
-    return stops.map((_, index) => {
-      const at = (scene.labels[`stop-${String(index)}`] ?? 0) + SCENE.rest * 0.3;
-      return trigger.start + (at / scene.duration()) * (trigger.end - trigger.start);
-    });
-  });
+    if (!trigger) return undefined;
+    const at = (scene.labels[`stop-${String(index)}`] ?? 0) + SCENE.rest * 0.3;
+    return trigger.start + (at / scene.duration()) * (trigger.end - trigger.start);
+  };
+  const go = (event: MouseEvent) => {
+    const button = (event.target as Element).closest<HTMLElement>("[data-go]");
+    const top = button ? restOf(Number(button.dataset.go)) : undefined;
+    if (top !== undefined) window.scrollTo({ top, behavior: "smooth" });
+  };
+  chapter.addEventListener("click", go);
+  snap = snapToRests(chapter, () =>
+    stops.map((_, index) => restOf(index)).filter((top) => top !== undefined),
+  );
   return () => {
     chapter.removeEventListener("focusin", meet);
+    chapter.removeEventListener("click", go);
     snap.undo();
     undoExtra?.();
   };
