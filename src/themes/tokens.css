@@ -15,7 +15,8 @@
  * these change (ADR-0011).
  *
  * `data-tint` gives a piece of a page the colours of a theme; `data-tint-fonts` beside it adds the
- * typefaces. It also re-reads the pairs against that element's own `color-scheme`, which a browser
+ * typefaces. The home theme is the exception: its fonts share the block of its colours, so its tint
+ * always carries them (ADR-0010, addendum of 07.11.2026). A tint also re-reads the pairs against that element's own `color-scheme`, which a browser
  * may otherwise settle on :root.
  */
 @theme inline {
