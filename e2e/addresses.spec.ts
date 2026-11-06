@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 import { PAGE_PATHS } from "../src/lib/pages";
+import { toBottom } from "./helpers";
 import { ADDRESSES } from "./pages";
 
 const DIRECT = { maxRedirects: 0 };
@@ -172,9 +173,7 @@ test("the header moves between pages without a reload and marks the current one"
 test("the language link keeps the page", async ({ page }) => {
   await page.goto("/ru/projects");
   // The board fills the screen and holds the footer under itself until the reader gets there.
-  await page.evaluate(() => {
-    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "instant" });
-  });
+  await toBottom(page);
   await page.getByRole("link", { name: "English" }).click();
   await expect(page).toHaveURL(/\/en\/projects$/);
   await expect(page.locator("html")).toHaveAttribute("lang", "en");

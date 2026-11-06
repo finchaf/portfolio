@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
 import { PAGE_PATHS } from "../src/lib/pages";
-import { openWriteSheet } from "./helpers";
+import { jump, openWriteSheet, topOf } from "./helpers";
 import { ADDRESSES } from "./pages";
 
 /** What a test leaves on the page's window to read back: none of it is the site's. */
@@ -32,14 +32,6 @@ test.describe("with reduced motion", () => {
     });
   }
 });
-
-const jump = (page: Page, top: number) =>
-  page.evaluate((y) => {
-    window.scrollTo({ top: y, behavior: "instant" });
-  }, top);
-
-const topOf = (page: Page, selector: string) =>
-  page.locator(selector).evaluate((node) => node.getBoundingClientRect().top + window.scrollY);
 
 const HOME = "/ru";
 const CHAPTERS = 9;

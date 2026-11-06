@@ -18,3 +18,19 @@ export async function openWriteSheet(
   await link.focus();
   await page.keyboard.press("Enter");
 }
+
+/** Puts the page at `top` at once, as a reader's scroll would, with no smooth run to wait for. */
+export const jump = (page: Page, top: number) =>
+  page.evaluate((y) => {
+    window.scrollTo({ top: y, behavior: "instant" });
+  }, top);
+
+/** Where an element starts on the page, whatever the scroll. */
+export const topOf = (page: Page, selector: string) =>
+  page.locator(selector).evaluate((node) => node.getBoundingClientRect().top + window.scrollY);
+
+/** Puts the page at its foot, where a tall page keeps its footer. */
+export const toBottom = (page: Page) =>
+  page.evaluate(() => {
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "instant" });
+  });

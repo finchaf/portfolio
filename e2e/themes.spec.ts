@@ -3,6 +3,8 @@ import { join } from "node:path";
 
 import { expect, test, type Page } from "@playwright/test";
 
+import { toBottom } from "./helpers";
+
 const WORLDS = [
   { address: "/ru", theme: "home", display: "Geologica Variable", font: /^geologica-/ },
   { address: "/ru/poranaparu", theme: "pora", display: "Geist Variable", font: /^geist-/ },
@@ -78,9 +80,7 @@ test("the default is the system, and a choice beats it and survives a reload", a
   await expect(page.locator("html")).not.toHaveAttribute("data-theme");
 
   // A tall page holds its footer under itself until the reader gets there.
-  await page.evaluate(() => {
-    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "instant" });
-  });
+  await toBottom(page);
   await page.getByTitle("Тёмная", { exact: true }).click();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   expect(await background(page)).toBe(pageColor("flow", "dark"));
@@ -98,9 +98,7 @@ test("the default is the system, and a choice beats it and survives a reload", a
 
   // The change of page puts the scroll back at the top when it ends, and the board hides the footer.
   await expect(async () => {
-    await page.evaluate(() => {
-      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "instant" });
-    });
+    await toBottom(page);
     await page.getByTitle("Система", { exact: true }).click({ timeout: 1000 });
   }).toPass();
   await expect(page.locator("html")).not.toHaveAttribute("data-theme");

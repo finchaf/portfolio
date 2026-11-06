@@ -1,5 +1,5 @@
 import AxeBuilder from "@axe-core/playwright";
-import { expect, test } from "@playwright/test";
+import { expect, test, type Locator, type Page } from "@playwright/test";
 
 import { openWriteSheet } from "./helpers";
 import { ADDRESSES } from "./pages";
@@ -7,6 +7,31 @@ import { ADDRESSES } from "./pages";
 // What a machine can see of WCAG 2.2 AA. A screen reader and the feel of the keyboard are checked
 // by hand.
 const TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"];
+
+/** Waits out an element's entrance: half way through, it is half transparent to axe. */
+const settle = (node: Locator) =>
+  node.evaluate((element) =>
+    Promise.all(element.getAnimations().map((animation) => animation.finished)),
+  );
+
+/**
+ * Opens a lesson's window from its card, by a click or a key, and gives the window back. The first
+ * press may land before the page listens: it is pressed until the window opens.
+ */
+async function openLesson(page: Page, lesson: string, by: "click" | "key" = "click") {
+  const card = page.locator(`.pora-card[data-lesson="${lesson}"]`);
+  const window = page.locator(`#pora-window-${lesson}`);
+  await expect(async () => {
+    if (by === "key") {
+      await card.focus();
+      await page.keyboard.press("Enter");
+    } else {
+      await card.click();
+    }
+    await expect(window).toBeVisible({ timeout: 500 });
+  }).toPass();
+  return window;
+}
 
 // The one full-page scan of the site: every address and the 404, in each mode.
 for (const colorScheme of ["light", "dark"] as const) {
@@ -49,10 +74,7 @@ for (const colorScheme of ["light", "dark"] as const) {
       await openWriteSheet(page);
       const sheet = page.locator(".write-sheet");
       await expect(sheet).toBeVisible();
-      // Half way through its entrance it is half transparent, and axe would measure that.
-      await sheet.evaluate((node) =>
-        Promise.all(node.getAnimations().map((animation) => animation.finished)),
-      );
+      await settle(sheet);
       const { violations } = await new AxeBuilder({ page })
         .include(".write-sheet")
         .withTags(TAGS)
@@ -80,15 +102,7 @@ for (const colorScheme of ["light", "dark"] as const) {
     }) => {
       await page.emulateMedia({ colorScheme });
       await page.goto("/ru/poranaparu");
-      const window = page.locator(`#pora-window-${lesson}`);
-      // The first press may land before the page listens: it is pressed until the window opens.
-      await expect(async () => {
-        await page.locator(`.pora-card[data-lesson="${lesson}"]`).click();
-        await expect(window).toBeVisible({ timeout: 500 });
-      }).toPass();
-      await window.evaluate((node) =>
-        Promise.all(node.getAnimations().map((animation) => animation.finished)),
-      );
+      await settle(await openLesson(page, lesson));
       const { violations } = await new AxeBuilder({ page })
         .include(`#pora-window-${lesson}`)
         .withTags(TAGS)
@@ -103,12 +117,7 @@ test("a key opens a lesson's window, Esc shuts it, and the focus goes back to th
 }) => {
   await page.goto("/ru/poranaparu");
   const card = page.locator('.pora-card[data-lesson="about"]');
-  const window = page.locator("#pora-window-about");
-  await expect(async () => {
-    await card.focus();
-    await page.keyboard.press("Enter");
-    await expect(window).toBeVisible({ timeout: 500 });
-  }).toPass();
+  const window = await openLesson(page, "about", "key");
   await expect(card).toHaveAttribute("aria-expanded", "true");
   await page.keyboard.press("Escape");
   await expect(window).toBeHidden();
@@ -120,12 +129,8 @@ test("the window's footer and the arrows walk the lessons, and the focus lands o
   page,
 }) => {
   await page.goto("/ru/poranaparu");
-  const first = page.locator("#pora-window-about");
+  const first = await openLesson(page, "about");
   const second = page.locator("#pora-window-origin");
-  await expect(async () => {
-    await page.locator('.pora-card[data-lesson="about"]').click();
-    await expect(first).toBeVisible({ timeout: 500 });
-  }).toPass();
   await first.getByRole("button", { name: /Следующая пара/ }).click();
   await expect(second).toBeVisible();
   await expect(first).toBeHidden();
@@ -143,11 +148,7 @@ test("a chapter's picture opens full screen, the arrows turn its pictures, and E
   page,
 }) => {
   await page.goto("/ru/poranaparu");
-  const window = page.locator("#pora-window-web");
-  await expect(async () => {
-    await page.locator('.pora-card[data-lesson="web"]').click();
-    await expect(window).toBeVisible({ timeout: 500 });
-  }).toPass();
+  const window = await openLesson(page, "web");
   const pictures = window.locator("[data-pora-picture]");
   await pictures.first().click();
   const viewer = page.locator(".pora-viewer");
