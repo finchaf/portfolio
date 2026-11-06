@@ -1403,7 +1403,14 @@ test.describe("the home page on a phone", () => {
 
   test("leaves a phone its own pointer", async ({ page }) => {
     await page.goto(HOME);
+    // The cursor listens from hydration, in the commit that marks the sheet's trigger: a tap before
+    // that would pass for nothing.
+    await expect(page.locator("[data-capsule] [data-write]")).toHaveAttribute(
+      "aria-haspopup",
+      "dialog",
+    );
     await page.touchscreen.tap(200, 300);
+    await page.evaluate(() => new Promise(requestAnimationFrame));
     await expect(page.locator("html")).not.toHaveAttribute("data-pointer");
   });
 
@@ -1538,17 +1545,23 @@ test.describe("a change of page", () => {
   const FLOW = "/ru/flow";
 
   // What the next view transition runs, read when it is ready: the browser drops it right after.
+  // `done` says when it has finished, so the next one does not cut it short.
   const watch = (page: Page) =>
     page.evaluate(() => {
       const start = document.startViewTransition.bind(document) as (
         update: unknown,
       ) => ViewTransition;
-      const seen = window as unknown as { change?: string[]; held?: string };
+      const seen = window as unknown as { change?: string[]; held?: string; done?: boolean };
       delete seen.change;
+      delete seen.done;
       Object.assign(document, {
         startViewTransition(update: unknown) {
           Object.assign(document, { startViewTransition: start });
           const transition = start(update);
+          const end = () => {
+            seen.done = true;
+          };
+          void transition.finished.then(end, end);
           void transition.ready.then(() => {
             const root = document.documentElement;
             seen.held = getComputedStyle(root, "::view-transition-group(root)").height;
@@ -1571,10 +1584,17 @@ test.describe("a change of page", () => {
   const capsule = (page: Page, path: string) =>
     page.locator(`[data-capsule] a[href$="${path}"]`).first();
 
+  // A click goes through the router once the page has named its root for the change: without the
+  // name React drops the picture of the whole page.
+  const live = (page: Page) =>
+    expect
+      .poll(() => page.evaluate(() => document.documentElement.style.viewTransitionName))
+      .toBe("root");
+
   test("crosses the screen along the slash, and back the other way", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(FLOW);
-    await page.waitForLoadState("networkidle");
+    await live(page);
 
     await watch(page);
     await capsule(page, "/ru/projects").click();
@@ -1585,7 +1605,7 @@ test.describe("a change of page", () => {
     await expect(page).toHaveURL(/\/ru\/projects$/);
     await expect(page.locator("html")).not.toHaveAttribute("data-page-back");
 
-    await page.waitForTimeout(700);
+    await page.waitForFunction(() => (window as unknown as { done?: boolean }).done);
     await watch(page);
     await capsule(page, "/ru").click();
     const back = (await (await change(page)).jsonValue()) as string[];
@@ -1597,7 +1617,7 @@ test.describe("a change of page", () => {
   test("keeps the picture of the page to the size of the screen", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(HOME);
-    await page.waitForLoadState("networkidle");
+    await live(page);
     await watch(page);
     await capsule(page, "/ru/flow").click();
     await change(page);
@@ -1608,7 +1628,7 @@ test.describe("a change of page", () => {
   test("lets the name of a chapter flow into the page it opens", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(HOME);
-    await page.waitForLoadState("networkidle");
+    await live(page);
     const open = page.locator('main a[href$="/ru/flow"]').first();
     await jump(page, (await open.evaluate((node) => node.getBoundingClientRect().top)) - 500);
     await expect(open).toBeInViewport();
@@ -1625,7 +1645,7 @@ test.describe("a change of page", () => {
 
     test("is instant", async ({ page }) => {
       await page.goto(FLOW);
-      await page.waitForLoadState("networkidle");
+      await live(page);
       await watch(page);
       await capsule(page, "/ru/projects").click();
       expect((await (await change(page)).jsonValue()) as string[]).toEqual([]);
