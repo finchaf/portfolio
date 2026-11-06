@@ -2,13 +2,16 @@ version: 2
 
 # Actions are pinned by commit SHA; Dependabot moves the SHA and the version comment beside it.
 # npm in one group, once a month. Major versions are left out: a major of Next.js, React or Node is
-# a task of its own (ADR-0003).
+# a task of its own (ADR-0003). A release is a day old before it is proposed: the wait of
+# minimumReleaseAge in pnpm-workspace.yaml, which CI's frozen install never applies.
 updates:
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
       interval: weekly
       day: monday
+    cooldown:
+      default-days: 1
     groups:
       actions:
         patterns: ["*"]
@@ -19,6 +22,8 @@ updates:
     directory: "/"
     schedule:
       interval: monthly
+    cooldown:
+      default-days: 1
     groups:
       npm:
         patterns: ["*"]

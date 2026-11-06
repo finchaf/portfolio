@@ -1,16 +1,21 @@
 name: Gates
 
 # The gates of scripts/check.py on every pull request: the same command a developer runs before a
-# commit. No secrets here, and no key to the server: deploys start on a laptop (ADR-0005).
+# commit. They run again on main after a fast-forward, so the README's badge reports main; a branch
+# is checked through its pull request only. No secrets here, and no key to the server: deploys
+# start on a laptop (ADR-0005).
 on:
   pull_request:
+  push:
+    branches: [main]
 
 permissions:
   contents: read
 
+# A new push to a pull request cancels its old run; a run on main is never cut short.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   gates:
@@ -33,8 +38,12 @@ jobs:
         with:
           persist-credentials: false
 
+      # The store is cached by the lockfile's hash. The browser is not: restoring it takes about as
+      # long as the download, and its system packages are installed either way.
       - name: Set up pnpm
         uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          cache: true
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -45,3 +54,13 @@ jobs:
 
       - name: Run the gates
         run: python3 scripts/check.py ${{ matrix.groups }}
+
+      # Playwright keeps a trace of each failed test; a failure seen only on CI's x64 is read there.
+      - name: Upload the traces
+        if: failure() && matrix.browser
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: traces
+          path: test-results/
+          if-no-files-found: ignore
+          retention-days: 7
