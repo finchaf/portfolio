@@ -4,6 +4,9 @@
   "private": true,
   "description": "Personal site of Danil Zablotsky, design engineer: a static Next.js app served by Caddy.",
   "license": "MIT",
+  "author": "Danil Zablotsky",
+  "homepage": "https://finchaf.com",
+  "repository": "github:finchaf/portfolio",
   "type": "module",
   "packageManager": "pnpm@12.11.2",
   "devEngines": {
