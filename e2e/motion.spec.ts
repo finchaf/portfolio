@@ -1792,6 +1792,16 @@ test.describe("the project's page", () => {
     await expect(page.locator(".pj-themes-read")).toContainText(/\d,\d:1/);
   });
 
+  test("the sample of themes wears each theme's skin whole, not the page's", async ({ page }) => {
+    await page.goto("/ru/projects/portfolio");
+    const action = page.locator(".pj-themes-sample .control-primary");
+    const cap = () => action.evaluate((node) => getComputedStyle(node, "::before").backgroundColor);
+    // On the Projects page the Projects' button has its cap: the home's has none.
+    expect(await cap()).not.toBe("rgba(0, 0, 0, 0)");
+    await page.locator(".pj-themes-demo").getByRole("button", { name: "Главная" }).click();
+    await expect.poll(cap).toBe("rgba(0, 0, 0, 0)");
+  });
+
   test("a release moves the link and a rollback returns it", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/ru/projects/portfolio");

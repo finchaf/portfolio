@@ -51,6 +51,24 @@
   color-scheme: dark;
 }
 
+/*
+ * A skin's optional parts, which only some themes set: a piece tinted with another theme would
+ * otherwise inherit them from the page and wear, say, the Projects' cap on the home's button. Without
+ * weight, so the theme of the piece puts its own back; the components fall back to having none.
+ * themes.test.ts asks for every optional part a theme sets to be here.
+ */
+:where([data-tint]) {
+  --control-cap: initial;
+  --control-cap-quiet: initial;
+  --control-cap-quiet-ink: initial;
+  --control-cap-room: initial;
+  --control-clip: initial;
+  --control-close-gap: initial;
+  --control-current-ink: initial;
+  --control-quiet-wash: initial;
+  --control-wash: initial;
+}
+
 /* What a screen must leave free for the capsule: at the bottom of a phone, at the top of a wide screen. */
 :root {
   --header: 0.75rem;

@@ -139,3 +139,19 @@ describe.each(THEMES)("the %s theme", (theme) => {
     });
   });
 });
+
+describe("a piece tinted with another theme", () => {
+  // Only some themes set these parts of a skin: the rest would inherit them from the page around.
+  const optional = [
+    ...new Set(
+      THEMES.flatMap((theme) =>
+        [...read(theme).matchAll(/(--control-[a-z-]+):/g)].map((match) => match[1] ?? ""),
+      ),
+    ),
+  ].filter((name) => !CONTROLS.includes(name.replace("--control-", "")));
+  const reset = /:where\(\[data-tint\]\) \{([^}]*)\}/.exec(read("tokens"))?.[1] ?? "";
+
+  it.each(optional)("wears no %s of the page's skin", (name) => {
+    expect(reset).toContain(`${name}: initial;`);
+  });
+});

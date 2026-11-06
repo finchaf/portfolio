@@ -343,7 +343,8 @@
   gap: 0.625rem;
   padding: 1.125rem;
   border-radius: 0.75rem;
-  background: var(--crust);
+  /* The theme's own page: --crust is a Catppuccin colour, the other themes have none. */
+  background: var(--page);
   color: var(--ink);
   font-family: var(--sans);
   transition:
