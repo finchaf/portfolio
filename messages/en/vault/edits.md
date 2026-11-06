@@ -2,7 +2,7 @@
 title: Edits
 heading: Edits
 command: `edits`
-when: After stage 1, at the stop, after stage 2
+when: After stage 1, at the checkpoint, after stage 2
 ---
 
 The job of edits was to apply everything, lose nothing, and not hear the same note on the next task.

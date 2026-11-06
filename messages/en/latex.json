@@ -2,7 +2,7 @@
   "meta": {
     "title": "LaTeX — Danil Zablotsky",
     "description": "Lecture notes typed in Neovim, a thesis released on GitHub and product documents built from data. All of it in LaTeX.",
-    "shareTitle": "LaTeX: notes, a thesis and documents",
+    "shareTitle": "LaTeX: notes, thesis, documents",
     "imageAlt": "A coloured tile with the folder name latex over stripes of the palette."
   },
   "back": "Projects",
@@ -12,14 +12,14 @@
   "open": "Links",
   "pdf": "Download the thesis, PDF",
   "title": "LaTeX",
-  "lead": "Since my first year at university I have written in LaTeX: lecture notes in Neovim, a thesis kept as a repository with releases, and my product's documents, whose figures come from data.",
+  "lead": "I have written in LaTeX since my first year at university: lecture notes in Neovim, a thesis kept as a repository with releases, and my product’s documents, where the numbers come from data.",
   "brief": {
     "what": "What it is",
-    "whatText": "Three pieces of work in one tool: notes from 2022–2025, a thesis in 2026 and the documents of Pora na paru since September 2026.",
+    "whatText": "Three kinds of work in one tool: notes from 2022–2025, a thesis in 2026 and Pora na Paru’s documents since September 2026.",
     "how": "How it was made",
-    "howText": "I built the notes and their setup by hand: there were no agents then. The thesis and the product's documents were made in 2026 with Claude Code: I set the structure and the rules, the tool did the typing.",
+    "howText": "I built the notes and their setup by hand: there were no agents then. The thesis and the product’s documents were made in 2026 with Claude Code: I set the structure and the rules, the tool did the typing.",
     "open": "What is open",
-    "openText": "The thesis' sources and releases are on GitHub. The documents' repository is private: shown here are how it works and pages of an invented example."
+    "openText": "The thesis sources and releases are on GitHub. The documents repository is private: this page shows only how it is built and pages of an invented example."
   },
   "typing": {
     "file": "les-17.tex",
@@ -32,18 +32,18 @@
     "pressed": "pressed"
   },
   "pages": {
-    "label": "Pages of the notes",
+    "label": "Pages from the notes",
     "back": "Previous page",
     "next": "Next page",
     "calculus": {
       "title": "Calculus",
       "detail": "Lecture 1, 01.09.2023",
-      "alt": "A page of the notes: the directional derivative, a note and a definition in coloured boxes."
+      "alt": "A page from the notes: the directional derivative, a remark and a definition in coloured boxes."
     },
     "taylor": {
       "title": "Calculus",
-      "detail": "Lecture 2: Taylor's formula",
-      "alt": "A page with Taylor's formula for a function of two variables."
+      "detail": "Lecture 2: Taylor’s formula",
+      "alt": "A page with Taylor’s formula for a function of two variables."
     },
     "graphs": {
       "title": "Graph theory",
@@ -53,7 +53,7 @@
     "sphere": {
       "title": "Complex analysis",
       "detail": "Lecture 1: the Riemann sphere",
-      "alt": "A drawing of the Riemann sphere and the formulas of the stereographic projection."
+      "alt": "A drawing of the Riemann sphere and the formulas for stereographic projection."
     },
     "contour": {
       "title": "Complex analysis",
@@ -72,20 +72,20 @@
       "role": "Mathematics PhD student at KU Leuven",
       "died": "Died on 18 July 2022.",
       "source": "Source",
-      "notes": "How I'm able to take notes in mathematics lectures using LaTeX and Vim",
+      "notes": "How I’m able to take notes in mathematics lectures using LaTeX and Vim",
       "figures": "How I draw figures for my mathematical lecture notes using Inkscape",
-      "note": "As of 03.11.2026 castel.dev does not open: the links lead to the archive."
+      "note": "As of 03.11.2026 castel.dev does not load: the links go to the archive."
     },
     "mastnak": {
       "name": "Elijan Mastnak",
       "role": "Author of a guide to LaTeX in Vim and Neovim",
       "guide": "Supercharged LaTeX using Vim/Neovim, VimTeX, and snippets",
-      "mirror": "A copy of Castel's articles on his site",
-      "note": "The guide opens with a link to Castel's article."
+      "mirror": "A copy of Castel’s articles on Mastnak’s site",
+      "note": "The guide opens with a link to Castel’s article."
     }
   },
   "thesis": {
-    "label": "View of the page",
+    "label": "Page view",
     "lens": "Lens",
     "fields": "Margins",
     "sourceView": "Source",
@@ -116,17 +116,17 @@
     "mb": "{value} MB",
     "pipe": {
       "release": "checks that everything is committed and builds the PDF",
-      "tag": "a tag with the date goes to GitHub",
+      "tag": "a dated tag goes to GitHub",
       "action": "the tag starts the build",
-      "container": "a full TeX Live with CMU Serif, the command make build",
+      "container": "full TeX Live with CMU Serif, running make build",
       "asset": "the PDF is attached to the release"
     },
     "alt": "Every page of release"
   },
   "documents": {
-    "caption": "Severny Mayak, the invented company of the repository's examples: a table's request and the pages built from it.",
+    "caption": "Severny Mayak, the invented company from the repository’s examples: a table’s query and the pages built from it.",
     "chartAlt": "A page of the register: a chart by city and the start of a table.",
-    "tableAlt": "A page of the register: the end of the table, the date the data was checked and the numbers of its sources."
+    "tableAlt": "A page of the register: the end of the table, the date the data was checked and the source numbers."
   },
   "checks": {
     "verdict": {
@@ -134,9 +134,9 @@
       "valuesOnPage": "the quote is not word for word, but the values are on the page",
       "quoteNotOnPage": "the quote is not on the page",
       "valueNotOnPage": "the value is not on the page",
-      "pageEmpty": "the page is empty or did not come",
-      "tls": "the machine does not trust the site's certificate, and the check is never switched off",
-      "noUrl": "no address of a page",
+      "pageEmpty": "the page is empty or did not load",
+      "tls": "the machine does not trust the site’s certificate, and the check is never switched off",
+      "noUrl": "no page address",
       "noQuote": "no quote"
     },
     "pdf": {
@@ -152,49 +152,49 @@
     "notes": {
       "name": "Notes",
       "title": "Formulas at the speed of a lecture",
-      "p1": "In my first year I started taking mathematics notes on a laptop: by hand it was slow, Word cannot keep up with formulas, and the notes my classmates kept in Notion were not enough for me. The first attempts are lost; the repository starts with the second year.",
-      "p2": "A note is written in Neovim. vimtex builds the PDF, and LuaSnip expands abbreviations as I type: <c>ff</c> becomes a fraction, <c>;e</c> an epsilon, and <c>{le}</c> the sign ⩽ that Russian texts use. The config has {all} snippets: {auto} expand by themselves, {math} work only inside formulas.",
-      "p3": "Below is line 259 of calculus lecture 17, 19.11.2023, typed again with the same snippets. The PDF updates when I leave insert mode and press <c>␣c</c>: the file is saved and built once."
+      "p1": "In my first year I started taking maths notes on a laptop: writing by hand was slow, Word could not handle formulas, and notes in Notion were not enough for me. The first attempts are lost; the repository starts with the second year.",
+      "p2": "The notes are written in Neovim. vimtex builds the PDF, and LuaSnip expands abbreviations as I type: <c>ff</c> becomes a fraction, <c>;e</c> an epsilon, and <c>{le}</c> the sign ⩽ that Russian texts use. The config has {all} snippets: {auto} expand by themselves, {math} work only inside formulas.",
+      "p3": "Below is line 259 of calculus lecture 17 (19.11.2023), retyped with the same snippets. The PDF updates when I leave insert mode and press <c>␣c</c>: the file is saved and built once."
     },
     "pages": {
       "name": "Pages",
       "title": "{pages} pages in two years",
-      "p1": "From September 2023 to June 2025 the repository holds {lecturePdfs} sets of lecture notes, {lecturePages} pages, and {examPdfs} collections for exams and tests, {examPages} pages. {figures} figures are drawn in Inkscape and placed in the PDF with labels set by LaTeX itself.",
-      "p2": "My group prepared for exams with these notes and collections, and so did younger students when they reached the same subjects.",
+      "p1": "The repository holds {lecturePdfs} sets of lecture notes from September 2023 to June 2025, totalling {lecturePages} pages, and {examPdfs} collections for exams and tests, totalling {examPages} pages. {figures} figures were drawn in Inkscape and placed in the PDFs with labels typeset by LaTeX itself.",
+      "p2": "My group prepared for exams with these notes and collections, and so did students in the years below when they reached the same subjects.",
       "p3": "In the dark theme the pages are recoloured as Zathura showed them with my Catppuccin config."
     },
     "origin": {
       "name": "Origin",
-      "title": "The method is not mine",
-      "p1": "This is how Gilles Castel took notes: in 2019 he described typing mathematics lectures in Vim and drawing their figures in Inkscape. Elijan Mastnak turned it into a detailed guide to the setup. I spent months building my config from their writing and looked for answers on Reddit: there were no agents to do it for me then.",
-      "p2": "From them the config has vimtex with LuaSnip, the layout of its files, the rules of the triggers and the preamble of the first notes. Mine are the colours of the boxes around definitions and theorems, the Russian names with their snippets, the lecture's date from the <c>lesson</c> command, ⩽ and ⩾ in place of ≤ and ≥, and a Russian dictionary. For this setup I moved from Windows to macOS, and installed Arch Linux on my home computer.",
-      "p3": "In my fourth year I wrote to the guide's author, showed him pictures of my setup and thanked him. He replied."
+      "title": "I did not invent the method",
+      "p1": "Gilles Castel took notes this way: in 2019 he described how he typed mathematics lectures in Vim and drew figures for them in Inkscape. Elijan Mastnak turned it into a detailed setup guide. I spent several months building my config from their writing and looked for answers on Reddit: there were no agents to do it for me then.",
+      "p2": "From them, the config takes the vimtex and LuaSnip pairing, the file layout, the trigger rules and the preamble of the first notes. Mine are the colours of the boxes around definitions and theorems, the Russian names and their snippets, the lecture date from the <c>lesson</c> command, ⩽ and ⩾ instead of ≤ and ≥, and a Russian dictionary. For this setup I moved from Windows to macOS and installed Arch Linux on my home computer.",
+      "p3": "In my fourth year I wrote to the guide’s author, sent him screenshots of my setup and thanked him. He replied."
     },
     "thesis": {
       "name": "Thesis",
-      "title": "Its source lies under the page",
-      "p1": "I kept my graduation thesis as a repository: the text in <c>.tex</c> files, built by LuaLaTeX through latexmk, the university's requirements in a file of their own that the preamble follows. The topic: “Development of the client applications of the VCourse SaaS platform for managing teaching schedules”.",
-      "p2": "The requirements are set once: A4, margins of 2, 2, 3 and 1 cm, 14 points, 1.5 spacing, a 1.25 cm indent. That is five lines, and all {thesisPages} pages take their look from them. The bibliography follows GOST 7.0.5 without BibTeX, and the title page is built from a file of data."
+      "title": "Under the page lies its source",
+      "p1": "I kept my graduation thesis as a repository: the text in <c>.tex</c> files, built by LuaLaTeX through latexmk, and the university’s requirements in a separate file that the preamble is checked against. The topic: “Development of client applications for VCourse, a SaaS platform for managing academic schedules”.",
+      "p2": "The requirements are set once: A4, margins of 2, 2, 3 and 1 cm, 14 pt type, 1.5 spacing, a 1.25 cm indent. That is five lines, and all {thesisPages} pages take their layout from them. The bibliography follows GOST 7.0.5 and is built without BibTeX, and the title page comes from a data file."
     },
     "releases": {
       "name": "Releases",
       "title": "Ten releases, from 3 pages to 130",
-      "p1": "<c>make release</c> checks that everything is committed, builds the PDF and puts a tag with the date. The tag starts GitHub Actions: the PDF is built in a container with a full TeX Live and attached to the release, and the link to the latest one stays the same.",
-      "p2": "Each release below is a real PDF from GitHub. On 22 May the screenshots of the apps went in: the file grew from 391 KB to 21.2 MB in one release."
+      "p1": "<c>make release</c> checks that everything is committed, builds the PDF and adds a dated tag. The tag starts GitHub Actions: the PDF is built in a container with a full TeX Live and attached to the release, and the link to the latest one stays the same.",
+      "p2": "Each release below is a real PDF from GitHub. On 22 May the app screenshots went in: the file grew from 391 KB to 21.2 MB in one release."
     },
     "documents": {
       "name": "Documents",
-      "title": "The product's documents are built from data",
-      "p1": "Pora na paru has many documents that live longer than a week: registers of universities and colleges, overviews, policies. I refused to keep them in Word or in a tracker's editor, and since 30 September 2026 they are a LaTeX repository.",
-      "p2": "One class gives every document its look, and a type is told by its label, not by a colour: overview, status report, policy, register, brief, agreement. Tables and figures are never typed by hand: a document asks the data for them in <c>document.json</c>, and under every table the build prints the day the data was checked and where it came from.",
-      "p3": "Every document has a level of access, and the build will not let a document take a column or a source of a more closed level. An issued version goes into a journal with the hash of its PDF: different content cannot be issued under the same number."
+      "title": "The product’s documents are built from data",
+      "p1": "Pora na Paru has many documents that live longer than a week: registers of universities and colleges, overviews, policies. I decided against keeping them in Word or a tracker’s editor, and since 30 September 2026 they have lived in a LaTeX repository.",
+      "p2": "One class gives every document its look, and the type shows in a label, not a colour: overview, status report, policy, register, brief, agreement. Tables and numbers are never typed by hand: a document requests them from the data in <c>document.json</c>, and under every table the build prints the date the data was checked and where it came from.",
+      "p3": "Every document has an access level, and the build will not let a document pull in a column or a source from a more restricted level. An issued version goes into a log with the hash of its PDF: different content cannot be issued under the same number."
     },
     "checks": {
       "name": "Checks",
       "title": "Agents collect, the build does not trust them",
-      "p1": "The registers are collected by Claude Code agents: they go through official sites and bring, for every fact, the address of the page and a verbatim quote. The repository itself was written with Claude Code too, in all {commits} commits.",
-      "p2": "An agent's word is not taken. A script fetches every page itself and looks for the quote and the value on it, a person settles what is in doubt, and only the import writes to the data.",
-      "p3": "LaTeX finishes without an error even when the PDF is already broken. So the build is held by {gates} checks and {tests} tests: it fails on a letter the font does not have, on a line wider than its column by more than 2 pt, on an undefined reference and on a font not embedded in the PDF."
+      "p1": "Claude Code agents compile the registers: they go through official sites and, for every fact, bring back the page address and a verbatim quote. The repository itself was also written with Claude Code: all {commits} commits.",
+      "p2": "An agent’s word is not taken on trust. A script fetches every page itself and looks for the quote and the value on it, a person settles anything in doubt, and only the import writes to the data.",
+      "p3": "LaTeX finishes without an error even when the PDF is already broken. So {gates} checks and {tests} tests guard the build: it fails on a letter the font does not have, on a line wider than its column by more than 2 pt, on an undefined reference and on a font not embedded in the PDF."
     }
   }
 }

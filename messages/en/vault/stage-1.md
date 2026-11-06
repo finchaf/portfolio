@@ -3,7 +3,7 @@ title: Stage 1
 heading: Stage 1
 command: `new-app`
 steps: 13
-outcome: A file link showing what the app is, why it is so and how it works
+outcome: A file link showing what the app is, why it is the way it is and how it works
 ---
 
 The live part happened with me present, then the tool worked alone. Each step wrote itself to [[state|state.json]], so an [[continue|interrupted stage resumed]] from the right place.
@@ -24,4 +24,4 @@ The live part happened with me present, then the tool worked alone. Each step wr
 | `s1.audit`      | [[audit\|Closing audit]]                 | alone |
 | `s1.deliver`    | Push, notification, report               | alone |
 
-Then it waited for review. Changes went through [[edits|edits]], and [[stage-2|stage 2]] began only on my word.
+Then it waited for review. Review notes went through [[edits|edits]], and [[stage-2|stage 2]] began only on my word.

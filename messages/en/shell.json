@@ -24,13 +24,13 @@
   },
   "write": "Write to me",
   "contact": {
-    "scan": "Point your phone's camera",
+    "scan": "Point your phone’s camera",
     "open": "Open the chat",
     "mail": "Email",
     "send": "Send an email",
     "copy": "Copy",
     "copied": "Copied",
-    "code": "QR code of the Telegram chat"
+    "code": "QR code for the Telegram chat"
   },
   "footer": {
     "status": "Open to a conversation",
@@ -50,7 +50,7 @@
     "copyright": "© 2026 Danil Zablotsky",
     "colophon": {
       "home": "Chaffinch colours, Geologica and Golos Text",
-      "pora": "Colours and Geist from the product's design system",
+      "pora": "Colours and Geist from the product’s design system",
       "flow": "Obsidian’s colours and system font",
       "projects": "Catppuccin colours, Nunito and JetBrains Mono"
     }

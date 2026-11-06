@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Danil Zablotsky, design engineer",
-    "description": "Product design and front-end: I take interfaces all the way to working products on iOS, Android and the web.",
+    "description": "Product design and frontend: I take interfaces all the way to working products on iOS, Android and the web.",
     "shareTitle": "Danil Zablotsky, design engineer",
     "imageAlt": "The \\finchaf logo split by a slash: the finished mark on a coral field on the left, its hatched plan on a grid on the right."
   },
@@ -12,7 +12,7 @@
     "name": "Danil Zablotsky",
     "role": "Design engineer",
     "roleNote": "product design and frontend",
-    "statement": "I design interfaces and build them into working products on iOS, Android and the web myself.",
+    "statement": "I design interfaces and build them myself, all the way to working products on iOS, Android and the web.",
     "work": "See the work",
     "github": "GitHub",
     "settings": "Settings",
@@ -32,7 +32,7 @@
       "date": "Omsk",
       "title": "It started with a menu for a game",
       "school": "A maths and physics class, plus programming lessons: we wrote websites right in Notepad, in plain HTML, CSS and JS. From the seventh grade I lived in Photoshop, then found Illustrator, and in the eleventh, Figma.",
-      "game": "In it I built a menu for a game I played all the time and posted it in the game's groups. People asked how to install it. It reached the developers: they offered me work, then opened my file and stopped answering.",
+      "game": "In it I built a menu for a game I played all the time and posted it to the game’s communities. People asked how to install it. Word reached the developers: they offered me a job, then opened my file and stopped answering.",
       "quote": "Over a hundred frames. Not one component.",
       "after": "I was furious at the time. Now I understand them.",
       "menus": "The Figma file of the game menu: dozens of nearly identical screens",
@@ -42,34 +42,34 @@
       "mark": "2022",
       "date": "2022",
       "title": "Maths first",
-      "choice": "I wanted to study product design, but a teacher talked me out of it: get your maths up first. So I ended up at Omsk State University, in applied mathematics and computer science.",
+      "choice": "I wanted to study product design, but a teacher talked me out of it: get your maths up first. So I ended up at Omsk State University, studying applied mathematics and computer science.",
       "roles": "Programming came easily and I enjoyed it, but in group projects I still ended up as the designer.",
-      "quote": "It's a pain to check my own class schedule.",
-      "idea": "Some universities had apps for that. From 2023 Maxim, a classmate of mine, and I kept talking about building one for ours, and kept putting it off: the idea felt too big.",
+      "quote": "It’s a pain to check my own class schedule.",
+      "idea": "Some universities had their own apps for that. From 2023 on, my classmate Maxim and I kept talking about building one for ours, and kept putting it off: the idea felt too big.",
       "notesCaption": "Lecture notes in LaTeX, autumn 2024"
     },
     "build": {
       "mark": "2024",
       "date": "September 2024",
       "title": "VCourse",
-      "start": "In our third year we were given a semester to build a product of our own, and neural networks had just grown up enough. We went for it. I took product design and the front end, Maxim the back end and DevOps.",
-      "learn": "I had no experience in mobile development at all. The first semester went on Swift, SwiftUI, Xcode and Apple's guidelines.",
+      "start": "In our third year we were given a semester to build a product of our own, and AI had just matured. We went for it. I took product design and the frontend, Maxim the backend and DevOps.",
+      "learn": "I had no experience in mobile development at all. The first semester went on Swift, SwiftUI, Xcode and the iOS guidelines.",
       "quote": "By the end of the semester my own app was on my phone.",
-      "polish": "The next semester and the summer went on polish. The app was rewritten from scratch several times: I wanted it perfect.",
-      "layers": "The VCourse profile screen in Xcode's view debugger, pulled apart into layers",
-      "update": "A lock screen notification: VCourse updated to version 0.1.0",
-      "icon": "Icon Composer with an icon of two circles on blue"
+      "polish": "The next semester and the summer went into polishing. The app was rewritten from scratch several times: I wanted it to be perfect.",
+      "layers": "The VCourse profile screen in Xcode’s view debugger, pulled apart into layers",
+      "update": "A lock-screen notification: VCourse updated to version 0.1.0",
+      "icon": "The Icon Composer window with an icon of two circles on blue"
     },
     "launch": {
       "mark": "1 September 2025",
       "date": "1 September 2025",
       "title": "Launch",
-      "post": "We agreed with the university on a post in its Telegram channel. The post went out, and we sat refreshing the pages, watching the numbers.",
+      "post": "We arranged a post in the university’s Telegram channel. The post went out, and we sat refreshing the pages, watching the numbers.",
       "quote": "Strangers started downloading our app.",
       "stageCaption": "Presenting VCourse to first-years, as a fourth-year",
       "rank": "57",
       "rankLabel": "rank among education apps on the Russian App Store at launch",
-      "chart": "Downloads per day, 1–14 September 2025",
+      "chart": "Downloads by day, 1–14 September 2025",
       "chartSummary": "632 downloads in the first three days, 411 of them on 2 September.",
       "sheetTitle": "The launch in numbers",
       "sheetDates": "September 2025",
@@ -85,10 +85,10 @@
       "mark": "2026",
       "date": "2026",
       "title": "The fork",
-      "question": "In the semester after the launch came Android and the website, and five more colleges and universities joined. It all worked, and the question came up: what next? We couldn't keep growing it seriously and earn nothing from it.",
+      "question": "In the semester after the launch, the Android app and the website came out, and five more institutions joined. It all worked, and the question came up: what next? We couldn’t develop it seriously while earning nothing from it.",
       "quote": "Ads in the app, or a service for universities.",
-      "answer": "We really didn't want ads. We took the second road: our own service for building timetables, with the apps as a pleasant extra for students and teachers. We started talking to the people who make the timetables and took apart how it's really done.",
-      "score": "A week as a musical score: tangled lines fall into straight rows, with strokes for classes on them",
+      "answer": "We really didn’t want ads. We chose the second: our own service for building schedules, with the apps as a pleasant extra for students and teachers. We started talking to the staff who draw up schedules and looking into how it’s really done.",
+      "score": "A week as a musical score: tangled lines fall into straight rows, with strokes for lessons on them",
       "days": {
         "mon": "Mon",
         "tue": "Tue",
@@ -102,7 +102,7 @@
       "mark": "June 2026",
       "date": "June 2026",
       "title": "One night",
-      "letter": "My bachelor's was ending and I was looking at master's programmes in Omsk. One night a newsletter from Central University arrived: a programme in Human Experience Design. In essence, the product design I had wanted to study after school.",
+      "letter": "My bachelor’s was ending and I was looking at master’s programmes in Omsk. One night a newsletter from Central University arrived: a programme in Human Experience Design. In essence, the product design I had wanted to study after school.",
       "need": "They wanted a portfolio. I had none.",
       "quote": "I decided not to sleep until I had built something worth sending.",
       "logLabel": "git log, 23 June 2026, Omsk time",
@@ -124,22 +124,22 @@
     },
     "rent": {
       "mark": "August 2026",
-      "quote": "…and now I had to pay for a flat somehow"
+      "quote": "…and now I needed money to rent a flat"
     },
     "moscow": {
       "mark": "Moscow",
       "date": "Moscow",
       "title": "Ten prompts",
-      "study": "At the end of the summer I moved and started my master's at Central University.",
-      "job": "Alongside it I worked in a team: several iOS app designs a week, plus their ASO. Doing that by hand would have driven me mad.",
-      "agents": "I tried agents in Figma. That took a whole pipeline, and it worked.",
+      "study": "At the end of the summer I moved and started my master’s at Central University.",
+      "job": "Alongside that I worked in a team: several iOS app designs a week, plus their ASO. Doing that by hand would have driven me mad.",
+      "agents": "I tried agents in Figma. That meant building a whole pipeline, and it worked.",
       "quote": "The tool took the routine. The decisions stayed with me.",
-      "prompts": "I won’t claim a complete app, with icons and an App Store page, came out of one prompt. I will claim it came out of ten thoughtful, consecutive ones."
+      "prompts": "I won’t claim that an app with icons and an App Store page came out of a single prompt. But I will claim it came out of ten thoughtful prompts, each building on the last."
     },
     "now": {
       "mark": "Now",
       "date": "Now",
-      "title": "A product and a master's",
+      "title": "A product and a master’s",
       "quote": "I want to make products where design and code are one job.",
       "branches": {
         "open": {
@@ -150,22 +150,22 @@
         },
         "masters": {
           "tag": "masters",
-          "name": "Master's",
+          "name": "Master’s",
           "text": "Central University, Human Experience Design, since 2026"
         },
         "next": {
           "tag": "poranaparu",
-          "name": "Pora na paru",
-          "text": "The web client and the timetabling service. 2,642 commits across three clients, 2 June to 31 October 2026"
+          "name": "Pora na Paru",
+          "text": "The web client and the schedule service. 2,642 commits across three client apps, 2 June to 31 October 2026"
         }
       }
     },
     "photos": {
       "notesNight": "At night: a textbook on the monitor, below it a laptop with notes in LaTeX",
-      "notesLecture": "A laptop with topology notes in a lecture, a cap beside it on the desk",
+      "notesLecture": "A laptop with topology notes at a lecture, a cap beside it on the desk",
       "stage": "A presentation of VCourse on a big screen in front of first-years",
       "room": "A bright empty room with a desk by the window",
-      "plane": "A plane's cabin: seat backs and the aisle",
+      "plane": "A plane’s cabin: seat backs and the aisle",
       "window": "A view from a window down Tverskaya Street to the State Historical Museum",
       "lecture": "A lecture in a large hall, seen from the back rows",
       "msu": "The main building of Moscow State University under a cloudy sky",
@@ -185,16 +185,16 @@
     "rows": {
       "pora": {
         "years": "since 2026",
-        "place": "Pora na paru",
+        "place": "Pora na Paru",
         "role": "Co-founder and CEO: design, iOS, Android, web",
-        "fact": "2,642 commits across three clients, 2 June to 31 October 2026"
+        "fact": "2,642 commits across three client apps, 2 June to 31 October 2026"
       },
       "team": {
         "years": "2026",
-        "place": "iOS apps team",
+        "place": "iOS app team",
         "role": "Designer",
         "fact": "1–2 new apps a week, 234 rules in 16 checklists",
-        "link": "The Flow case"
+        "link": "Flow case study"
       },
       "freelance": {
         "years": "2025",
@@ -205,7 +205,7 @@
       "first": {
         "years": "since 2024",
         "place": "VCourse",
-        "role": "Creator: design and client development",
+        "role": "Creator: design and development of the client apps",
         "fact": "Apps in three stores, 3,428 App Store downloads by 4 October 2026"
       }
     },
@@ -214,36 +214,36 @@
       "masters": {
         "years": "since 2026",
         "place": "Central University",
-        "role": "Master's in Human Experience Design"
+        "role": "Master’s in Human Experience Design"
       },
       "bachelors": {
         "years": "2022–2026",
         "place": "Omsk State University",
-        "role": "Bachelor's in applied mathematics and computer science",
-        "fact": "A thesis on the VCourse clients, typeset in LaTeX",
+        "role": "Bachelor’s in applied mathematics and computer science",
+        "fact": "A thesis on the VCourse client apps, typeset in LaTeX",
         "link": "The LaTeX project"
       }
     },
     "notesTitle": "Also",
-    "grant": "Student Startup grant, second stage participant, 2026",
+    "grant": "Student Startup grant, second-stage participant, 2026",
     "pitch": "Pitch to investors, Tramplin tech park, April 2026",
     "english": "English B2",
     "toolsTitle": "Tools",
     "tools": "Figma, SwiftUI, Jetpack Compose, TypeScript, React, Next.js, LaTeX"
   },
   "finale": {
-    "title": "Let's talk",
+    "title": "Let’s talk",
     "text": "Telegram is the fastest way to reach me.",
     "mail": "Email",
     "github": "GitHub",
     "ways": "Other ways",
     "chat": {
-      "label": "A Telegram chat",
+      "label": "Telegram chat",
       "service": "Telegram",
       "day": "today",
-      "hello": "Hello! Write here, I answer in this chat.",
-      "draft": "Hi Danil! We'd like to talk about working on a product.",
-      "send": "Write on Telegram",
+      "hello": "Hello! Write here and I’ll reply in this chat.",
+      "draft": "Hi Danil! We’d like to talk about working on a product.",
+      "send": "Message me on Telegram",
       "scan": "Or point your camera"
     }
   },
@@ -253,16 +253,16 @@
     "next": {
       "flow": "To Flow",
       "projects": "To Projects",
-      "experience": "To experience"
+      "experience": "To Experience"
     },
     "pora": {
-      "name": "Pora na paru",
+      "name": "Pora na Paru",
       "label": "My own product · since 2024",
-      "text": "A schedule service for universities and apps for students. One and the same lesson lives in the browser, on the iPhone and on Android, and I write all three clients myself.",
+      "text": "A schedule service for universities and apps for students. The same lesson lives in the browser, on iPhone and on Android, and I write all three clients myself.",
       "facts": {
         "stage": {
           "term": "stage",
-          "value": "alpha test on iOS and Android, the web is open"
+          "value": "alpha testing on iOS and Android, the web is public"
         },
         "clients": {
           "term": "clients",
@@ -273,7 +273,7 @@
           "value": "2,642 commits by 31 October 2026"
         }
       },
-      "note": "The frames are the product's real screens on made-up data.",
+      "note": "The frames are the product’s real screens with made-up data.",
       "ticks": {
         "intro": "About",
         "web": "Web",
@@ -284,24 +284,24 @@
       },
       "web": {
         "title": "The week in a browser",
-        "text": "The week of any group, teacher or room by a link, nothing to install. Open since 16 October 2026.",
-        "alt": "The schedule in a browser: a group's week, Monday, the first lesson going on."
+        "text": "The week of any group, teacher or room via a link, with nothing to install. Live since 16 October 2026.",
+        "alt": "The schedule in a browser: a group’s week on a Monday, with the first lesson under way."
       },
       "ios": {
         "title": "The lesson on the lock screen",
-        "text": "On the iPhone the lesson going on holds itself in a Live Activity and the Dynamic Island, and turns into the break and the end of the day. The store build has been with testers in TestFlight since 27 September 2026.",
-        "alt": "The iPhone's lock screen with the Live Activity of the lesson going on."
+        "text": "On iPhone the current lesson stays in a Live Activity and the Dynamic Island on its own, switching from lesson to break to the end of the day. The store build has been with testers in TestFlight since 27 September 2026.",
+        "alt": "An iPhone lock screen with a Live Activity for the current lesson."
       },
       "android": {
         "title": "The same lesson on Android",
-        "text": "By Android's rules: the home holds favourite groups and teachers, the lesson going on and notes for lessons, and the lesson is in a widget too. The colours of Material 3 Expressive. In a closed test on Google Play since 30 September 2026.",
-        "alt": "The Android app's home: favourites, the lesson going on and notes for lessons."
+        "text": "Built to Android’s rules: the home screen holds favourite groups and teachers, the current lesson and lesson notes, and the lesson is in a widget too. Material 3 Expressive colours. In closed testing on Google Play since 30 September 2026.",
+        "alt": "The Android app’s home screen: favourites, the current lesson and lesson notes."
       },
       "editor": {
         "title": "Publishing without clashes",
-        "text": "An editor for the academic office: a teacher booked for two lessons at once lights up before publishing, and a moved lesson reaches every app at once. The editor is being designed.",
+        "text": "An editor for the academic office: a teacher booked for two lessons at once is highlighted before publishing, and a moved lesson reaches every app straight away. The workspace is being designed.",
         "toolbar": "Editor",
-        "draft": "Draft of the week",
+        "draft": "Week draft",
         "undo": "Undo",
         "publish": "Publish",
         "conflict": "Clash: Ivanov D.N. in two lessons at once",
@@ -309,7 +309,7 @@
       },
       "origin": {
         "title": "It began with VCourse",
-        "text": "The first version came out on 1 September 2025 after a post in the university's channel, and strangers began to download it. The idea was tested on it with real users.",
+        "text": "The first version came out on 1 September 2025 after a post in the university’s channel, and strangers began to download it. It tested the idea on real users.",
         "numbers": {
           "firstDays": {
             "n": "632",
@@ -319,7 +319,7 @@
           "rank": {
             "n": "No. 57",
             "l": "among education apps on the Russian App Store",
-            "d": "at the start"
+            "d": "at launch"
           },
           "total": {
             "n": "3,428",
@@ -335,9 +335,9 @@
           "source": "App Store Connect",
           "from": "1 September",
           "to": "14 September 2025",
-          "summary": "VCourse's App Store downloads by day, 1–14 September 2025: 632 in the first three days, 411 of them on 2 September."
+          "summary": "VCourse’s App Store downloads by day, 1–14 September 2025: 632 in the first three days, 411 of them on 2 September."
         },
-        "appStore": "VCourse on the App Store on launch day: no. 57 in Education, developer Danil Zablotsky."
+        "appStore": "VCourse on the App Store on launch day: No. 57 in Education, developer Danil Zablotsky."
       },
       "appStore": "App Store",
       "appStoreUrl": "https://apps.apple.com/app/id6747290631",
@@ -349,8 +349,8 @@
     },
     "flow": {
       "name": "Flow",
-      "label": "Case · iOS app production line, 2026",
-      "text": "How I fitted agents to production-line design: a terminal and a Markdown knowledge base carried a task from the brief to finished screens. It was a solution for one type of work, not my usual process.",
+      "label": "Case study · iOS app production line, 2026",
+      "text": "How I adapted agents to production-line design: a terminal and a Markdown knowledge base carried each task from brief to finished screens. It was a solution for one kind of work, not my usual process.",
       "note": "The task in the demo is made up.",
       "facts": {
         "period": {
@@ -371,7 +371,7 @@
         "tool": "The tool did"
       },
       "ticks": {
-        "intro": "The case",
+        "intro": "About",
         "brief": "Brief",
         "research": "Research",
         "screens": "Screens",
@@ -382,7 +382,7 @@
       "steps": {
         "brief": {
           "title": "Brief",
-          "text": "The task became a short brief and a board of six style directions.",
+          "text": "The spec became a short brief and a board of six style directions.",
           "me": "I picked the style and answered questions",
           "tool": "A brief in ten minutes, visual research, a style board",
           "hint": "Pick a direction for me: the screens ahead will take its colours.",
@@ -397,29 +397,29 @@
         },
         "screens": {
           "title": "Screens",
-          "text": "A wireframe became a screen in place: the same frames on the same coordinates.",
-          "me": "I reviewed the key screens at the stop",
+          "text": "A wireframe became a screen in place: the same frames at the same coordinates.",
+          "me": "I reviewed the key screens at the checkpoint",
           "tool": "Components, onboarding, paywall, main feature, other branches",
           "command": "$ stage-2"
         },
         "handoff": {
           "title": "Handoff",
-          "text": "One run gave a file that could go to development.",
-          "me": "I walked the file, fixed it or sent it back",
-          "tool": "Prototype, cover, 28 icons, two store sets, assets",
+          "text": "One run produced a file ready for development.",
+          "me": "I went through the file, fixed it myself or sent it back",
+          "tool": "Prototype, cover, 28 icons, two store listings, assets",
           "command": "· s2.assets"
         },
         "rule": {
           "title": "A note became a rule",
-          "text": "A note was not fixed once. Here is the real history of one dot of this graph.",
+          "text": "A note was never a one-off fix. Here is the real history of one dot on this graph.",
           "command": "$ edits"
         },
         "base": {
-          "title": "Back to the base",
+          "title": "Back into the base",
           "text": "Review notes became rules in the knowledge base, and the next task started from them."
         }
       },
-      "figuresDate": "As of 01.11.2026, counted over the checklists.",
+      "figuresDate": "As of 01.11.2026, counted from the checklists.",
       "hubUnit": "rules",
       "status": {
         "words": {
@@ -438,15 +438,15 @@
     },
     "projects": {
       "name": "Projects",
-      "label": "Besides the product",
-      "text": "Two projects of my own: this site and everything I do in LaTeX. On their page they lie on a board, like mockups in an editor.",
+      "label": "Beyond the product",
+      "text": "Two projects of my own: this site and everything I do in LaTeX. On their page they sit on a board, like mockups in a design editor.",
       "ticks": {
         "intro": "About",
         "site": "This site",
         "latex": "LaTeX"
       },
-      "themes": "Every page declares its theme: colours, typefaces and the look of controls. Two modes make eight combinations. A component reads tokens and knows nothing of themes.",
-      "releases": "The thesis came out in releases, like a program. Each release is a dated tag: GitHub Actions builds the PDF in a container with TeX Live and attaches it to the release.",
+      "themes": "Every page declares its theme: colours, typefaces and the look of controls. With two modes, that makes eight combinations. A component reads tokens and knows nothing about themes.",
+      "releases": "The thesis came out in releases, like software. Each release is a dated tag: GitHub Actions builds the PDF in a container with TeX Live and attaches it to the release.",
       "section": "The “{name}” section"
     }
   },
@@ -464,13 +464,13 @@
     "english": "English, B2",
     "rows": {
       "pora": {
-        "one": "A schedule product for universities, from the idea to the apps",
-        "two": "2,642 commits across three clients, 2 June to 31 October 2026"
+        "one": "Schedules for universities: my product, from idea to apps",
+        "two": "2,642 commits across three client apps, 2 June to 31 October 2026"
       },
       "team": {
         "one": "1–2 new apps a week",
-        "two": "Built a system on agents: 234 rules in 16 checklists, a machine checked 89 of them, as of 1 Nov 2026",
-        "link": "The Flow case: finchaf.com/flow"
+        "two": "Built an agent-based system: 234 rules in 16 checklists, 89 of them checked automatically, as of 1 Nov 2026",
+        "link": "Flow case study: finchaf.com/flow"
       },
       "freelance": {
         "one": "A website for a salad dressing maker, delivered"

@@ -5,9 +5,9 @@ command: `done`
 when: I said “all done”
 ---
 
-Most of the base grew along the way. At closing the tool reread the decisions and the task history and carried out what was not there yet:
+Most of the base grew along the way. At closing, the tool reread the decisions and the task history and added what was not there yet:
 
-- a new pattern, if a mechanic has appeared twice;
+- a new pattern, if a mechanic came up a second time;
 - what is standard in the niche and what was cut;
 - search queries that worked, and the misses;
 - build traps, one line with the task number;

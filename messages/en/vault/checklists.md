@@ -6,11 +6,11 @@ rules: 234 in force
 as of: 1 Nov 2026
 ---
 
-Rules drawn from review notes, sorted by topic. The [[critic|critic]] read them by frame type, and the [[audit|audit]] checked them too. Each item is a checkable statement, a source, and a mark if a script catches it. Examples: [[rules|rules]].
+Rules drawn from review notes, sorted by topic. The [[critic|critic]] read the ones for each frame type, and the [[audit|audit]] checked them too. Each item is a checkable statement, a source, and a mark if a script catches it. Examples: [[rules|rules]].
 
 | Topic                            | Rules | By script |
 | -------------------------------- | ----: | --------: |
-| Store set                        |    38 |        10 |
+| Store listing                    |    38 |        10 |
 | Visual: glass, accent, hierarchy |    26 |         9 |
 | Figma file                       |    17 |         9 |
 | Lists and settings               |    17 |         8 |
@@ -29,4 +29,4 @@ Rules drawn from review notes, sorted by topic. The [[critic|critic]] read them 
 
 ## Which frame, which files
 
-Every frame always got four: product scope, geometry, visual, copy. On top of that by frame type: a paywall added paywall, sheets and states, a main screen added navigation, lists and states.
+Every frame always got four: product scope, geometry, visual, copy. On top of that, by frame type: a paywall also got paywall, sheets and states; a main screen got navigation, lists and states.

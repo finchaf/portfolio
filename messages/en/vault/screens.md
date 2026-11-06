@@ -4,7 +4,7 @@ heading: Screen map
 made_up: true
 ---
 
-The screen tree. Map checks: every feature one tap from a root, required screens in place.
+The screen tree. Map checks: every feature one tap from the root, required screens in place.
 
 ```
 01 Welcome

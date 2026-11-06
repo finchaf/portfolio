@@ -1,17 +1,17 @@
 {
   "meta": {
     "title": "Flow — Danil Zablotsky",
-    "description": "A case: the agent system I built for production-line iOS app design.",
+    "description": "A case study: the agent system I built for production-line iOS app design.",
     "shareTitle": "Flow: agents for an app production line",
     "imageAlt": "A notes window on a violet field: a file tree, the note “Flow”, a terminal running new-app and the graph of the knowledge base."
   },
   "title": "Flow",
-  "lead": "A case: an agent system built for production-line app design.",
+  "lead": "A case study: an agent system built for production-line app design.",
   "ui": {
     "properties": "Properties",
     "addProperty": "Add property",
     "backlinks": "Links to this note",
-    "searchPlaceholder": "A note or a command",
+    "searchPlaceholder": "Note or command",
     "searchHint": "↑↓ select · ↵ open · esc close",
     "files": "Files",
     "search": "Search",
@@ -51,7 +51,7 @@
     "noBacklinks": "No links",
     "graphSettings": "Graph labels",
     "graphAnimate": "Animate",
-    "graphLabel": "A graph: 234 rules around 16 checklists, and the notes",
+    "graphLabel": "Graph: 234 rules around 16 checklists, plus the notes",
     "graphTitle": "Graph",
     "vaultName": "flow",
     "vaultMenu": "Other vaults",
@@ -82,7 +82,7 @@
     "tool": "The tool did",
     "rows": {
       "r0": {
-        "title": "I sent the brief",
+        "title": "I sent the spec",
         "text": "The task text and a link to the file"
       },
       "r1": {
@@ -91,7 +91,7 @@
       },
       "r2": {
         "title": "I picked the style",
-        "text": "I answered questions, then the tool went on alone"
+        "text": "I answered its questions, then the tool carried on alone"
       },
       "r3": {
         "title": "Stage 1",
@@ -106,26 +106,26 @@
         "text": "Components, onboarding, paywall, main feature"
       },
       "r6": {
-        "title": "The stop",
-        "text": "I reviewed the screens while the icons were drawn"
+        "title": "Checkpoint",
+        "text": "I reviewed the screens while the icons were being drawn"
       },
       "r7": {
         "title": "Everything else",
-        "text": "Branches, prototype, cover, 28 icons, two store sets, audit"
+        "text": "Branches, prototype, cover, 28 icons, two store listings, audit"
       },
       "r8": {
-        "title": "I walked the file",
-        "text": "I fixed it or sent it back, then review"
+        "title": "I went through the file",
+        "text": "I fixed it myself or sent it back, then review"
       },
       "r9": {
-        "title": "Close",
-        "text": "What was new from the task went into the base"
+        "title": "Closing",
+        "text": "Anything new from the task went into the base"
       }
     }
   },
   "board": {
     "label": "Style direction",
-    "why": "The tool recommends C. Lavender is the calmest on a night screen, and one accent holds the main button.",
+    "why": "The tool recommends C. Lavender is the calmest on a night screen, and a single accent marks the main button.",
     "a": "Night",
     "b": "Paper",
     "c": "Lavender",
@@ -137,41 +137,41 @@
     "screen": "Screen",
     "wireframe": "Wireframe",
     "label": "Compare wireframe and screen",
-    "caption": "A made-up app: the same frames and coordinates, a wireframe becomes a screen in place."
+    "caption": "A made-up app: same frames, same coordinates; the wireframe becomes the screen in place."
   },
   "shelf": {
-    "caption": "A made-up app, mockups in vector. I show the real files in conversation."
+    "caption": "A made-up app, vector mockups. I show the real files when we talk."
   },
   "figures": {
     "rules": "rules in the base",
-    "scripted": "checked by script",
+    "scripted": "checked by a script",
     "repeated": "marked as repeats"
   },
-  "cta": "Write",
+  "cta": "Write to me",
   "ladder": {
     "s0": {
       "title": "Note",
-      "text": "The menu dropped below the button.",
+      "text": "The menu opened below the button.",
       "source": "at review"
     },
     "s1": {
       "title": "Rule",
-      "text": "A menu from a button takes the button’s place: the menu’s top right corner matches the button’s.",
+      "text": "A menu opened from a button takes the button’s place: its top right corner aligns with the button’s.",
       "source": "sheets-menus#1"
     },
     "s2": {
       "title": "Critic",
-      "text": "Read this checklist on every frame with a menu and compared the two.",
+      "text": "Read this checklist on every frame with a menu and checked the frame against it.",
       "source": "screen-critic"
     },
     "s3": {
       "title": "Repeat",
-      "text": "The note came back on the next task, so the rule was not read in time: a repeat mark and a move into the main rules.",
+      "text": "The note came back on the next task, so the rule had not been read in time: it got a repeat mark and moved up into the main rules.",
       "source": "main rules"
     },
     "s4": {
       "title": "Script",
-      "text": "The audit compared the corners of menu and button. From then on a machine checked it.",
+      "text": "The audit compared the corners of the menu and the button. From then on, a machine checked it.",
       "source": "[script]"
     }
   },
@@ -232,7 +232,7 @@
     "glyphBack": "‹"
   },
   "checklists": {
-    "store": "Store set",
+    "store": "Store listing",
     "visual": "Visual",
     "figma": "Figma file",
     "lists": "Lists and settings",
@@ -251,8 +251,8 @@
   },
   "transcript": {
     "title": "Terminal",
-    "text": "A record of the made-up task’s run. With the script on, it plays here live.",
-    "lines": "$ new-app 000\n  ✓ s1.brief       quick brief\n  ✓ s1.board       style board, waiting\n  ? direction: C\n  ✓ s1.wireframes  wireframes and critic\n  ✓ s1.audit       empty\n  ✓ stage 1 ready, waiting for review\n$ edits\n  note → rule in a checklist\n$ stage-2\n  ✓ s2.key         onboarding, paywall, main feature\n  ? stop: accepted\n  ✓ s2.audit       empty\n  ✓ stage 2 ready\n$ done"
+    "text": "A recording of a run on the made-up task. With JavaScript on, it plays here live.",
+    "lines": "$ new-app 000\n  ✓ s1.brief       quick brief\n  ✓ s1.board       style board, waiting\n  ? direction: C\n  ✓ s1.wireframes  wireframes and critic\n  ✓ s1.audit       empty\n  ✓ stage 1 ready, waiting for review\n$ edits\n  note → rule in a checklist\n$ stage-2\n  ✓ s2.key         onboarding, paywall, main feature\n  ? checkpoint: accepted\n  ✓ s2.audit       empty\n  ✓ stage 2 ready\n$ done"
   },
   "terminal": {
     "title": "Terminal",
@@ -261,30 +261,30 @@
     "replay": "replay · task 000 is made up",
     "statusRules": "234 rules · 16 checklists",
     "notStarted": "not started",
-    "waitStyle": "waiting for a style",
-    "waitStop": "stopped, waiting for me",
-    "intro": "This is a replay on a made-up task: there is no agent on the page. The commands are the ones from that job.",
+    "waitStyle": "waiting for a style choice",
+    "waitStop": "at the checkpoint, waiting for me",
+    "intro": "This is a replay on a made-up task: there is no agent on the page. The commands are the same as in the real job.",
     "unknown": "no command {x}. help lists them all.",
     "noFile": "no note {x}. ls lists them all.",
     "opened": "opened: {x}",
     "askStyle": "Style direction? A B C D E F. A person decides",
-    "askStop": "Stop. I review onboarding, paywall, main feature",
-    "askStopShort": "Stop: next or edits?",
+    "askStop": "Checkpoint. I review onboarding, paywall, main feature",
+    "askStopShort": "Checkpoint: next or edits?",
     "chosen": "chosen: {x}, {y}",
     "autoChosen": "the replay picked {x}. On a real task the stage waited for me.",
     "autoNext": "the replay said “next”. On a real task the stage waited for me.",
     "alone": "waiting_for: null, no more questions",
     "stage1Done": "stage 1 ready, waiting for review",
     "stage2Done": "stage 2 ready, the file can be viewed",
-    "closed": "task closed, what is new went into the base",
+    "closed": "task closed, anything new went into the base",
     "goSay": "“go”: only on my word",
     "resumed": "resuming from {x}",
-    "broke": "the session broke at {x}. continue resumes from that step.",
-    "waitingFor": "the stage is waiting for: {x}. It does not go on without an answer.",
+    "broke": "the session dropped at {x}. continue resumes from that step.",
+    "waitingFor": "the stage is waiting for: {x}. It will not go on without an answer.",
     "nothing": "nothing to resume, the run is over. run starts it again.",
     "running": "task 000 is already running. state shows where.",
-    "remarkAsk": "which note should be sorted?",
-    "freeRemark": "noted: “{x}”. The real sorting is done by the tool, which is not running here.",
+    "remarkAsk": "which note should I triage?",
+    "freeRemark": "noted: “{x}”. The real triage is done by the tool, which is not running here.",
     "next": "next",
     "editsChip": "edits",
     "pause": "Pause",
@@ -293,8 +293,8 @@
     "remarks": {
       "menu": {
         "key": "menu",
-        "chip": "the menu dropped below the button",
-        "quote": "The menu dropped below the button",
+        "chip": "the menu opened below the button",
+        "quote": "The menu opened below the button",
         "id": "sheets-menus#1",
         "what": "this rule already exists: repeat mark",
         "line": "moved into the main rules, a script checks it"
@@ -316,9 +316,9 @@
         "line": "A chart label is no smaller than its scale (made-up example, on this page only)"
       }
     },
-    "critic": "07 · Night detail\n  — button label 13 pt, needs at least 16            texts#5\n  — Share pressed to the right edge, margins differ  layout#1\n08 · Home — clean",
-    "audit": "audit.js          edges, opacity, clipped shadows\nlayout-audit.js   margins, steps, sizes\ncheck-screens.py  a one-tap entry for every feature\ntypo-scan.js      hanging prepositions\na machine checked 89 of 234 rules, as of 1 Nov 2026",
-    "rules": "234 rules in 16 checklists, as of 1 Nov 2026\n89 checked by script, 24 marked as repeats",
+    "critic": "07 · Night detail\n  — button label 13 pt, needs at least 16       texts#5\n  — Share hugs the right edge, margins unequal  layout#1\n08 · Home — clean",
+    "audit": "audit.js          tight edges, opacity, clipped shadows\nlayout-audit.js   margins, steps, sizes\ncheck-screens.py  one-tap access to every feature\ntypo-scan.js      hanging prepositions\na machine checked 89 of 234 rules, as of 1 Nov 2026",
+    "rules": "234 rules in 16 checklists, as of 1 Nov 2026\n89 checked by a script, 24 marked as repeats",
     "steps": {
       "s1Start": "task folder, file, component library",
       "s1Brief": "quick brief",
@@ -327,7 +327,7 @@
       "s1Style": "tokens in style.md",
       "s1Product": "product research",
       "s1Screens": "screen map, map checks",
-      "s1File": "file pages, brand dress",
+      "s1File": "file pages, brand styling",
       "s1Tokens": "variables, text styles",
       "s1Wireframes": "wireframes, critic",
       "s1Pages": "brief, research, style pages",
@@ -343,7 +343,7 @@
       "s2Map": "layout, prototype",
       "s2Cover": "cover",
       "s2Icons": "28 icons",
-      "s2Preview": "store sets A and B",
+      "s2Preview": "store listings A and B",
       "s2Assets": "images for the developer",
       "s2Asc": "paywall for review",
       "s2Pages": "summaries, brief check",

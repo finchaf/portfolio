@@ -10,35 +10,35 @@ run: {run}
 made_up_example: true
 ---
 
-This is a breakdown of one job, not how I normally work. In 2026 I was a designer at a company that shipped iOS apps on a production line: one or two new apps a week, each needing a complete Figma file. Because of the kind of work and its volume I decided to lean on agents, and I built a system for this job. A tool, Claude Code, assembled the screens. Style, the quality bar and acceptance were my calls, and every review note became a rule checked on the next task.
+This is a breakdown of one job, not how I normally work. In 2026 I was a designer at a company that shipped iOS apps on a production line: one or two new apps a week, each needing a complete Figma file. Because of the kind of work and its volume, I decided to lean heavily on agents, and I built a system for this job. A tool, Claude Code, assembled the screens. Style, the quality bar and acceptance were my calls, and every review note became a rule checked on the next task.
 
 > [!info] One case, not a rule
-> I do not work this way on every project. This page shows how I can fit neural networks to a particular type of work and improve it where that is justified. I no longer work at that company.
+> I do not work this way on every project. This page shows how I can adapt AI tools to a particular kind of work and improve that work where it makes sense. I no longer work at that company.
 
 ## How a task ran ^scene-0
 
-The coloured dots are my decisions, the rest was the tool's work. The terminal below follows the same line.
+The coloured dots are my decisions, the rest was the tool’s work. The terminal below follows the same line.
 
 ![[lanes]]
 
 > [!info] The example is made up
-> The app on this page is invented: a sleep diary, `App Name`. The process, commands and rules are real. The terminal below replays a run of this task; there is no agent on the page. I show the real files in conversation.
+> The app on this page is invented: a sleep diary, `App Name`. The process, commands and rules are real. The terminal below replays a run of this task; there is no agent on the page. I show the real files when we talk.
 
-## Stage 1: from brief to wireframes ^scene-1
+## Stage 1: from spec to wireframes ^scene-1
 
-I started out present. In ten minutes the tool wrote a brief, then gathered visual research and showed a board of six style directions with a recommendation.
+At first I stayed close by. In ten minutes the tool wrote a brief, then gathered visual research and showed a board of six style directions with a recommendation.
 
-**This decision belonged to a person.** Pick a direction for me, and the screens below recolour through tokens.
+**Here a person made the call.** Pick a direction for me, and the screens below recolour through tokens.
 
 ![[board]]
 
-After the choice there were no more questions. The tool worked to the end of the stage alone: [[research|product research]], the [[screens|screen map]], file pages, tokens, colour wireframes. It settled doubts by analogy and listed them under [[decisions|decisions to confirm]].
+After the choice there were no more questions. The tool carried on alone to the end of the stage: [[research|product research]], the [[screens|screen map]], file pages, tokens, colour wireframes. It settled doubts by looking at comparable apps and listed them under [[decisions|decisions to confirm]].
 
 ## Stage 2: screens ^scene-2
 
 It started only on my word. Each branch of the app was built by a separate run with a fresh context, the [[critic|critic]] looked at the frames, and edits looped until the answer was “clean”.
 
-The stage stopped at onboarding, the paywall and the main feature. I looked at those first while the icons ran alongside. My edits became rules at once and applied to the remaining branches.
+The stage stopped at onboarding, the paywall and the main feature. I reviewed those first while the icons were being made in parallel. My edits became rules at once and applied to the remaining branches.
 
 ![[screens]]
 
@@ -49,10 +49,10 @@ The stage stopped at onboarding, the paywall and the main feature. I looked at t
 | Brief, research, style board               | Picked the style, answered questions           |
 | Screen map, wireframes, tokens, components | Sent stages to review, passed on the edits     |
 | Final-quality screens                      | Walked through the file, fixed what I disliked |
-| 28 icons, two store sets of 6 frames       | Made the hand mockup and 3D with a plugin      |
+| 28 icons, two store listings of 6 frames   | Made the hand mockup and 3D with a plugin      |
 | Interface copy, decisions with reasons     | Discussed decisions at review                  |
 
-The system itself was mine: the stages, the stops, the rules and what counted as finished.
+The system itself was mine: the stages, the checkpoints, the rules and what counted as finished.
 
 ## How quality was checked
 
@@ -63,17 +63,17 @@ The system itself was mine: the stages, the stops, the rules and what counted as
 
 ## A note became a rule ^scene-4
 
-A note was not fixed once. The [[edits|edits]] skill turned it into a checkable rule with a source, and the next task started with it in place. Here is the real history of one rule.
+A note was never a one-off fix. The [[edits|edits]] skill turned it into a checkable rule with a source, and the next task started with it in place. Here is the real history of one rule.
 
 ![[ladder]]
 
 ![[figures]]
 
-As of 1 Nov 2026, counted across the working base's checklists. A few more real ones: [[rules|rules]].
+As of 1 Nov 2026, counted from the checklists of the working base. A few more real ones: [[rules|rules]].
 
 ## What came out ^scene-5
 
-One run produced a file ready for development: brief, research, style, screens on real iOS components, a clickable prototype, a cover, 28 icons, two store sets, assets.
+One run produced a file ready for development: brief, research, style, screens on real iOS components, a clickable prototype, a cover, 28 icons, two store listings, assets.
 
 ![[shelf]]
 

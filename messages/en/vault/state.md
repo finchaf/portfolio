@@ -4,7 +4,7 @@ heading: state.json
 made_up: true
 ---
 
-Where the run stood. From this, [[continue|resume]] knew whether to work on or wait for me.
+Where the run stood. From this, [[continue|resume]] knew whether to keep working or wait for me.
 
 ```
 {

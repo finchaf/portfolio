@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Projects — Danil Zablotsky",
-    "description": "Besides the product: this site, its code open, and everything I do in LaTeX.",
+    "description": "Beyond the product: this site, with its code open, and everything I do in LaTeX.",
     "shareTitle": "Projects: this site and LaTeX",
     "imageAlt": "The Projects editor in a window on a green field: layers on the left, a board with two projects, portfolio and latex."
   },
@@ -9,7 +9,7 @@
   "lead": "Personal projects and experiments.",
   "layers": "Layers",
   "properties": "Properties",
-  "canvas": "Canvas of projects",
+  "canvas": "Project canvas",
   "fit": "All",
   "zoomIn": "Zoom in",
   "zoomOut": "Zoom out",
@@ -17,13 +17,13 @@
   "openSection": "Open section",
   "code": "Code on GitHub",
   "site": "Open the site",
-  "asOf": "On {date}, branch main and a check.py run",
-  "hint": "A double click opens the project",
+  "asOf": "As of {date}, from main and a check.py run",
+  "hint": "Double-click to open a project",
   "portfolio": {
     "chip": "portfolio/",
     "title": "This site",
     "state": "Done",
-    "summary": "A portfolio as a product: a static Next.js build, a theme system of its own, an open log of decisions and checks before every commit.",
+    "summary": "A portfolio as a product: a static Next.js build, a theme system of its own, an open decision log, and checks before every commit.",
     "period": "Period",
     "periodValue": "30.10–06.11.2026",
     "address": "Address",
@@ -45,7 +45,7 @@
     },
     "phone": {
       "name": "Flow, phone",
-      "text": "Another page, another form: on a phone it is one note, with a sheet for the tree."
+      "text": "Another page, another form: on a phone it is a single note, with a sheet instead of the tree."
     },
     "themes": {
       "name": "Themes",
@@ -53,15 +53,15 @@
     },
     "release": {
       "name": "deploy.py",
-      "text": "A release is a switch of one link, with the last three beside it."
+      "text": "A release switches one link; the last three sit beside it."
     },
     "gates": {
       "name": "check.py",
       "text": "A real run of all 14 checks."
     },
     "pora": {
-      "name": "Pora na paru",
-      "text": "The product's week: lessons are chapters, their windows as in its web app."
+      "name": "Pora na Paru",
+      "text": "The product’s schedule week: lessons are chapters, with windows as in its web app."
     },
     "journal": {
       "name": "Decisions",
@@ -73,7 +73,7 @@
     },
     "snippets": {
       "name": "Snippets",
-      "text": "Abbreviations that expand into LaTeX as they are typed."
+      "text": "Abbreviations that expand into LaTeX as you type."
     },
     "thesis": {
       "name": "Thesis, p. 69",
@@ -85,11 +85,11 @@
     },
     "wall": {
       "name": "130 pages",
-      "text": "Every page of the thesis' last release."
+      "text": "Every page of the latest thesis release."
     },
     "verify": {
       "name": "collect_verify.py",
-      "text": "What the check says of a fact an agent brought."
+      "text": "What the check says about a fact an agent brought in."
     }
   },
   "selectedFrame": "Selected: {name}",
@@ -106,7 +106,7 @@
     "stackValue": "Neovim, vimtex, LuaSnip, Inkscape, LuaLaTeX",
     "notesPages": "pages of notes",
     "snippets": "snippets",
-    "thesisPages": "pages of the thesis",
+    "thesisPages": "thesis pages",
     "releases": "thesis releases",
     "types": "document types",
     "gates": "build checks",

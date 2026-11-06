@@ -3,34 +3,34 @@
     "title": "This site — Danil Zablotsky",
     "description": "How this site is built: themes on one component, a lens over the code, 14 checks and an atomic release.",
     "shareTitle": "This site: how it is built",
-    "imageAlt": "A coloured tile named after the folder portfolio, on bands of the palette."
+    "imageAlt": "A coloured tile with the folder name portfolio over stripes of the palette."
   },
   "back": "Projects",
   "layers": "Layers",
   "properties": "Properties",
   "section": "This section: {name}",
   "title": "This site",
-  "lead": "A portfolio built as a product: a static build, a look of its own for every page, an open log of decisions and checks before every commit.",
+  "lead": "A portfolio built as a product: a static build, a look of its own for every page, an open decision log, and checks before every commit.",
   "briefLabel": "In short",
   "brief": {
     "what": "What it is",
-    "whatText": "A site in two languages: home, Pora na Paru, Flow and Projects with its two project pages, and a CV in PDF. It is plain files with no application server, served by Caddy.",
+    "whatText": "A site in two languages: Home, Pora na Paru, Flow, and Projects with its two project pages, plus a CV in PDF. It is plain files with no application server, served by Caddy.",
     "role": "My role",
-    "roleText": "Design, front end, motion, infrastructure and copy.",
+    "roleText": "Design, frontend, motion, infrastructure and copy.",
     "open": "What is open",
-    "openText": "The code, the log of decisions and the plan are on GitHub. Each section links to its files."
+    "openText": "The code, the decision log and the plan are on GitHub. Each section links to its files."
   },
   "open": "Files and decisions",
   "demo": {
     "replay": "Run again",
     "ofAll": "{passed} of {all}, {minutes} min {seconds} s",
     "commitsByDay": "Commits to main by day",
-    "text": "text on the page",
+    "text": "text on background",
     "soft": "secondary text",
     "control": "button label",
     "sample": "A page heading",
     "sampleText": "The same paragraph, the same markup, the same components.",
-    "sampleAction": "Get in touch",
+    "sampleAction": "Write to me",
     "sampleQuiet": "Site code",
     "theme": "Theme",
     "mode": "Mode",
@@ -58,108 +58,108 @@
     "kilobytes": "{value} KB",
     "budgetTitle": "{title}, {date}",
     "budgetLimitLine": "limit: {value} KB",
-    "chapterAlt": "The {name} chapter on home, on one of its stops",
-    "openChapter": "Open on home",
+    "chapterAlt": "The {name} chapter on the home page, at one of its stops",
+    "openChapter": "Open on Home",
     "cv": "CV, PDF",
     "cvAlt": "The first page of the CV: portrait, experience and education."
   },
   "steps": {
-    "refuse": "Refuses unless on main, with a clean tree, level with GitHub",
+    "refuse": "Refuses unless on main with a clean tree, in sync with GitHub",
     "gates": "Every check and the build",
-    "copy": "A copy in a folder of the commit under releases/, equal files as hard links",
+    "copy": "A copy into the commit’s folder under releases/, identical files as hard links",
     "switch": "An atomic switch of the current link",
-    "verify": "A check of the real domain: codes, CSP, redirects",
-    "back": "If it fails, the link returns to the last release"
+    "verify": "A check of the live domain: status codes, CSP, redirects",
+    "back": "If it fails, the link returns to the previous release"
   },
   "sections": {
     "form": {
       "name": "Form",
       "title": "Every page has a form of its own",
-      "p1": "A portfolio usually describes the work in words. Here a page is built like the work itself: home is a stage that scrolls down and sideways, Pora na Paru is a week of the product's own schedule, Flow looks like Obsidian because that case was a base of notes, and Projects looks like an editor because I am a designer.",
-      "p2": "The price of that form is an engine per page. To keep them from growing together, pages are split by boundaries: a feature does not import another, and what they share moves down to <c>ui/</c> and <c>lib/</c>. It is an ESLint rule rather than an agreement: an import across a boundary fails the check."
+      "p1": "A portfolio usually describes the work in words. Here each page is built like the work itself: the home page is a stage that scrolls down and sideways, Pora na Paru is a week of the product’s own schedule, Flow looks like Obsidian because that case was a vault of notes, and Projects looks like a design editor because I am a designer.",
+      "p2": "The price of that form is an engine per page. To keep them from growing into each other, pages are separated by boundaries: a feature does not import another, and what they share moves down to <c>ui/</c> and <c>lib/</c>. It is an ESLint rule, not a convention: an import across a boundary fails the check."
     },
     "themes": {
       "name": "Themes",
       "title": "One component, four themes",
-      "p1": "Each page declares a theme, and the theme changes colours, typefaces and the look of controls. There are two modes, so eight combinations. A component knows nothing of themes: it reads tokens, and the values live in the theme's file. A new theme is one file.",
-      "p2": "A colour outside the contract does not compile: the Tailwind palette is off. A test measures contrast, and that is why a theme has two accents. <c>accent</c> is the exact brand colour for fills, <c>accent-strong</c> is the one for text. White on the product's blue gives 3.7:1, too little for text.",
-      "p3": "The theme is declared in the markup and read through <c>:has()</c>, so it is in the first HTML and the page does not flash. <c>\\Get in touch</c> on home and <c>[[Get in touch]]</c> on Flow are one component, and the capsule changes its skin on the fly when a chapter of another theme arrives on home. The values below are read from the sample at every switch."
+      "p1": "Each page declares a theme, and the theme changes colours, typefaces and the look of controls. There are two modes, so eight combinations. A component knows nothing about themes: it reads tokens, and the values live in the theme’s file. A new theme is one file.",
+      "p2": "A colour outside the contract does not build: the Tailwind palette is off. A test measures contrast, and that is why a theme has two accents. <c>accent</c> is the exact brand colour for fills, <c>accent-strong</c> is the variant for text. White on the product’s blue gives 3.7:1, too little for text.",
+      "p3": "The theme is declared in the markup and read through <c>:has()</c>, so it is in the first HTML and the page does not flash. <c>\\Write to me</c> on the home page and <c>[[Write to me]]</c> on Flow are one component, and the capsule changes its skin on the fly when a chapter in another theme arrives on the home page. The values below are read from the sample at every switch."
     },
     "lens": {
       "name": "Lens",
       "title": "Design and code on one screen",
       "p1": "The first screen is two layers: the design and its blueprint, with sizes and real lines of code. A test finds those lines in the sources, so the blueprint cannot drift from the code.",
-      "p2": "The layers match to the pixel: every block of the blueprint stands where the real one does, because the block itself lies inside it, hidden, and sets its size. The lens only opens the second layer with <c>clip-path</c>. It reaches the capsule too, though that lies outside the first screen: a script writes it the same variables in its own coordinates.",
+      "p2": "The layers share coordinates: every block of the blueprint stands where the real one does, because the block itself lies inside it, hidden, and sets its size. The lens only opens the second layer with <c>clip-path</c>. It reaches the capsule too, though the capsule lies outside the first screen: a script hands it the same variables in its own coordinates.",
       "p3": "The first screen never waits for animation. The name is in the HTML and drawn from the first frame, and the assembly only wipes an outline off it. The real controls lie under the code layer and take the clicks, and keyboard focus lifts them above it."
     },
     "motion": {
       "name": "Motion",
-      "title": "A page change along the slash of the logo",
-      "p1": "Each tool has its zone: CSS does hover and focus, <c>ViewTransition</c> the page change, GSAP the scenes on scroll, canvas the graphs and lines. Durations and curves live in tokens, so an effect's code holds no numbers.",
-      "p2": "The first page change looked bad. A <c>ViewTransition</c> around the page makes one layer as tall as the page, 41,131 px on home on 06.11.2026, and the browser squeezes it to the screen. Now only the screen is captured, and the new page arrives along a 20.2° line, the lean of the slash in the logo. A step back in the capsule runs the other way.",
-      "p3": "In Firefox the shape stood at its end for the whole change: it does not interpolate a registered <c>@property</c> variable on these pseudo-elements. So the shapes are written out in <c>polygon</c> keyframes. WebDriver's screenshot does not show this, so that frame comes from a system capture of a real browser window.",
-      "p4": "Then it turned out the change was waiting for home. Leaving, it put every GSAP animation back to its start, even those never played, and arriving, it built its scenes inside the transition's update. In Zen the page stood still for 1.6 s after a click, and the slash flashed at the end. Now a page that leaves drops its animations where they stand, and a page that arrives builds its scenes after the slash: 165 ms from the click to the start of the change, measured 05.11.2026."
+      "title": "Page changes along the logo’s slash",
+      "p1": "Each tool has its zone: CSS does hover and focus, <c>ViewTransition</c> the page change, GSAP the scenes on scroll, canvas the graphs and lines. Durations and curves live in tokens, so an effect’s code holds no numbers.",
+      "p2": "The first page change looked bad. A <c>ViewTransition</c> around the page makes one layer as tall as the page, 41,131 px for the home page on 06.11.2026, and the browser squeezes it to fit the screen. Now only the screen is captured, and the new page arrives along a 20.2° line, the angle of the slash in the logo. A step back through the capsule runs the other way.",
+      "p3": "In Firefox the shape sat at its final state for the whole transition: Firefox does not interpolate a registered <c>@property</c> variable on these pseudo-elements. So the shapes are written out directly in <c>polygon</c> keyframes. A WebDriver screenshot does not show this, so that frame is taken with a system capture of a real browser window.",
+      "p4": "Then it turned out the transition was waiting for the home page. On the way out, it reset every GSAP animation to its start, even ones that had never played, and on the way in, it built its scenes inside the transition’s update. In Zen the page froze for 1.6 s after a click, and the slash flashed at the end. Now the outgoing page drops its animations where they stand, and the incoming page builds its scenes after the slash: 165 ms from the click to the start of the transition, measured 05.11.2026."
     },
     "chapters": {
       "name": "Chapters",
       "title": "Three chapters, each in its own product",
-      "p1": "The works on home are chapters, and each shows its product by the product’s own means. In Pora na Paru one lesson flies from the week in a browser to the iPhone’s lock screen, to the Android home and into the editor. In Flow the camera flies through the graph of the vault. In Projects the camera moves over the board of this page. The bar at the bottom comes from the product too: the paper of the schedule’s sidebar, the bottom of Obsidian, the status line of tmux.",
-      "p2": "The phone screens were shot in the iOS simulator and the Android emulator on made-up data and set into device mockups. The lesson is the same to the minute in every frame: a lecture, 08:45–10:20, 09:31 on the clock. The card’s place on a frame is given in shares of the frame, so at rest it lies exactly on its place on any screen.",
-      "p3": "CSS holds a chapter: its stage is <c>sticky</c>, the page scrolls by itself, and the script only moves layers along the scroll. On a touch screen every rest has an invisible mark, and a flick stops on the rest natively: no script fights the momentum."
+      "p1": "On the home page the works are chapters, and each shows its product with the product’s own means. In Pora na Paru one lesson flies from the week in a browser to the iPhone lock screen, the Android home screen and into the editor. In Flow the camera flies through the vault’s graph. In Projects the camera moves over that page’s board. The bar at the bottom comes from the product too: the paper of the schedule’s sidebar, the bottom bar of Obsidian, the tmux status line.",
+      "p2": "The phone screens were captured in the iOS simulator and the Android emulator with made-up data and set into device mockups. The lesson is the same to the minute in every frame: a lecture, 08:45–10:20, 09:31 on the clock. The card’s position is set in fractions of the frame, so at a pause it sits exactly in place on any screen.",
+      "p3": "CSS holds a chapter: its stage is <c>sticky</c>, the page scrolls natively, and a script only moves the layers with the scroll. On a touch screen every pause has an invisible mark, and a swipe stops at the pause natively: no script fights the momentum."
     },
     "week": {
       "name": "Week",
       "title": "The product instead of screenshots",
-      "p1": "The Pora na Paru page does not tell about the product, it shows it: it is the product's schedule in a browser. The week's lessons are chapters, a lesson's type says what is inside, and a lesson's window opens as in the product. The values come from its design system, made 1.25 times larger: here the cards are read, not skimmed.",
-      "p2": "The times are a real university's, while today, the line of the time and the lesson going on follow the reader's clock. The page is built long before anyone opens it, so a script sets the dates, and without it the week reads without them. The scrollbar is drawn, as the product's is: the system's went away when the window took the scroll, and the page shifted.",
-      "p3": "There is no blur under the lesson's window, though the product has one: Zen repainted the blurred screen on every frame of a change of lessons, and the window ran at 30 frames instead of 60. The glass stayed on the capsule, a strip of 540 by 41 px, where a measurement gave the same 60 frames."
+      "p1": "The Pora na Paru page does not describe the product, it shows it: it is the product’s schedule in a browser. The week’s lessons are chapters, a lesson’s type tells you what is inside, and a lesson’s window opens as it does in the product. The values come from its design system, scaled up 1.25 times: here the cards are read, not skimmed.",
+      "p2": "The lesson times are a real university’s, while today, the time line and the current lesson follow the reader’s clock. The page is built long before anyone opens it, so a script fills in the dates, and without the script the week still reads without them. The scrollbar is drawn, as in the product: the system one disappeared when the window took over scrolling, and the page shifted.",
+      "p3": "There is no blur under the lesson window, though the product has one: Zen repainted the blurred screen on every frame of a lesson change, and the window ran at 30 fps instead of 60. The glass stayed on the capsule, a strip of 540 by 41 px, where a measurement gave the full 60 fps."
     },
     "previews": {
       "name": "Previews",
-      "title": "Link pictures and the CV from the same tokens",
-      "p1": "Every page has a link picture of its own in each language, twelve files. A script assembles them from the site's themes, strings and logo, photographs them in Playwright and writes the PNGs and a manifest with a hash of the sources. Flow, Pora na Paru and Projects show the page itself in a window.",
-      "p2": "A stale picture fails the checks: Unit compares the hash with the manifest. Flow's card draws the real graph, and its simulation ends on different coordinates on arm64 and x64, so the hash counts the graph's notes and links, not its points.",
-      "p3": "The CV in PDF is made the same way. <c>pnpm cv</c> prints it in two languages from the lines of the Experience block, the home page’s tokens, its typefaces and the portrait, and Unit checks the hash of those sources against a manifest: a changed line of experience without a new PDF fails the checks."
+      "title": "Link previews and the CV from the same tokens",
+      "p1": "Every page has its own link preview image in each language, twelve files. A script assembles them from the site’s themes, strings and logo, screenshots them in Playwright and writes the PNGs and a manifest with a hash of the sources. Flow, Pora na Paru and Projects show the page itself in a window.",
+      "p2": "A stale image fails the checks: Unit compares the hash with the manifest. Flow’s card draws the real graph, and its simulation ends at different coordinates on arm64 and x64, so the hash covers the graph’s notes and links, not its points.",
+      "p3": "The PDF CV is built the same way. <c>pnpm cv</c> prints it in two languages from the lines of the Experience block, the home page’s tokens, its typefaces and the portrait, and Unit checks the hash of those sources against a manifest: a changed line of experience without a new PDF fails the checks."
     },
     "gates": {
       "name": "Checks",
       "title": "14 checks, one command",
-      "p1": "<c>python3 scripts/check.py</c> runs before every commit, and CI runs the same command on a PR. Below is a real run of {date}: {unit} unit tests and {browser} browser tests.",
-      "p2": "The browser checks run behind a real Caddy, the same image digest as the server: addresses, headers, CSP, accessibility in both modes, scenes with reduced motion and without JavaScript. A check must be able to fail: the scaffold was tested with a deliberate import across a boundary and with text in the markup.",
+      "p1": "<c>python3 scripts/check.py</c> runs before every commit, and CI runs the same command on a PR. Below is a real run from {date}: {unit} unit tests and {browser} browser tests.",
+      "p2": "The browser checks run behind a real Caddy with the same image digest as on the server: addresses, headers, CSP, accessibility in both modes, scenes with reduced motion and without JavaScript. A check must be able to fail: the scaffold was tested with a deliberate import across a boundary and with text in the markup.",
       "foundTitle": "What turned up along the way",
-      "found1": "On the Flow card the graph's simulation ends on different coordinates on arm64 and x64. It was green on the laptop and red in CI. Now the hash counts what the graph is made of, not where it lands.",
-      "found2": "The test config differed from production, so the gate stayed green while the server's 404 would have named itself and lost HSTS. The header block now matches line for line, and the gate looks at the 404's headers.",
-      "found3": "Gecko loses a thin diagonal gradient at random, and the hatching fell apart in Firefox. It is now an SVG mask, and a test keeps such gradients out of the stylesheets.",
-      "found4": "Shadows took the colour of the text, which on a dark page is a glow. In the dark mode a shadow is now transparent.",
-      "found5": "The story's test on home failed only in CI. It was a race in the scene itself: after a jump the ribbon was still catching up with the scroll, and the far photographs never woke. Now the reach is counted from where the scroll sends the ribbon.",
-      "found6": "On an iPhone the Pora na Paru chapter on home jerked as it scrolled. In WebKit a frame cost up to 180 ms: the shadow under the phone mockups was a filter, and it blurred the picture anew every time the frame came back on screen. The shadow was hardly visible, so it went, and a test keeps such filters out of the stylesheets."
+      "found1": "On the Flow card the graph’s simulation ends at different coordinates on arm64 and x64. It was green on the laptop and red in CI. Now the hash covers what the graph is made of, not where it lands.",
+      "found2": "The test config differed from production, so the gate stayed green even though on the server a 404 response would have revealed the server’s name and lost HSTS. The header block now matches line for line, and the gate checks the 404’s headers.",
+      "found3": "Gecko randomly loses a thin diagonal gradient, and the hatching fell apart in Firefox. It is now an SVG mask, and a test keeps such gradients out of the stylesheets.",
+      "found4": "Shadows took the text colour, which on a dark background turned into a glow. In dark mode, shadows are now transparent.",
+      "found5": "The home page’s story test failed only in CI. It was a race in the scene itself: after a jump the ribbon was still catching up with the scroll, and the distant photographs never woke up. Now the range is counted from where the scroll is taking the ribbon.",
+      "found6": "On iPhone the Pora na Paru chapter on the home page stuttered as it scrolled. In WebKit a frame cost up to 180 ms: the shadow under the phone mockups was a filter, and it re-blurred the image every time the frame came back on screen. The shadow was barely visible, so it was removed, and a test keeps such filters out of the stylesheets."
     },
     "decisions": {
       "name": "Decisions",
-      "title": "The decision first, the code next",
-      "p1": "Whatever is expensive to undo is written down before the code: the context, the options, the choice and when to revisit it. An accepted record is never rewritten, a different decision is a new record.",
-      "p2": "Static was not chosen to save money: the server had room. It is faster, more reliable and safer for the neighbour on that server, and the animation lives in the browser anyway. The repository has been open since the first commit, because what enters a history stays in old commits. The code is MIT, the texts and images are reserved, and GSAP stays a dependency that is never copied in."
+      "title": "Decision first, code second",
+      "p1": "Whatever is expensive to undo is written down before the code: the context, the options, the choice and when to revisit it. An accepted record is never rewritten; a different decision is a new record.",
+      "p2": "A static site was not chosen to save money: the server had resources to spare. It is faster, more reliable and safer for the other product on the server, and the animation lives in the browser anyway. The repository has been public since the first commit, because anything private, once it enters the history, stays in old commits. The code is under MIT, the texts and images are all rights reserved, and GSAP stays a dependency that is never copied into the repository."
     },
     "process": {
       "name": "Process",
-      "title": "I decide, a tool writes",
-      "p1": "A task begins in the plan and ends on the same branch: the checks, a PR, green CI and a fast-forward of <c>main</c>, every commit signed. A look is first chosen on a live HTML page of options in the real tokens, and only then does the site change. I look in Zen, on Gecko: some bugs live only there.",
-      "p2": "Claude Code writes the code: it is a co-author of all {commits} commits in <c>main</c>. The repeated steps are skills in the repository, and the rules that may not be broken are in <c>CLAUDE.md</c>. What to build, how it looks and what goes live, I decide.",
+      "title": "I decide, the tool writes",
+      "p1": "A task begins in the plan and ends on the same branch: the checks, a PR, green CI and a fast-forward of <c>main</c>, every commit signed. A look is first chosen on a live HTML page of options in the real tokens, and only then does the site change. I review in Zen, on Gecko: some bugs live only there.",
+      "p2": "Claude Code writes the code: it is a co-author of all {commits} commits in <c>main</c>. Repeated steps are written up as skills in the repository, and the rules that must not be broken are in <c>CLAUDE.md</c>. What to build, how it looks and what goes live is my call.",
       "nt": "start a task: a branch, the decisions, the build, the checks, a stop before the push",
       "ar": "audit whatever is not in main yet: bugs, motion, accessibility, budgets",
       "si": "land it: commits, a PR, CI, a fast-forward of main",
-      "rf": "port a move from another site: describe it and write it anew in our tokens"
+      "rf": "port a move from another site: describe it and rewrite it in our own tokens"
     },
     "release": {
       "name": "Release",
       "title": "A release is one switch",
       "p1": "The site is a folder of files on a shared server, beside another product. A release touches neither Caddy nor the containers: a new build lands in a folder of its own, then one operation switches the <c>current</c> link. There is no downtime.",
-      "p2": "The last three releases are kept, and <c>--rollback</c> returns the previous one in a second. GitHub holds no key to the server: CI only checks, and a release runs from the laptop. That is a price paid on purpose: there is one developer, and the site can be rebuilt from any commit."
+      "p2": "The last three releases are kept, and <c>--rollback</c> returns the previous one in a second. GitHub holds no key to the server: CI only checks, and a release runs from the laptop. That is a deliberate trade-off: there is one developer, and the site can be rebuilt from any commit."
     },
     "days": {
       "name": "By day",
       "title": "The site day by day",
-      "p1": "First commit on {first}.2026, the last on {last}.2026: {commits} commits to <c>main</c> in {days} days. First the scaffold and home, then the pages of the works, then their chapters on home: a chapter should not retell what its page does not have yet.",
+      "p1": "First commit on {first}.2026, last on {last}.2026: {commits} commits to <c>main</c> in {days} days. First the scaffold and the home page, then the work pages, then their chapters on the home page: a chapter should not retell what its page does not have yet.",
       "p2": "Below is what reached <c>main</c> each day, from the commit messages. The tasks followed the plan in the repository, with no tracker."
     }
   },
@@ -167,11 +167,11 @@
     "oct30": "The scaffold: pages in two languages, themes and typefaces, motion tokens, the first home page",
     "oct31": "The capsule, footer and cursor, the story as a sideways ribbon of photographs, grain and the ruler",
     "nov01": "The domain, mail and the first release, link previews, the /poranaparu address",
-    "nov02": "Flow as a vault of notes, the page change along the logo’s slash, the Flow chapter on home",
+    "nov02": "Flow as a vault of notes, the page change along the logo’s slash, the Flow chapter on the home page",
     "nov03": "The Projects board, the pages of this site and LaTeX, chapters dressed as their apps",
     "nov04": "The footer in each page’s components, Experience and the CV in PDF, the Pora na Paru week",
     "nov05": "The week’s chapters and lesson windows, the capsule and previews in the product’s style",
-    "nov06": "The Pora na Paru chapter on real screens, this page brought to its end"
+    "nov06": "The Pora na Paru chapter on real screens, this page finished"
   },
   "journal": {
     "a0001": "A knowledge base in docs/",
@@ -179,16 +179,16 @@
     "a0003": "One app, no monorepo",
     "a0004": "CSS, Motion, GSAP and WebGL, each with its zone",
     "a0005": "An atomic release by switching a link",
-    "a0006": "The domain, a guard .ru and mail",
-    "a0007": "Gates from one command",
+    "a0006": "The domain, a defensive .ru and mail",
+    "a0007": "All gates in one command",
     "a0008": "The repository is open",
     "a0009": "A page is a feature, with import boundaries",
     "a0010": "A theme per page, two modes, one contract",
     "a0011": "Control skins are theme tokens",
-    "a0012": "Link previews from the site's tokens",
+    "a0012": "Link previews from the site’s tokens",
     "a0013": "Flow as a vault of notes",
     "a0014": "Projects as an editor",
-    "a0015": "Pora na Paru as the product's week",
+    "a0015": "Pora na Paru as the product’s week",
     "a0016": "A drawn scrollbar"
   }
 }
