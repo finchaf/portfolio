@@ -2,6 +2,7 @@
  * The link pictures: a field of the page's theme and a dark zone, parted by the slash of the logo.
  * The slash leans 20.2° in the logo's outline, which over the 630 px of a card is 232 px. Sizes are
  * for the 1200 px canvas; the colours are the themes' tokens, read in the mode each part declares.
+ * The one exception is Flow's window: its frame, shadow and graph keep fixed values, named on `.win`.
  */
 * {
   box-sizing: border-box;
@@ -418,6 +419,9 @@ body {
 }
 
 .win {
+  --win-frame: #3a3a3a;
+  --win-shade: #000;
+  --win-graph: #fff;
   position: absolute;
   top: 64px;
   left: 84px;
@@ -430,8 +434,8 @@ body {
   border-radius: 18px 0 0;
   background: var(--page);
   box-shadow:
-    0 0 0 1.5px #3a3a3a,
-    -30px 30px 60px -20px color-mix(in srgb, var(--accent) 22%, #000);
+    0 0 0 1.5px var(--win-frame),
+    -30px 30px 60px -20px color-mix(in srgb, var(--accent) 22%, var(--win-shade));
   color: var(--ink);
   color-scheme: dark;
   font-family: "Inter Variable", sans-serif;
@@ -590,16 +594,16 @@ body {
 
 .graph-line {
   fill: none;
-  stroke: rgb(255 255 255 / 0.2);
+  stroke: color-mix(in srgb, var(--win-graph) 20%, transparent);
   stroke-width: 0.9;
 }
 
 .graph-rule {
-  fill: rgb(255 255 255 / 0.62);
+  fill: color-mix(in srgb, var(--win-graph) 62%, transparent);
 }
 
 .graph-hub {
-  fill: rgb(255 255 255 / 0.92);
+  fill: color-mix(in srgb, var(--win-graph) 92%, transparent);
 }
 
 .graph-now {
