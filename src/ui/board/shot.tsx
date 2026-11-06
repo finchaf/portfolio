@@ -10,12 +10,18 @@ import homeDark from "./shots/home-dark.webp";
 import homeLight from "./shots/home-light.webp";
 import phoneFlowDark from "./shots/phone-flow-dark.webp";
 import phoneFlowLight from "./shots/phone-flow-light.webp";
+import phonePoraDark from "./shots/phone-pora-dark.webp";
+import phonePoraLight from "./shots/phone-pora-light.webp";
+import poraDark from "./shots/pora-dark.webp";
+import poraLight from "./shots/pora-light.webp";
 
 const SHOTS = {
   home: [homeLight, homeDark],
   homeCode: [homeCodeLight, homeCodeDark],
   flow: [flowLight, flowDark],
   phoneFlow: [phoneFlowLight, phoneFlowDark],
+  pora: [poraLight, poraDark],
+  phonePora: [phonePoraLight, phonePoraDark],
 } satisfies Record<string, [StaticImageData, StaticImageData]>;
 
 /**

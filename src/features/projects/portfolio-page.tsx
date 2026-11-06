@@ -6,6 +6,7 @@ import { useFormatter, useLocale, useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
 import { localizedPath } from "@/i18n/localized-path";
+import shareImages from "@/lib/share-images.json";
 import { REPOSITORY_URL, SITE_ORIGIN } from "@/lib/site";
 import { ButtonLink } from "@/ui/button-link";
 
@@ -25,6 +26,23 @@ const FINDINGS = [
   ["found2", "da37183"],
   ["found3", "3e2a2bf"],
   ["found4", "bbdeab3"],
+  ["found5", "41387ec"],
+] as const;
+
+/** The link pictures the section shows: the four worlds, as the chats get them. */
+const CARDS = [
+  ["home", "home"],
+  ["pora", "pora"],
+  ["flow", "flow"],
+  ["projects", "projects"],
+] as const;
+
+/** The skills of the repository, as they are typed. */
+const SKILLS = [
+  ["nt", "/nt"],
+  ["ar", "/ar"],
+  ["si", "/si"],
+  ["rf", "/rf"],
 ] as const;
 
 const STAGE = ["item1", "item2", "item3"] as const;
@@ -40,6 +58,7 @@ const RICH = {
   date: FACTS.date,
   unit: FACTS.unit,
   browser: FACTS.browser,
+  commits: FACTS.commits,
 };
 
 /** What stands under a section's words. */
@@ -211,6 +230,48 @@ function SectionDemo({ id }: { id: SectionId }) {
             </div>
           </figure>
         </div>
+      );
+    case "week":
+      return (
+        <div className="pj-form-shots">
+          <span className="pj-form-wide">
+            <Shot alt={t("sections.week.name")} name="pora" sizes="(min-width: 64rem) 40vw, 90vw" />
+          </span>
+          <span className="pj-form-phone">
+            <Shot name="phonePora" sizes="(min-width: 64rem) 12vw, 28vw" />
+          </span>
+        </div>
+      );
+    case "previews":
+      return (
+        <ul className="pj-cards">
+          {CARDS.map(([card, page]) => {
+            const key = `${locale}/${card}` as keyof typeof shareImages.files;
+            return (
+              <li key={card}>
+                {/* eslint-disable-next-line @next/next/no-img-element -- the file chats get, as it is. */}
+                <img
+                  alt={all(`${page}.meta.imageAlt` as never)}
+                  height={630}
+                  loading="lazy"
+                  src={`/og/${key}.png?v=${shareImages.files[key]}`}
+                  width={1200}
+                />
+              </li>
+            );
+          })}
+        </ul>
+      );
+    case "process":
+      return (
+        <dl className="pj-skills">
+          {SKILLS.map(([skill, command]) => (
+            <div key={skill}>
+              <dt>{command}</dt>
+              <dd>{t(`sections.process.${skill}`)}</dd>
+            </div>
+          ))}
+        </dl>
       );
     case "stage":
       return (

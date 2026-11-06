@@ -38,7 +38,7 @@ export const PROJECTS: readonly Project[] = [
       { key: "themes", section: "themes", kind: "tiles", x: 24, y: 374, w: 456, ratio: 2.2 },
       { key: "release", section: "release", kind: "lines", x: 500, y: 428, w: 156, ratio: 1.3 },
       { key: "gates", section: "gates", kind: "lines", x: 24, y: 604, w: 174, ratio: 0.83 },
-      { key: "flow", section: "form", kind: "shot", x: 214, y: 604, w: 266, ratio: 1.6 },
+      { key: "pora", section: "week", kind: "shot", x: 214, y: 604, w: 266, ratio: 1.6 },
       { key: "journal", section: "decisions", kind: "lines", x: 500, y: 572, w: 156, ratio: 0.65 },
     ],
   },

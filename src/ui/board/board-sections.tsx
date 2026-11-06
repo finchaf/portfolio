@@ -18,7 +18,7 @@ const OBJECTS: Record<string, ReactNode> = {
   themes: <ThemeTiles />,
   release: <ReleaseLines />,
   gates: <GateLines />,
-  flow: <Shot name="flow" sizes="(min-width: 64rem) 18vw, 40vw" />,
+  pora: <Shot name="pora" sizes="(min-width: 64rem) 18vw, 40vw" />,
   journal: <JournalLines />,
   notes: <Paper name="notes-calculus" sizes="(min-width: 64rem) 18vw, 40vw" />,
   snippets: <SnippetLines />,

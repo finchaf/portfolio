@@ -10,12 +10,12 @@
  *   home      document.documentElement.scrollHeight on /ru at 1440 × 900
  */
 export const FACTS = {
-  date: "03.11.2026",
-  commits: 135,
-  decisions: 14,
+  date: "05.11.2026",
+  commits: 156,
+  decisions: 16,
   checks: 14,
-  unit: 300,
-  browser: 257,
+  unit: 319,
+  browser: 307,
   themes: 4,
   languages: 2,
 } as const;
@@ -23,18 +23,18 @@ export const FACTS = {
 export const GATES = [
   ["Docs", 0.1],
   ["Public", 0.2],
-  ["Types", 2.3],
-  ["Lint", 13.7],
+  ["Types", 2.2],
+  ["Lint", 13.3],
   ["Format", 2.2],
   ["Content", 0],
-  ["Unit", 1],
-  ["Build", 11.3],
+  ["Unit", 1.3],
+  ["Build", 13.9],
   ["Bundle", 0.3],
-  ["Addresses", 15.5],
-  ["SEO", 9.1],
-  ["A11y", 35.8],
-  ["Motion", 210.2],
-  ["Themes", 36.8],
+  ["Addresses", 17],
+  ["SEO", 7.1],
+  ["A11y", 51.2],
+  ["Motion", 201.3],
+  ["Themes", 43.4],
 ] as const;
 
 /** Commands as they are typed: code, the same in every language. */
@@ -58,17 +58,20 @@ export const COMMITS_BY_DAY = [
   ["31.10", 61],
   ["01.11", 26],
   ["02.11", 10],
+  ["03.11", 8],
+  ["04.11", 7],
+  ["05.11", 6],
 ] as const;
 
 /** `python3 scripts/deploy.py --status`, newest first. */
 export const RELEASES = [
-  ["664494f84cee", "02.11", "hash what the Flow graph is made of"],
-  ["252bf73f2ffc", "02.11", "change pages along the slash of the logo"],
-  ["1a4994f45e0d", "01.11", "rewrite the story's lines and its ending"],
+  ["6534e6491252", "05.11", "record the Pora skin, motion and link-preview decisions"],
+  ["41387ec62038", "05.11", "wake the far story pictures from where the ribbon is going"],
+  ["7ff803273a1b", "04.11", "let the Projects chapter grow on a large monitor"],
 ] as const;
 
 /** Kilobytes of first-load JavaScript, gzip. */
-export const BUDGET = { limit: 280, home: 245.2, flow: 192.2, other: 178.2 } as const;
+export const BUDGET = { limit: 280, home: 250.7, flow: 239.9, other: 239.1 } as const;
 
 /** The records of the log, as the file names give them. */
 export const JOURNAL = [
@@ -86,4 +89,6 @@ export const JOURNAL = [
   "0012-link-previews",
   "0013-flow-as-a-vault",
   "0014-projects-as-an-editor",
+  "0015-pora-as-a-week",
+  "0016-drawn-scrollbar",
 ] as const;

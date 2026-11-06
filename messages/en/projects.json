@@ -59,9 +59,9 @@
       "name": "check.py",
       "text": "A real run of all 14 checks."
     },
-    "flow": {
-      "name": "Flow",
-      "text": "The page built as a base of notes in Obsidian."
+    "pora": {
+      "name": "Pora na paru",
+      "text": "The product's week: lessons are chapters, their windows as in its web app."
     },
     "journal": {
       "name": "Decisions",

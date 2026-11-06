@@ -51,13 +51,35 @@ export const SECTIONS = [
   },
   {
     id: "motion",
-    paragraphs: ["p1", "p2", "p3"],
+    paragraphs: ["p1", "p2", "p3", "p4"],
     refs: [
       code("src/shell/page-change.tsx"),
       code("src/shell/page-change.css"),
       code("src/motion/tokens.ts"),
+      code("src/motion/scene.ts"),
       code("docs/04-design-system/motion.md"),
       adr("0004-motion-stack"),
+    ],
+  },
+  {
+    id: "week",
+    paragraphs: ["p1", "p2", "p3"],
+    refs: [
+      code("src/features/pora/pora-page.tsx"),
+      code("src/lib/product-week.ts"),
+      code("src/ui/scroll-bar.tsx"),
+      adr("0015-pora-as-a-week"),
+      adr("0016-drawn-scrollbar"),
+    ],
+  },
+  {
+    id: "previews",
+    paragraphs: ["p1", "p2"],
+    refs: [
+      code("scripts/og/cards.ts"),
+      code("scripts/og/build.ts"),
+      code("src/lib/share-images.json"),
+      adr("0012-link-previews"),
     ],
   },
   {
@@ -78,6 +100,11 @@ export const SECTIONS = [
       adr("0002-static-export-on-caddy"),
       adr("0008-open-repository"),
     ],
+  },
+  {
+    id: "process",
+    paragraphs: ["p1", "p2"],
+    refs: [code("CLAUDE.md"), folder(".claude/skills"), adr("0007-process-and-gates")],
   },
   {
     id: "release",

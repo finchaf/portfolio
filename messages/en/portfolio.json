@@ -14,7 +14,7 @@
   "briefLabel": "In short",
   "brief": {
     "what": "What it is",
-    "whatText": "A site in two languages. Home, Flow and Projects are done, Pora na Paru is still a stub. It is plain files with no application server, served by Caddy.",
+    "whatText": "A site in two languages: home, Pora na Paru, Flow and Projects. It is plain files with no application server, served by Caddy.",
     "role": "My role",
     "roleText": "Design, front end, motion, infrastructure and copy.",
     "open": "What is open",
@@ -71,7 +71,7 @@
     "form": {
       "name": "Form",
       "title": "Every page has a form of its own",
-      "p1": "A portfolio usually describes the work in words. Here a page is built like the work itself: home is a stage that scrolls down and sideways, Flow looks like Obsidian because that case was a base of notes, and Projects looks like an editor because I am a designer.",
+      "p1": "A portfolio usually describes the work in words. Here a page is built like the work itself: home is a stage that scrolls down and sideways, Pora na Paru is a week of the product's own schedule, Flow looks like Obsidian because that case was a base of notes, and Projects looks like an editor because I am a designer.",
       "p2": "The price of that form is an engine per page. To keep them from growing together, pages are split by boundaries: a feature does not import another, and what they share moves down to <c>ui/</c> and <c>lib/</c>. It is an ESLint rule rather than an agreement: an import across a boundary fails the check."
     },
     "themes": {
@@ -92,8 +92,22 @@
       "name": "Motion",
       "title": "A page change along the slash of the logo",
       "p1": "Each tool has its zone: CSS does hover and focus, <c>ViewTransition</c> the page change, GSAP the scenes on scroll, canvas the graphs and lines. Durations and curves live in tokens, so an effect's code holds no numbers.",
-      "p2": "The first page change looked bad. A <c>ViewTransition</c> around the page makes one layer as tall as the page, 34,678 px on home on 03.11.2026, and the browser squeezes it to the screen. Now only the screen is captured, and the new page arrives along a 20.2° line, the lean of the slash in the logo. A step back in the capsule runs the other way.",
-      "p3": "In Firefox the shape stood at its end for the whole change: it does not interpolate a registered <c>@property</c> variable on these pseudo-elements. So the shapes are written out in <c>polygon</c> keyframes. WebDriver's screenshot does not show this, so that frame comes from a system capture of a real browser window."
+      "p2": "The first page change looked bad. A <c>ViewTransition</c> around the page makes one layer as tall as the page, 40,321 px on home on 05.11.2026, and the browser squeezes it to the screen. Now only the screen is captured, and the new page arrives along a 20.2° line, the lean of the slash in the logo. A step back in the capsule runs the other way.",
+      "p3": "In Firefox the shape stood at its end for the whole change: it does not interpolate a registered <c>@property</c> variable on these pseudo-elements. So the shapes are written out in <c>polygon</c> keyframes. WebDriver's screenshot does not show this, so that frame comes from a system capture of a real browser window.",
+      "p4": "Then it turned out the change was waiting for home. Leaving, it put every GSAP animation back to its start, even those never played, and arriving, it built its scenes inside the transition's update. In Zen the page stood still for 1.6 s after a click, and the slash flashed at the end. Now a page that leaves drops its animations where they stand, and a page that arrives builds its scenes after the slash: 165 ms from the click to the start of the change, measured 05.11.2026."
+    },
+    "week": {
+      "name": "Week",
+      "title": "The product instead of screenshots",
+      "p1": "The Pora na Paru page does not tell about the product, it shows it: it is the product's schedule in a browser. The week's lessons are chapters, a lesson's type says what is inside, and a lesson's window opens as in the product. The values come from its design system, made 1.25 times larger: here the cards are read, not skimmed.",
+      "p2": "The times are a real university's, while today, the line of the time and the lesson going on follow the reader's clock. The page is built long before anyone opens it, so a script sets the dates, and without it the week reads without them. The scrollbar is drawn, as the product's is: the system's went away when the window took the scroll, and the page shifted.",
+      "p3": "There is no blur under the lesson's window, though the product has one: Zen repainted the blurred screen on every frame of a change of lessons, and the window ran at 30 frames instead of 60. The glass stayed on the capsule, a strip of 540 by 41 px, where a measurement gave the same 60 frames."
+    },
+    "previews": {
+      "name": "Previews",
+      "title": "A link's picture from the same tokens",
+      "p1": "Every page has a link picture of its own in each language, twelve files. A script assembles them from the site's themes, strings and logo, photographs them in Playwright and writes the PNGs and a manifest with a hash of the sources. Flow, Pora na Paru and Projects show the page itself in a window.",
+      "p2": "A stale picture fails the checks: Unit compares the hash with the manifest. Flow's card draws the real graph, and its simulation ends on different coordinates on arm64 and x64, so the hash counts the graph's notes and links, not its points."
     },
     "gates": {
       "name": "Checks",
@@ -104,13 +118,24 @@
       "found1": "On the Flow card the graph's simulation ends on different coordinates on arm64 and x64. It was green on the laptop and red in CI. Now the hash counts what the graph is made of, not where it lands.",
       "found2": "The test config differed from production, so the gate stayed green while the server's 404 would have named itself and lost HSTS. The header block now matches line for line, and the gate looks at the 404's headers.",
       "found3": "Gecko loses a thin diagonal gradient at random, and the hatching fell apart in Firefox. It is now an SVG mask, and a test keeps such gradients out of the stylesheets.",
-      "found4": "Shadows took the colour of the text, which on a dark page is a glow. In the dark mode a shadow is now transparent."
+      "found4": "Shadows took the colour of the text, which on a dark page is a glow. In the dark mode a shadow is now transparent.",
+      "found5": "The story's test on home failed only in CI. It was a race in the scene itself: after a jump the ribbon was still catching up with the scroll, and the far photographs never woke. Now the reach is counted from where the scroll sends the ribbon."
     },
     "decisions": {
       "name": "Decisions",
       "title": "The decision first, the code next",
       "p1": "Whatever is expensive to undo is written down before the code: the context, the options, the choice and when to revisit it. An accepted record is never rewritten, a different decision is a new record.",
       "p2": "Static was not chosen to save money: the server had room. It is faster, more reliable and safer for the neighbour on that server, and the animation lives in the browser anyway. The repository has been open since the first commit, because what enters a history stays in old commits. The code is MIT, the texts and images are reserved, and GSAP stays a dependency that is never copied in."
+    },
+    "process": {
+      "name": "Process",
+      "title": "I decide, a tool writes",
+      "p1": "A task begins in the plan and ends on the same branch: the checks, a PR, green CI and a fast-forward of <c>main</c>, every commit signed. A look is first chosen on a live HTML page of options in the real tokens, and only then does the site change. I look in Zen, on Gecko: some bugs live only there.",
+      "p2": "Claude Code writes the code: it is a co-author of all {commits} commits in <c>main</c>. The repeated steps are skills in the repository, and the rules that may not be broken are in <c>CLAUDE.md</c>. What to build, how it looks and what goes live, I decide.",
+      "nt": "start a task: a branch, the decisions, the build, the checks, a stop before the push",
+      "ar": "audit whatever is not in main yet: bugs, motion, accessibility, budgets",
+      "si": "land it: commits, a PR, CI, a fast-forward of main",
+      "rf": "port a move from another site: describe it and write it anew in our tokens"
     },
     "release": {
       "name": "Release",
@@ -122,9 +147,9 @@
       "name": "Stage",
       "title": "What is not done yet",
       "p1": "The site is a work in progress, and the plan in the repository shows it.",
-      "item1": "The Pora na Paru page is still a stub.",
+      "item1": "The Pora na Paru chapter on home still has stand-ins instead of screens.",
       "item2": "The story's photographs are over budget: 2.12 MB in all against a limit of 1.5 MB, measured 01.11.2026.",
-      "item3": "The page change and the Flow chapter have not been tested on a real phone or in real Safari yet."
+      "item3": "The page change, the chapters on home and the Pora na Paru week have not been tested on a real iPhone or in real Safari."
     }
   },
   "journal": {
@@ -141,6 +166,8 @@
     "a0011": "Control skins are theme tokens",
     "a0012": "Link previews from the site's tokens",
     "a0013": "Flow as a vault of notes",
-    "a0014": "Projects as an editor"
+    "a0014": "Projects as an editor",
+    "a0015": "Pora na Paru as the product's week",
+    "a0016": "A drawn scrollbar"
   }
 }
