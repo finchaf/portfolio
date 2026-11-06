@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 #
-# commit-msg hook: Conventional Commits, a lower-case description, body lines of at most 100
-# characters. CI runs this same file over every commit of a pull request.
+# commit-msg hook: Conventional Commits, a lower-case description, a subject of at most 72
+# characters and body lines of at most 100. CI runs this same file over every commit of a pull
+# request, with STRICT set.
 #
 #   <type>(<optional scope>)<optional !>: <description>
 #
@@ -15,9 +16,17 @@ commit_msg_file="$1"
 # First non-empty, non-comment line is the subject we validate.
 subject="$(awk 'NF && $0 !~ /^#/ { print; exit }' "$commit_msg_file")"
 
-# Machine-generated commits pass untouched.
-if printf '%s' "$subject" | grep -Eq '^(Merge |Revert |fixup!|squash!)'; then
+# Machine-generated commits pass untouched. git's own revert subject is welcome on main; a fixup!,
+# a squash! or a merge is for a branch only, so CI sets STRICT and rejects it before a fast-forward.
+if printf '%s' "$subject" | grep -Eq '^Revert '; then
   exit 0
+fi
+if printf '%s' "$subject" | grep -Eq '^(Merge |fixup!|squash!)'; then
+  if [ -z "${STRICT:-}" ]; then
+    exit 0
+  fi
+  printf '\n  ✖  Commit rejected: rebase fixup!, squash! and merge commits away.\n\n' >&2
+  exit 1
 fi
 
 # Dependabot capitalises its description and links release notes on long lines, and no setting
@@ -66,8 +75,11 @@ if printf '%s' "$subject" | grep -Eq '\.$'; then
   exit 1
 fi
 
-if [ "${#subject}" -gt 72 ]; then
-  printf '\n  ⚠  Subject is %s chars (recommended ≤ 72).\n\n' "${#subject}" >&2
+# Counted in characters, not bytes, whatever the locale: a subject may quote a Russian word.
+length="$(printf '%s' "$subject" | python3 -c 'import sys; print(len(sys.stdin.buffer.read().decode()))')"
+if [ "$length" -gt 72 ]; then
+  printf '\n  ✖  Commit rejected: the subject is %s characters, at most 72.\n\n' "$length" >&2
+  exit 1
 fi
 
 # Python, not awk: macOS's awk measures bytes, and a Cyrillic letter is two of them.
@@ -78,6 +90,9 @@ import sys
 with open(sys.argv[1], encoding="utf-8") as handle:
     for number, line in enumerate(handle, start=1):
         text = line.rstrip("\n")
+        # `git commit -v` puts the diff below this line, and git drops everything after it.
+        if text[1:] == " ------------------------ >8 ------------------------":
+            break
         if number > 1 and not text.startswith("#") and len(text) > 100:
             print(f"     line {number}: {len(text)} chars")
 PYTHON

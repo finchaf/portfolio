@@ -1,7 +1,8 @@
 name: Commit messages
 
 # Every commit of a pull request through the hook a developer's clone runs, so the two can never
-# disagree. Nothing to install: bash and Python are on the runner.
+# disagree. STRICT turns away the fixup! and merge commits the hook lets through locally, since a
+# fast-forward would put them on main. Nothing to install: bash and Python are on the runner.
 on:
   pull_request:
 
@@ -26,6 +27,7 @@ jobs:
 
       - name: Validate commit messages
         env:
+          STRICT: "1"
           BASE: ${{ github.event.pull_request.base.sha }}
           HEAD: ${{ github.event.pull_request.head.sha }}
         run: |
