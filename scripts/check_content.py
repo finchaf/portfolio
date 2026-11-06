@@ -9,6 +9,8 @@ nothing in a build says so: the types come from the Russian catalog alone.
 1. `messages/ru/` and `messages/en/` hold the same files, the vault's notes among them.
 2. A catalog has exactly the keys of its twin; a difference is named by its dotted path.
 3. Keys are camelCase and every value is non-empty text.
+4. A value and its twin name the same arguments and rich-text tags: `{date}` or `<c>` lost in one
+   language is a formatting error, or the wrong text, on the page that uses it.
 
 Exit 0 when there is no finding, 1 otherwise; every finding is printed.
 """
@@ -24,6 +26,8 @@ from typing import Iterator
 REPO = Path(__file__).resolve().parent.parent
 MESSAGES = REPO / "messages"
 KEY = re.compile(r"^[a-z][a-zA-Z0-9]*$")
+ARGUMENT = re.compile(r"\{(\w+)[,}]")
+TAG = re.compile(r"</?(\w+)>")
 
 
 def leaves(value: object, path: str = "") -> Iterator[tuple[str, object]]:
@@ -32,6 +36,11 @@ def leaves(value: object, path: str = "") -> Iterator[tuple[str, object]]:
             yield from leaves(child, f"{path}.{key}" if path else key)
     else:
         yield path, value
+
+
+def names(value: object) -> tuple[set[str], set[str]]:
+    text = value if isinstance(value, str) else ""
+    return set(ARGUMENT.findall(text)), set(TAG.findall(text))
 
 
 def main() -> int:
@@ -59,6 +68,9 @@ def main() -> int:
                     findings.append(f"{locale}/{name}: {key} is not camelCase")
                 if not isinstance(value, str) or not value.strip():
                     findings.append(f"{locale}/{name}: {key} is not text")
+        for key in sorted(set(catalogs["ru"]) & set(catalogs["en"])):
+            if names(catalogs["ru"][key]) != names(catalogs["en"][key]):
+                findings.append(f"{name}: {key} has other arguments or tags in one language")
 
     print("\n".join(findings))
     return 1 if findings else 0
