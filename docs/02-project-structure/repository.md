@@ -30,7 +30,8 @@ portfolio/
 ├── deploy/Caddyfile.test        блок Caddy для гейтов и просмотра
 ├── docs/                        база знаний
 ├── .claude/                     скиллы `/nt`, `/si`, `/ar`, `/rf` и их агенты
-├── .githooks/, .github/
+├── .githooks/                   хук сообщений коммитов, его же гоняет CI
+├── .github/                     CI, Dependabot, шаблоны Issues и PR, картинки README, карточка репозитория
 └── expected-build.json          какие страницы обязаны появиться, бюджет JS
 ```
 
