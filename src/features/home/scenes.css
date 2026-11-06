@@ -1923,6 +1923,13 @@
       will-change: transform;
     }
 
+    /* Stuck, a stage is pinned to the screen as the capsule is: on an iPhone a stuck `sticky` shakes. */
+    .chapter-stage[data-held] {
+      position: fixed;
+      right: 0;
+      left: 0;
+    }
+
     .chapter[data-chapter="projects"] .chapter-stage {
       background-image: radial-gradient(var(--line) 1px, transparent 1px);
       background-size: 1.5rem 1.5rem;

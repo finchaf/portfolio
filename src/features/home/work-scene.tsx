@@ -179,6 +179,55 @@ function handOver(from: HTMLElement, to: HTMLElement) {
 }
 
 /**
+ * A stage that holds by `sticky` shakes on an iPhone. Safari scrolls the page in another process, to
+ * a fraction of a pixel, and places a stuck layer anew from its own rounded scroll each time the page
+ * changes what it shows, which a scene does every frame: a pixel up, a pixel down. While a stage is
+ * stuck it is pinned `fixed` instead, as the capsule is, and holds still. Both put it at the top of
+ * the screen, so the change is not seen however late the scroll reports. Going up it lets go half a
+ * screen early, so that it is never pinned past the chapter's top; at the end it lets go half a
+ * screen late, under the next sheet, which covers it from where it would have scrolled away.
+ */
+function holdStages(chapters: HTMLElement[]) {
+  let holds: { stage: HTMLElement; top: number; release: number }[] = [];
+  let early = 0;
+
+  const measure = () => {
+    early = window.innerHeight / 2;
+    holds = chapters.flatMap((chapter) => {
+      const stage = chapter.querySelector<HTMLElement>("[data-stage]");
+      if (!stage) return [];
+      const top = toTop(chapter);
+      return [{ stage, top, release: top + chapter.offsetHeight - stage.offsetHeight }];
+    });
+  };
+  const apply = (scroll: number, direction: number) => {
+    const lead = direction < 0 ? early : 1;
+    for (const { stage, top, release } of holds) {
+      stage.toggleAttribute("data-held", scroll >= top + lead && scroll <= release + early);
+    }
+  };
+
+  const watch = ScrollTrigger.create({
+    start: 0,
+    end: "max",
+    onUpdate: (self) => {
+      apply(self.scroll(), self.direction);
+    },
+    onRefreshInit: () => {
+      for (const { stage } of holds) stage.removeAttribute("data-held");
+    },
+    onRefresh: (self) => {
+      measure();
+      apply(self.scroll(), 1);
+    },
+  });
+  return () => {
+    watch.kill();
+    for (const { stage } of holds) stage.removeAttribute("data-held");
+  };
+}
+
+/**
  * While a work fills the screen, the capsule takes its theme; the page it marks stays the one the
  * reader is on. It is colour rather than motion, so it stays with reduced motion too.
  */
@@ -269,7 +318,9 @@ export function WorkScene({ children }: { children: ReactNode }) {
       if (poraStage) rise(pora, poraStage, sinking);
       if (flowStage) rise(flow, flowStage, poraStage);
       rise(after, after, stage(projects));
+      const undoHolds = holdStages(chapters);
       return () => {
+        undoHolds();
         undoPora();
         undoFlow();
         undoProjects();
