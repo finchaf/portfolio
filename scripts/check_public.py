@@ -3,10 +3,12 @@
 
     python3 scripts/check_public.py
 
-1. No tracked file links into docs/private.
-2. On a machine with the private part, no tracked file and no commit of the branch holds a word
-   from docs/private/forbidden-words.txt, one lower-case word or phrase per line. The list is
-   private by nature, so CI, which has no such file, runs only the first rule.
+A file git would commit is one it tracks or one it does not ignore yet.
+
+1. No file git would commit links into docs/private.
+2. On a machine with the private part, no file git would commit and no commit message on any ref
+   holds a word from docs/private/forbidden-words.txt, one lower-case word or phrase per line. The
+   list is private by nature, so CI, which has no such file, runs only the first rule.
 3. A word that is also in docs/private/allowed-in-messages.txt may stand in messages/, the strings
    of the site itself, and nowhere else: a commit message or a code file with it still fails.
 """
@@ -32,7 +34,8 @@ def git(*args: str) -> str:
                           text=True).stdout
 
 
-def tracked() -> dict[str, str]:
+def candidate_files() -> dict[str, str]:
+    """The text of every file git would commit, by its path."""
     texts = {}
     for name in git("ls-files", "--cached", "--others", "--exclude-standard").splitlines():
         path = REPO / name
@@ -54,19 +57,20 @@ def word_list(path: Path) -> list[str]:
 
 def main() -> int:
     findings = []
-    texts = tracked()
+    texts = candidate_files()
     for name, text in texts.items():
         if LINK_INTO_PRIVATE.search(text):
             findings.append(f"{name}: links into the private part")
 
     if WORDS.exists():
         allowed = word_list(ALLOWED_IN_STRINGS)
-        history = git("log", "--format=%H%n%B", "--all")
+        history = git("log", "--format=%H%n%B", "--all").lower()
+        lowered = {name: text.lower() for name, text in texts.items()}
         for word in word_list(WORDS):
-            findings += [f"{name}: holds a forbidden word" for name, text in texts.items()
-                         if word in text.lower()
+            findings += [f"{name}: holds a forbidden word" for name, text in lowered.items()
+                         if word in text
                          and not (word in allowed and name.startswith(STRINGS))]
-            if word in history.lower():
+            if word in history:
                 findings.append("a commit message holds a forbidden word")
     else:
         print("no private word list here: only the links were checked")
