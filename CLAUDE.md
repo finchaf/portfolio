@@ -30,9 +30,9 @@ texts, cases or what the site may show. Commit there separately.
   ESLint holds this. Every page is in `src/lib/pages.ts`.
 - **No text in the markup.** Strings live in `messages/`, in both languages.
 - **Only theme tokens** (ADR-0010). Colours and fonts come from `src/themes/`, in both modes.
-- **A feature's classes carry its prefix** (`pj-` for Projects and the shared board in `src/ui/board/`, `pora-` for Pora na Paru, `pair-` for the Pora chapter, `map-` for the
-  Flow chapter, `desk-` for the Projects chapter, `exp-` and `talk-` for the CV and the last call, `footer-` for the footer, `lost-` for the 404). The stylesheets of every page visited stay loaded, so a short name
-  breaks another page on a route.
+- **A block's classes carry its prefix**, as `pj-` for Projects and `pora-` for Pora na Paru; every prefix
+  and its owner is listed in `docs/02-project-structure/repository.md`. The stylesheets of every page
+  visited stay loaded, so a short name breaks another page on a route.
 - **No browser scrollbar** (ADR-0016): the document hides it, and a new scrolling area puts `ScrollBar` from `src/ui/` right
   after its scroller. A modal layer calls `announceTopLayer()` from `src/ui/top-layer.ts` after `showModal()`, or the site's
   cursor stays under it; no full-screen `backdrop-filter` under anything that moves (Gecko re-blurs every frame, ADR-0015); a small glass, as the Pora capsule's, is measured in Zen first (ADR-0011).

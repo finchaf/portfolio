@@ -29,7 +29,8 @@ const BOUNDARIES = [
     target: `./src/features/${feature}`,
     from: "./src/features",
     except: [`./${feature}`],
-    message: "A feature does not import another: what they share moves down to ui/ or lib/.",
+    message:
+      "A feature does not import another: what they share moves down to ui/, motion/ or lib/.",
   })),
   ...["./src/ui", "./src/motion", "./src/lib", "./src/i18n", "./src/themes"].map((target) => ({
     target,
