@@ -1,6 +1,6 @@
 import "./after-work.css";
 
-import Image from "next/image";
+import { Image } from "@/ui/image";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 
@@ -10,7 +10,7 @@ import { GITHUB_URL, TELEGRAM_HANDLE, TELEGRAM_URL } from "@/lib/site";
 import { LocalClock } from "@/ui/local-clock";
 
 import { DriftTitle } from "./drift-title";
-import portrait from "./portrait.webp";
+import portrait from "./portrait.avif";
 
 /** The rows of work, by the year each began, the latest first; a path is where the fact goes on. */
 const ROWS = [

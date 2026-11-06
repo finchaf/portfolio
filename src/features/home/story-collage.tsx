@@ -1,11 +1,11 @@
-import Image from "next/image";
+import { Image } from "@/ui/image";
 import { useTranslations } from "next-intl";
 
-import airport from "./photos/scrap-airport.webp";
-import book from "./photos/scrap-book.webp";
-import child from "./photos/scrap-child.webp";
-import desk from "./photos/scrap-desk.webp";
-import hat from "./photos/scrap-hat.webp";
+import airport from "./photos/scrap-airport.avif";
+import book from "./photos/scrap-book.avif";
+import child from "./photos/scrap-child.avif";
+import desk from "./photos/scrap-desk.avif";
+import hat from "./photos/scrap-hat.avif";
 import { SCRAPS, SCRAPS_NARROW_HEIGHT } from "./story-data";
 
 const PICTURES = { airport, book, child, desk, hat };

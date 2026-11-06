@@ -477,7 +477,7 @@ test.describe("the home page in motion", () => {
   test("asks for the pictures only when the story is near", async ({ page }) => {
     const photos: string[] = [];
     page.on("response", (response) => {
-      if (response.url().endsWith(".webp")) photos.push(response.url());
+      if (/\.(?:avif|webp)$/.test(response.url())) photos.push(response.url());
     });
     await page.goto(HOME);
     await page.waitForLoadState("networkidle");

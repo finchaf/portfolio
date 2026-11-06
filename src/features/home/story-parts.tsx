@@ -1,4 +1,6 @@
-import Image, { type StaticImageData } from "next/image";
+import type { StaticImageData } from "next/image";
+
+import { Image } from "@/ui/image";
 import type { ReactNode } from "react";
 
 import { BLEEDS, SPANS } from "./story-data";

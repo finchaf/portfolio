@@ -1,25 +1,27 @@
 import "./board.css";
 
-import Image, { type StaticImageData } from "next/image";
+import type { StaticImageData } from "next/image";
 
-import chapterFlowDark from "./shots/chapter-flow-dark.webp";
-import chapterFlowLight from "./shots/chapter-flow-light.webp";
-import chapterPoraDark from "./shots/chapter-pora-dark.webp";
-import chapterPoraLight from "./shots/chapter-pora-light.webp";
-import chapterProjectsDark from "./shots/chapter-projects-dark.webp";
-import chapterProjectsLight from "./shots/chapter-projects-light.webp";
-import flowDark from "./shots/flow-dark.webp";
-import flowLight from "./shots/flow-light.webp";
-import homeCodeDark from "./shots/home-code-dark.webp";
-import homeCodeLight from "./shots/home-code-light.webp";
-import homeDark from "./shots/home-dark.webp";
-import homeLight from "./shots/home-light.webp";
-import phoneFlowDark from "./shots/phone-flow-dark.webp";
-import phoneFlowLight from "./shots/phone-flow-light.webp";
-import phonePoraDark from "./shots/phone-pora-dark.webp";
-import phonePoraLight from "./shots/phone-pora-light.webp";
-import poraDark from "./shots/pora-dark.webp";
-import poraLight from "./shots/pora-light.webp";
+import { Image } from "../image";
+
+import chapterFlowDark from "./shots/chapter-flow-dark.avif";
+import chapterFlowLight from "./shots/chapter-flow-light.avif";
+import chapterPoraDark from "./shots/chapter-pora-dark.avif";
+import chapterPoraLight from "./shots/chapter-pora-light.avif";
+import chapterProjectsDark from "./shots/chapter-projects-dark.avif";
+import chapterProjectsLight from "./shots/chapter-projects-light.avif";
+import flowDark from "./shots/flow-dark.avif";
+import flowLight from "./shots/flow-light.avif";
+import homeCodeDark from "./shots/home-code-dark.avif";
+import homeCodeLight from "./shots/home-code-light.avif";
+import homeDark from "./shots/home-dark.avif";
+import homeLight from "./shots/home-light.avif";
+import phoneFlowDark from "./shots/phone-flow-dark.avif";
+import phoneFlowLight from "./shots/phone-flow-light.avif";
+import phonePoraDark from "./shots/phone-pora-dark.avif";
+import phonePoraLight from "./shots/phone-pora-light.avif";
+import poraDark from "./shots/pora-dark.avif";
+import poraLight from "./shots/pora-light.avif";
 
 const SHOTS = {
   home: [homeLight, homeDark],
@@ -34,8 +36,8 @@ const SHOTS = {
 } satisfies Record<string, [StaticImageData, StaticImageData]>;
 
 /** The CV's first page as it is printed, light in both modes as the paper is: `shots.mjs` sets it. */
-export { default as cvEn } from "./shots/cv-en.webp";
-export { default as cvRu } from "./shots/cv-ru.webp";
+export { default as cvEn } from "./shots/cv-en.avif";
+export { default as cvRu } from "./shots/cv-ru.avif";
 
 /**
  * A frame of the built site in the reader's mode: both are in the HTML, and the one the stylesheet

@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { Image } from "@/ui/image";
 import { useEffect, useRef, useState } from "react";
 
 export interface Wall {

@@ -1,16 +1,16 @@
 import { useTranslations } from "next-intl";
 
-import buildIcon from "./photos/build-icon.webp";
-import buildLayers from "./photos/build-layers.webp";
-import buildUpdate from "./photos/build-update.webp";
-import moscowLecture from "./photos/moscow-lecture.webp";
-import moscowWindow from "./photos/moscow-window.webp";
-import msu from "./photos/msu.webp";
-import notesLecture from "./photos/notes-lecture.webp";
-import notesNight from "./photos/notes-night.webp";
-import plane from "./photos/plane.webp";
-import room from "./photos/room.webp";
-import stage from "./photos/stage.webp";
+import buildIcon from "./photos/build-icon.avif";
+import buildLayers from "./photos/build-layers.avif";
+import buildUpdate from "./photos/build-update.avif";
+import moscowLecture from "./photos/moscow-lecture.avif";
+import moscowWindow from "./photos/moscow-window.avif";
+import msu from "./photos/msu.avif";
+import notesLecture from "./photos/notes-lecture.avif";
+import notesNight from "./photos/notes-night.avif";
+import plane from "./photos/plane.avif";
+import room from "./photos/room.avif";
+import stage from "./photos/stage.avif";
 import { StoryCollage } from "./story-collage";
 import { CHAPTERS, RIBBON_BLEEDS, RIBBON_HOLD, RIBBON_SPANS, SPANS } from "./story-data";
 import { LaunchSheet, NightLog, StoryBranches, StoryScore } from "./story-figures";

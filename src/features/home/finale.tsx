@@ -1,6 +1,6 @@
 import "./after-work.css";
 
-import Image from "next/image";
+import { Image } from "@/ui/image";
 import { useLocale, useTranslations } from "next-intl";
 
 import { isLocale } from "@/i18n/locales";
@@ -11,7 +11,7 @@ import { TelegramCode } from "@/ui/telegram-code";
 
 import { ChatDraft } from "./chat-draft";
 import { DriftTitle } from "./drift-title";
-import face from "./portrait-small.webp";
+import face from "./portrait-small.avif";
 
 /** The face beside the name is the same person the name says: a screen reader hears it once. */
 const DECORATIVE = "";

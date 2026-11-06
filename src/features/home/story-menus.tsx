@@ -1,7 +1,7 @@
-import Image from "next/image";
+import { Image } from "@/ui/image";
 import { useTranslations } from "next-intl";
 
-import menus from "./photos/menus.webp";
+import menus from "./photos/menus.avif";
 import { FIELD, FIELD_RATIO, MENUS, SPRITE } from "./story-data";
 
 /** Every frame shows a cell of the one picture, which says all there is to say by itself. */

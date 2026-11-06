@@ -1,6 +1,8 @@
 import "./work-pora.css";
 
-import Image, { type StaticImageData } from "next/image";
+import type { StaticImageData } from "next/image";
+
+import { Image } from "@/ui/image";
 import { useTranslations } from "next-intl";
 import type { CSSProperties, ReactNode } from "react";
 
@@ -9,23 +11,23 @@ import { ButtonLink } from "@/ui/button-link";
 
 import { Chapter, Stop } from "./chapter";
 import { DEVICES, LAND, PAIR_STOPS, type Place } from "./pair-data";
-import androidCardDark from "./pair/android-card-dark.webp";
-import androidCardLight from "./pair/android-card-light.webp";
-import androidDark from "./pair/android-home-dark.webp";
-import androidLight from "./pair/android-home-light.webp";
-import appStore from "./pair/app-store.webp";
-import iphone from "./pair/device-iphone.webp";
-import pixel from "./pair/device-pixel.webp";
-import laDark from "./pair/ios-la-dark.webp";
-import laLight from "./pair/ios-la-light.webp";
-import lockDark from "./pair/ios-lock-dark.webp";
-import lockLight from "./pair/ios-lock-light.webp";
-import barDark from "./pair/safari-bar-dark.webp";
-import barLight from "./pair/safari-bar-light.webp";
-import cardDark from "./pair/web-card-dark.webp";
-import cardLight from "./pair/web-card-light.webp";
-import weekDark from "./pair/web-week-dark.webp";
-import weekLight from "./pair/web-week-light.webp";
+import androidCardDark from "./pair/android-card-dark.avif";
+import androidCardLight from "./pair/android-card-light.avif";
+import androidDark from "./pair/android-home-dark.avif";
+import androidLight from "./pair/android-home-light.avif";
+import appStore from "./pair/app-store.avif";
+import iphone from "./pair/device-iphone.avif";
+import pixel from "./pair/device-pixel.avif";
+import laDark from "./pair/ios-la-dark.avif";
+import laLight from "./pair/ios-la-light.avif";
+import lockDark from "./pair/ios-lock-dark.avif";
+import lockLight from "./pair/ios-lock-light.avif";
+import barDark from "./pair/safari-bar-dark.avif";
+import barLight from "./pair/safari-bar-light.avif";
+import cardDark from "./pair/web-card-dark.avif";
+import cardLight from "./pair/web-card-light.avif";
+import weekDark from "./pair/web-week-dark.avif";
+import weekLight from "./pair/web-week-light.avif";
 
 const STORES = ["appStore", "googlePlay", "ruStore"] as const;
 const FACTS = ["stage", "clients", "code"] as const;

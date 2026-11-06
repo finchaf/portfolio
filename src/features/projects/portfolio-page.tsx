@@ -2,7 +2,7 @@ import "@/ui/board/board.css";
 import "./projects.css";
 import "./portfolio.css";
 
-import Image from "next/image";
+import { Image } from "@/ui/image";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
