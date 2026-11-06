@@ -39,7 +39,8 @@ texts, cases or what the site may show. Commit there separately.
 - **The first screen never waits for animation.** Content is in the HTML and visible without
   JavaScript; every effect honours `prefers-reduced-motion`.
 - **Fonts and media only with clear rights.** GSAP stays an npm dependency: its files are never
-  vendored into this repository.
+  vendored into this repository. A picture is AVIF beside its WebP source (`scripts/media/avif.mjs`)
+  and is shown through `Image` from `src/ui/image.tsx`: Turbopack gives an AVIF no size of its own.
 - **Never work on `main`.** A branch, a PR, green checks, then a fast-forward. Atomic Conventional
   Commits, signed; `python3 scripts/check.py` before every commit.
 - **Production is shared with another product.** Nothing changes on the server except `portfolio/`;
