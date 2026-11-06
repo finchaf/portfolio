@@ -40,12 +40,14 @@ for (const { address, theme, display } of WORLDS) {
     });
   }
 
-  test(`${address} needs no script for its theme`, async ({ browser }) => {
-    const context = await browser.newContext({ javaScriptEnabled: false, colorScheme: "dark" });
-    const page = await context.newPage();
-    await page.goto(address);
-    await expect(page.locator("body")).toHaveCSS("background-color", pageColor(theme, "dark"));
-    await context.close();
+  // A group with no title of its own: the options hold for this one test, and its name stays.
+  test.describe(() => {
+    test.use({ javaScriptEnabled: false, colorScheme: "dark" });
+
+    test(`${address} needs no script for its theme`, async ({ page }) => {
+      await page.goto(address);
+      await expect(page.locator("body")).toHaveCSS("background-color", pageColor(theme, "dark"));
+    });
   });
 }
 
