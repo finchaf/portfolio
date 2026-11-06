@@ -26,13 +26,14 @@ import urllib.error
 import urllib.request
 from email.message import Message
 from pathlib import Path
-from typing import NamedTuple, NoReturn, Optional
+from typing import NamedTuple, NoReturn
 
 REPO = Path(__file__).resolve().parent.parent
 OUT = REPO / "out"
 HOST = "poranaparu-prod"
 ROOT = "/opt/poranaparu/portfolio"
 SITE = "https://finchaf.com"
+PLAIN = SITE.replace("https://", "http://", 1)
 # Every other name of the site: each answers with a redirect to `SITE`.
 OTHER_NAMES = ("https://www.finchaf.com", "https://finchaf.ru", "https://www.finchaf.ru")
 KEEP = 3
@@ -49,6 +50,15 @@ class Answer(NamedTuple):
     body: bytes
 
 
+class Inputs(NamedTuple):
+    """What the checks compare the live site with, read before anything on the server changes."""
+
+    policies: dict[str, str]
+    # Each page's address, with the bytes it must answer with when the build is checked.
+    pages: dict[str, bytes | None]
+    missing: bytes | None
+
+
 class NoRedirects(urllib.request.HTTPRedirectHandler):
     def redirect_request(self, *_args: object, **_kwargs: object) -> None:
         return None
@@ -61,15 +71,20 @@ def say(message: str) -> None:
     print(f"deploy: {message}", flush=True)
 
 
-def die(message: str) -> NoReturn:
+def warn(message: str) -> None:
     print(f"deploy: {message}", file=sys.stderr, flush=True)
+
+
+def die(message: str) -> NoReturn:
+    warn(message)
     raise SystemExit(1)
 
 
 def git(*args: str) -> str:
-    return subprocess.run(
-        ("git", *args), cwd=REPO, capture_output=True, text=True, check=True
-    ).stdout.strip()
+    result = subprocess.run(("git", *args), cwd=REPO, capture_output=True, text=True, check=False)
+    if result.returncode != 0:
+        die(f"git {' '.join(args)}\n{result.stderr.strip()}")
+    return result.stdout.strip()
 
 
 def remote(command: str) -> str:
@@ -100,12 +115,12 @@ def releases() -> list[str]:
     return [name for name in remote(f"ls -1t {ROOT}/releases").split() if RELEASE.match(name)]
 
 
-def live() -> Optional[str]:
+def live() -> str | None:
     target = remote(f"readlink {ROOT}/current || true").strip()
     return target.rsplit("/", 1)[-1] or None
 
 
-def upload(release: str, current: Optional[str]) -> None:
+def upload(release: str, current: str | None) -> None:
     """Copy out/ into a release of its own, whole or not at all.
 
     Files with the content of the live release become hard links to it. Only the content counts:
@@ -117,7 +132,8 @@ def upload(release: str, current: Optional[str]) -> None:
     command = ["rsync", "-rl", "--checksum"]
     if current:
         command.append(f"--link-dest={ROOT}/releases/{current}/")
-    subprocess.run((*command, f"{OUT}/", f"{HOST}:{incoming}/"), check=True)
+    if subprocess.run((*command, f"{OUT}/", f"{HOST}:{incoming}/"), check=False).returncode != 0:
+        die("rsync failed: the release was not sent, the live one is untouched")
     # Caddy's root has dropped the right to read past the modes, so only «others» lets it in.
     remote(f"chmod -R a+rX,go-w {incoming} && mv -T {incoming} {ROOT}/releases/{release}")
 
@@ -147,7 +163,29 @@ def fetch(url: str, **headers: str) -> Answer:
 
 def policies() -> dict[str, str]:
     text = (REPO / "deploy" / "Caddyfile.test").read_text(encoding="utf8")
-    return {name: re.findall(rf'^\s*{name} "(.+)"$', text, re.M)[0] for name in POLICIES}
+    found: dict[str, str] = {}
+    for name in POLICIES:
+        values = re.findall(rf'^\s*{name} "(.+)"$', text, re.M)
+        if not values:
+            die(f'deploy/Caddyfile.test has no line {name} "...": nothing to check the site with')
+        found[name] = values[0]
+    return found
+
+
+def read_inputs(built: bool) -> Inputs:
+    """Everything the checks need, so a broken file stops the run before the switch."""
+    expected = policies()
+    try:
+        names = json.loads((REPO / "expected-build.json").read_text(encoding="utf8"))["pages"]
+        pages = {
+            "/" + page.removesuffix(".html"): (OUT / page).read_bytes() if built else None
+            for page in names
+            if not page.startswith(("_", "404"))
+        }
+        missing = (OUT / "404.html").read_bytes() if built else None
+    except (OSError, ValueError, KeyError, TypeError, AttributeError) as error:
+        die(f"cannot read what the checks compare with: {error!r}")
+    return Inputs(expected, pages, missing)
 
 
 def header_problems(address: str, answer: Answer, expected: dict[str, str]) -> list[str]:
@@ -178,24 +216,20 @@ def redirect_problems(address: str, answer: Answer, status: int, location: str) 
     return [f"{address}: {answer.status} to {answer.headers.get('Location')}, not {location}"]
 
 
-def site_problems(built: bool) -> list[str]:
-    """What the live site gets wrong; with `built`, its pages must also be the bytes of out/."""
-    expected = policies()
+def site_problems(inputs: Inputs) -> list[str]:
+    """What the live site gets wrong; with the bytes of a build, its pages must also be them."""
+    expected = inputs.policies
     found: list[str] = []
-    pages = json.loads((REPO / "expected-build.json").read_text(encoding="utf8"))["pages"]
 
-    for page in pages:
-        if page.startswith(("_", "404")):
-            continue
-        address = "/" + page.removesuffix(".html")
+    for address, body in inputs.pages.items():
         answer = fetch(SITE + address)
         found += page_problems(address, answer, 200, expected)
-        if built and answer.body != (OUT / page).read_bytes():
+        if body is not None and answer.body != body:
             found.append(f"{address}: not this build")
 
     missing = fetch(f"{SITE}/ru/no-such-page")
     found += page_problems("the 404", missing, 404, expected)
-    if built and missing.body != (OUT / "404.html").read_bytes():
+    if inputs.missing is not None and missing.body != inputs.missing:
         found.append("the 404: not this build")
 
     for language, target in (("ru-RU,ru;q=0.9", "/ru"), ("en-US,en", "/en"), ("de-DE", "/en")):
@@ -219,17 +253,17 @@ def site_problems(built: bool) -> list[str]:
         found += redirect_problems(
             name, fetch(f"{name}/ru/flow?r=deploy"), 301, f"{SITE}/ru/flow?r=deploy"
         )
-    found += redirect_problems("plain HTTP", fetch("http://finchaf.com/ru"), 308, f"{SITE}/ru")
+    found += redirect_problems("plain HTTP", fetch(f"{PLAIN}/ru"), 308, f"{SITE}/ru")
     return found
 
 
-def verified(built: bool) -> bool:
+def verified(inputs: Inputs) -> bool:
     found: list[str] = []
     for attempt in range(ATTEMPTS):
         if attempt:
             time.sleep(PAUSE_SECONDS)
         try:
-            found = site_problems(built)
+            found = site_problems(inputs)
         except (OSError, http.client.HTTPException) as error:
             found = [f"no answer: {error}"]
         if not found:
@@ -251,25 +285,42 @@ def deploy() -> int:
         die("the gates are red: nothing was sent")
     if git("status", "--porcelain"):
         die("the gates changed the tree: nothing was sent")
+    inputs = read_inputs(built=True)
 
     if release in releases():
         say(f"{release} is on the server already")
     else:
         say(f"uploading {release}")
         upload(release, previous)
-    switch(release)
-    say(f"switched {previous or 'nothing'} → {release}, checking {SITE}")
 
-    if verified(built=True):
+    try:
+        switch(release)
+        say(f"switched {previous or 'nothing'} → {release}, checking {SITE}")
+        good = verified(inputs)
+    except BaseException:
+        # An error or Ctrl-C before the checks passed: the release was never seen working.
+        warn(f"stopped before {release} passed its checks")
+        back_out(release, previous)
+        if previous:
+            warn(f"{release} is gone, {previous} is live again")
+        raise
+    if good:
         prune()
         say(f"{release} is live: {SITE}")
         return 0
+    back_out(release, previous)
     if previous is None:
-        die(f"{release} failed its checks and there is no release to go back to; it stays linked")
-    switch(previous)
-    # Kept, it would be next in line for --rollback.
-    remote(f"rm -rf {ROOT}/releases/{release}")
+        die(f"{release} failed its checks")
     die(f"{release} failed its checks and is gone; {previous} is live again")
+
+
+def back_out(release: str, previous: str | None) -> None:
+    """Bring `previous` back and drop `release`: kept, it would be next in line for --rollback."""
+    if previous is None:
+        warn(f"there is no release to go back to: {release} stays linked")
+        return
+    switch(previous)
+    remote(f"rm -rf {ROOT}/releases/{release}")
 
 
 def rollback() -> int:
@@ -278,9 +329,16 @@ def rollback() -> int:
     earlier = [release for release in releases() if release != current]
     if not earlier:
         die("no earlier release on the server")
+    inputs = read_inputs(built=False)
     switch(earlier[0])
     say(f"rolled back {current} → {earlier[0]}, checking {SITE}")
-    if not verified(built=False):
+    try:
+        good = verified(inputs)
+    except BaseException:
+        # Going forward again would bring back the release this run is leaving.
+        warn(f"stopped before {earlier[0]} passed its checks: it is live, unchecked")
+        raise
+    if not good:
         die(f"{earlier[0]} is live, but it failed its checks")
     say(f"{earlier[0]} is live: {SITE}")
     return 0
