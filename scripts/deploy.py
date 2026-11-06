@@ -4,12 +4,16 @@
     python3 scripts/deploy.py             the gates, the build, the upload, the switch, the checks
     python3 scripts/deploy.py --status    what is live and which releases are kept
     python3 scripts/deploy.py --rollback  back to the release that was live before this one
+    python3 scripts/deploy.py --tag-only <commit> <YYYY-MM-DD>   the tag of a past release
 
 It releases a clean main that GitHub also has. Everything it touches on the server is under `ROOT`:
 Caddy and the containers belong to the product and never hear of it. A release's modified time says
 when it last went live, so the newest is `current` and the next one is what --rollback goes to.
 The checks read every answer from outside, over HTTPS, and compare the headers with
 deploy/Caddyfile.test: the server's copy of that block lives in poranaparu/backend.
+A release that passed gets a signed tag named by its day in Moscow, `YYYY.MM.DD`, then `.2`, `.3`,
+and a GitHub release that lists the commits since the tag before. That step never touches the
+server, and when it fails, --tag-only finishes it.
 Standard library only.
 """
 
@@ -24,9 +28,11 @@ import sys
 import time
 import urllib.error
 import urllib.request
+from datetime import date, datetime
 from email.message import Message
 from pathlib import Path
 from typing import NamedTuple, NoReturn
+from zoneinfo import ZoneInfo
 
 REPO = Path(__file__).resolve().parent.parent
 OUT = REPO / "out"
@@ -42,6 +48,21 @@ POLICIES = ("Content-Security-Policy", "Referrer-Policy", "Permissions-Policy")
 # A certificate just issued or a dropped connection is not a bad release.
 ATTEMPTS = 3
 PAUSE_SECONDS = 5
+# A release's tag is the day it went live, in the owner's time.
+ZONE = "Europe/Moscow"
+TAG = re.compile(r"^\d{4}\.\d{2}\.\d{2}(\.\d+)?$")
+TAGS = "[0-9][0-9][0-9][0-9].[0-9][0-9].[0-9][0-9]*"
+SUBJECT = re.compile(r"^(\w+)(?:\(([^)]*)\))?!?: (.+)$")
+# The sections of a release's notes, by the types of its commits; any other type goes to Other.
+SECTIONS = (
+    ("Features", ("feat",)),
+    ("Fixes", ("fix",)),
+    ("Performance", ("perf",)),
+    ("Refactoring", ("refactor",)),
+    ("Docs", ("docs",)),
+    ("Tests", ("test",)),
+    ("Tooling", ("ci", "build", "chore")),
+)
 
 
 class Answer(NamedTuple):
@@ -80,11 +101,25 @@ def die(message: str) -> NoReturn:
     raise SystemExit(1)
 
 
-def git(*args: str) -> str:
-    result = subprocess.run(("git", *args), cwd=REPO, capture_output=True, text=True, check=False)
+class Failed(Exception):
+    """A command that ended with an error, and what it said."""
+
+
+def run(*command: str) -> str:
+    try:
+        result = subprocess.run(command, cwd=REPO, capture_output=True, text=True, check=False)
+    except OSError as error:
+        raise Failed(f"{command[0]}: {error.strerror}") from None
     if result.returncode != 0:
-        die(f"git {' '.join(args)}\n{result.stderr.strip()}")
+        raise Failed(f"{' '.join(command)}\n{result.stderr.strip()}")
     return result.stdout.strip()
+
+
+def git(*args: str) -> str:
+    try:
+        return run("git", *args)
+    except Failed as error:
+        die(str(error))
 
 
 def remote(command: str) -> str:
@@ -307,6 +342,7 @@ def deploy() -> int:
     if good:
         prune()
         say(f"{release} is live: {SITE}")
+        publish()
         return 0
     back_out(release, previous)
     if previous is None:
@@ -344,6 +380,86 @@ def rollback() -> int:
     return 0
 
 
+def notes(commit: str) -> str:
+    """The subjects of the commits since the tag before `commit`, or since the root, by type."""
+    try:
+        since = run("git", "describe", "--abbrev=0", f"--match={TAGS}", f"{commit}^")
+        span = f"{since}..{commit}"
+    except Failed:
+        span = commit
+    lines: dict[str, list[str]] = {title: [] for title, _ in SECTIONS}
+    lines["Other"] = []
+    for subject in run("git", "log", "--reverse", "--no-merges", "--format=%s", span).splitlines():
+        match = SUBJECT.match(subject)
+        kind, scope, text = match.groups() if match else ("", None, subject)
+        title = next((title for title, kinds in SECTIONS if kind in kinds), "Other")
+        lines[title].append(f"- {scope}: {text}" if scope else f"- {text}")
+    return "\n\n".join(
+        f"## {title}\n\n" + "\n".join(items) for title, items in lines.items() if items
+    )
+
+
+def tag(commit: str, day: date) -> str:
+    """Tag `commit` and give it a release on GitHub; a step done already is skipped."""
+    run("git", "fetch", "--quiet", "origin", "refs/tags/*:refs/tags/*")
+    own = [name for name in run("git", "tag", "--points-at", commit).split() if TAG.match(name)]
+    text = notes(commit)
+    if own:
+        name = own[0]
+        say(f"{commit[:12]} carries {name} already")
+    else:
+        stem = day.strftime("%Y.%m.%d")
+        taken = set(run("git", "tag", "--list", f"{stem}*").split())
+        name = stem
+        number = 2
+        while name in taken:
+            name = f"{stem}.{number}"
+            number += 1
+        # The notes' headings start with #, which the default cleanup would take for comments.
+        message = f"{name}\n\n{text}"
+        run("git", "tag", "--sign", "--cleanup=whitespace", "--message", message, name, commit)
+    run("git", "push", "--quiet", "origin", f"refs/tags/{name}")
+    try:
+        run("gh", "release", "view", name, "--json", "tagName")
+    except Failed:
+        run("gh", "release", "create", name, "--verify-tag", "--title", name, "--notes", text)
+    return name
+
+
+def publish() -> None:
+    """The tag of the release just checked: whatever goes wrong here, the release stays live."""
+    commit = "HEAD"
+    day = "<YYYY-MM-DD>"
+    try:
+        commit = run("git", "rev-parse", "--short=12", "HEAD")
+        today = datetime.now(ZoneInfo(ZONE)).date()
+        day = today.isoformat()
+        say(f"tagged {tag(commit, today)}")
+    except Exception as error:
+        warn(f"{commit} is live, but its tag is not done:\n{error}")
+        warn(f"finish it with: python3 scripts/deploy.py --tag-only {commit} {day}")
+
+
+def tag_only(commit: str, day: str) -> int:
+    """Tag a release that went live before this step existed, or whose tag failed."""
+    try:
+        when = date.fromisoformat(day)
+    except ValueError:
+        die(f"{day} is not a day: YYYY-MM-DD")
+    if when > datetime.now(ZoneInfo(ZONE)).date():
+        die(f"{day} has not come yet")
+    full = git("rev-parse", "--verify", f"{commit}^{{commit}}")
+    git("fetch", "--quiet", "origin", "main")
+    ancestor = ("git", "merge-base", "--is-ancestor", full, "origin/main")
+    if subprocess.run(ancestor, cwd=REPO, check=False).returncode != 0:
+        die(f"{commit} is not on origin/main: only main is released")
+    try:
+        say(f"tagged {tag(full, when)}")
+    except Failed as error:
+        die(str(error))
+    return 0
+
+
 def status() -> int:
     require_server()
     current = live()
@@ -365,11 +481,19 @@ def main() -> int:
     action = parser.add_mutually_exclusive_group()
     action.add_argument("--status", action="store_true", help="what is live, what is kept")
     action.add_argument("--rollback", action="store_true", help="back to the release before")
+    action.add_argument(
+        "--tag-only",
+        nargs=2,
+        metavar=("COMMIT", "DAY"),
+        help="tag a past release: its commit and the day it went live, YYYY-MM-DD",
+    )
     options = parser.parse_args()
     if options.status:
         return status()
     if options.rollback:
         return rollback()
+    if options.tag_only:
+        return tag_only(*options.tag_only)
     return deploy()
 
 
