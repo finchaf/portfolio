@@ -37,6 +37,18 @@ describe("the vault's Markdown", () => {
     ]);
   });
 
+  it("keeps a wiki link's label in its cell, its pipe escaped as Obsidian has it", () => {
+    const [table] = parseBlocks(
+      "| Шаг | Что |\n| --- | --- |\n| `s1.audit` | [[audit\\|Аудит]] |\n",
+    );
+    expect(table).toEqual({
+      kind: "table",
+      head: ["Шаг", "Что"],
+      numeric: [false, false],
+      rows: [["`s1.audit`", "[[audit|Аудит]]"]],
+    });
+  });
+
   it("keeps paragraphs, lists, code and embeds apart", () => {
     expect(parseBlocks("Раз\nдва\n\n- а\n- б\n\n```\nx\n```\n\n![[board]]\n")).toEqual([
       { kind: "paragraph", text: "Раз два" },

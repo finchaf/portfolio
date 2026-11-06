@@ -69,11 +69,12 @@ type Block =
   | { kind: "quote"; text: string }
   | { kind: "embed"; name: string };
 
+/** A row's cells. A pipe in a cell is written `\|`, as Obsidian has it for a wiki link's label. */
 const cells = (line: string) =>
   line
     .slice(1, -1)
-    .split("|")
-    .map((cell) => cell.trim());
+    .split(/(?<!\\)\|/)
+    .map((cell) => cell.trim().replaceAll("\\|", "|"));
 
 function isBlockStart(line: string) {
   return /^(#{2,3} |- |\d+\. |\||```|> |!\[\[)/.test(line);
