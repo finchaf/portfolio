@@ -72,8 +72,13 @@ export function HeroLens({ labels, settings, children }: HeroLensProps) {
     capsule?.setAttribute("data-lens", "");
     const shown = () => (hero.dataset.layer === "code" ? "code" : "design");
 
+    // Shut, the lens shows nothing: wandering on while the page moves below the screen, it would
+    // restyle the screen and the capsule every frame for nothing, and WebKit repaints both then.
+    let painted = Number.NaN;
     const paint = () => {
       const { x, y, r } = lens.current;
+      if (r <= 0 && painted <= 0) return;
+      painted = r;
       hero.style.setProperty("--lens-x", `${String(x)}px`);
       hero.style.setProperty("--lens-y", `${String(y)}px`);
       hero.style.setProperty("--lens-r", `${String(r)}px`);
