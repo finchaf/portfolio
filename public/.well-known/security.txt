@@ -1,0 +1,8 @@
+# Security contact of finchaf.com (RFC 9116). The site is static: no accounts, no forms, no server
+# code of its own. Please report a problem privately; the policy is SECURITY.md in the repository.
+Contact: https://github.com/finchaf/portfolio/security/advisories/new
+Contact: mailto:work@finchaf.com
+Expires: 2027-11-01T00:00:00.000Z
+Preferred-Languages: ru, en
+Canonical: https://finchaf.com/.well-known/security.txt
+Policy: https://github.com/finchaf/portfolio/blob/main/SECURITY.md
