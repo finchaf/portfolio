@@ -1,10 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
-
-import { ADDRESSES } from "./pages";
 
 const WORLDS = [
   { address: "/ru", theme: "home", display: "Geologica Variable", font: /^geologica-/ },
@@ -123,19 +120,3 @@ test("the switcher works from the keyboard", async ({ page }) => {
   await expect(page.getByRole("radio", { name: "Светлая" })).toBeChecked();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
 });
-
-const TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"];
-
-for (const mode of MODES) {
-  for (const address of [...ADDRESSES, "/ru/no-such-page"]) {
-    test(`${address} has no violations in the ${mode} mode`, async ({ page }) => {
-      await page.emulateMedia({ colorScheme: mode });
-      await page.goto(address);
-      await expect(page.locator("html")).not.toHaveAttribute("data-intro");
-      const { violations } = await new AxeBuilder({ page }).withTags(TAGS).analyze();
-      expect(
-        violations.map(({ id, nodes }) => `${id}: ${nodes.map((node) => node.target).join(", ")}`),
-      ).toEqual([]);
-    });
-  }
-}

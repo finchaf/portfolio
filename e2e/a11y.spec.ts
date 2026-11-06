@@ -8,15 +8,19 @@ import { ADDRESSES } from "./pages";
 // by hand.
 const TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"];
 
-for (const address of [...ADDRESSES, "/ru/no-such-page"]) {
-  test(`${address} has no violations`, async ({ page }) => {
-    await page.goto(address);
-    await expect(page.locator("html")).not.toHaveAttribute("data-intro");
-    const { violations } = await new AxeBuilder({ page }).withTags(TAGS).analyze();
-    expect(
-      violations.map(({ id, nodes }) => `${id}: ${nodes.map((node) => node.target).join(", ")}`),
-    ).toEqual([]);
-  });
+// The one full-page scan of the site: every address and the 404, in each mode.
+for (const colorScheme of ["light", "dark"] as const) {
+  for (const address of [...ADDRESSES, "/ru/no-such-page"]) {
+    test(`${address} has no violations in the ${colorScheme} mode`, async ({ page }) => {
+      await page.emulateMedia({ colorScheme });
+      await page.goto(address);
+      await expect(page.locator("html")).not.toHaveAttribute("data-intro");
+      const { violations } = await new AxeBuilder({ page }).withTags(TAGS).analyze();
+      expect(
+        violations.map(({ id, nodes }) => `${id}: ${nodes.map((node) => node.target).join(", ")}`),
+      ).toEqual([]);
+    });
+  }
 }
 
 for (const colorScheme of ["light", "dark"] as const) {
