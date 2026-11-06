@@ -2,6 +2,12 @@ import "./board.css";
 
 import Image, { type StaticImageData } from "next/image";
 
+import chapterFlowDark from "./shots/chapter-flow-dark.webp";
+import chapterFlowLight from "./shots/chapter-flow-light.webp";
+import chapterPoraDark from "./shots/chapter-pora-dark.webp";
+import chapterPoraLight from "./shots/chapter-pora-light.webp";
+import chapterProjectsDark from "./shots/chapter-projects-dark.webp";
+import chapterProjectsLight from "./shots/chapter-projects-light.webp";
 import flowDark from "./shots/flow-dark.webp";
 import flowLight from "./shots/flow-light.webp";
 import homeCodeDark from "./shots/home-code-dark.webp";
@@ -22,7 +28,14 @@ const SHOTS = {
   phoneFlow: [phoneFlowLight, phoneFlowDark],
   pora: [poraLight, poraDark],
   phonePora: [phonePoraLight, phonePoraDark],
+  chapterPora: [chapterPoraLight, chapterPoraDark],
+  chapterFlow: [chapterFlowLight, chapterFlowDark],
+  chapterProjects: [chapterProjectsLight, chapterProjectsDark],
 } satisfies Record<string, [StaticImageData, StaticImageData]>;
+
+/** The CV's first page as it is printed, light in both modes as the paper is: `shots.mjs` sets it. */
+export { default as cvEn } from "./shots/cv-en.webp";
+export { default as cvRu } from "./shots/cv-ru.webp";
 
 /**
  * A frame of the built site in the reader's mode: both are in the HTML, and the one the stylesheet

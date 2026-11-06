@@ -14,7 +14,7 @@
   "briefLabel": "In short",
   "brief": {
     "what": "What it is",
-    "whatText": "A site in two languages: home, Pora na Paru, Flow and Projects. It is plain files with no application server, served by Caddy.",
+    "whatText": "A site in two languages: home, Pora na Paru, Flow and Projects with its two project pages, and a CV in PDF. It is plain files with no application server, served by Caddy.",
     "role": "My role",
     "roleText": "Design, front end, motion, infrastructure and copy.",
     "open": "What is open",
@@ -57,7 +57,11 @@
     "budgetOther": "Other pages",
     "kilobytes": "{value} KB",
     "budgetTitle": "{title}, {date}",
-    "budgetLimitLine": "limit: {value} KB"
+    "budgetLimitLine": "limit: {value} KB",
+    "chapterAlt": "The {name} chapter on home, on one of its stops",
+    "openChapter": "Open on home",
+    "cv": "CV, PDF",
+    "cvAlt": "The first page of the CV: portrait, experience and education."
   },
   "steps": {
     "refuse": "Refuses unless on main, with a clean tree, level with GitHub",
@@ -92,9 +96,16 @@
       "name": "Motion",
       "title": "A page change along the slash of the logo",
       "p1": "Each tool has its zone: CSS does hover and focus, <c>ViewTransition</c> the page change, GSAP the scenes on scroll, canvas the graphs and lines. Durations and curves live in tokens, so an effect's code holds no numbers.",
-      "p2": "The first page change looked bad. A <c>ViewTransition</c> around the page makes one layer as tall as the page, 40,321 px on home on 05.11.2026, and the browser squeezes it to the screen. Now only the screen is captured, and the new page arrives along a 20.2° line, the lean of the slash in the logo. A step back in the capsule runs the other way.",
+      "p2": "The first page change looked bad. A <c>ViewTransition</c> around the page makes one layer as tall as the page, 41,131 px on home on 06.11.2026, and the browser squeezes it to the screen. Now only the screen is captured, and the new page arrives along a 20.2° line, the lean of the slash in the logo. A step back in the capsule runs the other way.",
       "p3": "In Firefox the shape stood at its end for the whole change: it does not interpolate a registered <c>@property</c> variable on these pseudo-elements. So the shapes are written out in <c>polygon</c> keyframes. WebDriver's screenshot does not show this, so that frame comes from a system capture of a real browser window.",
       "p4": "Then it turned out the change was waiting for home. Leaving, it put every GSAP animation back to its start, even those never played, and arriving, it built its scenes inside the transition's update. In Zen the page stood still for 1.6 s after a click, and the slash flashed at the end. Now a page that leaves drops its animations where they stand, and a page that arrives builds its scenes after the slash: 165 ms from the click to the start of the change, measured 05.11.2026."
+    },
+    "chapters": {
+      "name": "Chapters",
+      "title": "Three chapters, each in its own product",
+      "p1": "The works on home are chapters, and each shows its product by the product’s own means. In Pora na Paru one lesson flies from the week in a browser to the iPhone’s lock screen, to the Android home and into the editor. In Flow the camera flies through the graph of the vault. In Projects the camera moves over the board of this page. The bar at the bottom comes from the product too: the paper of the schedule’s sidebar, the bottom of Obsidian, the status line of tmux.",
+      "p2": "The phone screens were shot in the iOS simulator and the Android emulator on made-up data and set into device mockups. The lesson is the same to the minute in every frame: a lecture, 08:45–10:20, 09:31 on the clock. The card’s place on a frame is given in shares of the frame, so at rest it lies exactly on its place on any screen.",
+      "p3": "CSS holds a chapter: its stage is <c>sticky</c>, the page scrolls by itself, and the script only moves layers along the scroll. On a touch screen every rest has an invisible mark, and a flick stops on the rest natively: no script fights the momentum."
     },
     "week": {
       "name": "Week",
@@ -105,9 +116,10 @@
     },
     "previews": {
       "name": "Previews",
-      "title": "A link's picture from the same tokens",
+      "title": "Link pictures and the CV from the same tokens",
       "p1": "Every page has a link picture of its own in each language, twelve files. A script assembles them from the site's themes, strings and logo, photographs them in Playwright and writes the PNGs and a manifest with a hash of the sources. Flow, Pora na Paru and Projects show the page itself in a window.",
-      "p2": "A stale picture fails the checks: Unit compares the hash with the manifest. Flow's card draws the real graph, and its simulation ends on different coordinates on arm64 and x64, so the hash counts the graph's notes and links, not its points."
+      "p2": "A stale picture fails the checks: Unit compares the hash with the manifest. Flow's card draws the real graph, and its simulation ends on different coordinates on arm64 and x64, so the hash counts the graph's notes and links, not its points.",
+      "p3": "The CV in PDF is made the same way. <c>pnpm cv</c> prints it in two languages from the lines of the Experience block, the home page’s tokens, its typefaces and the portrait, and Unit checks the hash of those sources against a manifest: a changed line of experience without a new PDF fails the checks."
     },
     "gates": {
       "name": "Checks",
@@ -119,7 +131,8 @@
       "found2": "The test config differed from production, so the gate stayed green while the server's 404 would have named itself and lost HSTS. The header block now matches line for line, and the gate looks at the 404's headers.",
       "found3": "Gecko loses a thin diagonal gradient at random, and the hatching fell apart in Firefox. It is now an SVG mask, and a test keeps such gradients out of the stylesheets.",
       "found4": "Shadows took the colour of the text, which on a dark page is a glow. In the dark mode a shadow is now transparent.",
-      "found5": "The story's test on home failed only in CI. It was a race in the scene itself: after a jump the ribbon was still catching up with the scroll, and the far photographs never woke. Now the reach is counted from where the scroll sends the ribbon."
+      "found5": "The story's test on home failed only in CI. It was a race in the scene itself: after a jump the ribbon was still catching up with the scroll, and the far photographs never woke. Now the reach is counted from where the scroll sends the ribbon.",
+      "found6": "On an iPhone the Pora na Paru chapter on home jerked as it scrolled. In WebKit a frame cost up to 180 ms: the shadow under the phone mockups was a filter, and it blurred the picture anew every time the frame came back on screen. The shadow was hardly visible, so it went, and a test keeps such filters out of the stylesheets."
     },
     "decisions": {
       "name": "Decisions",
@@ -143,14 +156,22 @@
       "p1": "The site is a folder of files on a shared server, beside another product. A release touches neither Caddy nor the containers: a new build lands in a folder of its own, then one operation switches the <c>current</c> link. There is no downtime.",
       "p2": "The last three releases are kept, and <c>--rollback</c> returns the previous one in a second. GitHub holds no key to the server: CI only checks, and a release runs from the laptop. That is a price paid on purpose: there is one developer, and the site can be rebuilt from any commit."
     },
-    "stage": {
-      "name": "Stage",
-      "title": "What is not done yet",
-      "p1": "The site is a work in progress, and the plan in the repository shows it.",
-      "item1": "The Pora na Paru chapter on home still has stand-ins instead of screens.",
-      "item2": "The story's photographs are over budget: 2.12 MB in all against a limit of 1.5 MB, measured 01.11.2026.",
-      "item3": "The page change, the chapters on home and the Pora na Paru week have not been tested on a real iPhone or in real Safari."
+    "days": {
+      "name": "By day",
+      "title": "The site day by day",
+      "p1": "First commit on {first}.2026, the last on {last}.2026: {commits} commits to <c>main</c> in {days} days. First the scaffold and home, then the pages of the works, then their chapters on home: a chapter should not retell what its page does not have yet.",
+      "p2": "Below is what reached <c>main</c> each day, from the commit messages. The tasks followed the plan in the repository, with no tracker."
     }
+  },
+  "days": {
+    "oct30": "The scaffold: pages in two languages, themes and typefaces, motion tokens, the first home page",
+    "oct31": "The capsule, footer and cursor, the story as a sideways ribbon of photographs, grain and the ruler",
+    "nov01": "The domain, mail and the first release, link previews, the /poranaparu address",
+    "nov02": "Flow as a vault of notes, the page change along the logo’s slash, the Flow chapter on home",
+    "nov03": "The Projects board, the pages of this site and LaTeX, chapters dressed as their apps",
+    "nov04": "The footer in each page’s components, Experience and the CV in PDF, the Pora na Paru week",
+    "nov05": "The week’s chapters and lesson windows, the capsule and previews in the product’s style",
+    "nov06": "The Pora na Paru chapter on real screens, this page brought to its end"
   },
   "journal": {
     "a0001": "A knowledge base in docs/",

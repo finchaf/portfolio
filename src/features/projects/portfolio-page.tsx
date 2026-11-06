@@ -2,6 +2,7 @@ import "@/ui/board/board.css";
 import "./projects.css";
 import "./portfolio.css";
 
+import Image from "next/image";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
@@ -10,16 +11,17 @@ import shareImages from "@/lib/share-images.json";
 import { REPOSITORY_URL, SITE_ORIGIN } from "@/lib/site";
 import { ButtonLink } from "@/ui/button-link";
 
+import { DemoChapters } from "./demo-chapters";
 import { DemoGates } from "./demo-gates";
 import { DemoLens } from "./demo-lens";
 import { DemoRelease } from "./demo-release";
 import { DemoSlash } from "./demo-slash";
 import { DemoThemes } from "./demo-themes";
-import { BUDGET, COMMITS_BY_DAY, FACTS, GATES, JOURNAL, RELEASES } from "@/lib/project-facts";
+import { BUDGET, DAYS, FACTS, GATES, JOURNAL, RELEASES } from "@/lib/project-facts";
 import { SECTIONS, type SectionId } from "./portfolio-sections";
 import { ProjectFacts } from "./project-parts";
 import { ProjectShell } from "./project-shell";
-import { Shot } from "@/ui/board/shot";
+import { cvEn, cvRu, Shot } from "@/ui/board/shot";
 
 const FINDINGS = [
   ["found1", "664494f"],
@@ -27,7 +29,20 @@ const FINDINGS = [
   ["found3", "3e2a2bf"],
   ["found4", "bbdeab3"],
   ["found5", "41387ec"],
+  ["found6", "91983bc"],
 ] as const;
+
+/** The home page's chapters, in the order the page has them, and the frame of each. */
+const CHAPTERS = [
+  ["pora", "chapterPora"],
+  ["flow", "chapterFlow"],
+  ["projects", "chapterProjects"],
+] as const;
+
+const CV = { ru: cvRu, en: cvEn } as const;
+
+/** The busiest day sets the scale of the others. */
+const BUSIEST = Math.max(...DAYS.map(([, , commits]) => commits));
 
 /** The link pictures the section shows: the four worlds, as the chats get them. */
 const CARDS = [
@@ -45,8 +60,6 @@ const SKILLS = [
   ["rf", "/rf"],
 ] as const;
 
-const STAGE = ["item1", "item2", "item3"] as const;
-
 const BRIEF = [
   ["what", "whatText"],
   ["role", "roleText"],
@@ -59,6 +72,9 @@ const RICH = {
   unit: FACTS.unit,
   browser: FACTS.browser,
   commits: FACTS.commits,
+  first: DAYS[0][0],
+  last: DAYS[DAYS.length - 1]?.[0] ?? "",
+  days: DAYS.length,
 };
 
 /** What stands under a section's words. */
@@ -130,6 +146,24 @@ function SectionDemo({ id }: { id: SectionId }) {
             beforeNote: demo("demo.beforeNote"),
             afterNote: demo("demo.afterNote"),
           }}
+        />
+      );
+    case "chapters":
+      return (
+        <DemoChapters
+          frames={CHAPTERS.map(([chapter, shot]) => ({
+            key: chapter,
+            name: all(`${chapter}.title` as never),
+            href: `${localizedPath(locale, "/")}#work-${chapter}`,
+            shot: (
+              <Shot
+                alt={t("demo.chapterAlt", { name: all(`${chapter}.title` as never) })}
+                name={shot}
+                sizes="(min-width: 64rem) 50vw, 100vw"
+              />
+            ),
+          }))}
+          open={demo("demo.openChapter")}
         />
       );
     case "gates": {
@@ -217,18 +251,6 @@ function SectionDemo({ id }: { id: SectionId }) {
               fresh: demo("demo.newRelease"),
             }}
           />
-          <figure className="pj-days">
-            <figcaption>{t("demo.commitsByDay")}</figcaption>
-            <div>
-              {COMMITS_BY_DAY.map(([day, count]) => (
-                <span key={day} style={{ "--share": `${(count / 61) * 100}%` }}>
-                  <b>{count}</b>
-                  <i />
-                  <em>{day}</em>
-                </span>
-              ))}
-            </div>
-          </figure>
         </div>
       );
     case "week":
@@ -245,6 +267,18 @@ function SectionDemo({ id }: { id: SectionId }) {
     case "previews":
       return (
         <ul className="pj-cards">
+          <li className="pj-cv">
+            <a href={`/cv/${locale}.pdf`} rel="noreferrer" target="_blank">
+              <Image
+                alt={t("demo.cvAlt")}
+                loading="lazy"
+                sizes="(min-width: 64rem) 14rem, 45vw"
+                src={CV[locale]}
+                unoptimized
+              />
+              <span>{t("demo.cv")}</span>
+            </a>
+          </li>
           {CARDS.map(([card, page]) => {
             const key = `${locale}/${card}` as keyof typeof shareImages.files;
             return (
@@ -273,13 +307,21 @@ function SectionDemo({ id }: { id: SectionId }) {
           ))}
         </dl>
       );
-    case "stage":
+    case "days":
       return (
-        <ul className="pj-stage-list">
-          {STAGE.map((key) => (
-            <li key={key}>{t(`sections.stage.${key}`)}</li>
-          ))}
-        </ul>
+        <figure className="pj-days">
+          <figcaption>{t("demo.commitsByDay")}</figcaption>
+          <ol>
+            {DAYS.map(([day, key, commits]) => (
+              <li key={key} style={{ "--share": `${String((commits / BUSIEST) * 100)}%` }}>
+                <time>{day}</time>
+                <b>{commits}</b>
+                <i aria-hidden />
+                <span>{t(`days.${key}`)}</span>
+              </li>
+            ))}
+          </ol>
+        </figure>
       );
   }
 }

@@ -62,6 +62,18 @@ export const SECTIONS = [
     ],
   },
   {
+    id: "chapters",
+    paragraphs: ["p1", "p2", "p3"],
+    refs: [
+      code("src/features/home/work-scene.tsx"),
+      code("src/features/home/pair-scene.ts"),
+      code("src/features/home/flow-map-scene.ts"),
+      code("src/features/home/desk-scene.ts"),
+      code("src/features/home/chapter-snap.ts"),
+      code("docs/04-design-system/motion.md"),
+    ],
+  },
+  {
     id: "week",
     paragraphs: ["p1", "p2", "p3"],
     refs: [
@@ -74,11 +86,12 @@ export const SECTIONS = [
   },
   {
     id: "previews",
-    paragraphs: ["p1", "p2"],
+    paragraphs: ["p1", "p2", "p3"],
     refs: [
       code("scripts/og/cards.ts"),
       code("scripts/og/build.ts"),
       code("src/lib/share-images.json"),
+      code("scripts/cv/cv.ts"),
       adr("0012-link-previews"),
     ],
   },
@@ -116,9 +129,9 @@ export const SECTIONS = [
     ],
   },
   {
-    id: "stage",
-    paragraphs: ["p1"],
-    refs: [code("docs/07-roadmap/README.md")],
+    id: "days",
+    paragraphs: ["p1", "p2"],
+    refs: [code("docs/07-roadmap/README.md"), code("src/lib/project-facts.ts")],
   },
 ] as const;
 

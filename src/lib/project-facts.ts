@@ -10,12 +10,12 @@
  *   home      document.documentElement.scrollHeight on /ru at 1440 × 900
  */
 export const FACTS = {
-  date: "05.11.2026",
-  commits: 156,
+  date: "06.11.2026",
+  commits: 166,
   decisions: 16,
   checks: 14,
-  unit: 319,
-  browser: 307,
+  unit: 353,
+  browser: 309,
   themes: 4,
   languages: 2,
 } as const;
@@ -23,18 +23,18 @@ export const FACTS = {
 export const GATES = [
   ["Docs", 0.1],
   ["Public", 0.2],
-  ["Types", 2.2],
-  ["Lint", 13.3],
-  ["Format", 2.2],
+  ["Types", 3.1],
+  ["Lint", 14.1],
+  ["Format", 2.6],
   ["Content", 0],
-  ["Unit", 1.3],
-  ["Build", 13.9],
+  ["Unit", 1.4],
+  ["Build", 14.9],
   ["Bundle", 0.3],
-  ["Addresses", 17],
-  ["SEO", 7.1],
-  ["A11y", 51.2],
-  ["Motion", 201.3],
-  ["Themes", 43.4],
+  ["Addresses", 18.3],
+  ["SEO", 8],
+  ["A11y", 56.7],
+  ["Motion", 300.8],
+  ["Themes", 54.8],
 ] as const;
 
 /** Commands as they are typed: code, the same in every language. */
@@ -52,26 +52,30 @@ export const COMMAND = {
   live: "live",
 } as const;
 
-/** Commits in `main` by day: `git log --format=%ad --date=format:%d.%m main | sort | uniq -c`. */
-export const COMMITS_BY_DAY = [
-  ["30.10", 38],
-  ["31.10", 61],
-  ["01.11", 26],
-  ["02.11", 10],
-  ["03.11", 8],
-  ["04.11", 7],
-  ["05.11", 6],
+/**
+ * The days of the work: the date, the key of what landed that day in `portfolio.days`, and the
+ * commits in `main` that day, `git log --format=%ad --date=format:%d.%m main | sort | uniq -c`.
+ */
+export const DAYS = [
+  ["30.10", "oct30", 38],
+  ["31.10", "oct31", 61],
+  ["01.11", "nov01", 26],
+  ["02.11", "nov02", 10],
+  ["03.11", "nov03", 8],
+  ["04.11", "nov04", 7],
+  ["05.11", "nov05", 6],
+  ["06.11", "nov06", 10],
 ] as const;
 
 /** `python3 scripts/deploy.py --status`, newest first. */
 export const RELEASES = [
+  ["00f836b6267e", "06.11", "record the Pora chapter and the refreshed site page"],
   ["6534e6491252", "05.11", "record the Pora skin, motion and link-preview decisions"],
   ["41387ec62038", "05.11", "wake the far story pictures from where the ribbon is going"],
-  ["7ff803273a1b", "04.11", "let the Projects chapter grow on a large monitor"],
 ] as const;
 
 /** Kilobytes of first-load JavaScript, gzip. */
-export const BUDGET = { limit: 280, home: 250.7, flow: 239.9, other: 239.1 } as const;
+export const BUDGET = { limit: 280, home: 251.1, flow: 239.9, other: 239.3 } as const;
 
 /** The records of the log, as the file names give them. */
 export const JOURNAL = [
