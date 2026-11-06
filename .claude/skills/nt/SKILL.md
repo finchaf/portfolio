@@ -76,7 +76,8 @@ sketch the plan in a few lines first.
   and comment for strangers to read.
 - **The site stays static**, and the first screen never waits for animation.
 - **Every effect** passes the list in `docs/04-design-system/motion.md`.
-- **No text in code:** strings in `messages/`, long texts in `content/`, both languages.
+- **No text in code:** strings in `messages/<locale>/*.json`, Flow's notes in
+  `messages/<locale>/vault/*.md`, both languages.
 - Generated files are never edited by hand.
 - Smallest correct change wins. Match the surrounding code's idiom and comment density.
 

@@ -42,9 +42,9 @@ not carry over: heavy, bad on a phone, or inaccessible.
 
 ## 3. Rewrite
 
-- A new primitive in `src/motion/`, shown on `/lab` first. A one-off effect stays beside its component.
+- A new primitive in `src/motion/`; until `/lab` is built (`docs/07-roadmap/README.md`, stage 3), show it on the
+  page that uses it. A one-off effect stays beside its component.
 - Durations and curves from our tokens. A new value goes into the tokens.
-- Before the site's code exists, stop at the description: there is nothing to build on.
 
 ## 4. Check
 
