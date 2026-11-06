@@ -57,6 +57,9 @@
   --viewer-ring: light-dark(#8ec5ff, #8ec5ff);
   --viewer-edge: light-dark(rgb(255 255 255 / 0.12), rgb(255 255 255 / 0.12));
   --grain: light-dark(rgb(0 0 0 / 0.08), rgb(255 255 255 / 0.07));
+  /* A phone on the home page: its bezel and edge, and the ground of the Android app's home. */
+  --device-edge: light-dark(rgb(0 0 0 / 0.08), rgb(255 255 255 / 0.14));
+  --android-ground: light-dark(#f9f9ff, #111318);
   /* The specks of the sidebar's matte paper, a mask for `--grain` (the product's PaperGrain). */
   --paper-noise: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27180%27%20height%3D%27180%27%3E%3Cfilter%20id%3D%27n%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.9%27%20numOctaves%3D%272%27%20stitchTiles%3D%27stitch%27/%3E%3CfeColorMatrix%20values%3D%270%200%200%200%200%20%200%200%200%200%200%20%200%200%200%200%200%20%202.2%200%200%200%20-0.75%27/%3E%3C/filter%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url%28%23n%29%27/%3E%3C/svg%3E");
   --hint: light-dark(color-mix(in srgb, #09090b 60%, transparent), #9f9fa9);

@@ -258,33 +258,86 @@
     "pora": {
       "name": "Pora na paru",
       "label": "My own product · since 2024",
-      "stage": "New version in development",
-      "text": "A timetable for universities. I began with VCourse, tested the idea on real users and am building the product again from scratch.",
-      "role": "Design, iOS, Android and web: me. Backend: my co-founder.",
+      "text": "A schedule service for universities and apps for students. One and the same lesson lives in the browser, on the iPhone and on Android, and I write all three clients myself.",
+      "facts": {
+        "stage": {
+          "term": "stage",
+          "value": "alpha test on iOS and Android, the web is open"
+        },
+        "clients": {
+          "term": "clients",
+          "value": "iOS, Android and the web since 2 June 2026"
+        },
+        "code": {
+          "term": "code",
+          "value": "2,642 commits by 31 October 2026"
+        }
+      },
+      "note": "The frames are the product's real screens on made-up data.",
       "ticks": {
-        "intro": "Product",
-        "service": "Service",
-        "apps": "Apps",
+        "intro": "About",
+        "web": "Web",
+        "ios": "iOS",
+        "android": "Android",
         "editor": "Editor",
-        "origin": "Origins"
+        "origin": "Origin"
       },
-      "service": {
-        "title": "One service for a whole university",
-        "text": "A university keeps its timetable in one place, and students and teachers see changes in every app at once."
+      "web": {
+        "title": "The week in a browser",
+        "text": "The week of any group, teacher or room by a link, nothing to install. Open since 16 October 2026.",
+        "alt": "The schedule in a browser: a group's week, Monday, the first lesson going on."
       },
-      "apps": {
-        "title": "Native on iOS and on Android",
-        "text": "Not one layout for two platforms: each has its own gestures, widgets and system features."
+      "ios": {
+        "title": "The lesson on the lock screen",
+        "text": "On the iPhone the lesson going on holds itself in a Live Activity and the Dynamic Island, and turns into the break and the end of the day. The store build has been with testers in TestFlight since 27 September 2026.",
+        "alt": "The iPhone's lock screen with the Live Activity of the lesson going on."
+      },
+      "android": {
+        "title": "The same lesson on Android",
+        "text": "By Android's rules: the home holds favourite groups and teachers, the lesson going on and notes for lessons, and the lesson is in a widget too. The colours of Material 3 Expressive. In a closed test on Google Play since 30 September 2026.",
+        "alt": "The Android app's home: favourites, the lesson going on and notes for lessons."
       },
       "editor": {
-        "title": "Publishing without conflicts",
-        "text": "The editor catches clashes before anything is published. Move a lesson yourself: the rule is real, the data is made up."
+        "title": "Publishing without clashes",
+        "text": "An editor for the academic office: a teacher booked for two lessons at once lights up before publishing, and a moved lesson reaches every app at once. The editor is being designed.",
+        "toolbar": "Editor",
+        "draft": "Draft of the week",
+        "undo": "Undo",
+        "publish": "Publish",
+        "conflict": "Clash: Ivanov D.N. in two lessons at once",
+        "published": "Published to every app"
       },
       "origin": {
         "title": "It began with VCourse",
-        "text": "The first version shipped on iOS, Android and the web and was tested by real users.",
-        "proof": "The exact number of users, dated, goes here",
-        "stores": "VCourse:"
+        "text": "The first version came out on 1 September 2025 after a post in the university's channel, and strangers began to download it. The idea was tested on it with real users.",
+        "numbers": {
+          "firstDays": {
+            "n": "632",
+            "l": "downloads in the first three days",
+            "d": "1–3 September 2025"
+          },
+          "rank": {
+            "n": "No. 57",
+            "l": "among education apps on the Russian App Store",
+            "d": "at the start"
+          },
+          "total": {
+            "n": "3,428",
+            "l": "downloads on the App Store",
+            "d": "by 4 October 2026"
+          }
+        },
+        "site": "vcourse.app",
+        "siteUrl": "https://vcourse.app/en",
+        "stores": "Stores",
+        "chart": {
+          "title": "Downloads by day",
+          "source": "App Store Connect",
+          "from": "1 September",
+          "to": "14 September 2025",
+          "summary": "VCourse's App Store downloads by day, 1–14 September 2025: 632 in the first three days, 411 of them on 2 September."
+        },
+        "appStore": "VCourse on the App Store on launch day: no. 57 in Education, developer Danil Zablotsky."
       },
       "appStore": "App Store",
       "appStoreUrl": "https://apps.apple.com/app/id6747290631",
@@ -292,30 +345,7 @@
       "googlePlayUrl": "https://play.google.com/store/apps/details?id=app.vcourse.vcourse",
       "ruStore": "RuStore",
       "ruStoreUrl": "https://www.rustore.ru/catalog/app/app.vcourse.vcourse",
-      "mock": {
-        "site": "Mockup: website",
-        "iphone": "Mockup: iPhone",
-        "android": "Mockup: Android",
-        "service": "Mockup: service",
-        "first": "Screen recording: VCourse"
-      },
-      "week": {
-        "days": {
-          "mon": "Mon",
-          "tue": "Tue",
-          "wed": "Wed",
-          "thu": "Thu",
-          "fri": "Fri"
-        },
-        "lessons": {
-          "math": "Calc",
-          "base": "Data",
-          "code": "Code"
-        },
-        "move": "Move the lesson: {lesson}",
-        "conflict": "Conflict: two lessons in one slot",
-        "clear": "No conflicts, ready to publish"
-      }
+      "lesson": "Calculus, lecture, Ivanov D.N., 1-101"
     },
     "flow": {
       "name": "Flow",

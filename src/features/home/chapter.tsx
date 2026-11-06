@@ -24,7 +24,12 @@ export interface ChapterProps {
    * lualine, `vault` the bottom of Obsidian. Its rail can be pressed, the ways out are the theme's
    * buttons, `mark` follows the name, and `left` and `right` hold the scene's own modules.
    */
-  bar?: { skin: "status" | "vault"; mark?: ReactNode; left?: ReactNode; right?: ReactNode };
+  bar?: {
+    skin: "status" | "vault" | "paper";
+    mark?: ReactNode;
+    left?: ReactNode;
+    right?: ReactNode;
+  };
   children: ReactNode;
 }
 

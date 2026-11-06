@@ -1199,87 +1199,11 @@
   line-height: 1.35;
 }
 
-.placeholder {
-  display: grid;
-  place-items: center;
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px dashed var(--muted);
-  background: var(--surface);
-  text-align: center;
-}
-
-.placeholder-phone {
-  aspect-ratio: 9 / 19.5;
-  max-height: 100%;
-  border-radius: 2.25rem;
-}
-
-.placeholder-browser {
-  aspect-ratio: 16 / 10;
-  border-radius: 1rem;
-}
-
-.placeholder-frame {
-  aspect-ratio: 4 / 3;
-  border-radius: 1rem;
-}
-
-.devices {
-  display: grid;
-  grid-template-columns: minmax(0, 4fr) minmax(0, 1.3fr);
-  align-items: end;
-  gap: 1rem;
-  width: min(100%, 42rem);
-  margin-inline: auto;
-}
-
-.devices-pair {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  width: min(100%, 24rem);
-}
-
-.devices-one {
-  grid-template-columns: minmax(0, 1fr);
-  width: min(100%, 13rem);
-}
-
 @media (min-width: 64rem) {
   .stop {
     grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
     gap: 3rem;
   }
-}
-
-.mini-week {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  grid-template-rows: repeat(4, minmax(2.5rem, 1fr));
-  gap: 0.25rem;
-}
-
-.mini-week-cell {
-  border-radius: 0.5rem;
-  background: var(--raised);
-}
-
-.mini-week-lesson {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 20%;
-  height: 25%;
-  padding: 0.125rem;
-  overflow: hidden;
-  font-size: 0.75rem;
-  font-weight: 500;
-  border-radius: 0.5rem;
-  background-clip: content-box;
-  cursor: pointer;
-  transform: translate(calc(var(--day) * 100%), calc(var(--slot) * 100%));
-  transition:
-    transform var(--duration-slow) var(--ease-in-out),
-    background-color var(--duration-base) var(--ease-out);
 }
 
 .finale-title {
@@ -2091,19 +2015,6 @@
       font-size: clamp(2.75rem, 8.6vw, 8.5rem);
     }
 
-    .placeholder-phone {
-      max-height: 44svh;
-      width: auto;
-      margin-inline: auto;
-    }
-
-    .devices,
-    .devices-pair,
-    .devices-one {
-      align-items: center;
-      justify-items: center;
-    }
-
     /* `clip`, not `hidden`: a scroll box here would stop the CV's profile from holding with `sticky`. */
     .after-work {
       position: relative;
@@ -2149,10 +2060,6 @@
         grid-template-rows: minmax(0, 1fr);
         align-items: center;
         gap: 3rem;
-      }
-
-      .placeholder-phone {
-        max-height: 62svh;
       }
 
       .chapter-rail button {
@@ -2339,11 +2246,5 @@
       calc(var(--lens-x, 0) - var(--lens-r, 0)),
       calc(var(--lens-y, 0) - var(--lens-r, 0))
     );
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .mini-week-lesson {
-    transition: none;
   }
 }

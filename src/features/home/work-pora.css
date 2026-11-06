@@ -1,0 +1,758 @@
+/*
+ * «Пора на пару» on the home page: one lesson through the product. The frames are the product's own
+ * screens, and the lesson that travels between them is its card from the web schedule. Plain, the
+ * chapter is a section on the sidebar's paper: each frame holds its own lesson. The scene, the bar
+ * as the product's badges and the lesson in flight are under `[data-js]` and the motion query, as
+ * the other chapters' are. Prefix `pair-`.
+ */
+
+/* The type each stop wears, as the product colours its lessons: the stop and its tick in the bar. */
+.chapter[data-chapter="pora"] {
+  :is(.stop, .chapter-rail li):nth-child(1) {
+    --pair-type: var(--lesson-lecture);
+  }
+
+  :is(.stop, .chapter-rail li):nth-child(2) {
+    --pair-type: var(--lesson-lab);
+  }
+
+  :is(.stop, .chapter-rail li):nth-child(3) {
+    --pair-type: var(--lesson-practice);
+  }
+
+  :is(.stop, .chapter-rail li):nth-child(4) {
+    --pair-type: var(--lesson-seminar);
+  }
+
+  :is(.stop, .chapter-rail li):nth-child(5) {
+    --pair-type: var(--lesson-consultation);
+  }
+
+  :is(.stop, .chapter-rail li):nth-child(6) {
+    --pair-type: var(--lesson-interactive);
+  }
+}
+
+/* A frame comes in both modes; the one the stylesheet hides has no box and is never fetched. */
+.pair-dark {
+  display: none;
+}
+
+:root[data-theme="dark"] .pair-light {
+  display: none;
+}
+
+:root[data-theme="dark"] .pair-dark {
+  display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .pair-light {
+    display: none;
+  }
+
+  :root:not([data-theme="light"]) .pair-dark {
+    display: block;
+  }
+}
+
+/* ---------- the paper ---------- */
+
+/* The sidebar's matte paper: its surface and its specks, and a week's columns, faint, across it. */
+.chapter[data-chapter="pora"] {
+  /* One column's tile, repeated by its size: Gecko loses a thin repeating gradient (code-face.test.ts). */
+  --pair-columns: linear-gradient(90deg, transparent calc(100% - 1px), var(--line) 0) 0 0 /
+    calc(100% / 7) 100%;
+  position: relative;
+  isolation: isolate;
+  background: var(--surface);
+}
+
+.chapter[data-chapter="pora"]::before,
+.chapter[data-chapter="pora"] .chapter-stage::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: var(--grain);
+  mask: var(--paper-noise);
+  pointer-events: none;
+}
+
+.chapter[data-chapter="pora"] .chapter-stage::before {
+  display: none;
+}
+
+/* ---------- the words ---------- */
+
+.pair-label {
+  color: var(--muted);
+  font: 500 0.875rem/1.25rem var(--mono);
+}
+
+.pair-facts {
+  display: grid;
+  max-width: 34rem;
+  margin-top: 0.5rem;
+  font-size: 0.9375rem;
+  line-height: 1.35;
+}
+
+.pair-facts > div {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: 1rem;
+  padding-block: 0.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.pair-facts > div:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.pair-facts dt {
+  color: var(--muted);
+  font: 500 0.8125rem/1.35rem var(--mono);
+}
+
+.pair-note {
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
+/* The product's badge of a lesson: its outline, its dot in the type's colour. */
+.pair-kicker {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 0.3125rem;
+  height: 1.5625rem;
+  padding: 0.15625rem 0.625rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.25rem;
+  white-space: nowrap;
+}
+
+.pair-kicker i {
+  flex: none;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background: var(--pair-type);
+}
+
+.pair-numbers {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  max-width: 34rem;
+  margin-top: 0.25rem;
+}
+
+.pair-numbers li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding-top: 0.625rem;
+  border-top: 1px solid var(--line);
+}
+
+.pair-numbers b {
+  font: 600 clamp(1.5rem, 2.2vw, 2.125rem) / 1 var(--sans);
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
+}
+
+.pair-numbers span {
+  font-size: 0.8125rem;
+  line-height: 1.3;
+}
+
+.pair-numbers time {
+  color: var(--muted);
+  font: 400 0.75rem/1.2 var(--mono);
+}
+
+.pair-ways {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+/* ---------- the frames ---------- */
+
+.pair-fill {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.pair-hold {
+  position: absolute;
+  display: block;
+}
+
+.pair-hold img {
+  width: 100%;
+  height: 100%;
+}
+
+/* The lesson on the first stop: its card at twice and more of its size, off the page. */
+.pair-hero {
+  display: grid;
+  place-items: center;
+  padding-block: 2rem;
+}
+
+[data-pair-hold="hero"] {
+  position: relative;
+  width: min(100%, 27rem);
+  aspect-ratio: 780 / 584;
+  filter: drop-shadow(0 1.5rem 2rem var(--scrim));
+}
+
+/*
+ * A window of Safari from the owner's mockup, 1440 wide: its bar is 52 of that, the page 900. The
+ * corner is 26 of the width, so the radius is that share of the width and of the height.
+ */
+.pair-browser {
+  width: 100%;
+  overflow: hidden;
+  border-radius: calc(26% / 14.4) / calc(26% / 9.52);
+  box-shadow:
+    0 0 0 1px var(--device-edge),
+    0 1rem 3rem var(--scrim);
+}
+
+.pair-browser-bar {
+  display: block;
+  aspect-ratio: 1440 / 52;
+}
+
+.pair-browser-bar img {
+  width: 100%;
+  height: 100%;
+}
+
+/* The page's own size is 1440 × 900: what lies on it is measured in its widths. */
+.pair-browser-body {
+  position: relative;
+  aspect-ratio: 1440 / 900;
+  background: var(--page);
+  container-type: inline-size;
+}
+
+/*
+ * A phone: the screen of the simulator under the mockup of the device. The picture's height decides
+ * it all; the screen keeps its frame's proportions, so a place on it is where it was on the frame.
+ */
+.pair-phone {
+  --pair-h: min(40rem, 80svh);
+  position: relative;
+  justify-self: center;
+  height: var(--pair-h);
+  margin-inline: auto;
+}
+
+.pair-screen {
+  position: absolute;
+  overflow: hidden;
+  container-type: inline-size;
+}
+
+/* The device lies over its screen: its glass is cut out, its bezel rounds the screen's corners. */
+.pair-device {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 1.25rem 1.75rem var(--scrim));
+  pointer-events: none;
+}
+
+/* The editor's bar, as the product's popover: what is being edited, and the two ways out. */
+.pair-tool {
+  position: absolute;
+  bottom: 4%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 0.75em;
+  padding: 0.4em 0.4em 0.4em 0.9em;
+  border-radius: 0.75em;
+  background: var(--card);
+  box-shadow:
+    0 0 0 1px var(--line),
+    0 4px 6px -1px var(--shade),
+    0 2px 4px -2px var(--shade);
+  font-size: clamp(0.625rem, 1.25cqw, 0.875rem);
+  line-height: 1.25;
+  white-space: nowrap;
+  translate: -50% 0;
+}
+
+.pair-tool b {
+  font-weight: 600;
+}
+
+.pair-draft {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  color: var(--muted);
+}
+
+.pair-draft i {
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background: var(--warning);
+}
+
+.pair-tool-ways {
+  display: inline-flex;
+  gap: 0.35em;
+}
+
+.pair-tool-ways span {
+  padding: 0.35em 0.75em;
+  border-radius: 0.5em;
+  box-shadow: 0 0 0 1px var(--outline-line);
+  background: var(--outline-fill);
+  font-weight: 500;
+}
+
+.pair-tool-ways span:last-child {
+  box-shadow: none;
+  background: var(--button);
+  color: var(--on-button);
+}
+
+/* The verdict of the check: the clash while the lesson lies on it, then the week published. */
+.pair-verdict {
+  position: absolute;
+  bottom: calc(4% + 3.6em);
+  left: 50%;
+  display: grid;
+  translate: -50% 0;
+  font-size: clamp(0.625rem, 1.25cqw, 0.875rem);
+  line-height: 1.25;
+}
+
+.pair-verdict span {
+  grid-area: 1 / 1;
+  display: inline-flex;
+  align-items: center;
+  justify-self: center;
+  gap: 0.5em;
+  padding: 0.55em 0.85em;
+  border-radius: 0.75em;
+  background: var(--card);
+  box-shadow:
+    0 0 0 1px var(--line),
+    0 4px 6px -1px var(--shade),
+    0 2px 4px -2px var(--shade);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.pair-verdict span::before {
+  content: "";
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background: var(--success);
+}
+
+.pair-verdict [data-clash] {
+  visibility: hidden;
+  color: var(--danger);
+}
+
+.pair-verdict [data-clash]::before {
+  background: var(--danger);
+}
+
+/* Where the clash is: the ring of the card lying on another, at the card's own corner. */
+[data-pair-hold="clash"]::after {
+  content: "";
+  position: absolute;
+  inset: 4.1% 3.08%;
+  border-radius: 0.833cqw;
+  box-shadow:
+    0 0 0 2px var(--danger),
+    0 0 0 6px color-mix(in srgb, var(--danger) 18%, transparent);
+  opacity: 0;
+}
+
+/* ---------- the start ---------- */
+
+.pair-origin {
+  display: grid;
+  gap: 1rem;
+  width: min(100%, 36rem);
+  margin-inline: auto;
+}
+
+.pair-store,
+.pair-chart {
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: var(--card);
+  box-shadow:
+    0 0 0 1px var(--line),
+    0 1rem 2rem -1rem var(--scrim);
+}
+
+.pair-store img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.pair-chart {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem 1.125rem 0.875rem;
+}
+
+.pair-chart figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  font-size: 0.875rem;
+}
+
+.pair-chart figcaption b {
+  font-weight: 600;
+}
+
+.pair-chart figcaption span {
+  color: var(--muted);
+  font: 400 0.75rem/1 var(--mono);
+}
+
+.pair-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.25rem;
+  height: 6rem;
+  padding-top: 1.125rem;
+}
+
+.pair-bars i {
+  position: relative;
+  flex: 1;
+  height: max(calc(var(--share) * 100%), 2px);
+  border-radius: 0.1875rem 0.1875rem 0 0;
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+/* The first three days, after the post: the bars of the launch, the peak with its number. */
+.pair-bars i:nth-child(-n + 3) {
+  background: var(--accent);
+}
+
+.pair-bars i[data-peak]::after {
+  content: attr(data-value);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-bottom: 0.25rem;
+  color: var(--ink);
+  font: 600 0.75rem/1 var(--mono);
+  translate: -50% 0;
+}
+
+.pair-axis {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font: 400 0.75rem/1 var(--mono);
+}
+
+/* The lesson in flight is the scene's alone. */
+.pair-fly {
+  display: none;
+}
+
+@media (min-width: 64rem) {
+  /* The frames want the room: the words keep a narrower column. */
+  .chapter[data-chapter="pora"] .stop {
+    grid-template-columns: minmax(0, 4.5fr) minmax(0, 7fr);
+  }
+}
+
+/* ---------- the scene ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  :root[data-js] {
+    .chapter[data-chapter="pora"]::before {
+      display: none;
+    }
+
+    .chapter[data-chapter="pora"]::after {
+      background: var(--surface);
+    }
+
+    .chapter[data-chapter="pora"] .chapter-stage {
+      background: var(--surface);
+    }
+
+    .chapter[data-chapter="pora"] .chapter-stage::before {
+      display: block;
+    }
+
+    /* The week's columns, faint, through the whole stage, fading toward its edges. */
+    .chapter[data-chapter="pora"] .chapter-stage::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      background: var(--pair-columns);
+      opacity: 0.6;
+      mask: radial-gradient(ellipse 70% 60% at 70% 50%, var(--ink), transparent);
+      pointer-events: none;
+    }
+
+    /* A frame keeps its proportions in whatever room the stop leaves it. */
+    .chapter[data-chapter="pora"] .stop-visual {
+      place-items: center;
+      container-type: size;
+    }
+
+    .chapter[data-chapter="pora"] .pair-browser {
+      width: min(100cqw, 100cqh * 1440 / 952);
+    }
+
+    .chapter[data-chapter="pora"] .pair-phone {
+      --pair-h: min(100cqh, 60rem);
+    }
+
+    .chapter[data-chapter="pora"] .pair-hero {
+      padding: 0;
+    }
+
+    .chapter[data-chapter="pora"] [data-pair-hold="hero"] {
+      width: min(100cqw, clamp(20rem, 26vw, 38rem), (100cqh - 2rem) * 780 / 584);
+      filter: none;
+    }
+
+    /* The lesson the frames hold gives way to the one that travels. */
+    [data-pair-live] .pair-hold > * {
+      visibility: hidden;
+    }
+
+    /* Published, it is the editor's own again: it leaves with the week it was put in. */
+    [data-pair-live][data-pair-landed] [data-pair-hold="free"] > * {
+      visibility: visible;
+    }
+
+    /* On Android its place is the home's ground: the card of the frame lies under the one that flies. */
+    [data-pair-live] [data-pair-hold="android"] {
+      background: var(--android-ground);
+    }
+
+    .pair-fly {
+      --pair-lift: 0;
+      position: absolute;
+      z-index: 2;
+      top: 0;
+      left: 0;
+      display: block;
+      overflow: hidden;
+      pointer-events: none;
+      filter: drop-shadow(
+        0 calc(var(--pair-lift) * 1.5rem) calc(var(--pair-lift) * 2rem) var(--scrim)
+      );
+      will-change: transform, width, height;
+    }
+
+    .pair-form {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+    }
+
+    .pair-form img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .pair-verdict span {
+      visibility: hidden;
+      opacity: 0;
+      translate: 0 -0.375rem;
+      transition:
+        opacity var(--duration-base) var(--ease-out),
+        translate var(--duration-base) var(--ease-out),
+        visibility var(--duration-base);
+    }
+
+    [data-pair-state="clash"] .pair-verdict [data-clash],
+    [data-pair-state="published"] .pair-verdict [data-published] {
+      visibility: visible;
+      opacity: 1;
+      translate: 0 0;
+    }
+
+    [data-pair-hold="clash"]::after {
+      transition: opacity var(--duration-base) var(--ease-out);
+    }
+
+    [data-pair-state="clash"] [data-pair-hold="clash"]::after {
+      opacity: 1;
+    }
+
+    /* ---------- the bar as the product's badges ---------- */
+
+    .chapter[data-bar="paper"] .chapter-bar {
+      isolation: isolate;
+      background: var(--capsule-paper);
+      box-shadow: 0 1px 0 var(--line);
+    }
+
+    .chapter[data-bar="paper"] .chapter-bar::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      background: var(--grain);
+      mask: var(--paper-noise);
+      pointer-events: none;
+    }
+
+    .chapter[data-bar="paper"] .chapter-progress {
+      background: var(--accent-strong);
+    }
+
+    .chapter[data-bar="paper"] .chapter-actions {
+      gap: 0.5rem;
+    }
+
+    .chapter[data-bar="paper"] .chapter-name {
+      white-space: nowrap;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (max-width: 63.99rem) {
+  :root[data-js] {
+    /* A phone's stop leaves its frame the room under the words: the facts wait for the page. */
+    .chapter[data-chapter="pora"] .pair-facts,
+    .chapter[data-chapter="pora"] .pair-note,
+    .chapter[data-chapter="pora"] .pair-numbers time,
+    .chapter[data-chapter="pora"] .pair-origin {
+      display: none;
+    }
+
+    .chapter[data-chapter="pora"] .pair-numbers {
+      gap: 0.75rem;
+    }
+
+    .chapter[data-chapter="pora"] .pair-numbers b {
+      font-size: 1.25rem;
+    }
+
+    .chapter[data-chapter="pora"] .pair-numbers span {
+      font-size: 0.75rem;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (min-width: 64rem) {
+  :root[data-js] {
+    .chapter[data-bar="paper"] .chapter-bar {
+      box-shadow: 0 -1px 0 var(--line);
+    }
+
+    .chapter[data-bar="paper"] .chapter-name > .font-display {
+      font-size: 0.9375rem;
+    }
+
+    .chapter[data-bar="paper"] .chapter-next {
+      display: inline-flex;
+    }
+
+    .chapter[data-bar="paper"] .chapter-rail {
+      gap: 0.25rem;
+    }
+
+    .chapter[data-bar="paper"] .chapter-rail button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      height: 1.875rem;
+      padding-inline: 0.625rem;
+      border-radius: 0.5rem;
+      color: var(--muted);
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition:
+        color var(--duration-base) var(--ease-out),
+        background-color var(--duration-base) var(--ease-out);
+    }
+
+    .chapter[data-bar="paper"] .chapter-rail button::before {
+      content: "";
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 50%;
+      background: var(--pair-type);
+      opacity: 0.45;
+      transition: opacity var(--duration-base) var(--ease-out);
+    }
+
+    .chapter[data-bar="paper"] .chapter-rail li[data-active] button {
+      background: var(--capsule-current);
+      color: var(--ink);
+    }
+
+    .chapter[data-bar="paper"] .chapter-rail li[data-active] button::before {
+      opacity: 1;
+    }
+
+    @media (hover: hover) {
+      .chapter[data-bar="paper"] .chapter-rail li:not([data-active]) button:hover {
+        background: var(--capsule-hover);
+        color: var(--ink);
+      }
+    }
+
+    /* The browser runs on past the column, as far as the screen lets it: its page is the size it is. */
+    .chapter[data-chapter="pora"] .pair-browser {
+      justify-self: start;
+      width: min(100cqh * 1440 / 952, 100cqw + max(10rem, (100vw - var(--content)) / 2));
+    }
+
+    /* The store's page of the launch day, and the days after it laid over its corner. */
+    .chapter[data-chapter="pora"] .pair-origin {
+      position: relative;
+      display: block;
+      width: min(100%, 40rem, (100cqh - 4.5rem) / 0.62);
+      padding-bottom: 4.5rem;
+    }
+
+    .chapter[data-chapter="pora"] .pair-store {
+      width: 82%;
+    }
+
+    .chapter[data-chapter="pora"] .pair-chart {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 56%;
+    }
+  }
+}

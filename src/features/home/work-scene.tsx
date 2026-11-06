@@ -9,6 +9,7 @@ import { SCENE } from "@/motion/tokens";
 import { snapToRests } from "./chapter-snap";
 import { runDesk } from "./desk-scene";
 import { runFlowMap } from "./flow-map-scene";
+import { pairFlight } from "./pair-scene";
 
 /** The corners of a sheet rising over the page, and how far what it covers sinks. */
 const SHEET = { radius: "2rem", sunk: 0.93, dimmed: 0.55, lastStretch: 0.06 };
@@ -63,11 +64,19 @@ function rise(sheet: HTMLElement, rounded: HTMLElement, under: HTMLElement | nul
   if (under) scene.to(under, { scale: SHEET.sunk, opacity: SHEET.dimmed, duration: 1 }, 0);
 }
 
+/** What a chapter adds to its stops' timeline, given when each stop arrives: and what takes it down. */
+type StopsExtra = (scene: gsap.core.Timeline, arrivals: readonly number[]) => () => void;
+
 /**
  * Stops one over another, resting long enough to read: the old one leaves upward and the new one
- * comes from below.
+ * comes from below. `extra` lays a chapter's own motion over the same timeline.
  */
-function runStops(chapter: HTMLElement, start: () => string, end: () => string) {
+function runStops(
+  chapter: HTMLElement,
+  start: () => string,
+  end: () => string,
+  extra?: StopsExtra,
+) {
   const stops = gsap.utils.toArray<HTMLElement>("[data-stop]", chapter);
   const progress = chapter.querySelector("[data-chapter-progress]");
   const mark = marker(chapter);
@@ -114,6 +123,7 @@ function runStops(chapter: HTMLElement, start: () => string, end: () => string) 
     arrivals.push(at + 1);
     scene.addLabel(`stop-${index + 1}`, at + 1).to({}, { duration: SCENE.rest }, at + 1);
   });
+  const undoExtra = extra?.(scene, arrivals);
   scene.fromTo(progress, { scaleX: 0 }, { scaleX: 1, ease: "none", duration: scene.duration() }, 0);
   mark(0);
 
@@ -138,6 +148,7 @@ function runStops(chapter: HTMLElement, start: () => string, end: () => string) 
   return () => {
     chapter.removeEventListener("focusin", meet);
     snap.undo();
+    undoExtra?.();
   };
 }
 
@@ -231,6 +242,7 @@ export function WorkScene({ children }: { children: ReactNode }) {
         pora,
         () => "top top",
         () => `+=${pora.offsetHeight - 2 * window.innerHeight}`,
+        pairFlight(pora),
       );
       const undoFlow = runFlowMap(flow, follow());
       handOver(flow, projects);

@@ -36,7 +36,7 @@ const topOf = (page: Page, selector: string) =>
 
 const HOME = "/ru";
 const CHAPTERS = 9;
-const STOPS = 5;
+const STOPS = 6;
 const PANELS = 7;
 const DESK = 5;
 
@@ -1115,16 +1115,45 @@ test.describe("the home page in motion", () => {
     await expect(link).toHaveAttribute("href", "/ru/poranaparu");
   });
 
-  test("brings a stop to the keyboard and runs the week's rule", async ({ page }) => {
+  test("carries one lesson through the frames and publishes it past the clash", async ({
+    page,
+  }) => {
     await page.goto(HOME);
-    const lesson = page.getByRole("button", { name: "Перенести пару: Код" });
-    await lesson.focus();
-    await expect(lesson.locator("xpath=ancestor::li[@data-stop]")).toHaveAttribute("data-active");
-    const status = page.locator("#work-pora").getByText(/Конфликт/);
-    for (let press = 0; press < 20 && !(await status.isVisible()); press += 1) {
-      await lesson.click();
+    const chapter = page.locator("#work-pora");
+    const fly = chapter.locator("[data-pair-fly]");
+    const top = await topOf(page, "#work-pora");
+    const screen = await height(page);
+    const length = (await chapter.evaluate((node: HTMLElement) => node.offsetHeight)) - 2 * screen;
+    // The scene's clock: a rest of 0.7 on each of the six stops, a move of 1 between them.
+    const at = (time: number) => top + (time / (0.7 * 6 + 5)) * length;
+    const gap = async (hold: string) => {
+      const a = await fly.boundingBox();
+      const b = await chapter.locator(`[data-pair-hold="${hold}"]`).boundingBox();
+      if (!a || !b) return Number.POSITIVE_INFINITY;
+      return Math.max(Math.abs(a.x - b.x), Math.abs(a.y - b.y), Math.abs(a.width - b.width));
+    };
+    for (const [stop, hold] of [
+      [1, "web"],
+      [2, "la"],
+      [3, "android"],
+    ] as const) {
+      await jump(page, at(1.7 * stop + 0.35));
+      await expect.poll(() => gap(hold)).toBeLessThan(1.5);
     }
-    await expect(status).toBeVisible();
+    await jump(page, at(1.7 * 4 + 0.08));
+    await expect(chapter.getByText(/Конфликт/)).toBeVisible();
+    await jump(page, at(1.7 * 4 + 0.62));
+    await expect.poll(() => gap("free")).toBeLessThan(1.5);
+    await expect(chapter.getByText("Опубликовано во всех приложениях")).toBeVisible();
+    await expect(chapter.getByText(/Конфликт/)).toBeHidden();
+    // Published, it stays in the editor's week and leaves with it: the frame's own card takes over.
+    await jump(page, at(1.7 * 4 + 0.7 + 0.5));
+    await expect(fly).toHaveCSS("opacity", "0");
+    await expect(chapter).toHaveAttribute("data-pair-landed");
+    await expect(chapter.locator('[data-pair-hold="free"] img').first()).toHaveCSS(
+      "visibility",
+      "visible",
+    );
   });
 });
 
