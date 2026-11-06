@@ -125,6 +125,37 @@ test.describe("the home page with reduced motion", () => {
 test.describe("the home page in motion", () => {
   const height = (page: Page) => page.evaluate(() => window.innerHeight);
 
+  /**
+   * Where the story stands on the page: its top, the scroll that brings its last chapter in, the
+   * hold before the ribbon moves, the scroll that carries it, and how far it goes sideways.
+   */
+  const storyGeometry = (page: Page) =>
+    page.locator("#story").evaluate((story: HTMLElement) => {
+      const box = story.getBoundingClientRect();
+      const top = box.top + window.scrollY;
+      const end = top + box.height - 2 * window.innerHeight;
+      const hold = parseFloat(story.style.getPropertyValue("--hold")) * window.innerHeight;
+      const track = story.querySelector("[data-story-track]");
+      return {
+        top,
+        end,
+        hold,
+        span: end - top - hold,
+        distance: (track?.scrollWidth ?? 0) - window.innerWidth,
+      };
+    });
+
+  /** The scroll at which the ribbon has moved `x` pixels to the left. */
+  const scrollForTrackX = (story: Awaited<ReturnType<typeof storyGeometry>>, x: number) =>
+    story.top + (story.span * x) / story.distance;
+
+  /** Brings the story's last chapter in, and gives back where the story stands. */
+  const storyEnd = async (page: Page) => {
+    const story = await storyGeometry(page);
+    await jump(page, story.end);
+    return story;
+  };
+
   const lens = (page: Page, name: string) =>
     page.locator(".hero").evaluate((hero, variable) => {
       return parseFloat(hero.style.getPropertyValue(variable));
@@ -437,18 +468,13 @@ test.describe("the home page in motion", () => {
     page,
   }) => {
     await page.goto(HOME);
-    const box = await page.locator("#story").evaluate((node) => ({
-      top: node.getBoundingClientRect().top + window.scrollY,
-      height: node.getBoundingClientRect().height,
-    }));
-    const viewport = await height(page);
     const last = page.locator(".story-chapter").last();
     const left = () => last.evaluate((node) => node.getBoundingClientRect().left);
     const right = () => last.evaluate((node) => node.getBoundingClientRect().right);
     const mark = page.locator("[data-story-mark][data-active]");
     const start = await left();
     await expect(mark).toHaveText("Школа");
-    await jump(page, box.top + box.height - 2 * viewport);
+    await storyEnd(page);
     await expect.poll(right).toBeCloseTo(page.viewportSize()?.width ?? 0, 0);
     expect(await left()).toBeLessThan(start - 5000);
     await expect(mark).toHaveText("Сейчас");
@@ -467,14 +493,10 @@ test.describe("the home page in motion", () => {
     await page.goto(HOME);
     const last = page.locator('[data-menu="47"]');
     const first = page.locator('[data-menu="1"]');
-    const left = (node: typeof last) => node.evaluate((frame) => frame.getBoundingClientRect().top);
-    expect(Math.abs((await left(last)) - (await left(first)))).toBeLessThan(2);
-    const box = await page.locator("#story").evaluate((node) => ({
-      top: node.getBoundingClientRect().top + window.scrollY,
-      height: node.getBoundingClientRect().height,
-    }));
-    await jump(page, box.top + box.height - 2 * (await height(page)));
-    await expect.poll(async () => (await left(last)) - (await left(first))).toBeGreaterThan(200);
+    const top = (node: typeof last) => node.evaluate((frame) => frame.getBoundingClientRect().top);
+    expect(Math.abs((await top(last)) - (await top(first)))).toBeLessThan(2);
+    await storyEnd(page);
+    await expect.poll(async () => (await top(last)) - (await top(first))).toBeGreaterThan(200);
     expect(new Set(pictures).size).toBe(1);
   });
 
@@ -487,11 +509,7 @@ test.describe("the home page in motion", () => {
     await page.waitForLoadState("networkidle");
     // A browser takes what is close on its own; the far end of the ribbon must wait.
     expect(photos.filter((url) => /moscow-window|plane|msu/.test(url))).toEqual([]);
-    const box = await page.locator("#story").evaluate((node) => ({
-      top: node.getBoundingClientRect().top + window.scrollY,
-      height: node.getBoundingClientRect().height,
-    }));
-    await jump(page, box.top + box.height - 2 * (await height(page)));
+    await storyEnd(page);
     await expect.poll(() => photos.some((url) => url.includes("moscow-window"))).toBe(true);
   });
 
@@ -509,20 +527,12 @@ test.describe("the home page in motion", () => {
       return Math.abs(first - second);
     };
     await expect.poll(apart).toBeGreaterThan(40);
-    const box = await page.locator("#story").evaluate((node) => ({
-      top: node.getBoundingClientRect().top + window.scrollY,
-      span:
-        node.getBoundingClientRect().height -
-        (2 + parseFloat(node.style.getPropertyValue("--hold"))) * window.innerHeight,
-    }));
-    const distance = await page
-      .locator("[data-story-track]")
-      .evaluate((node) => node.scrollWidth - window.innerWidth);
+    const story = await storyGeometry(page);
     const middle = await page.locator(".story-rent .story-quote").evaluate((node) => {
       const place = node.getBoundingClientRect();
       return place.left + place.width / 2 - window.innerWidth / 2;
     });
-    await jump(page, box.top + (box.span * middle) / distance);
+    await jump(page, scrollForTrackX(story, middle));
     await expect.poll(apart).toBeLessThan(12);
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(
       await page.evaluate(() => document.documentElement.clientWidth),
@@ -585,20 +595,12 @@ test.describe("the home page in motion", () => {
     const root = page.locator("html");
     const capsule = page.locator("[data-capsule]");
     const canvas = page.locator("[data-story-canvas]");
-    const { top, span } = await page.locator("#story").evaluate((node) => ({
-      top: node.getBoundingClientRect().top + window.scrollY,
-      span:
-        node.getBoundingClientRect().height -
-        (2 + parseFloat(node.style.getPropertyValue("--hold"))) * window.innerHeight,
-    }));
-    const distance = await page
-      .locator("[data-story-track]")
-      .evaluate((node) => node.scrollWidth - window.innerWidth);
+    const story = await storyGeometry(page);
     const run = await page.locator("[data-bare-run]").evaluate((node) => {
       const box = node.getBoundingClientRect();
       return { left: box.left, width: box.width };
     });
-    const at = (x: number) => top + (span * (run.left + x)) / distance;
+    const at = (x: number) => scrollForTrackX(story, run.left + x);
     await jump(page, at(run.width / 2 - 720));
     await expect(root).toHaveAttribute("data-bare");
     await expect(capsule).toHaveCSS("opacity", "0");
@@ -636,11 +638,7 @@ test.describe("the home page in motion", () => {
     await page.goto(HOME);
     const number = page.locator(".story-funnel [data-count='632']");
     await expect(number).toHaveText("0");
-    const box = await page.locator("#story").evaluate((node) => ({
-      top: node.getBoundingClientRect().top + window.scrollY,
-      height: node.getBoundingClientRect().height,
-    }));
-    await jump(page, box.top + box.height - 2 * (await height(page)));
+    await storyEnd(page);
     await expect(number).toHaveText("632");
   });
 
@@ -653,11 +651,7 @@ test.describe("the home page in motion", () => {
         const path = node as SVGPathElement;
         return 1 - parseFloat(getComputedStyle(path).strokeDashoffset) / path.getTotalLength();
       });
-    const { end, hold } = await page.locator("#story").evaluate((node) => {
-      const hold = parseFloat(node.style.getPropertyValue("--hold")) * window.innerHeight;
-      const top = node.getBoundingClientRect().top + window.scrollY;
-      return { end: top + node.getBoundingClientRect().height - 2 * window.innerHeight, hold };
-    });
+    const { end, hold } = await storyGeometry(page);
     await jump(page, end - hold - 40);
     await expect.poll(() => drawn("trunk")).toBeLessThan(0.02);
     await expect(page.locator('[data-branch="open"]')).toHaveCSS("opacity", "0");
@@ -679,11 +673,7 @@ test.describe("the home page in motion", () => {
   test("ends the story on a dashed line, with the way to write at its end", async ({ page }) => {
     await page.goto(HOME);
     await expect(page.locator('[data-shape="open"]')).toHaveCSS("stroke-dasharray", /^9/);
-    const box = await page.locator("#story").evaluate((node) => ({
-      top: node.getBoundingClientRect().top + window.scrollY,
-      height: node.getBoundingClientRect().height,
-    }));
-    await jump(page, box.top + box.height - 2 * (await height(page)));
+    await storyEnd(page);
     await expect(page.locator('[data-node="tip-open"]')).toHaveAttribute("visibility", "visible");
     const write = page.locator('[data-branch="open"] [data-write]');
     const sizes = await write.evaluate((node) => ({
@@ -702,11 +692,7 @@ test.describe("the home page in motion", () => {
         .locator(".story-now .story-quote [data-reveal] > span")
         .evaluateAll((all) => all.map((line) => Math.round(line.getBoundingClientRect().left)));
     await expect.poll(async () => (await lefts()).length).toBeGreaterThan(1);
-    const box = await page.locator("#story").evaluate((node) => ({
-      top: node.getBoundingClientRect().top + window.scrollY,
-      height: node.getBoundingClientRect().height,
-    }));
-    await jump(page, box.top + box.height - 2 * (await height(page)));
+    await storyEnd(page);
     await expect.poll(async () => new Set(await lefts()).size).toBe(1);
   });
 
@@ -757,14 +743,10 @@ test.describe("the home page in motion", () => {
     const bars = page.locator(".story-launch .story-chart");
     await expect(quote).toHaveCSS("opacity", "0");
     await expect(bars).not.toHaveAttribute("data-seen");
-    const box = await page.locator("#story").evaluate((node) => ({
-      top: node.getBoundingClientRect().top + window.scrollY,
-      height: node.getBoundingClientRect().height,
-    }));
-    await jump(page, box.top + box.height - 2 * (await height(page)));
+    const story = await storyEnd(page);
     await expect(quote).toHaveCSS("opacity", "1");
     await expect(bars).toHaveAttribute("data-seen");
-    await jump(page, box.top);
+    await jump(page, story.top);
     await expect(quote).toHaveCSS("opacity", "1");
   });
 
@@ -814,21 +796,19 @@ test.describe("the home page in motion", () => {
     await page.goto(HOME);
     const stay = page.locator("[data-stay]");
     const canvas = page.locator("[data-score-canvas]");
-    const way = await page.locator("#story").evaluate((story: HTMLElement) => {
-      const track = story.querySelector("[data-story-track]");
-      const chapter = story.querySelector<HTMLElement>(".story-fork");
-      const hold = parseFloat(story.style.getPropertyValue("--hold")) * window.innerHeight;
-      return {
-        top: story.getBoundingClientRect().top + window.scrollY,
-        ride: story.offsetHeight - 2 * window.innerHeight - hold,
-        distance: (track?.scrollWidth ?? 0) - window.innerWidth,
-        left:
-          (chapter?.getBoundingClientRect().left ?? 0) - (track?.getBoundingClientRect().left ?? 0),
-        room: (chapter?.offsetWidth ?? 0) - window.innerWidth,
-      };
-    });
-    const along = (share: number) =>
-      way.top + ((way.left + way.room * share) / way.distance) * way.ride;
+    const story = await storyGeometry(page);
+    // Where the fork stands on the ribbon, and how far the ribbon moves while it fills the screen.
+    const fork = await page
+      .locator("#story .story-fork")
+      .first()
+      .evaluate((chapter: HTMLElement) => {
+        const track = document.querySelector("#story [data-story-track]");
+        return {
+          left: chapter.getBoundingClientRect().left - (track?.getBoundingClientRect().left ?? 0),
+          room: chapter.offsetWidth - window.innerWidth,
+        };
+      });
+    const along = (share: number) => scrollForTrackX(story, fork.left + fork.room * share);
     // Plus zero: a stay a fraction of a pixel left of the edge rounds to minus zero.
     const left = () => stay.evaluate((node) => Math.round(node.getBoundingClientRect().left) + 0);
     const picture = () => canvas.evaluate((node: HTMLCanvasElement) => node.toDataURL());
