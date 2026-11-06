@@ -92,14 +92,15 @@ export function HeroSettings({ locale, onToggle, labels }: HeroSettingsProps) {
             {LOCALES.map((each) => (
               <a
                 aria-current={each === locale ? "true" : undefined}
-                aria-label={labels[each]}
                 className="segmented-option"
                 href={switchLocale(pathname, each)}
                 hrefLang={each}
                 key={each}
                 lang={each}
               >
-                {each.toUpperCase()}
+                {/* The code is what is seen, the language's name what is read. */}
+                <span aria-hidden>{each.toUpperCase()}</span>
+                <span className="sr-only">{labels[each]}</span>
               </a>
             ))}
           </div>

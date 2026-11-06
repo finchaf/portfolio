@@ -80,7 +80,6 @@ export function BoardSections({ ids, ordered = false, pictured = false }: BoardS
         </h2>
         {project.frames.map((frame) => (
           <Link
-            aria-label={t(`frames.${frame.key}.name` as never)}
             className="pj-frame"
             data-frame={frame.key}
             data-kind={frame.kind}
@@ -91,10 +90,11 @@ export function BoardSections({ ids, ordered = false, pictured = false }: BoardS
             style={frameBox(frame)}
             tabIndex={skip}
           >
-            <span aria-hidden className="pj-frame-name">
-              {t(`frames.${frame.key}.name` as never)}
+            {/* The frame's name names the link: what it shows is a picture of the section. */}
+            <span className="pj-frame-name">{t(`frames.${frame.key}.name` as never)}</span>
+            <span aria-hidden className="pj-frame-body">
+              {OBJECTS[frame.key]}
             </span>
-            <span className="pj-frame-body">{OBJECTS[frame.key]}</span>
             <i aria-hidden className="pj-frame-handles" data-js-only />
           </Link>
         ))}

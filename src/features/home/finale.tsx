@@ -73,19 +73,14 @@ export function Finale() {
         </div>
 
         <div className="talk-chat">
-          <a
-            aria-labelledby="talk-send talk-handle"
-            className="talk-window"
-            href={TELEGRAM_URL}
-            rel="noreferrer"
-            target="_blank"
-          >
-            <span className="talk-bar">
+          <a className="talk-window" href={TELEGRAM_URL} rel="noreferrer" target="_blank">
+            {/* The window's own head and thread are a picture of the chat: the send names the link. */}
+            <span aria-hidden className="talk-bar">
               <Image alt={DECORATIVE} className="talk-avatar" src={face} unoptimized />
               <span className="talk-who">
                 <b>{hero("name")}</b>
                 <span>
-                  <span id="talk-handle">{TELEGRAM_HANDLE}</span>
+                  <span>{TELEGRAM_HANDLE}</span>
                   <span className="talk-service">{t("chat.service")}</span>
                 </span>
               </span>
@@ -103,7 +98,10 @@ export function Finale() {
               </span>
             </span>
             <span className="talk-send">
-              <span id="talk-send">{t("chat.send")}</span>
+              <span>
+                {t("chat.send")}
+                <span className="sr-only"> {TELEGRAM_HANDLE}</span>
+              </span>
               <b aria-hidden>
                 <svg
                   fill="none"
