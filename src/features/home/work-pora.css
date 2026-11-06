@@ -60,7 +60,7 @@
 
 /* The sidebar's matte paper: its surface and its specks, and a week's columns, faint, across it. */
 .chapter[data-chapter="pora"] {
-  /* One column's tile, repeated by its size: Gecko loses a thin repeating gradient (code-face.test.ts). */
+  /* One column's tile, repeated by its size: Gecko loses a thin repeating gradient (stylesheets.test.ts). */
   --pair-columns: linear-gradient(90deg, transparent calc(100% - 1px), var(--line) 0) 0 0 /
     calc(100% / 7) 100%;
   position: relative;
@@ -269,7 +269,7 @@
 /*
  * The device lies over its screen: its glass is cut out, its bezel rounds the screen's corners. No
  * shadow under it: WebKit blurred a filter on this picture anew each time the frame came back on
- * screen, up to 180 ms a frame, and the shadow of a bezel this thin was hardly seen (drop-shadow.test.ts).
+ * screen, up to 180 ms a frame, and the shadow of a bezel this thin was hardly seen (stylesheets.test.ts).
  */
 .pair-device {
   position: absolute;
