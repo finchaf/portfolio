@@ -10,7 +10,8 @@ and turned into outlines by dvisvgm, which take the colour of the text around th
     python3 scripts/latex/typing.py   ->  src/features/projects/latex-typing.json
 
 Needs TeX Live with LuaLaTeX, `cm-unicode`, `amsfonts` and `dvisvgm` (`tlmgr install cm-unicode
-dvisvgm`). Run it by hand when the line or the snippets change; the result is committed.
+dvisvgm`), and pnpm: the JSON goes through Prettier, which lays it out as the Format gate expects.
+Run it by hand when the line or the snippets change; the result is committed.
 """
 from __future__ import annotations
 
@@ -80,22 +81,33 @@ PREAMBLE = r"""\documentclass[12pt]{article}
 \begin{document}
 \noindent """
 
-DVISVGM = shutil.which("dvisvgm") or str(Path.home() / "texlive/bin/universal-darwin/dvisvgm")
+# Where a user install of TeX Live keeps its programs on a Mac, when they are not on the PATH.
+TEXLIVE = Path.home() / "texlive/bin/universal-darwin"
 
 
-def typeset(source: str, folder: Path, index: int, glyphs: dict[str, str]) -> dict:
+def program(name: str) -> str:
+    """The path of a program the script runs, or a stop that names it."""
+    found = shutil.which(name) or shutil.which(name, path=str(TEXLIVE))
+    if not found:
+        raise SystemExit(f"{name} is not installed: see the top of {Path(__file__).name}")
+    return found
+
+
+def typeset(
+    source: str, folder: Path, index: int, glyphs: dict[str, str], tools: dict[str, str]
+) -> dict[str, object]:
     """The page as glyph outlines placed by `use`, and the rules TeX drew as rectangles."""
     tex = folder / f"line{index}.tex"
     tex.write_text(PREAMBLE + source + "\n\\end{document}\n", encoding="utf-8")
     subprocess.run(
-        ["lualatex", "--output-format=dvi", "-interaction=nonstopmode", tex.name],
+        [tools["lualatex"], "--output-format=dvi", "-interaction=nonstopmode", tex.name],
         cwd=folder,
         check=True,
         capture_output=True,
     )
     svg = folder / f"line{index}.svg"
     subprocess.run(
-        [str(DVISVGM), "--no-fonts", "--exact-bbox", "-O", f"line{index}.dvi", "-o", svg.name],
+        [tools["dvisvgm"], "--no-fonts", "--exact-bbox", "-O", f"line{index}.dvi", "-o", svg.name],
         cwd=folder,
         check=True,
         capture_output=True,
@@ -122,9 +134,10 @@ def typeset(source: str, folder: Path, index: int, glyphs: dict[str, str]) -> di
 
 
 def main() -> None:
+    tools = {name: program(name) for name in ("lualatex", "dvisvgm", "pnpm")}
     buffer, cursor = "", 0
     record = []
-    renders: list[dict] = []
+    renders: list[dict[str, object]] = []
     glyphs: dict[str, str] = {}
     with tempfile.TemporaryDirectory() as tmp:
         folder = Path(tmp)
@@ -156,7 +169,7 @@ def main() -> None:
                 cursor = found + len(step[1])
                 record.append({"kind": "jump", "keys": "jk", "buffer": buffer, "cursor": cursor})
             else:
-                renders.append(typeset(buffer, folder, len(renders), glyphs))
+                renders.append(typeset(buffer, folder, len(renders), glyphs, tools))
                 record[-1]["render"] = len(renders) - 1
 
     keys = sum(len(each["keys"]) for each in record)
@@ -175,7 +188,16 @@ def main() -> None:
         + "\n",
         encoding="utf-8",
     )
-    print(f"{keys} keys for {len(buffer)} characters, {len(renders)} renders -> {OUT.relative_to(ROOT)}")
+    subprocess.run(
+        [tools["pnpm"], "exec", "prettier", "--log-level=warn", "--write", str(OUT)],
+        cwd=ROOT,
+        check=True,
+    )
+    print(
+        f"{keys} keys for {len(buffer)} characters, {len(renders)} renders"
+        f" -> {OUT.relative_to(ROOT)}"
+    )
 
 
-main()
+if __name__ == "__main__":
+    main()
