@@ -47,7 +47,7 @@ GATES = (
     Gate("Addresses", "browser", (("pnpm", "e2e", "e2e/addresses.spec.ts"),), needs="Build"),
     Gate("SEO", "browser", (("pnpm", "e2e", "e2e/seo.spec.ts"),), needs="Build"),
     Gate("A11y", "browser", (("pnpm", "e2e", "e2e/a11y.spec.ts"),), needs="Build"),
-    Gate("Motion", "browser", (("pnpm", "e2e", "e2e/motion.spec.ts"),), needs="Build"),
+    Gate("Motion", "browser", (("pnpm", "e2e", "e2e/motion/"),), needs="Build"),
     Gate("Themes", "browser", (("pnpm", "e2e", "e2e/themes.spec.ts"),), needs="Build"),
 )
 GROUPS = tuple(dict.fromkeys(gate.group for gate in GATES))

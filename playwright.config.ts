@@ -9,6 +9,8 @@ export default defineConfig({
   testDir: "e2e",
   forbidOnly: true,
   retries: 0,
+  // One browser at a time, as when each gate was one file: more is to be measured on CI first.
+  workers: 1,
   reporter: [["list"]],
   use: { baseURL: `http://127.0.0.1:${port}`, trace: "retain-on-failure" },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
