@@ -1,0 +1,16 @@
+# Text is stored and checked out with LF everywhere; two of the gates parse files that assume it.
+* text=auto eol=lf
+
+*.avif binary
+*.webp binary
+*.png binary
+*.jpg binary
+*.ico binary
+*.pdf binary
+*.woff2 binary
+
+# Written by scripts, not by hand: collapsed in diffs and left out of the language statistics.
+pnpm-lock.yaml linguist-generated
+src/ui/avif-sizes.json linguist-generated
+src/lib/*-images.json linguist-generated
+src/lib/cv.json linguist-generated
