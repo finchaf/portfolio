@@ -21,8 +21,8 @@ export interface HeroCodeProps {
   status: ReactNode;
   copy: ReactNode;
   work: ReactNode;
-  github: ReactNode;
-  labels: Record<"design" | "code" | "work" | "github", string>;
+  resume: ReactNode;
+  labels: Record<"design" | "code" | "work" | "resume", string>;
 }
 
 /**
@@ -30,7 +30,7 @@ export interface HeroCodeProps {
  * plan the first screen assembles on when a page opens. A decoration for the eye, since the source
  * says nothing the text does not. Its controls are only pictures: the real ones lie under it.
  */
-export function HeroCode({ words, status, copy, work, github, labels }: HeroCodeProps) {
+export function HeroCode({ words, status, copy, work, resume, labels }: HeroCodeProps) {
   return (
     <div aria-hidden className="hero-layer hero-code" data-hero-code data-tint="home">
       <div className="hero-top">
@@ -60,7 +60,7 @@ export function HeroCode({ words, status, copy, work, github, labels }: HeroCode
             </CodeFace>
           </span>
           <span className="hero-control" data-plan>
-            <CodeFace shape={github}>{labels.github}</CodeFace>
+            <CodeFace shape={resume}>{labels.resume}</CodeFace>
           </span>
         </div>
       </div>

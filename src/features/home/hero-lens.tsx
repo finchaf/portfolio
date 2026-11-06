@@ -16,6 +16,8 @@ const RADIUS = { phone: 110, wide: 170 };
 const WIDE = 640;
 /** How long the lens takes to cross the screen before a reader takes it, in seconds. */
 const WANDER = 7;
+/** How far the lens keeps above the words under the name, in pixels. */
+const CLEAR = 12;
 
 const moved = () => window.scrollY > PAGE_MOVED;
 
@@ -47,6 +49,23 @@ export function HeroLens({ labels, settings, children }: HeroLensProps) {
   const [layer, setLayer] = useState<Layer>("design");
 
   const resting = () => (window.innerWidth < WIDE ? RADIUS.phone : RADIUS.wide);
+
+  /**
+   * Where the lens wanders on the screen: across the name, and never down over the words under it.
+   * On a phone the name stands high and the role comes close below it, so the way is held above the
+   * role, the lens's own radius and a gap clear of it.
+   */
+  const path = () => {
+    const hero = scope.current;
+    const box = hero?.getBoundingClientRect();
+    const foot = hero?.querySelector(".hero-foot")?.getBoundingClientRect();
+    if (!box) return { from: { x: 0, y: 0 }, to: { x: 0, y: 0 } };
+    const floor = foot ? foot.top - box.top - resting() - CLEAR : box.height;
+    return {
+      from: { x: box.width * 0.34, y: Math.min(box.height * 0.5, floor) },
+      to: { x: box.width * 0.72, y: Math.min(box.height * 0.42, floor) },
+    };
+  };
 
   const open = (shown: Layer, duration: number) => {
     const hero = scope.current;
@@ -137,19 +156,27 @@ export function HeroLens({ labels, settings, children }: HeroLensProps) {
     const motion = gsap.matchMedia();
     motion.add(MOTION_ALLOWED, () => {
       const assembling = root.hasAttribute("data-intro");
-      const { width, height } = hero.getBoundingClientRect();
-      lens.current.x = width * 0.34;
-      lens.current.y = height * 0.5;
+      lens.current.x = path().from.x;
+      lens.current.y = path().from.y;
       lens.current.r = assembling || moved() ? 0 : resting();
 
       const wander = gsap.to(lens.current, {
-        x: width * 0.72,
-        y: height * 0.42,
+        x: () => path().to.x,
+        y: () => path().to.y,
         duration: WANDER,
         ease: "sine.inOut",
         repeat: -1,
         yoyo: true,
       });
+      // A turned phone is another screen: the lens starts its way again across the new one.
+      const again = () => {
+        if (!wander.isActive() && !wander.paused()) return;
+        const paused = wander.paused();
+        gsap.set(lens.current, path().from);
+        wander.invalidate().restart();
+        if (paused) wander.pause();
+      };
+      ScrollTrigger.addEventListener("refresh", again);
       const onScreen = ScrollTrigger.create({
         trigger: hero,
         onToggle: ({ isActive }) => {
@@ -188,6 +215,7 @@ export function HeroLens({ labels, settings, children }: HeroLensProps) {
       window.addEventListener("pointerdown", follow, { passive: true });
       window.addEventListener("scroll", stay, { passive: true });
       return () => {
+        ScrollTrigger.removeEventListener("refresh", again);
         onScreen.kill();
         window.removeEventListener("pointermove", follow);
         window.removeEventListener("pointerdown", follow);

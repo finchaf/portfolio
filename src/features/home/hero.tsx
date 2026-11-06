@@ -1,6 +1,5 @@
 import { useLocale, useTranslations } from "next-intl";
 
-import { GITHUB_URL } from "@/lib/site";
 import { ButtonLink } from "@/ui/button-link";
 import { LocalClock } from "@/ui/local-clock";
 
@@ -10,6 +9,7 @@ import { HeroLens } from "./hero-lens";
 /** The first screen: who this is and what they do, in the HTML. The lens is an extra layer on top. */
 export function Hero() {
   const t = useTranslations("home.hero");
+  const cv = useTranslations("home.cv");
   const shell = useTranslations("shell");
   const locale = useLocale();
   const words = t("name").split(" ");
@@ -36,9 +36,15 @@ export function Hero() {
     </div>
   );
   const work = <ButtonLink href="#work">{t("work")}</ButtonLink>;
-  const github = (
-    <a className="control-link px-1 py-2" href={GITHUB_URL}>
-      {t("github")}
+  // The CV beside the works, in the reader's language: the one way out a recruiter looks for first.
+  const resume = (
+    <a
+      className="control-link px-1 py-2"
+      download={cv("file")}
+      href={`/cv/${locale}.pdf`}
+      type="application/pdf"
+    >
+      {cv("download")}
     </a>
   );
 
@@ -73,19 +79,19 @@ export function Hero() {
           {copy}
           <div className="hero-actions">
             {work}
-            {github}
+            {resume}
           </div>
         </div>
       </div>
       <HeroCode
         copy={copy}
-        github={github}
         labels={{
           design: t("lens.design"),
           code: t("lens.code"),
-          github: t("github"),
+          resume: cv("download"),
           work: t("work"),
         }}
+        resume={resume}
         status={status}
         words={words}
         work={work}
