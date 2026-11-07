@@ -58,25 +58,6 @@ export function takeDown(context: gsap.Context) {
   }
 }
 
-/**
- * Undoes what a scene made: put back while the page stays, as a change of width or of the reader's
- * motion setting asks, and dropped where it stands while the page leaves.
- */
-export function undo(made: gsap.Context | gsap.MatchMedia) {
-  if (!leavingPage) {
-    made.revert();
-    return;
-  }
-  const contexts = (made as { contexts?: Made[] }).contexts;
-  if (contexts) {
-    contexts.forEach((context) => {
-      drop(context);
-    });
-  } else {
-    drop(made as unknown as Made);
-  }
-}
-
 /** The animations of the page's view transition now on the screen, if any. */
 function pageChangeAnimations() {
   return document

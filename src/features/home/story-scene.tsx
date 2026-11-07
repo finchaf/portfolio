@@ -4,7 +4,7 @@ import { useRef, type ReactNode } from "react";
 
 import { driftLines } from "@/motion/drift-lines";
 import { gsap, MOTION_ALLOWED, ScrollTrigger } from "@/motion/gsap";
-import { undo, useScene } from "@/motion/scene";
+import { useScene } from "@/motion/scene";
 import { DURATION, SCENE } from "@/motion/tokens";
 
 import { branchRoutes, type Line } from "./story-branches";
@@ -712,9 +712,6 @@ export function StoryScene({ children }: { children: ReactNode }) {
       NARROW,
       live(() => runColumn(section, mark)),
     );
-    return () => {
-      undo(motion);
-    };
   }, scope);
 
   return <div ref={scope}>{children}</div>;

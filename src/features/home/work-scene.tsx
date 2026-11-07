@@ -3,7 +3,7 @@
 import { useRef, type ReactNode } from "react";
 
 import { gsap, MOTION_ALLOWED, ScrollTrigger } from "@/motion/gsap";
-import { undo, useScene } from "@/motion/scene";
+import { useScene } from "@/motion/scene";
 import { SCENE } from "@/motion/tokens";
 
 import { snapToRests } from "./chapter-snap";
@@ -333,7 +333,6 @@ export function WorkScene({ children }: { children: ReactNode }) {
     return () => {
       undoTheme();
       undoLooks?.();
-      undo(motion);
     };
   }, scope);
 

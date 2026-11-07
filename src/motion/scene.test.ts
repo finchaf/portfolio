@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { gsap } from "./gsap";
-import { leaving, takeDown, undo } from "./scene";
+import { leaving, takeDown } from "./scene";
 
 // `drop` reads GSAP's own list of a context's cleanups: an update that renames it fails here.
 describe("a leaving page's scene", () => {
@@ -11,14 +11,12 @@ describe("a leaving page's scene", () => {
     const seen: boolean[] = [];
     const context = gsap.context(() => {
       gsap.to(target, { x: 100, duration: 1, paused: true }).progress(1);
-      const nested = gsap.context(() => {
+      // A context made inside another is listed in its data, and goes down with it.
+      gsap.context(() => {
         gsap.to(inner, { x: 50, duration: 1, paused: true }).progress(1);
         return () => seen.push(leaving());
       });
-      return () => {
-        seen.push(leaving());
-        undo(nested);
-      };
+      return () => seen.push(leaving());
     });
     takeDown(context);
     expect(target.x).toBe(100);
@@ -64,32 +62,5 @@ describe("a leaving page's scene", () => {
     takeDown(context);
     expect(target.x).toBe(100);
     expect(seen).toEqual([true]);
-  });
-
-  it("drops a matchMedia that a cleanup undoes while the page leaves", () => {
-    const target = { x: 0 };
-    const seen: boolean[] = [];
-    const context = gsap.context(() => {
-      const media = gsap.matchMedia();
-      media.add({ all: "all" }, () => {
-        gsap.to(target, { x: 100, duration: 1, paused: true }).progress(1);
-        return () => seen.push(leaving());
-      });
-      return () => {
-        undo(media);
-      };
-    });
-    takeDown(context);
-    expect(target.x).toBe(100);
-    expect(seen).toEqual([true]);
-  });
-
-  it("is put back when the page stays", () => {
-    const target = { x: 0 };
-    const context = gsap.context(() => {
-      gsap.to(target, { x: 100, duration: 1, paused: true }).progress(1);
-    });
-    undo(context);
-    expect(target.x).toBe(0);
   });
 });

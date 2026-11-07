@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 
 import { gsap, MOTION_ALLOWED, ScrollTrigger } from "@/motion/gsap";
-import { undo, useScene } from "@/motion/scene";
+import { useScene } from "@/motion/scene";
 import { DURATION, PAGE_MOVED, SCENE } from "@/motion/tokens";
 
 import { HERO_FACE } from "./hero-source";
@@ -242,7 +242,6 @@ export function HeroLens({ labels, settings, children }: HeroLensProps) {
       window.removeEventListener("scroll", turn);
       gsap.ticker.remove(paint);
       painting.kill();
-      undo(motion);
       // The capsule is the shell's and stays on every page after this one: it leaves clean.
       capsule?.removeAttribute("data-lens");
       for (const name of ["--lens-x", "--lens-y", "--lens-r"]) capsule?.style.removeProperty(name);
