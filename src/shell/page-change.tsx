@@ -5,22 +5,28 @@ import "./page-change.css";
 import { usePathname } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, ViewTransition } from "react";
 
-import { PAGE_PATHS, type PagePath } from "@/lib/pages";
+import { pagePathOf } from "@/i18n/localized-path";
+import { PAGE_PATHS } from "@/lib/pages";
 import { markPageShown } from "@/motion/scene";
 import { DURATION } from "@/motion/tokens";
 
 /** How long, in milliseconds, a quiet change holds off the slash: past the browser's swap. */
 const QUIET_FOR = 200;
 
+/** A path's place among the pages of the capsule, or -1 for one that is not there. */
+function indexOfPage(path: string) {
+  return PAGE_PATHS.findIndex((page) => page === path);
+}
+
 /**
  * A page's place in the order of the capsule: the address comes with its language in front. A page
  * inside a page stands just after it, so going in is a step forward.
  */
 function placeOf(pathname: string) {
-  const path = pathname.replace(/^\/[^/]+/, "");
-  const place = PAGE_PATHS.indexOf(path as PagePath);
+  const path = pagePathOf(pathname);
+  const place = indexOfPage(path);
   if (place >= 0) return place;
-  return PAGE_PATHS.indexOf(path.replace(/\/[^/]+$/, "") as PagePath) + 0.5;
+  return indexOfPage(path.replace(/\/[^/]+$/, "")) + 0.5;
 }
 
 /**

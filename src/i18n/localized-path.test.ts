@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { localizedPath, switchLocale } from "./localized-path";
+import { localizedPath, pagePathOf, switchLocale } from "./localized-path";
 
 describe("localizedPath", () => {
   it("prefixes a page with its language", () => {
@@ -14,6 +14,20 @@ describe("localizedPath", () => {
   it("takes only a page of the site", () => {
     // @ts-expect-error -- "/" is no page's path: the home page is "", and "/ru/" is a redirect.
     expect(localizedPath("ru", "/")).toBe("/ru/");
+  });
+});
+
+describe("pagePathOf", () => {
+  it("takes the language off a page", () => {
+    expect(pagePathOf("/ru/flow")).toBe("/flow");
+  });
+
+  it("leaves the home page empty", () => {
+    expect(pagePathOf("/en")).toBe("");
+  });
+
+  it("keeps a page inside a page", () => {
+    expect(pagePathOf("/ru/projects/latex")).toBe("/projects/latex");
   });
 });
 

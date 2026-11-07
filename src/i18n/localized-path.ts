@@ -12,9 +12,15 @@ export function localizedPath(locale: Locale, path: AnyPagePath): string {
 }
 
 /**
- * The same page in another language: the first segment of a pathname is its language. The rest is
- * the browser's address as it stands, so it is kept as it comes rather than read as a page.
+ * A pathname without its language: its first segment. The rest is the browser's address as it
+ * stands, so it is kept as it comes rather than read as a page: `"/ru/projects/latex"` gives
+ * `"/projects/latex"`, and `"/en"` gives `""`.
  */
+export function pagePathOf(pathname: string): string {
+  return pathname.replace(/^\/[^/]+/, "");
+}
+
+/** The same page in another language. */
 export function switchLocale(pathname: string, locale: Locale): string {
-  return `/${locale}${pathname.replace(/^\/[^/]+/, "")}`;
+  return `/${locale}${pagePathOf(pathname)}`;
 }
