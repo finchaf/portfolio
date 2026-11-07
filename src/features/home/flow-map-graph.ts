@@ -64,7 +64,12 @@ export interface FlowMap {
 /** The checklist the chapter stops at: its first rule is the one told in full. */
 const TOLD = "sheets";
 
-const HEIGHTS = [0.02, -0.3, 0.28, -0.24, 0.3, -0.1, 0] as const;
+/** The stop of that checklist: the notes come before it. */
+const RULE = STOPS.indexOf("rule");
+
+const HEIGHTS = [0.02, -0.3, 0.28, -0.24, 0.3, -0.1, 0] as const satisfies {
+  length: (typeof STOPS)["length"];
+};
 
 /** Big and small checklists take turns along the line, so no stretch of it is empty. */
 const ALONG = [4, 11, 1, 7, 13, 2, 9, 14, 0, 6, 12, 3, 10, 5, 8] as const;
@@ -110,7 +115,7 @@ export function buildMap(names: Readonly<Record<string, string>>): FlowMap {
     links.push({ a, b, near });
   };
 
-  const notes = STOPS.slice(0, 5).map((id, stop) => add(id, "note", "", stop));
+  const notes = STOPS.slice(0, RULE).map((id, stop) => add(id, "note", "", stop));
   const base = add("base", "note", "", LAST_STOP);
   notes.forEach((note, index) => {
     join(note, notes[index + 1] ?? base);
@@ -119,7 +124,7 @@ export function buildMap(names: Readonly<Record<string, string>>): FlowMap {
 
   const hubs = new Map<string, MapNode>();
   for (const [id, rules] of CHECKLISTS) {
-    const hub = add(`hub-${id}`, "hub", names[id] ?? id, id === TOLD ? 5 : -1);
+    const hub = add(`hub-${id}`, "hub", names[id] ?? id, id === TOLD ? RULE : -1);
     hub.rules = rules;
     hubs.set(id, hub);
     join(hub, base);

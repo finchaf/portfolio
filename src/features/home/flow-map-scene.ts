@@ -7,6 +7,7 @@ import {
   momentAt,
   progressOf,
   settleMap,
+  STOPS,
   type MapNode,
 } from "./flow-map-graph";
 
@@ -26,7 +27,7 @@ const shift = (x: number, y: number, scale = 1) =>
   `translate3d(${css(x)}px,${css(y)}px,0) scale(${scale.toFixed(4)})`;
 
 /** How close the camera stands at each stop, and how far it pulls back between two of them. */
-const ZOOM = [1, 1, 1, 1, 1, 1.75, 1] as const;
+const ZOOM = [1, 1, 1, 1, 1, 1.75, 1] as const satisfies { length: (typeof STOPS)["length"] };
 const PULL_BACK = 0.34;
 
 /** How wide the line of the stops is, in widths of the screen. */
@@ -38,8 +39,8 @@ const LABEL = 13;
 /** How much of the graph goes from under the words. */
 const WORDS = 0.88;
 
-/** Stops with something that moves through their rest, and the share of the rest it takes. */
-const STOP = { screens: 3, rule: 5, base: LAST_STOP };
+/** Stops with something that moves through their rest. */
+const STOP = { screens: STOPS.indexOf("screens"), rule: STOPS.indexOf("rule") };
 
 interface Palette {
   accent: string;
@@ -733,7 +734,10 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
 
   function runLadder(stop: number, move: number, rest: number) {
     if (!ladder) return;
-    const rung = stop < STOP.rule ? 0 : stop > STOP.rule || move > 0 ? 4 : Math.floor(rest * 4.999);
+    // `top + 0.999` keeps a rest of 1 on the last rung.
+    const top = rungs.length - 1;
+    const rung =
+      stop < STOP.rule ? 0 : stop > STOP.rule || move > 0 ? top : Math.floor(rest * (top + 0.999));
     if (rung === lastRung) return;
     lastRung = rung;
     ladder.dataset.rung = String(rung);

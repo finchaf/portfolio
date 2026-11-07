@@ -1,6 +1,8 @@
 import { gsap, ScrollTrigger } from "@/motion/gsap";
 import { SCENE } from "@/motion/tokens";
 
+import { PAIR_STOPS } from "./pair-data";
+
 /** Where the lesson is on each stop, and the form it takes there: none on the last, it stays put. */
 const PATH = [
   { hold: "hero", form: "web" },
@@ -9,7 +11,7 @@ const PATH = [
   { hold: "android", form: "android" },
   { hold: "clash", form: "web" },
   { hold: null, form: null },
-] as const;
+] as const satisfies { length: (typeof PAIR_STOPS)["length"] };
 
 /** On the editor's stop the lesson first clashes, then moves to the free slot: shares of the rest. */
 const CLASH = { from: 0.18, to: 0.7 };
@@ -21,7 +23,7 @@ const CLASH = { from: 0.18, to: 0.7 };
 const CORNER = { web: 0, la: 0.059, android: 0.071 } as const;
 
 /** The editor's stop: from its arrival the verdict is on the frame, the clash first. */
-const EDITOR = 4;
+const EDITOR = PAIR_STOPS.indexOf("editor");
 
 /** A form is half one and half the other only in the middle of a flight. */
 const CROSS = { from: 0.3, to: 0.72 };
