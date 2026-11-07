@@ -484,7 +484,7 @@
   font-size: 0.875rem;
 }
 
-.pora-list-item h3 {
+.pora-list-title {
   margin: 0.625rem 0 0.5rem;
   font-size: 1.25rem;
   font-weight: 500;
@@ -1259,7 +1259,7 @@ a.pora-window-row:focus-visible {
     padding-top: 1.25rem;
   }
 
-  .pora-window-scroll:focus-visible {
+  .pora-window-scroll:focus-visible:not([data-handed]) {
     border-radius: 0;
   }
 
