@@ -33,6 +33,23 @@ const PULL_BACK = 0.34;
 /** How wide the line of the stops is, in widths of the screen. */
 const SPAN = { wide: 0.6, narrow: 0.92 };
 
+/*
+ * The frame of the camera follows where flow-map.css lays out the bar, the words and the object of
+ * a stop. Neither side reads the other: a change of that layout is a change here.
+ */
+
+/** Where the camera holds its stop, in shares of the stage: on a phone, below the words. */
+const FOCUS = { narrow: { x: 0.5, y: 0.6 }, wide: { x: 0.385, y: 0.47 } };
+
+/** The band the round base gathers in, in pixels from the stage's top and from its bottom. */
+const BASE_BAND = { narrow: { top: 3.25 * 16 + 216, bottom: 88 }, wide: { top: 64, bottom: 56 } };
+
+/** Where the base's middle stands across the stage, and the share of its width the round takes. */
+const BASE_ROUND = { narrow: { x: 0.5, reach: 0.46 }, wide: { x: 0.68, reach: 0.27 } };
+
+/** How far the round keeps inside its band on a wide screen, in pixels. */
+const BASE_INSET = 12;
+
 /** The size of a node's name, in pixels: its title grows out of it. */
 const LABEL = 13;
 
@@ -288,8 +305,9 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
 
   function aim(stop: number, move: number, rest: number): Camera {
     const { width, height, narrow } = view;
-    const focusX = narrow ? width * 0.5 : width * 0.385;
-    const focusY = narrow ? height * 0.6 : height * 0.47;
+    const focus = narrow ? FOCUS.narrow : FOCUS.wide;
+    const focusX = width * focus.x;
+    const focusY = height * focus.y;
     const next = Math.min(stop + 1, LAST_STOP);
     const flight = inOut(move);
     const dip = 1 - PULL_BACK * Math.sin(Math.PI * move);
@@ -299,8 +317,10 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
     const along = (stop + flight) / LAST_STOP + (move > 0 ? 0 : drift);
     const span = height * 0.96 * zoom;
     const high = mix((map.stops[stop] as MapNode).high, (map.stops[next] as MapNode).high, flight);
-    const top = narrow ? 3.25 * 16 + 216 : 64;
-    const bottom = narrow ? height - 88 : height - 56;
+    const band = narrow ? BASE_BAND.narrow : BASE_BAND.wide;
+    const base = narrow ? BASE_ROUND.narrow : BASE_ROUND.wide;
+    const top = band.top;
+    const bottom = height - band.bottom;
     return {
       focusX,
       focusY,
@@ -308,11 +328,11 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
       length,
       height: span,
       middle: focusY - (high * span) / 2,
-      roundX: narrow ? width / 2 : width * 0.68,
+      roundX: width * base.x,
       roundY: (top + bottom) / 2,
       round: narrow
-        ? Math.min(width * 0.46, (bottom - top) / 2)
-        : Math.min((bottom - top) / 2 - 12, width * 0.27),
+        ? Math.min(width * base.reach, (bottom - top) / 2)
+        : Math.min((bottom - top) / 2 - BASE_INSET, width * base.reach),
       pen: along + 0.012,
     };
   }
