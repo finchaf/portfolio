@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 
-import { jump } from "../helpers";
+import { HOME, jump } from "../helpers";
 
 // The Flow vault.
 
@@ -216,6 +216,24 @@ test.describe("the Flow vault", () => {
     const before = await left();
     await page.locator('[data-action="toggle-right"]').click();
     await expect.poll(left).toBeGreaterThan(before + 200);
+  });
+
+  test("keeps a faint Back on the page", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(HOME);
+    await page.goto(FLOW);
+    await started(page);
+    const back = page.locator('.view-header [data-action="back"]');
+    await expect(back).toHaveAttribute("aria-disabled", "true");
+    // Playwright waits for an aria-disabled control to be enabled; a reader's pointer does not.
+    await back.click({ force: true });
+    // Still the vault: the note opens, and Back now has a step of its own.
+    await page.locator('#tree a[data-note="critic"]').click();
+    await expect(title(page)).toHaveText("Критик");
+    await expect(back).not.toHaveAttribute("aria-disabled");
+    await back.click();
+    await expect(title(page)).toHaveText("Флоу");
+    await expect(back).toHaveAttribute("aria-disabled", "true");
   });
 
   test("sizes the graph's canvas to the pane", async ({ page }) => {

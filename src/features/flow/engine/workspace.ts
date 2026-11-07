@@ -135,10 +135,15 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
       }
       box.append(element("span", "crumb-current", title));
     }
-    const back = find('[data-action="back"]', vault);
-    const forward = find('[data-action="forward"]', vault);
-    back.toggleAttribute("data-faint", position === 0);
-    forward.toggleAttribute("data-faint", position >= furthest);
+    faint(find('[data-action="back"]', vault), position === 0);
+    faint(find('[data-action="forward"]', vault), position >= furthest);
+  }
+
+  /** An arrow with no step to take: `data-faint` draws it, `aria-disabled` says it. */
+  function faint(button: HTMLElement, off: boolean) {
+    button.toggleAttribute("data-faint", off);
+    if (off) button.setAttribute("aria-disabled", "true");
+    else button.removeAttribute("aria-disabled");
   }
 
   /** The pencil follows the note shown: pressed on its source, gone where there is none. */
@@ -772,11 +777,12 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
       case "search":
         openPrompt();
         break;
+      // A faint arrow has no step of the vault's to take: Back would leave the page.
       case "back":
-        history.back();
+        if (!("faint" in target.dataset)) history.back();
         break;
       case "forward":
-        history.forward();
+        if (!("faint" in target.dataset)) history.forward();
         break;
       case "read-only":
         notice(ui.readOnly ?? "");
