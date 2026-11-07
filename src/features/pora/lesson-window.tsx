@@ -19,10 +19,10 @@ import { ScrollBar } from "@/ui/scroll-bar";
 
 import type { Picture } from "./pictures";
 import {
-  DAYS,
+  dayOf,
   type Figure,
   LESSON_HUES,
-  SLOTS,
+  slotOf,
   WINDOW_ID,
   WINDOWS,
   type Lesson,
@@ -92,8 +92,8 @@ function LessonPage({
   const locale = useLocale();
   const key = `pairs.${lesson.id}.window` as const;
   const text = (path: string) => t(`${key}.${path}` as never);
-  const [start, end] = SLOTS[lesson.slot] ?? SLOTS[0];
-  const day = DAYS[lesson.day] ?? DAYS[0];
+  const [start, end] = slotOf(lesson);
+  const day = dayOf(lesson);
   const id = `${WINDOW_ID}-${lesson.id}`;
 
   /** The launch by day: the bars in the lesson's colour, the peak named. */

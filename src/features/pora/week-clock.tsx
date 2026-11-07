@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-import { DAYS, LESSONS, minutes, placeInDay, RING, SLOTS } from "./week";
+import { DAYS, LESSONS, minutes, placeInDay, RING, slotOf } from "./week";
 
 const TICK_MS = 30_000;
 const DAY_MS = 86_400_000;
@@ -78,7 +78,7 @@ function paint(root: HTMLElement, words: Words) {
   }
 
   for (const lesson of LESSONS) {
-    const [start, end] = SLOTS[lesson.slot] ?? SLOTS[0];
+    const [start, end] = slotOf(lesson);
     const from = minutes(start);
     const to = minutes(end);
     const going = lesson.day === now.weekday && now.minute >= from && now.minute < to;

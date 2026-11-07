@@ -10,11 +10,13 @@ import { LessonWindow } from "./lesson-window";
 import { PictureViewer } from "./picture-viewer";
 import {
   DAYS,
+  dayOf,
   LESSONS,
   OPENING,
   RING,
   RING_RADIUS,
   SLOTS,
+  slotOf,
   WINDOW_ID,
   WINDOWS,
   type Lesson,
@@ -33,8 +35,8 @@ export function PoraPage() {
   const t = useTranslations("pora");
   const locale = useLocale();
   const at = (lesson: Lesson) => {
-    const [start, end] = SLOTS[lesson.slot] ?? SLOTS[0];
-    const day = DAYS[lesson.day] ?? DAYS[0];
+    const [start, end] = slotOf(lesson);
+    const day = dayOf(lesson);
     return `${t(`week.daysFull.${day}`)}, ${t("week.slot", { n: lesson.slot + 1 })}, ${t("week.span", { start, end })}.`;
   };
   const left = (
@@ -98,7 +100,7 @@ export function PoraPage() {
     const button = opens(lesson);
     const Shell = button ? "button" : "article";
     const Title = button ? "span" : "h3";
-    const [start, end] = SLOTS[lesson.slot] ?? SLOTS[0];
+    const [start, end] = slotOf(lesson);
     return (
       <Shell className="pora-list-item" data-lesson={lesson.id} data-type={lesson.type} {...button}>
         <span className="pora-list-when">

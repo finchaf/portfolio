@@ -3,7 +3,7 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { LESSON_HUES, minutes, placeInDay } from "./week";
+import { DAYS, dayOf, LESSON_HUES, LESSONS, minutes, placeInDay, SLOTS, slotOf } from "./week";
 
 describe("the clock of the week", () => {
   it("reads a time of day in minutes", () => {
@@ -28,6 +28,18 @@ describe("the clock of the week", () => {
   ])("places %s in the timetable", (time, place) => {
     expect(placeInDay(minutes(time))).toEqual(place);
   });
+});
+
+describe("the lessons of the week", () => {
+  it.each(LESSONS.map((lesson) => [lesson.id, lesson] as const))(
+    "%s stands in a real slot and day, not the fallback",
+    (_id, lesson) => {
+      expect(SLOTS[lesson.slot]).toBeDefined();
+      expect(DAYS[lesson.day]).toBeDefined();
+      expect(slotOf(lesson)).toBe(SLOTS[lesson.slot]);
+      expect(dayOf(lesson)).toBe(DAYS[lesson.day]);
+    },
+  );
 });
 
 describe("the colours of the lesson types", () => {

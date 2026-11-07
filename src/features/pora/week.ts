@@ -33,6 +33,13 @@ export const minutes = (time: string): number => {
   return hours * 60 + rest;
 };
 
+/**
+ * A lesson's times, as the timetable writes them, and its day. lib types them as numbers, so the
+ * lookups fall back to the first slot and day in this one place.
+ */
+export const slotOf = (lesson: Lesson) => SLOTS[lesson.slot] ?? SLOTS[0];
+export const dayOf = (lesson: Lesson) => DAYS[lesson.day] ?? DAYS[0];
+
 /** Where the clock stands in the timetable: inside a lesson, in the break after one, or outside. */
 export function placeInDay(now: number): { slot: number; share: number } | null {
   for (const [index, [start, end]] of SLOTS.entries()) {
