@@ -49,6 +49,20 @@ export interface GraphInput {
   signal: AbortSignal;
 }
 
+/**
+ * The theme's accent as a colour the canvas takes. `--accent` holds a `light-dark()`, which a custom
+ * property keeps unresolved, so a probe's `color` resolves it. The Flow theme sits on the root.
+ */
+function readAccent() {
+  const probe = document.createElement("i");
+  probe.hidden = true;
+  probe.style.color = "var(--accent)";
+  document.body.append(probe);
+  const accent = getComputedStyle(probe).color;
+  probe.remove();
+  return accent;
+}
+
 export function makeGraph({ notes, links, hubLabel, open, signal }: GraphInput) {
   const nodes: Node[] = [];
   const byId = new Map<string, Node>();
@@ -112,27 +126,19 @@ export function makeGraph({ notes, links, hubLabel, open, signal }: GraphInput) 
   let labels = false;
   let reveal = 1;
   let revealStart = 0;
-  let palette: Palette = {
-    dot: "#888",
-    line: "#444",
-    accent: "#8a5cf5",
-    text: "#888",
-    hub: "#888",
-  };
+  let palette = readPalette();
   const pulses: { node: Node; start: number }[] = [];
 
-  function readPalette() {
-    const style = getComputedStyle(document.documentElement);
+  function readPalette(): Palette {
     const dark = matchMedia("(prefers-color-scheme: dark)").matches;
     const mode = document.documentElement.dataset.theme ?? (dark ? "dark" : "light");
-    const pair = (name: string) => style.getPropertyValue(name).trim();
     const isDark = mode === "dark";
     const mix = isDark ? "255,255,255" : "0,0,0";
-    palette = {
+    return {
       dot: `rgba(${mix},${isDark ? "0.42" : "0.5"})`,
       hub: `rgba(${mix},${isDark ? "0.6" : "0.66"})`,
-      line: `rgba(${mix},${isDark ? "0.1" : "0.1"})`,
-      accent: pair("--flow-graph-accent") || "#8a5cf5",
+      line: `rgba(${mix},0.1)`,
+      accent: readAccent(),
       text: `rgba(${mix},0.72)`,
     };
   }
@@ -323,7 +329,6 @@ export function makeGraph({ notes, links, hubLabel, open, signal }: GraphInput) 
         const next = pick(event);
         if (next !== hovered) {
           hovered = next;
-          canvas.style.setProperty("--graph-over", next ? "1" : "0");
           wake();
         }
       },
@@ -369,9 +374,8 @@ export function makeGraph({ notes, links, hubLabel, open, signal }: GraphInput) 
     canvas.addEventListener("lostpointercapture", letGo, { signal });
   }
 
-  readPalette();
   const refreshPalette = () => {
-    readPalette();
+    palette = readPalette();
     wake();
   };
   const themeWatch = new MutationObserver(refreshPalette);
