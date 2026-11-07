@@ -56,6 +56,28 @@ test.describe("the home page in motion", () => {
     await page.locator("[data-capsule]").getByRole("link", { name: "Написать" }).hover();
     await expect(dot).toHaveAttribute("data-over");
   });
+
+  test("lets the dot go when a press never comes up", async ({ page }) => {
+    await page.goto(HOME);
+    const dot = page.locator(".dot-cursor");
+    await expect(async () => {
+      await page.mouse.move(299, 300);
+      await page.mouse.move(300, 300);
+      await expect(page.locator("html")).toHaveAttribute("data-pointer", { timeout: 250 });
+    }).toPass();
+    // On the name, where a press does nothing else. A native drag cancels the pointer, and a window
+    // left mid-press loses its focus: neither sends a pointerup.
+    const name = await page.getByRole("heading", { level: 1 }).boundingBox();
+    if (!name) throw new Error("no name");
+    await page.mouse.move(name.x + name.width / 2, name.y + name.height / 2);
+    for (const lost of ["pointercancel", "blur"]) {
+      await page.mouse.down();
+      await expect(dot).toHaveAttribute("data-pressed");
+      await page.evaluate((type) => window.dispatchEvent(new Event(type)), lost);
+      await expect(dot).not.toHaveAttribute("data-pressed");
+      await page.mouse.up();
+    }
+  });
 });
 
 test.describe("the language", () => {

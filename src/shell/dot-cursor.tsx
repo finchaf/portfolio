@@ -46,6 +46,10 @@ export function DotCursor() {
     const release = () => {
       node.removeAttribute("data-pressed");
     };
+    // A drag the page refused (StillImages) leaves the press as it was.
+    const drag = (event: DragEvent) => {
+      if (!event.defaultPrevented) release();
+    };
     const leave = () => {
       root.removeAttribute("data-pointer");
     };
@@ -54,6 +58,10 @@ export function DotCursor() {
     window.addEventListener("pointerover", over, { passive: true });
     window.addEventListener("pointerdown", press, { passive: true });
     window.addEventListener("pointerup", release, { passive: true });
+    // A press that never comes up: a native drag cancels the pointer, or the window loses focus.
+    window.addEventListener("pointercancel", release, { passive: true });
+    window.addEventListener("dragstart", drag, { passive: true });
+    window.addEventListener("blur", release);
     root.addEventListener("pointerleave", leave);
     document.addEventListener(TOP_LAYER_EVENT, raise);
     return () => {
@@ -62,6 +70,9 @@ export function DotCursor() {
       window.removeEventListener("pointerover", over);
       window.removeEventListener("pointerdown", press);
       window.removeEventListener("pointerup", release);
+      window.removeEventListener("pointercancel", release);
+      window.removeEventListener("dragstart", drag);
+      window.removeEventListener("blur", release);
       root.removeEventListener("pointerleave", leave);
       root.removeAttribute("data-pointer");
     };
