@@ -772,9 +772,15 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
           {
             label: ui.copyLink ?? "",
             run: () => {
-              void navigator.clipboard.writeText(location.href).then(() => {
+              // Refused, or no clipboard off a secure origin: no notice, as the copy button does.
+              void (async () => {
+                try {
+                  await navigator.clipboard.writeText(location.href);
+                } catch {
+                  return;
+                }
                 notice(ui.copied ?? "");
-              });
+              })();
             },
           },
           { label: ui.openGraph ?? "", run: () => go("graph") },
