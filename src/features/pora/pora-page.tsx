@@ -72,7 +72,7 @@ export function PoraPage() {
     const Title = button ? "span" : "h2";
     return (
       <Shell className="pora-card" data-lesson={lesson.id} data-type={lesson.type} {...button}>
-        <span className="pora-sr">{at(lesson)}</span>
+        <span className="sr-only">{at(lesson)}</span>
         <span className="pora-card-head">
           <span className="pora-card-top">
             {badge(lesson)}
@@ -121,7 +121,7 @@ export function PoraPage() {
   return (
     <World name="pora">
       <div className="pora-page" data-capsule-held="">
-        <h1 className="pora-sr">{t("title")}</h1>
+        <h1 className="sr-only">{t("title")}</h1>
 
         <section aria-label={t("week.grid")} className="pora-week" data-pora-week="">
           <div aria-hidden className="pora-days">

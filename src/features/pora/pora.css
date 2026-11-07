@@ -10,15 +10,6 @@
   color: var(--ink);
 }
 
-.pora-sr {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-
 /* A lesson's type and its colour */
 
 .pora-page [data-type="lecture"] {

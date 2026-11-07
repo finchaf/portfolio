@@ -102,7 +102,7 @@ function LessonPage({
       <figcaption>
         <b>{text(`${root}.title`)}</b>
         <span>{text(`${root}.source`)}</span>
-        <span className="pora-sr">{text(`${root}.summary`)}</span>
+        <span className="sr-only">{text(`${root}.summary`)}</span>
       </figcaption>
       <div aria-hidden className="pora-window-bars">
         {LAUNCH_DOWNLOADS.map((count, index) => (
@@ -192,7 +192,7 @@ function LessonPage({
             <figcaption>
               <b>{text(`figures.${shown.key}.title`)}</b>
               <span>{text(`figures.${shown.key}.source`)}</span>
-              <span className="pora-sr">{text(`figures.${shown.key}.summary`)}</span>
+              <span className="sr-only">{text(`figures.${shown.key}.summary`)}</span>
             </figcaption>
             <div aria-hidden className="pora-window-months">
               {CLIENT_COMMITS.months.map((month, index) => (
