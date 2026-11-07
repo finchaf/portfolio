@@ -926,7 +926,7 @@
   font-size: inherit;
 }
 
-blockquote {
+.note-view blockquote {
   padding: 0 0 0 24px;
   border-left: 2px solid var(--accent);
 }
@@ -1573,7 +1573,7 @@ blockquote {
     gap: 16px;
   }
 
-  .app-demo-phone {
+  .ladder .app-demo-phone {
     height: 272px;
   }
 }
