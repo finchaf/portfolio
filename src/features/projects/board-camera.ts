@@ -287,7 +287,9 @@ export function attachBoard(board: HTMLElement, { open, duration }: Options) {
         const shift = { x: press.base.x + dx / camera.z, y: press.base.y + dy / camera.z };
         moved.set(key, shift);
         press.frame.style.translate = `${String(shift.x)}px ${String(shift.y)}px`;
-        select(key);
+        // A frame wears the mark only while it is the selection, so a drag selects it once, and
+        // again only if a key took the selection away mid-drag.
+        if (!press.frame.hasAttribute("data-selected")) select(key);
         readAxes(press.frame);
       } else {
         camera.x = press.cx + dx;
