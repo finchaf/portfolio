@@ -1,3 +1,4 @@
+import { session } from "@/lib/session";
 import { FRAMES, SECTION } from "@/ui/board/board-layout";
 
 interface Options {
@@ -189,7 +190,7 @@ export function attachBoard(board: HTMLElement, { open, duration }: Options) {
     const canvasBox = canvas.getBoundingClientRect();
     const z = Math.max(canvasBox.width / box.w, canvasBox.height / box.h) * 0.9;
     const go = () => {
-      sessionStorage.setItem(ARRIVE_KEY, "1");
+      session.set(ARRIVE_KEY, "1");
       document.documentElement.setAttribute("data-page-quiet", "");
       open(href);
     };
@@ -463,10 +464,10 @@ export function attachBoard(board: HTMLElement, { open, duration }: Options) {
   resize.observe(canvas);
 
   // Back from a project: the board opens inside it and pulls out.
-  const back = sessionStorage.getItem(RETURN_KEY);
+  const back = session.get(RETURN_KEY);
   select(sections.some((each) => each.dataset.sec === back) ? back : current);
   if (back) {
-    sessionStorage.removeItem(RETURN_KEY);
+    session.remove(RETURN_KEY);
     if (!calm()) {
       const box = boxOf(sectionOf(current));
       const size = canvas.getBoundingClientRect();

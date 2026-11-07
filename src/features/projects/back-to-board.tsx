@@ -3,6 +3,8 @@
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
+import { session } from "@/lib/session";
+
 import { RETURN_KEY } from "./board-camera";
 
 /** The way back: the board then opens inside the project and pulls out, with no slash on top. */
@@ -20,7 +22,7 @@ export function BackToBoard({
       className="pj-back"
       href={href}
       onClick={() => {
-        sessionStorage.setItem(RETURN_KEY, project);
+        session.set(RETURN_KEY, project);
         document.documentElement.setAttribute("data-page-quiet", "");
       }}
     >

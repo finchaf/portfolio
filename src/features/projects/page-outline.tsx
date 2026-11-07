@@ -2,6 +2,8 @@
 
 import { useEffect, useLayoutEffect, useRef } from "react";
 
+import { session } from "@/lib/session";
+
 import { ARRIVE_KEY } from "./board-camera";
 
 /** How long, in milliseconds, the page takes to rise in after the board's camera. */
@@ -16,8 +18,8 @@ export function PageOutline() {
 
   useLayoutEffect(() => {
     const page = anchor.current?.closest<HTMLElement>("[data-subpage]");
-    if (!page || !sessionStorage.getItem(ARRIVE_KEY)) return;
-    sessionStorage.removeItem(ARRIVE_KEY);
+    if (!page || !session.get(ARRIVE_KEY)) return;
+    session.remove(ARRIVE_KEY);
     page.dataset.arrive = "";
     const timer = window.setTimeout(() => {
       delete page.dataset.arrive;
