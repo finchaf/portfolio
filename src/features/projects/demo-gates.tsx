@@ -17,7 +17,8 @@ export function DemoGates({ again, summary }: { again: string; summary: string }
     timers.current.forEach((timer) => {
       window.clearTimeout(timer);
     });
-    timers.current = [];
+    // Emptied in place: the cleanup holds this very array, and must see every replay's timers.
+    timers.current.length = 0;
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     setDone(0);
     const total = GATES.reduce((sum, [, seconds]) => sum + seconds, 0);
