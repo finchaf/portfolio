@@ -176,6 +176,31 @@ test.describe("the board of projects", () => {
     await expect(page.locator("[data-board]")).not.toHaveAttribute("data-leaving");
   });
 
+  test("leaves the browser's keys alone", async ({ page }) => {
+    await page.goto("/ru/projects");
+    await ready(page);
+    const world = page.locator("[data-camera]");
+    const zoom = () => world.evaluate((node) => node.style.getPropertyValue("--z"));
+    await page.locator('[data-layer="portfolio"]').focus();
+    await page.evaluate(() => {
+      addEventListener(
+        "keydown",
+        (event) => {
+          Object.assign(window, { prevented: event.defaultPrevented });
+        },
+        { once: true },
+      );
+    });
+    await page.keyboard.press("Alt+ArrowUp");
+    expect(await page.evaluate(() => (window as Window & { prevented?: boolean }).prevented)).toBe(
+      false,
+    );
+    await page.keyboard.press("ControlOrMeta+Equal");
+    // One plain press after it: the board zooms once, so the browser's zoom key did nothing here.
+    await page.keyboard.press("Equal");
+    await expect.poll(zoom).toBe("1.25");
+  });
+
   test("the way back leaves a tab of its own to the browser", async ({ page }) => {
     await page.goto("/ru/projects/portfolio");
     const opened = page.context().waitForEvent("page");

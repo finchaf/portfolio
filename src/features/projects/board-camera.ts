@@ -436,6 +436,8 @@ export function attachBoard(board: HTMLElement, { open, duration }: Options) {
   board.addEventListener(
     "keydown",
     (event) => {
+      // A key with Ctrl, Cmd or Alt is the browser's: its zoom, its history.
+      if (event.ctrlKey || event.metaKey || event.altKey) return;
       const box = canvas.getBoundingClientRect();
       const pans: Record<string, [number, number]> = {
         ArrowLeft: [STEP, 0],
