@@ -401,7 +401,6 @@ const LITERAL_COLOURS: Record<string, string[]> = {
     "#e9e9ee",
     "#ecebf3",
     "#f4f4f6",
-    "#fff",
     "#ffffff",
   ],
 };
@@ -432,24 +431,8 @@ describe("the colours", () => {
 
 /** Selectors that set a property again in the same block on 07.11.2026. The list only shrinks. */
 const OVERRIDDEN: Record<string, string[]> = {
-  // The block of the wireframes twice over, and three blocks resized right below themselves.
-  "ui/app-screens.css": [
-    ".ben",
-    ".memo",
-    ".scr-cta",
-    ".w-b",
-    ".w-b, .w-l, .w-r, .w-d",
-    ".w-b.c",
-    ".w-b.h",
-    ".w-b.p",
-    ".w-b.q",
-    ".w-b.round",
-    ".w-d",
-    ".w-l",
-    ".w-l.s",
-    ".w-r",
-    ".wf",
-  ],
+  // Three blocks resized right below themselves.
+  "ui/app-screens.css": [".ben", ".memo", ".scr-cta"],
 };
 
 describe("the rules", () => {
