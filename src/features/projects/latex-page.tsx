@@ -13,14 +13,8 @@ import { DemoPages } from "./demo-pages";
 import { DemoThesis, type SourceBlock } from "./demo-thesis";
 import { DemoTyping } from "./demo-typing";
 import { DemoWalls } from "./demo-walls";
-import {
-  LATEX,
-  SOURCES,
-  THESIS_PDF,
-  THESIS_RELEASES,
-  THESIS_URL,
-  thesisFile,
-} from "@/lib/latex-facts";
+import { LATEX, SOURCES, THESIS_PDF, THESIS_RELEASES, thesisFile } from "@/lib/latex-facts";
+import { THESIS_URL } from "@/lib/site";
 import { VERDICTS } from "@/ui/board/latex-frames";
 import { Paper, PAPER, type PaperName } from "@/ui/board/paper";
 import { LatexFacts } from "./project-parts";

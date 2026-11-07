@@ -1,3 +1,5 @@
+import { THESIS_URL } from "./site";
+
 /**
  * The numbers of the LaTeX project, each with where it comes from. A dated snapshot: the notes and
  * the thesis are finished, and the documents' repository is private and moves on, so its numbers
@@ -64,7 +66,6 @@ export const THESIS_RELEASES = [
   ["v2026.06.10", "10.06.2026", 130, 23049, 21182813],
 ] as const;
 
-export const THESIS_URL = "https://github.com/finchaf/bachelor-thesis";
 const THESIS_FILE = `${THESIS_URL}/blob/master/`;
 export const THESIS_PDF = `${THESIS_URL}/releases/latest/download/bachelor-thesis.pdf`;
 

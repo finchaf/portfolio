@@ -6,14 +6,13 @@ import { useLocale, useTranslations } from "next-intl";
 import { Fragment, type ReactNode } from "react";
 
 import { localizedPath } from "@/i18n/localized-path";
-import { REPOSITORY_URL } from "@/lib/site";
+import { REPOSITORY_URL, THESIS_URL } from "@/lib/site";
 import { ButtonLink } from "@/ui/button-link";
 import { World } from "@/ui/world";
 
 import { BoardEngine } from "./board-engine";
 import { PROJECTS, type ProjectId } from "@/ui/board/board-layout";
 import { BoardSections } from "@/ui/board/board-sections";
-import { THESIS_URL } from "@/lib/latex-facts";
 import { LatexFacts, ProjectFacts } from "./project-parts";
 
 const FACTS: Record<ProjectId, ReactNode> = {
