@@ -5,6 +5,26 @@
  */
 
 /*
+ * The app's screens, from ui/app-screens.css, inside a note: the note's own paragraph and list
+ * spacing gives way to theirs, and a store frame sets its caption.
+ */
+.vault .scr p,
+.vault .scr ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.note-view .shot p {
+  margin: 0 0 8%;
+  font-family: var(--s-f);
+  font-size: 10.5cqw;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+}
+
+/*
  * The app's washes sit on the root, not on the vault: the quick switcher stands beside the vault
  * and a menu opens on <body>, and both paint with them.
  */

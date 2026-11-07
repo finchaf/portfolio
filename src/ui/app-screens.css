@@ -32,12 +32,6 @@
   letter-spacing: -0.02em;
   margin: 0;
 }
-.vault .scr p,
-.vault .scr ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
 .scr li {
   margin: 0;
 }
@@ -163,6 +157,7 @@
   font-size: 1.2em;
   color: var(--s-sub);
 }
+/* An !important here holds against the vault's reset in flow.css, as heavy or more and later. */
 .s-welcome .tx p {
   margin-top: 0.9em !important;
   font-size: 1.6em;
@@ -414,15 +409,6 @@
   background: var(--s-acc);
   color: var(--s-on);
   container-type: inline-size;
-}
-
-.note-view .shot p {
-  margin: 0 0 8%;
-  font-family: var(--s-f);
-  font-size: 10.5cqw;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.08;
 }
 
 .shot .frame {
