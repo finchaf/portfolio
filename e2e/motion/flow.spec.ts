@@ -151,6 +151,19 @@ test.describe("the Flow vault", () => {
     expect(errors).toEqual([]);
   });
 
+  test("draws the pane's scrollbar again when a dock folds", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(FLOW);
+    await started(page);
+    await jump(page, 600);
+    const thumb = page.locator("#scroll-thumb");
+    await expect(thumb).toBeVisible();
+    const left = () => thumb.evaluate((node) => node.getBoundingClientRect().left);
+    const before = await left();
+    await page.locator('[data-action="toggle-right"]').click();
+    await expect.poll(left).toBeGreaterThan(before + 200);
+  });
+
   test("sizes the graph's canvas to the pane", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(`${FLOW}#graph`);

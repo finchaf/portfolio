@@ -172,12 +172,15 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
     if (TASK_NOTES.includes(id)) terminal.make(id, true);
     graph.setCurrent(id);
     renderPanels();
-    requestAnimationFrame(() => {
-      lanes.draw();
-      compare.refresh();
-      graph.refresh();
-      paintThumb();
-    });
+    requestAnimationFrame(relayout);
+  }
+
+  /** Everything drawn to the note column's pixels, drawn again once the column has moved. */
+  function relayout() {
+    lanes.draw();
+    compare.refresh();
+    graph.refresh();
+    paintThumb();
   }
 
   const scrollerY = () => window.scrollY;
@@ -754,9 +757,11 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
     switch (action) {
       case "toggle-left":
         target.setAttribute("aria-expanded", String(!vault.toggleAttribute("data-left-closed")));
+        requestAnimationFrame(relayout);
         break;
       case "toggle-right":
         target.setAttribute("aria-expanded", String(!vault.toggleAttribute("data-right-closed")));
+        requestAnimationFrame(relayout);
         break;
       case "tree":
         openTree();
@@ -968,16 +973,7 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
     }
   }
   window.addEventListener("scroll", onScroll, { passive: true, signal });
-  window.addEventListener(
-    "resize",
-    () => {
-      lanes.draw();
-      compare.refresh();
-      graph.refresh();
-      paintThumb();
-    },
-    on,
-  );
+  window.addEventListener("resize", relayout, on);
 
   /* ---------- start ---------- */
   const terminal = makeTerminal({
