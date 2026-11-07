@@ -23,6 +23,7 @@
     "sort": "Change sort order",
     "layout": "Reveal the active file",
     "collapse": "Collapse all",
+    "ribbon": "Ribbon",
     "ribbonNote": "Open the main note",
     "ribbonGraph": "Graph view",
     "ribbonResults": "Screens",

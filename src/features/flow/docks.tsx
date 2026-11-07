@@ -105,7 +105,7 @@ function Folder({
 export function Ribbon() {
   const t = useTranslations("flow.ui");
   return (
-    <nav aria-label={t("files")} className="ribbon" data-js-only="">
+    <nav aria-label={t("ribbon")} className="ribbon" data-js-only="">
       <Action action="note:flow" label={t("ribbonNote")}>
         <FileSearch aria-hidden size={18} strokeWidth={1.75} />
       </Action>
