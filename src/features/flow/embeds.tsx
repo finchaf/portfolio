@@ -71,7 +71,7 @@ export function Board() {
             key={look}
             type="button"
           >
-            <span className="frame mini" data-style={look}>
+            <span className="frame" data-style={look}>
               <WelcomeScreen />
             </span>
             <span className="sdir-name">
@@ -97,15 +97,10 @@ function Device({ wire, screen }: { wire: ReactNode; screen: ReactNode }) {
 }
 
 /** A wireframe becoming a screen in place, on the same coordinates. */
-export function Compare({ large = false }: { large?: boolean }) {
+export function Compare() {
   const t = useTranslations("flow.compare");
   return (
-    <figure
-      className={["compare wide", large ? "large" : ""].join(" ")}
-      data-compare=""
-      data-sk=""
-      data-style={DEFAULT_LOOK}
-    >
+    <figure className="compare wide" data-compare="" data-sk="" data-style={DEFAULT_LOOK}>
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- it scrolls sideways on a phone. */}
       <div className="compare-row" tabIndex={0}>
         <Device screen={<WelcomeScreen />} wire={<WelcomeWire />} />
@@ -257,7 +252,8 @@ export const EMBEDS: Record<string, ReactNode> = {
   lanes: <Lanes />,
   board: <Board />,
   screens: <Compare />,
-  "screens-large": <Compare large />,
+  // The results note embeds the comparison under this name; it is the same figure.
+  "screens-large": <Compare />,
   ladder: <Ladder />,
   figures: <Figures />,
   shelf: <Shelf />,
