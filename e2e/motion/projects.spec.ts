@@ -277,6 +277,21 @@ test.describe("the project's page", () => {
     await expect(page.locator(".pj-themes-read")).toContainText(/\d,\d:1/);
   });
 
+  test("the sample of themes follows the system's mode while none is chosen", async ({ page }) => {
+    await page.emulateMedia({ colorScheme: "light" });
+    await page.goto("/ru/projects/portfolio");
+    const modes = page.locator(".pj-themes-demo");
+    await expect(modes.getByRole("button", { name: "Светлая" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+    await page.emulateMedia({ colorScheme: "dark" });
+    await expect(modes.getByRole("button", { name: "Тёмная" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+  });
+
   test("the sample of themes wears each theme's skin whole, not the page's", async ({ page }) => {
     await page.goto("/ru/projects/portfolio");
     const action = page.locator(".pj-themes-sample .control-primary");

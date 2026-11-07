@@ -29,11 +29,15 @@ function readerMode(): Mode {
   return matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
+/** Both sources of the mode: the choice on the document, and the system's under no choice. */
 function onThemeChange(change: () => void) {
   const watch = new MutationObserver(change);
   watch.observe(document.documentElement, { attributeFilter: ["data-theme"] });
+  const scheme = matchMedia("(prefers-color-scheme: dark)");
+  scheme.addEventListener("change", change);
   return () => {
     watch.disconnect();
+    scheme.removeEventListener("change", change);
   };
 }
 
