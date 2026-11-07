@@ -1,4 +1,5 @@
 import { session } from "@/lib/session";
+import { isCalm } from "@/motion/reduced";
 import { FRAMES, SECTION } from "@/ui/board/board-layout";
 
 interface Options {
@@ -6,9 +7,6 @@ interface Options {
   /** Milliseconds of a flight. */
   duration: number;
 }
-
-/** The editor's layout starts here, with the capsule's move to the top of the screen. */
-export const WIDE = "(min-width: 64rem)";
 
 /** Set by the way back from a project, to its id: the board opens inside it and pulls out. */
 export const RETURN_KEY = "board-return";
@@ -28,7 +26,6 @@ const CLICK = 4;
 
 const clamp = (value: number, low: number, high: number) => Math.max(low, Math.min(high, value));
 const easeInOut = (t: number) => (t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) ** 3 / 2);
-const calm = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /**
  * The camera of the board. It transforms a world that CSS has already fitted to the canvas, so the
@@ -92,7 +89,7 @@ export function attachBoard(board: HTMLElement, { open, duration }: Options) {
 
   const fly = (to: { x: number; y: number; z: number }, done?: () => void) => {
     cancelAnimationFrame(flight);
-    if (calm()) {
+    if (isCalm()) {
       Object.assign(camera, to);
       paint();
       done?.();
@@ -492,7 +489,7 @@ export function attachBoard(board: HTMLElement, { open, duration }: Options) {
   select(sections.some((each) => each.dataset.sec === back) ? back : current);
   if (back) {
     session.remove(RETURN_KEY);
-    if (!calm()) {
+    if (!isCalm()) {
       const box = boxOf(sectionOf(current));
       const size = canvas.getBoundingClientRect();
       const z = Math.max(size.width / box.w, size.height / box.h) * 0.9;

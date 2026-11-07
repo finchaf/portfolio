@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
+import { isCalm } from "@/motion/reduced";
+
 type View = "lens" | "design" | "code";
 
 /** Share of the frame's width the lens covers. */
@@ -47,8 +49,7 @@ export function DemoLens({
       circle.style.transform = `translate(${String(x - radius)}px, ${String(y - radius)}px)`;
     };
     const tick = () => {
-      const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const k = calm ? 1 : FOLLOW;
+      const k = isCalm() ? 1 : FOLLOW;
       place.current.x += (target.current.x - place.current.x) * k;
       place.current.y += (target.current.y - place.current.y) * k;
       draw();

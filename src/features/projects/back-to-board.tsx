@@ -4,8 +4,9 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 import { session } from "@/lib/session";
+import { WIDE } from "@/motion/reduced";
 
-import { RETURN_KEY, WIDE } from "./board-camera";
+import { RETURN_KEY } from "./board-camera";
 
 /**
  * The way back: the board then opens inside the project and pulls out, with no slash on top. Only

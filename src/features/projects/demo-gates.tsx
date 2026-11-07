@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import { COMMAND, GATES } from "@/lib/project-facts";
+import { isCalm } from "@/motion/reduced";
 
 /** How long the replay takes, in milliseconds: the real run's shares, a fraction of its length. */
 const REPLAY = 3200;
@@ -19,7 +20,7 @@ export function DemoGates({ again, summary }: { again: string; summary: string }
     });
     // Emptied in place: the cleanup holds this very array, and must see every replay's timers.
     timers.current.length = 0;
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (isCalm()) return;
     setDone(0);
     const total = GATES.reduce((sum, [, seconds]) => sum + seconds, 0);
     let at = 160;

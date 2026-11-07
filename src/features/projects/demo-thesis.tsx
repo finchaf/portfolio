@@ -2,6 +2,8 @@
 
 import { type ReactNode, useEffect, useRef, useState } from "react";
 
+import { isCalm } from "@/motion/reduced";
+
 export interface SourceBlock {
   text: string;
   /** Where the block's first line stands, as a share of the page's height. */
@@ -61,7 +63,6 @@ export function DemoThesis({
   useEffect(() => {
     const node = paper.current;
     if (!node) return;
-    const calm = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
     const s = spot.current;
     const draw = () => {
       const { x, y } = s;
@@ -79,7 +80,7 @@ export function DemoThesis({
       }
     };
     const tick = () => {
-      const k = calm() ? 1 : 0.22;
+      const k = isCalm() ? 1 : 0.22;
       s.x += (s.tx - s.x) * k;
       s.y += (s.ty - s.y) * k;
       draw();

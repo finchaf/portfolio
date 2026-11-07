@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import { COMMAND } from "@/lib/project-facts";
+import { isCalm } from "@/motion/reduced";
 
 /** Milliseconds a step of the release stays lit in the replay. */
 const STEP = 460;
@@ -38,7 +39,7 @@ export function DemoRelease({
   }, []);
 
   const deploy = () => {
-    const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const calm = isCalm();
     const build = strings.fresh;
     const land = () => {
       setFolders((list) => [build, ...list.filter((each) => each !== build)].slice(0, KEPT));

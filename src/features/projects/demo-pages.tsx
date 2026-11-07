@@ -3,6 +3,8 @@
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 
+import { isCalm } from "@/motion/reduced";
+
 /**
  * Pages of the notes side by side. The strip scrolls by itself with a finger or a trackpad and
  * snaps to a page; the buttons are for a mouse, which has no sideways wheel. Without a script the
@@ -41,7 +43,7 @@ export function DemoPages({
     const node = strip.current;
     const page = node?.querySelector("li");
     if (!node || !page) return;
-    const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const calm = isCalm();
     node.scrollBy({ left: way * (page.offsetWidth + 16), behavior: calm ? "instant" : "smooth" });
   };
 

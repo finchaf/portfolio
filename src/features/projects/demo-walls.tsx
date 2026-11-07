@@ -1,7 +1,9 @@
 "use client";
 
-import { Image } from "@/ui/image";
 import { useEffect, useRef, useState } from "react";
+
+import { isCalm } from "@/motion/reduced";
+import { Image } from "@/ui/image";
 
 export interface Wall {
   tag: string;
@@ -59,7 +61,7 @@ export function DemoWalls({
               image.src = dark ? wall.dark : wall.light;
             }),
         );
-        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        if (isCalm()) return;
         void Promise.all(loads).then(() => {
           if (stopped) return;
           const start = performance.now();

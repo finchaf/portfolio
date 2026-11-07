@@ -2,6 +2,8 @@
 
 import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 
+import { isCalm } from "@/motion/reduced";
+
 interface Step {
   kind: string;
   keys: string;
@@ -154,7 +156,7 @@ export function DemoTyping({
 
   const play = () => {
     window.clearTimeout(timer.current);
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (isCalm()) {
       setAt(last);
       return;
     }

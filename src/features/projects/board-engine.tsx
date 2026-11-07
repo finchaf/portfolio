@@ -3,9 +3,10 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 
+import { WIDE } from "@/motion/reduced";
 import { DURATION } from "@/motion/tokens";
 
-import { attachBoard, WIDE } from "./board-camera";
+import { attachBoard } from "./board-camera";
 
 /** Adds the camera to a board that is already drawn, and takes it off below the wide layout. */
 export function BoardEngine() {
