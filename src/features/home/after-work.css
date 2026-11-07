@@ -322,10 +322,17 @@
   color: var(--accent-strong);
   font-family: var(--mono);
   opacity: 0;
-  translate: 0.3em 0;
-  transition:
-    opacity var(--duration-quick) var(--ease-out),
-    translate var(--duration-base) var(--ease-out);
+  transition: opacity var(--duration-quick) var(--ease-out);
+}
+
+/* With reduced motion the slash only fades, in its place. */
+@media (prefers-reduced-motion: no-preference) {
+  .talk-way-link .talk-value::before {
+    translate: 0.3em 0;
+    transition:
+      opacity var(--duration-quick) var(--ease-out),
+      translate var(--duration-base) var(--ease-out);
+  }
 }
 
 @media (hover: hover) and (min-width: 40rem) {
@@ -503,12 +510,15 @@
 }
 
 @media (hover: hover) {
-  .talk-window:hover {
-    translate: 0 -2px;
-  }
-
   .talk-window:hover .talk-send {
     color: var(--ink);
+  }
+}
+
+/* The lift and the turn of the arrow are motion alone: with reduced motion the colour answers. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .talk-window:hover {
+    translate: 0 -2px;
   }
 
   .talk-window:hover .talk-send b {

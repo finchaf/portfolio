@@ -4,6 +4,23 @@ import { height, HOME, jump, topOf } from "../helpers";
 
 // The CV block and the last call.
 
+test.describe("the last call with reduced motion", () => {
+  test.use({ reducedMotion: "reduce" });
+
+  test("answers the pointer without moving", async ({ page }) => {
+    await page.goto(HOME);
+    const slash = await page
+      .locator(".talk-way-link .talk-value")
+      .first()
+      .evaluate((node) => getComputedStyle(node, "::before").translate);
+    expect(slash).toBe("none");
+    const chat = page.locator(".talk-window");
+    await chat.hover();
+    await expect(chat).toHaveCSS("translate", "none");
+    await expect(chat.locator(".talk-send b")).toHaveCSS("rotate", "none");
+  });
+});
+
 test.describe("the home page in motion", () => {
   test("brings the last call together from both sides, and leaves it straight", async ({
     page,
