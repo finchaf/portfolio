@@ -17,8 +17,9 @@ export interface CodeSourceProps {
 export function CodeSource({ lines, className = "" }: CodeSourceProps) {
   return (
     <pre className={`code-source ${className}`}>
-      {lines.map((line) => (
-        <code className="block" key={line}>
+      {/* The lines never move, and two of them may read the same: a line's place is its key. */}
+      {lines.map((line, row) => (
+        <code className="block" key={row}>
           {line.split(TOKEN).map((part, index) => (
             <span className={tone(part)} key={index}>
               {part}
