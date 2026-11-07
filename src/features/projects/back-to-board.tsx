@@ -5,9 +5,12 @@ import Link from "next/link";
 
 import { session } from "@/lib/session";
 
-import { RETURN_KEY } from "./board-camera";
+import { RETURN_KEY, WIDE } from "./board-camera";
 
-/** The way back: the board then opens inside the project and pulls out, with no slash on top. */
+/**
+ * The way back: the board then opens inside the project and pulls out, with no slash on top. Only
+ * the wide editor has a camera to do it, and a click that opens a new tab leaves this one alone.
+ */
 export function BackToBoard({
   href,
   label,
@@ -21,7 +24,9 @@ export function BackToBoard({
     <Link
       className="pj-back"
       href={href}
-      onClick={() => {
+      onClick={(event) => {
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        if (!matchMedia(WIDE).matches) return;
         session.set(RETURN_KEY, project);
         document.documentElement.setAttribute("data-page-quiet", "");
       }}

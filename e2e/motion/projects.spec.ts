@@ -164,6 +164,16 @@ test.describe("the board of projects", () => {
     await expect(page.locator(".pj-board-inspector[data-current] .pj-ins-hint")).toBeVisible();
   });
 
+  test("the way back leaves a tab of its own to the browser", async ({ page }) => {
+    await page.goto("/ru/projects/portfolio");
+    const opened = page.context().waitForEvent("page");
+    await page.locator(".pj-back").click({ modifiers: ["ControlOrMeta"] });
+    await expect(await opened).toHaveURL(/\/ru\/projects$/);
+    await expect(page).toHaveURL(/\/ru\/projects\/portfolio$/);
+    await expect(page.locator("html")).not.toHaveAttribute("data-page-quiet");
+    expect(await page.evaluate(() => sessionStorage.getItem("board-return"))).toBeNull();
+  });
+
   test("keeps typed code as typed, with no joined signs", async ({ page }) => {
     await page.goto("/ru/projects");
     await expect(page.locator('[data-frame="snippets"] .pj-lines')).toHaveCSS(

@@ -5,10 +5,7 @@ import { useEffect, useRef } from "react";
 
 import { DURATION } from "@/motion/tokens";
 
-import { attachBoard } from "./board-camera";
-
-/** The editor's layout starts here, with the capsule's move to the top of the screen. */
-const WIDE = "(min-width: 64rem)";
+import { attachBoard, WIDE } from "./board-camera";
 
 /** Adds the camera to a board that is already drawn, and takes it off below the wide layout. */
 export function BoardEngine() {

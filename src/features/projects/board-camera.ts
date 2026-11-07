@@ -7,6 +7,9 @@ interface Options {
   duration: number;
 }
 
+/** The editor's layout starts here, with the capsule's move to the top of the screen. */
+export const WIDE = "(min-width: 64rem)";
+
 /** Set by the way back from a project, to its id: the board opens inside it and pulls out. */
 export const RETURN_KEY = "board-return";
 /** Set on the way into a project: its page rises in without the slash. */
