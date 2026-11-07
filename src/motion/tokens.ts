@@ -36,4 +36,8 @@ export const SCENE = {
   catchUp: 0.35,
   /** How long a scene rests on a step, as a share of the move between two steps. */
   rest: 0.7,
+  /** How much of the move between two stops the old stop takes to leave. */
+  leaving: 0.65,
+  /** How long before it settles a stop counts as the current one, as a share of the move. */
+  arriving: 0.25,
 } as const;

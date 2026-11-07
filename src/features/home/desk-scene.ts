@@ -1,4 +1,5 @@
 import { gsap } from "@/motion/gsap";
+import { SCENE } from "@/motion/tokens";
 
 import { snapToRests } from "./chapter-snap";
 import {
@@ -35,10 +36,6 @@ const PULL_BACK = 0.55;
 
 /** How much closer it creeps during a rest, so a stop is never quite still. */
 const CREEP = 0.03;
-
-/** How much of a flight the old words take to leave, and when the new ones count as arrived. */
-const LEAVING = 0.65;
-const ARRIVING = 0.25;
 
 interface Shot {
   x: number;
@@ -179,8 +176,8 @@ export function runDesk(
     // longer words have gone: the two never meet.
     const room =
       to.words > from.words
-        ? inOut(clamp(along / (1 - LEAVING)))
-        : inOut(clamp((along - LEAVING) / (1 - LEAVING)));
+        ? inOut(clamp(along / (1 - SCENE.leaving)))
+        : inOut(clamp((along - SCENE.leaving) / (1 - SCENE.leaving)));
     const x = mix(from.cx, to.cx, share) - z * mix(from.x, to.x, share);
     const y = mix(from.cy, to.cy, room) - z * mix(from.y, to.y, share);
     fade = mix(from.words, to.words, room);
@@ -204,11 +201,11 @@ export function runDesk(
       let opacity = index === stop && move === 0 ? 1 : 0;
       let shift = 0;
       if (move > 0 && index === stop) {
-        const gone = inOut(clamp(move / LEAVING));
+        const gone = inOut(clamp(move / SCENE.leaving));
         opacity = 1 - gone;
         shift = -travel * gone;
       } else if (move > 0 && index === stop + 1) {
-        const come = inOut(clamp((move - (1 - LEAVING)) / LEAVING));
+        const come = inOut(clamp((move - (1 - SCENE.leaving)) / SCENE.leaving));
         opacity = come;
         shift = travel * (1 - come);
       }
@@ -249,7 +246,7 @@ export function runDesk(
     if (move > 0) place(from, shots[next] as Shot, move, 1 + CREEP * (1 - move));
     else place(from, from, 0, 1 + CREEP * rest);
     words(moment);
-    mark(move >= 1 - ARRIVING ? next : stop);
+    mark(move >= 1 - SCENE.arriving ? next : stop);
     progressBar?.style.setProperty("transform", `scaleX(${progress.toFixed(4)})`);
   };
 

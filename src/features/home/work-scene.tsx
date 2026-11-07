@@ -23,12 +23,6 @@ const WIDTHS = {
   narrow: `${MOTION_ALLOWED} and ${NARROW}`,
 };
 
-/** How much of the move between two stops the old stop takes to leave. */
-const LEAVING = 0.65;
-
-/** How long before it settles a stop counts as the current one, and takes a press. */
-const ARRIVING = 0.25;
-
 const toTop = (element: Element) => element.getBoundingClientRect().top + window.scrollY;
 
 /** Marks one tick of a chapter's bar, and the stop readers can press. */
@@ -89,7 +83,7 @@ function runStops(
   const scene = gsap.timeline({
     defaults: { ease: SCENE.move },
     onUpdate: () => {
-      mark(arrivals.findLastIndex((at) => scene.time() >= at - ARRIVING));
+      mark(arrivals.findLastIndex((at) => scene.time() >= at - SCENE.arriving));
     },
     scrollTrigger: {
       trigger: chapter,
@@ -107,13 +101,13 @@ function runStops(
   stops.slice(1).forEach((stop, index) => {
     const leaving = stops[index];
     const at = scene.duration();
-    scene.to(part(leaving, "copy"), { yPercent: -35, opacity: 0, duration: LEAVING }, at);
-    scene.to(part(leaving, "visual"), { yPercent: -45, opacity: 0, duration: LEAVING }, at);
+    scene.to(part(leaving, "copy"), { yPercent: -35, opacity: 0, duration: SCENE.leaving }, at);
+    scene.to(part(leaving, "visual"), { yPercent: -45, opacity: 0, duration: SCENE.leaving }, at);
     scene.fromTo(
       part(stop, "copy"),
       { yPercent: 35, opacity: 0 },
-      { yPercent: 0, opacity: 1, duration: LEAVING },
-      at + 1 - LEAVING,
+      { yPercent: 0, opacity: 1, duration: SCENE.leaving },
+      at + 1 - SCENE.leaving,
     );
     scene.fromTo(
       part(stop, "visual"),
