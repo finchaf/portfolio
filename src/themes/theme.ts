@@ -22,7 +22,7 @@ export function applyTheme(theme: Theme, root: HTMLElement = document.documentEl
 }
 
 /** What every switcher on the page listens for: the reader has chosen, here or in another one. */
-export const THEME_CHANGE_EVENT = "portfolio:theme";
+export const THEME_CHANGE_EVENT = "finchaf:theme";
 
 // The choice when `localStorage` refuses it, as in a private window: it holds for this page.
 let unsaved: Theme | null = null;
