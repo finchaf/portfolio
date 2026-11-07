@@ -53,12 +53,7 @@
   display: none;
 }
 
-/* The native scrollbar makes way for the one drawn on the pane. */
 @media (min-width: 64rem) {
-  :root[data-js]:has([data-capsule-flat]) {
-    scrollbar-width: none;
-  }
-
   .vault {
     --bar: var(--header-row);
   }
@@ -203,11 +198,6 @@
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-}
-
-.left-panel[hidden],
-.right-panel[hidden] {
-  display: none;
 }
 
 .nav-header {
@@ -418,7 +408,7 @@
     grid-column: 1 / -1;
     align-items: center;
     justify-content: space-between;
-    padding: 0 8px 0 8px;
+    padding: 0 8px;
     border-bottom: 1px solid var(--line);
     background: var(--surface);
   }
@@ -836,7 +826,7 @@
   list-style: disc;
 }
 
-.note-view ol:not(.rungs, [class]) {
+.note-view ol:not([class]) {
   list-style: decimal;
 }
 
@@ -868,6 +858,7 @@
   line-height: 1.2;
 }
 
+/* No note has a ### today; the renderer gives one this class all the same. */
 .md-h3 {
   margin-top: 2rem;
   margin-bottom: 0.75rem;
@@ -1662,7 +1653,7 @@
 .graph-note {
   height: calc(100svh - var(--bar) - 2 * var(--header-row) - var(--term-height));
   min-height: 20rem;
-  padding: 0 !important;
+  padding: 0;
 }
 
 .right-body {
