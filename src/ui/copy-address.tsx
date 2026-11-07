@@ -25,7 +25,12 @@ export function CopyAddress({ address, labels, className = "write-copy" }: CopyA
   );
 
   const copy = async () => {
-    await navigator.clipboard.writeText(address);
+    // Refused, or not there at all off a secure origin: the button then just stays as it is.
+    try {
+      await navigator.clipboard.writeText(address);
+    } catch {
+      return;
+    }
     setCopied(true);
     clearTimeout(timer.current);
     timer.current = setTimeout(() => {
