@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 
-import { EVERY_PAGE, type AnyPagePath } from "../lib/pages";
-import { SHARE_IMAGE, shareImagePath } from "../lib/share-images";
-import { SITE_NAME, SITE_ORIGIN } from "../lib/site";
+import { EVERY_PAGE, type AnyPagePath } from "@/lib/pages";
+import { SHARE_IMAGE, shareImagePath } from "@/lib/share-images";
+import { SITE_NAME, SITE_ORIGIN } from "@/lib/site";
+
 import { alternates } from "./alternates";
 import { isLocale, LOCALES, type Locale } from "./locales";
 

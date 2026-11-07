@@ -1,4 +1,4 @@
-import type { Locale } from "../i18n/locales";
+import type { Locale } from "@/i18n/locales";
 import images from "./share-images.json" with { type: "json" };
 import type { EVERY_PAGE } from "./pages";
 

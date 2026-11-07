@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { digest } from "../../scripts/cv/cv";
-import { LOCALES } from "../i18n/locales";
+import { LOCALES } from "@/i18n/locales";
 import cv from "./cv.json";
 
 /** A CV a reader opens from a phone: a photograph and three typefaces, well under a megabyte. */

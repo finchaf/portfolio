@@ -1,4 +1,5 @@
-import type { AnyPagePath } from "../lib/pages";
+import type { AnyPagePath } from "@/lib/pages";
+
 import type { Locale } from "./locales";
 
 /**

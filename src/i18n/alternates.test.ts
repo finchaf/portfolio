@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { SITE_ORIGIN } from "../lib/site";
+import { SITE_ORIGIN } from "@/lib/site";
+
 import { alternates } from "./alternates";
 
 describe("alternates", () => {

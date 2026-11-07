@@ -1,5 +1,6 @@
-import type { AnyPagePath } from "../lib/pages";
-import { SITE_ORIGIN } from "../lib/site";
+import type { AnyPagePath } from "@/lib/pages";
+import { SITE_ORIGIN } from "@/lib/site";
+
 import { LOCALES, type Locale } from "./locales";
 import { localizedPath } from "./localized-path";
 
