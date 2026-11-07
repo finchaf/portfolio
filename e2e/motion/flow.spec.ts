@@ -1,9 +1,13 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 
 // The Flow vault.
 
 test.describe("the Flow vault", () => {
   const FLOW = "/ru/flow";
+
+  /** The vault's script has started: it takes the scroll over from the browser. */
+  const started = (page: Page) =>
+    expect.poll(() => page.evaluate(() => history.scrollRestoration)).toBe("manual");
 
   test("opens a note by its address and Back returns to the place", async ({ page }) => {
     await page.goto(FLOW);
@@ -29,6 +33,21 @@ test.describe("the Flow vault", () => {
     await page.locator("#term-in").fill("open rules");
     await page.locator("#term-in").press("Enter");
     await expect(page).toHaveURL(/#rules$/);
+  });
+
+  test("keeps a theme chosen in the terminal", async ({ page }) => {
+    await page.goto(FLOW);
+    await started(page);
+    await page.locator("#term-in").fill("theme dark");
+    await page.locator("#term-in").press("Enter");
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    await page.reload();
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    await started(page);
+    await page.locator("#term-in").fill("theme system");
+    await page.locator("#term-in").press("Enter");
+    await expect(page.locator("html")).not.toHaveAttribute("data-theme");
+    expect(await page.evaluate(() => localStorage.getItem("theme"))).toBeNull();
   });
 
   test("keeps decisions on their side of the map", async ({ page }) => {

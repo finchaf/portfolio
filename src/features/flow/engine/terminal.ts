@@ -1,4 +1,5 @@
 import { session } from "@/lib/session";
+import { saveTheme } from "@/themes/theme";
 
 import { all, element, find, isStill, isWide } from "./dom";
 import type { makeLanes } from "./figures";
@@ -632,9 +633,8 @@ export function makeTerminal(host: TerminalHost) {
         break;
       case "theme": {
         const mode = parts[1];
-        if (mode === "light" || mode === "dark")
-          root.ownerDocument.documentElement.dataset.theme = mode;
-        else if (mode === "system") delete root.ownerDocument.documentElement.dataset.theme;
+        // The same choice as the site's switchers make: kept, and shown by them too.
+        if (mode === "light" || mode === "dark" || mode === "system") saveTheme(mode);
         else say("theme light | dark | system");
         break;
       }
