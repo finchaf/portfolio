@@ -458,6 +458,23 @@ export function attachBoard(board: HTMLElement, { open, duration }: Options) {
     { signal },
   );
 
+  // The canvas clips the world, yet it is still a box the browser scrolls: a key's focus on a frame
+  // past its edge does. That scroll is folded into the camera, so the frame stays where the
+  // browser put it and every pan and zoom after it starts from where the board really is.
+  canvas.addEventListener(
+    "scroll",
+    () => {
+      const { scrollLeft, scrollTop } = canvas;
+      if (!scrollLeft && !scrollTop) return;
+      camera.x -= scrollLeft;
+      camera.y -= scrollTop;
+      canvas.scrollLeft = 0;
+      canvas.scrollTop = 0;
+      paint();
+    },
+    { signal },
+  );
+
   const resize = new ResizeObserver(() => {
     paint();
   });
@@ -491,6 +508,8 @@ export function attachBoard(board: HTMLElement, { open, duration }: Options) {
     cancelAnimationFrame(flight);
     world.style.transform = "";
     world.style.willChange = "";
+    canvas.scrollLeft = 0;
+    canvas.scrollTop = 0;
     world.style.removeProperty("--z");
     all("[data-frame]").forEach((node) => {
       node.style.translate = "";
