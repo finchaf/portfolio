@@ -216,23 +216,6 @@ export function makeTerminal(host: TerminalHost) {
     line(`<span class="mk">${kind === "ok" ? "✓" : "·"}</span>${escape(text)}`, kind);
   };
 
-  function writeState() {
-    const text = JSON.stringify(
-      {
-        task: "000",
-        app: "App Name",
-        stage: state.stage,
-        phase: state.phase,
-        updated: "2026-11-01",
-        waiting_for: state.wait === "stop" ? "stop-review" : state.wait,
-        steps_done: RUN.slice(0, state.i).filter((step) => "s" in step).length,
-      },
-      null,
-      2,
-    );
-    for (const code of all("[data-state-json] code", root)) code.textContent = text;
-  }
-
   function setNow(html: string, asking = false) {
     now.innerHTML = html;
     if (asking) now.dataset.ask = "";
@@ -246,7 +229,6 @@ export function makeTerminal(host: TerminalHost) {
             ? t.closed
             : state.phase;
     for (const node of all("[data-run-status]", root)) node.textContent = status;
-    writeState();
   }
 
   function persist() {
@@ -807,7 +789,6 @@ export function makeTerminal(host: TerminalHost) {
     catchUp,
     make,
     pickStyle,
-    openPane,
     command,
     togglePause() {
       listen();
@@ -821,5 +802,3 @@ export function makeTerminal(host: TerminalHost) {
     pane,
   };
 }
-
-export type Terminal = ReturnType<typeof makeTerminal>;
