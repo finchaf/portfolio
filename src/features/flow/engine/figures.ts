@@ -162,6 +162,8 @@ export function setupLadder(root: HTMLElement, signal: AbortSignal) {
   const LAST = 4;
   for (const figure of all("[data-ladder]", root)) {
     let timer = 0;
+    // A rung the reader picked is the reader's: the ladder no longer steps on by itself.
+    let touched = false;
     const show = (rung: number) => {
       figure.dataset.rung = String(rung);
       for (const button of all("button[data-rung-to]", figure)) {
@@ -173,6 +175,7 @@ export function setupLadder(root: HTMLElement, signal: AbortSignal) {
       (event) => {
         const button = (event.target as Element).closest<HTMLElement>("button[data-rung-to]");
         if (!button) return;
+        touched = true;
         clearInterval(timer);
         show(Number(button.dataset.rungTo));
       },
@@ -186,6 +189,7 @@ export function setupLadder(root: HTMLElement, signal: AbortSignal) {
       ([entry]) => {
         if (!entry?.isIntersecting) return;
         seen.disconnect();
+        if (touched) return;
         timer = window.setInterval(() => {
           const next = Number(figure.dataset.rung) + 1;
           if (next > LAST) clearInterval(timer);
