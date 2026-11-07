@@ -100,17 +100,6 @@ body {
   overflow-x: clip;
 }
 
-[data-colophon] {
-  display: none;
-}
-
-:root:has([data-world="home"]) [data-colophon="home"],
-:root:has([data-world="pora"]) [data-colophon="pora"],
-:root:has([data-world="flow"]) [data-colophon="flow"],
-:root:has([data-world="projects"]) [data-colophon="projects"] {
-  display: inline;
-}
-
 ::selection {
   background: color-mix(in srgb, var(--accent) 30%, transparent);
 }

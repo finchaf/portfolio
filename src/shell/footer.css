@@ -233,6 +233,18 @@
   --footer-here: 1;
 }
 
+/* The colophon's line for the page's world: one of four, by the same rule. */
+[data-colophon] {
+  display: none;
+}
+
+:root:has([data-world="home"]) [data-colophon="home"],
+:root:has([data-world="pora"]) [data-colophon="pora"],
+:root:has([data-world="flow"]) [data-colophon="flow"],
+:root:has([data-world="projects"]) [data-colophon="projects"] {
+  display: inline;
+}
+
 /* ---------- the last line ---------- */
 
 .footer-bar {
