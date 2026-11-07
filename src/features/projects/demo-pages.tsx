@@ -43,8 +43,10 @@ export function DemoPages({
     const node = strip.current;
     const page = node?.querySelector("li");
     if (!node || !page) return;
+    // A page and the strip's gap: a flex row's gap is its column-gap, computed in pixels.
+    const gap = parseFloat(getComputedStyle(node).columnGap) || 0;
     const calm = isCalm();
-    node.scrollBy({ left: way * (page.offsetWidth + 16), behavior: calm ? "instant" : "smooth" });
+    node.scrollBy({ left: way * (page.offsetWidth + gap), behavior: calm ? "instant" : "smooth" });
   };
 
   return (
