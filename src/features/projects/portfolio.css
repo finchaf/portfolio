@@ -201,12 +201,6 @@
   opacity: 0.5;
 }
 
-@media (hover: hover) {
-  .pj-mini:not(:disabled):hover {
-    color: var(--ink);
-  }
-}
-
 .pj-demo-note {
   color: var(--muted);
   font-size: 0.8125rem;
@@ -276,9 +270,16 @@
 }
 
 .pj-status span {
-  flex: none !important;
   font-variant-ligatures: none;
   padding: 0.125rem 0.75rem;
+}
+
+/*
+ * The status line's spans keep their width. The rule weighs as much as the terminal's
+ * `p > span:first-child`, which would let the mode grow, and comes after it.
+ */
+.pj-term p.pj-status span {
+  flex: none;
 }
 
 .pj-status span:first-child {
