@@ -15,6 +15,7 @@ import {
   WelcomeWire,
 } from "@/ui/app-screens";
 import { BASE_FIGURES } from "@/lib/base-graph";
+import { TELEGRAM_URL } from "@/lib/site";
 
 import { WikiLink } from "./markdown";
 
@@ -234,7 +235,7 @@ export function Cta() {
   const t = useTranslations("flow");
   return (
     <p className="vault-note-cta">
-      <a className="vault-mod-cta" data-write="" href="https://t.me/finchaf">
+      <a className="vault-mod-cta" data-write="" href={TELEGRAM_URL}>
         {t("cta")}
       </a>
     </p>
