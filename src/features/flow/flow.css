@@ -8,14 +8,14 @@
  * The app's screens, from ui/app-screens.css, inside a note: the note's own paragraph and list
  * spacing gives way to theirs, and a store frame sets its caption.
  */
-.vault .scr p,
-.vault .scr ul {
+.vault .app-scr p,
+.vault .app-scr ul {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.note-view .shot p {
+.note-view .app-shot p {
   margin: 0 0 8%;
   font-family: var(--s-f);
   font-size: 10.5cqw;
@@ -1302,22 +1302,22 @@ blockquote {
   text-align: left;
 }
 
-.sdir .frame {
+.sdir .app-frame {
   border-radius: 10px;
 }
 
-.sdir[aria-pressed="true"] .frame {
+.sdir[aria-pressed="true"] .app-frame {
   outline: 2px solid var(--accent-strong);
   outline-offset: 2px;
 }
 
 @media (hover: hover) {
-  .sdir:hover .frame {
+  .sdir:hover .app-frame {
     outline: 2px solid color-mix(in srgb, var(--accent-strong) 50%, transparent);
     outline-offset: 2px;
   }
 
-  .sdir[aria-pressed="true"]:hover .frame {
+  .sdir[aria-pressed="true"]:hover .app-frame {
     outline-color: var(--accent-strong);
   }
 }
@@ -1381,7 +1381,7 @@ blockquote {
   translate: 0 28px;
 }
 
-.device .frame {
+.device .app-frame {
   box-shadow: 0 10px 28px -12px
     light-dark(color-mix(in srgb, var(--ink) 34%, transparent), transparent);
 }
@@ -1574,7 +1574,7 @@ blockquote {
     gap: 16px;
   }
 
-  .d-phone {
+  .app-demo-phone {
     height: 272px;
   }
 }

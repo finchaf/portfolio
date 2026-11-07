@@ -163,7 +163,7 @@ test.describe("the home page in motion", () => {
     }
     const cuts = () =>
       chapter
-        .locator(".map-phone .frame")
+        .locator(".map-phone .app-frame")
         .evaluateAll((frames) =>
           frames.map((frame) => (frame as HTMLElement).style.getPropertyValue("--cx")),
         );

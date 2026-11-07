@@ -30,7 +30,7 @@ function Wire({
 function StatusBar() {
   const t = useTranslations("flow.app");
   return (
-    <div className="sb">
+    <div className="app-sb">
       <span>{t("time")}</span>
       <i />
     </div>
@@ -40,27 +40,27 @@ function StatusBar() {
 export function WelcomeScreen() {
   const t = useTranslations("flow.app");
   return (
-    <div className="scr s-welcome">
+    <div className="app-scr app-welcome">
       <StatusBar />
-      <div className="sky">
-        <i className="moon" />
-        <i className="arc a1" />
-        <i className="arc a2" />
-        <i className="st s1" />
-        <i className="st s2" />
-        <i className="st s3" />
-        <i className="st s4" />
+      <div className="app-sky">
+        <i className="app-moon" />
+        <i className="app-arc app-a1" />
+        <i className="app-arc app-a2" />
+        <i className="app-st app-s1" />
+        <i className="app-st app-s2" />
+        <i className="app-st app-s3" />
+        <i className="app-st app-s4" />
       </div>
-      <div className="tx">
+      <div className="app-tx">
         <h3>{t("welcomeTitle")}</h3>
         <p>{t("welcomeText")}</p>
       </div>
-      <div className="dots">
-        <i className="on" />
+      <div className="app-dots">
+        <i className="app-on" />
         <i />
         <i />
       </div>
-      <div className="scr-cta">{t("continue")}</div>
+      <div className="app-cta">{t("continue")}</div>
     </div>
   );
 }
@@ -68,13 +68,13 @@ export function WelcomeScreen() {
 export function PaywallScreen() {
   const t = useTranslations("flow.app");
   return (
-    <div className="scr s-paywall">
+    <div className="app-scr app-paywall">
       <StatusBar />
-      <div className="round x">{t("glyphClose")}</div>
-      <div className="tx">
+      <div className="app-round app-x">{t("glyphClose")}</div>
+      <div className="app-tx">
         <h3>{t("paywallTitle")}</h3>
       </div>
-      <ul className="ben">
+      <ul className="app-ben">
         <li>
           <i />
           {t("benefit1")}
@@ -88,18 +88,18 @@ export function PaywallScreen() {
           {t("benefit3")}
         </li>
       </ul>
-      <div className="plans">
-        <div className="plan on">
+      <div className="app-plans">
+        <div className="app-plan app-on">
           <b>{t("yearly")}</b>
           <span>{t("yearlyPrice")}</span>
         </div>
-        <div className="plan">
+        <div className="app-plan">
           <b>{t("monthly")}</b>
           <span>{t("monthlyPrice")}</span>
         </div>
       </div>
-      <div className="scr-cta">{t("continue")}</div>
-      <p className="fine">{t("fine")}</p>
+      <div className="app-cta">{t("continue")}</div>
+      <p className="app-fine">{t("fine")}</p>
     </div>
   );
 }
@@ -110,17 +110,17 @@ const DAYS = ["day1", "day2", "day3", "day4", "day5", "day6", "day7"] as const;
 export function HomeScreen() {
   const t = useTranslations("flow.app");
   return (
-    <div className="scr s-home">
+    <div className="app-scr app-home">
       <StatusBar />
-      <div className="bar">
+      <div className="app-bar">
         <h3>{t("tonight")}</h3>
-        <div className="round">{t("glyphMore")}</div>
+        <div className="app-round">{t("glyphMore")}</div>
       </div>
-      <div className="ring">
+      <div className="app-ring">
         <svg aria-hidden viewBox="0 0 200 200">
           <circle cx="100" cy="100" r="86" />
           <circle
-            className="v"
+            className="app-v"
             cx="100"
             cy="100"
             pathLength="100"
@@ -133,23 +133,23 @@ export function HomeScreen() {
           <span>{t("lastNight")}</span>
         </div>
       </div>
-      <div className="week">
+      <div className="app-week">
         {WEEK.map((value, index) => (
           <i
-            className={index === WEEK.length - 1 ? "on" : undefined}
+            className={index === WEEK.length - 1 ? "app-on" : undefined}
             key={index}
             style={{ "--h": value }}
           />
         ))}
       </div>
-      <div className="days">
+      <div className="app-days">
         {DAYS.map((day) => (
           <span key={day}>{t(day)}</span>
         ))}
       </div>
-      <div className="scr-cta">{t("start")}</div>
-      <div className="tabbar">
-        <i className="on" />
+      <div className="app-cta">{t("start")}</div>
+      <div className="app-tabbar">
+        <i className="app-on" />
         <i />
         <i />
       </div>
@@ -160,26 +160,26 @@ export function HomeScreen() {
 export function NightScreen() {
   const t = useTranslations("flow.app");
   return (
-    <div className="scr s-night">
+    <div className="app-scr app-night">
       <StatusBar />
-      <div className="bar">
-        <div className="round">{t("glyphBack")}</div>
-        <div className="round">{t("glyphMore")}</div>
+      <div className="app-bar">
+        <div className="app-round">{t("glyphBack")}</div>
+        <div className="app-round">{t("glyphMore")}</div>
       </div>
-      <div className="tx">
+      <div className="app-tx">
         <h3>{t("nightTitle")}</h3>
         <p>{t("nightTime")}</p>
       </div>
-      <svg aria-hidden className="hyp" preserveAspectRatio="none" viewBox="0 0 330 150">
+      <svg aria-hidden className="app-hyp" preserveAspectRatio="none" viewBox="0 0 330 150">
         <path d="M0 20H26V60H62V120H118V60H150V30H176V60H214V120H252V60H292V30H330" />
       </svg>
-      <div className="axis">
+      <div className="app-axis">
         <span>{t("awake")}</span>
         <span>{t("rem")}</span>
         <span>{t("light")}</span>
         <span>{t("deep")}</span>
       </div>
-      <ul className="stats">
+      <ul className="app-stats">
         <li>
           <b>{t("deepValue")}</b>
           <span>{t("deep")}</span>
@@ -193,7 +193,7 @@ export function NightScreen() {
           <span>{t("woke")}</span>
         </li>
       </ul>
-      <div className="memo">{t("memo")}</div>
+      <div className="app-memo">{t("memo")}</div>
     </div>
   );
 }
@@ -201,13 +201,13 @@ export function NightScreen() {
 export function WelcomeWire() {
   const t = useTranslations("flow.app");
   return (
-    <div className="wf">
-      <Wire height={44} label={t("wfHero")} left={6} shape="w-b h" top={10} width={88} />
-      <Wire left={6} shape="w-l" top={60} width={70} />
-      <Wire left={6} shape="w-l s" top={66} width={84} />
-      <Wire left={6} shape="w-l s" top={69.5} width={56} />
-      <Wire left={44} shape="w-d" top={80} />
-      <Wire height={7} label={t("wfCta")} left={6} shape="w-b c" top={86} width={88} />
+    <div className="app-wf">
+      <Wire height={44} label={t("wfHero")} left={6} shape="app-w-b app-h" top={10} width={88} />
+      <Wire left={6} shape="app-w-l" top={60} width={70} />
+      <Wire left={6} shape="app-w-l app-s" top={66} width={84} />
+      <Wire left={6} shape="app-w-l app-s" top={69.5} width={56} />
+      <Wire left={44} shape="app-w-d" top={80} />
+      <Wire height={7} label={t("wfCta")} left={6} shape="app-w-b app-c" top={86} width={88} />
     </div>
   );
 }
@@ -215,17 +215,17 @@ export function WelcomeWire() {
 export function PaywallWire() {
   const t = useTranslations("flow.app");
   return (
-    <div className="wf">
-      <Wire left={6} shape="w-r" top={7} />
-      <Wire left={6} shape="w-l" top={17} width={80} />
-      <Wire left={6} shape="w-l" top={22} width={50} />
-      <Wire left={6} shape="w-l s" top={32} width={60} />
-      <Wire left={6} shape="w-l s" top={37} width={60} />
-      <Wire left={6} shape="w-l s" top={42} width={60} />
-      <Wire height={10} label={t("wfPlan")} left={6} shape="w-b p" top={53} width={88} />
-      <Wire height={10} label={t("wfPlan")} left={6} shape="w-b q" top={65} width={88} />
-      <Wire height={7} label={t("wfCta")} left={6} shape="w-b c" top={81} width={88} />
-      <Wire left={25} shape="w-l s" top={91} width={50} />
+    <div className="app-wf">
+      <Wire left={6} shape="app-w-r" top={7} />
+      <Wire left={6} shape="app-w-l" top={17} width={80} />
+      <Wire left={6} shape="app-w-l" top={22} width={50} />
+      <Wire left={6} shape="app-w-l app-s" top={32} width={60} />
+      <Wire left={6} shape="app-w-l app-s" top={37} width={60} />
+      <Wire left={6} shape="app-w-l app-s" top={42} width={60} />
+      <Wire height={10} label={t("wfPlan")} left={6} shape="app-w-b app-p" top={53} width={88} />
+      <Wire height={10} label={t("wfPlan")} left={6} shape="app-w-b app-q" top={65} width={88} />
+      <Wire height={7} label={t("wfCta")} left={6} shape="app-w-b app-c" top={81} width={88} />
+      <Wire left={25} shape="app-w-l app-s" top={91} width={50} />
     </div>
   );
 }
@@ -233,13 +233,20 @@ export function PaywallWire() {
 export function HomeWire() {
   const t = useTranslations("flow.app");
   return (
-    <div className="wf">
-      <Wire left={6} shape="w-l" top={8} width={42} />
-      <Wire left={82} shape="w-r" top={7} />
-      <Wire height={29.5} label={t("wfRing")} left={18} shape="w-b h round" top={17} width={64} />
-      <Wire height={15} label={t("wfWeek")} left={6} shape="w-b q" top={52} width={88} />
-      <Wire height={7} label={t("wfCta")} left={6} shape="w-b c" top={72} width={88} />
-      <Wire height={7} label={t("wfTabs")} left={20} shape="w-b q" top={84} width={60} />
+    <div className="app-wf">
+      <Wire left={6} shape="app-w-l" top={8} width={42} />
+      <Wire left={82} shape="app-w-r" top={7} />
+      <Wire
+        height={29.5}
+        label={t("wfRing")}
+        left={18}
+        shape="app-w-b app-h app-round"
+        top={17}
+        width={64}
+      />
+      <Wire height={15} label={t("wfWeek")} left={6} shape="app-w-b app-q" top={52} width={88} />
+      <Wire height={7} label={t("wfCta")} left={6} shape="app-w-b app-c" top={72} width={88} />
+      <Wire height={7} label={t("wfTabs")} left={20} shape="app-w-b app-q" top={84} width={60} />
     </div>
   );
 }
@@ -247,16 +254,16 @@ export function HomeWire() {
 export function NightWire() {
   const t = useTranslations("flow.app");
   return (
-    <div className="wf">
-      <Wire left={6} shape="w-r" top={7} />
-      <Wire left={82} shape="w-r" top={7} />
-      <Wire left={6} shape="w-l" top={16} width={62} />
-      <Wire left={6} shape="w-l s" top={21} width={36} />
-      <Wire height={26} label={t("wfChart")} left={6} shape="w-b h" top={28} width={88} />
-      <Wire height={10} left={6} shape="w-b q" top={60} width={27} />
-      <Wire height={10} left={36.5} shape="w-b q" top={60} width={27} />
-      <Wire height={10} left={67} shape="w-b q" top={60} width={27} />
-      <Wire height={12} label={t("wfNote")} left={6} shape="w-b p" top={75} width={88} />
+    <div className="app-wf">
+      <Wire left={6} shape="app-w-r" top={7} />
+      <Wire left={82} shape="app-w-r" top={7} />
+      <Wire left={6} shape="app-w-l" top={16} width={62} />
+      <Wire left={6} shape="app-w-l app-s" top={21} width={36} />
+      <Wire height={26} label={t("wfChart")} left={6} shape="app-w-b app-h" top={28} width={88} />
+      <Wire height={10} left={6} shape="app-w-b app-q" top={60} width={27} />
+      <Wire height={10} left={36.5} shape="app-w-b app-q" top={60} width={27} />
+      <Wire height={10} left={67} shape="app-w-b app-q" top={60} width={27} />
+      <Wire height={12} label={t("wfNote")} left={6} shape="app-w-b app-p" top={75} width={88} />
     </div>
   );
 }
@@ -265,23 +272,23 @@ export function NightWire() {
 export function RuleDemo() {
   const t = useTranslations("flow.app");
   return (
-    <div aria-hidden className="demo">
-      <div className="d-phone">
-        <div className="d-bar">
-          <span className="d-title">{t("menuTitle")}</span>
-          <span className="d-btn">{t("glyphMore")}</span>
-          <span className="d-menu">
+    <div aria-hidden className="app-demo">
+      <div className="app-demo-phone">
+        <div className="app-demo-bar">
+          <span className="app-demo-title">{t("menuTitle")}</span>
+          <span className="app-demo-btn">{t("glyphMore")}</span>
+          <span className="app-demo-menu">
             <i>{t("menuShare")}</i>
             <i>{t("menuNote")}</i>
             <i>{t("menuDelete")}</i>
           </span>
         </div>
-        <div className="d-body">
+        <div className="app-demo-body">
           <i />
           <i />
           <i />
         </div>
-        <span className="d-check">{t("corner")}</span>
+        <span className="app-demo-check">{t("corner")}</span>
       </div>
     </div>
   );

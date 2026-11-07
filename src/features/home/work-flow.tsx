@@ -152,7 +152,7 @@ function Board() {
           key={look}
           type="button"
         >
-          <span className="frame" data-style={look}>
+          <span className="app-frame" data-style={look}>
             <WelcomeScreen />
           </span>
           <span className="map-tile-name">
@@ -167,9 +167,9 @@ function Board() {
 function Phone({ wire, screen }: { wire?: ReactNode; screen?: ReactNode }) {
   return (
     <div className="map-phone" data-piece>
-      <div className="frame">
+      <div className="app-frame">
         {wire}
-        {screen ? <div className="ui">{screen}</div> : null}
+        {screen ? <div className="app-ui">{screen}</div> : null}
       </div>
     </div>
   );
@@ -209,7 +209,12 @@ function Handoff() {
       </Looks>
       <div aria-hidden className="map-file-icons">
         {APP_LOOKS.map((look, index) => (
-          <span className={`appicon v${String(index)}`} data-piece data-style={look} key={look}>
+          <span
+            className={`app-icon app-v${String(index)}`}
+            data-piece
+            data-style={look}
+            key={look}
+          >
             <i />
           </span>
         ))}

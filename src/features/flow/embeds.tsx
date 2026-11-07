@@ -71,7 +71,7 @@ export function Board() {
             key={look}
             type="button"
           >
-            <span className="frame" data-style={look}>
+            <span className="app-frame" data-style={look}>
               <WelcomeScreen />
             </span>
             <span className="sdir-name">
@@ -88,9 +88,9 @@ export function Board() {
 function Device({ wire, screen }: { wire: ReactNode; screen: ReactNode }) {
   return (
     <div className="device">
-      <div className="frame">
+      <div className="app-frame">
         {wire}
-        <div className="ui">{screen}</div>
+        <div className="app-ui">{screen}</div>
       </div>
     </div>
   );
@@ -173,7 +173,7 @@ export function Icons() {
   return (
     <div className="icons">
       {APP_LOOKS.map((look, index) => (
-        <span className={`appicon v${String(index)}`} data-style={look} key={look}>
+        <span className={`app-icon app-v${String(index)}`} data-style={look} key={look}>
           <i />
         </span>
       ))}
@@ -188,12 +188,12 @@ export function Shelf() {
     <figure className="shelf wide" data-sk="" data-style={DEFAULT_LOOK}>
       <a className="shelf-screens" data-note="results" href="#results">
         <span className="device">
-          <span className="frame">
+          <span className="app-frame">
             <HomeScreen />
           </span>
         </span>
         <span className="device">
-          <span className="frame">
+          <span className="app-frame">
             <NightScreen />
           </span>
         </span>
@@ -214,9 +214,9 @@ export function Store() {
   return (
     <div className="store wide">
       {shots.map(({ title, screen }) => (
-        <div className="shot" data-sk="" data-style={DEFAULT_LOOK} key={title}>
+        <div className="app-shot" data-sk="" data-style={DEFAULT_LOOK} key={title}>
           <p>{t(title)}</p>
-          <div className="frame">{screen}</div>
+          <div className="app-frame">{screen}</div>
         </div>
       ))}
     </div>

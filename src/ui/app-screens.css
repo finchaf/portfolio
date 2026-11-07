@@ -1,5 +1,5 @@
 /* The screens of the made-up app, sized in its own 390-wide units: 1em is 10 points. */
-.frame {
+.app-frame {
   position: relative;
   display: block;
   container-type: inline-size;
@@ -8,12 +8,12 @@
   border-radius: 16px;
   background: var(--s-bg);
 }
-.ui {
+.app-ui {
   position: absolute;
   inset: 0;
   clip-path: inset(0 calc(100% - var(--cx, 100%)) 0 0);
 }
-.scr {
+.app-scr {
   position: absolute;
   inset: 0;
   display: flex;
@@ -25,17 +25,17 @@
   line-height: 1.25;
   text-align: left;
 }
-.scr h3 {
+.app-scr h3 {
   font-size: 3.1em;
   line-height: 1.08;
   font-weight: var(--s-w);
   letter-spacing: -0.02em;
   margin: 0;
 }
-.scr li {
+.app-scr li {
   margin: 0;
 }
-.sb {
+.app-sb {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -43,14 +43,14 @@
   font-size: 1.3em;
   font-weight: 600;
 }
-.sb i {
+.app-sb i {
   width: 2.2em;
   height: 0.9em;
   border-radius: 0.3em;
   background: currentColor;
   opacity: 0.85;
 }
-.scr-cta {
+.app-cta {
   display: grid;
   place-items: center;
   height: 5.4em;
@@ -62,7 +62,7 @@
   font-weight: 700;
   flex: none;
 }
-.round {
+.app-round {
   display: grid;
   place-items: center;
   width: 4.4em;
@@ -74,7 +74,7 @@
   flex: none;
 }
 
-.s-welcome .sky {
+.app-welcome .app-sky {
   position: relative;
   flex: 1;
   margin: 0.4em 2em 1.6em;
@@ -82,7 +82,7 @@
   background: var(--s-sky);
   overflow: hidden;
 }
-.moon {
+.app-moon {
   position: absolute;
   left: 50%;
   top: 44%;
@@ -92,7 +92,7 @@
   border-radius: 50%;
   background: var(--s-moon);
 }
-.moon::after {
+.app-moon::after {
   content: "";
   position: absolute;
   inset: -0.1em auto auto -3.6em;
@@ -101,7 +101,7 @@
   border-radius: 50%;
   background: var(--s-sky);
 }
-.arc {
+.app-arc {
   position: absolute;
   left: 50%;
   top: 44%;
@@ -109,18 +109,18 @@
   box-shadow: inset 0 0 0 0.12em var(--s-sub);
   opacity: 0.4;
 }
-.arc.a1 {
+.app-arc.app-a1 {
   width: 26em;
   height: 26em;
   margin: -13em;
 }
-.arc.a2 {
+.app-arc.app-a2 {
   width: 36em;
   height: 36em;
   margin: -18em;
   opacity: 0.24;
 }
-.st {
+.app-st {
   position: absolute;
   width: 0.6em;
   height: 0.6em;
@@ -128,124 +128,124 @@
   background: var(--s-ink);
   opacity: 0.7;
 }
-.st.s1 {
+.app-st.app-s1 {
   left: 14%;
   top: 16%;
 }
-.st.s2 {
+.app-st.app-s2 {
   left: 82%;
   top: 22%;
   width: 0.8em;
   height: 0.8em;
 }
-.st.s3 {
+.app-st.app-s3 {
   left: 22%;
   top: 78%;
 }
-.st.s4 {
+.app-st.app-s4 {
   left: 74%;
   top: 82%;
   width: 0.5em;
   height: 0.5em;
 }
-.s-welcome .tx {
+.app-welcome .app-tx {
   padding: 0 2.2em;
 }
-.s-paywall .fine {
+.app-paywall .app-fine {
   padding: 1.3em 0 2.4em;
   text-align: center;
   font-size: 1.2em;
   color: var(--s-sub);
 }
 /* An !important here holds against the vault's reset in flow.css, as heavy or more and later. */
-.s-welcome .tx p {
+.app-welcome .app-tx p {
   margin-top: 0.9em !important;
   font-size: 1.6em;
   line-height: 1.32;
   color: var(--s-sub);
 }
-.dots {
+.app-dots {
   display: flex;
   gap: 0.7em;
   padding: 2.2em 2.2em 2em;
 }
-.dots i {
+.app-dots i {
   width: 0.8em;
   height: 0.8em;
   border-radius: 50%;
   background: var(--s-sub);
   opacity: 0.4;
 }
-.dots i.on {
+.app-dots i.app-on {
   width: 2.4em;
   border-radius: 0.4em;
   background: var(--s-acc);
   opacity: 1;
 }
-.s-welcome .scr-cta {
+.app-welcome .app-cta {
   margin-bottom: 4em;
 }
 
-.s-paywall .x {
+.app-paywall .app-x {
   margin: 0.8em 2em 2em;
 }
-.s-paywall .tx {
+.app-paywall .app-tx {
   padding: 0 2.2em;
 }
-.ben {
+.app-ben {
   padding: 1.5em 1.4em 0 !important;
   display: grid;
   gap: 0.85em;
   font-size: 1.6em;
 }
-.ben li {
+.app-ben li {
   display: flex;
   align-items: center;
   gap: 0.7em;
   line-height: 1.2;
 }
-.ben i {
+.app-ben i {
   width: 1.1em;
   height: 1.1em;
   border-radius: 50%;
   background: var(--s-acc);
   flex: none;
 }
-.plans {
+.app-plans {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1em;
   margin: auto 2em 1.6em;
 }
-.plan {
+.app-plan {
   display: grid;
   gap: 0.3em;
   padding: 1.6em 1.3em;
   border-radius: var(--s-r);
   background: var(--s-card);
 }
-.plan b {
+.app-plan b {
   font-size: 1.6em;
   font-weight: 700;
 }
-.plan span {
+.app-plan span {
   font-size: 1.25em;
   color: var(--s-sub);
 }
-.plan.on {
+.app-plan.app-on {
   box-shadow: inset 0 0 0 0.2em var(--s-acc);
 }
 
-.bar {
+.app-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0.6em 2em 0.8em;
 }
-.s-home .bar h3 {
+.app-home .app-bar h3 {
   font-size: 2.8em;
 }
-.ring {
+.app-ring {
   /* Tailwind has a utility of this name: without this it draws a frame around the dial. */
   box-shadow: none;
   position: relative;
@@ -254,39 +254,39 @@
   margin: 1em auto 1.6em;
   flex: none;
 }
-.ring svg {
+.app-ring svg {
   width: 100%;
   height: 100%;
   rotate: -90deg;
 }
-.ring circle {
+.app-ring circle {
   fill: none;
   stroke: var(--s-card);
   stroke-width: 14;
 }
-.ring .v {
+.app-ring .app-v {
   stroke: var(--s-acc);
   stroke-linecap: round;
 }
-.ring div {
+.app-ring div {
   position: absolute;
   inset: 0;
   display: grid;
   place-content: center;
   text-align: center;
 }
-.ring b {
+.app-ring b {
   font-size: 4.6em;
   line-height: 1;
   font-weight: var(--s-w);
   letter-spacing: -0.02em;
 }
-.ring span {
+.app-ring span {
   font-size: 1.3em;
   color: var(--s-sub);
   margin-top: 0.35em;
 }
-.week {
+.app-week {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 0.9em;
@@ -294,15 +294,15 @@
   height: 9em;
   margin: 0 2.2em;
 }
-.week i {
+.app-week i {
   height: calc(var(--h) * 100%);
   border-radius: 0.7em;
   background: var(--s-card);
 }
-.week i.on {
+.app-week i.app-on {
   background: var(--s-acc);
 }
-.days {
+.app-days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 0.9em;
@@ -311,10 +311,10 @@
   font-size: 1.15em;
   color: var(--s-sub);
 }
-.s-home .scr-cta {
+.app-home .app-cta {
   margin-top: auto;
 }
-.tabbar {
+.app-tabbar {
   display: flex;
   justify-content: center;
   gap: 3em;
@@ -326,34 +326,34 @@
   background: var(--s-card);
   flex: none;
 }
-.tabbar i {
+.app-tabbar i {
   width: 2em;
   height: 2em;
   border-radius: 0.55em;
   background: var(--s-sub);
   opacity: 0.45;
 }
-.tabbar i.on {
+.app-tabbar i.app-on {
   background: var(--s-acc);
   opacity: 1;
 }
 
-.s-night .tx {
+.app-night .app-tx {
   padding: 0.8em 2.2em 0;
 }
-.s-night .tx p {
+.app-night .app-tx p {
   margin-top: 0.4em !important;
   font-size: 1.5em;
   color: var(--s-sub);
 }
-.hyp {
+.app-hyp {
   width: calc(100% - 4.4em);
   height: 15em;
   margin: 2em 2.2em 0;
   overflow: visible;
   flex: none;
 }
-.hyp path {
+.app-hyp path {
   fill: none;
   stroke: var(--s-acc);
   stroke-width: 3.2;
@@ -361,36 +361,36 @@
   stroke-linejoin: round;
   stroke-linecap: round;
 }
-.axis {
+.app-axis {
   display: flex;
   justify-content: space-between;
   margin: 0.8em 1.9em 0;
   font-size: 1.15em;
   color: var(--s-sub);
 }
-.stats {
+.app-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1em;
   padding: 2.2em 2em 0 !important;
 }
-.stats li {
+.app-stats li {
   padding: 1.3em;
   border-radius: calc(var(--s-r) * 0.8);
   background: var(--s-card);
   display: grid;
   gap: 0.2em;
 }
-.stats b {
+.app-stats b {
   font-size: 2.1em;
   font-weight: var(--s-w);
   line-height: 1.1;
 }
-.stats span {
+.app-stats span {
   font-size: 1.2em;
   color: var(--s-sub);
 }
-.memo {
+.app-memo {
   margin: auto 1.45em 2.9em;
   padding: 1.5em 1.6em;
   border-radius: var(--s-r);
@@ -400,7 +400,7 @@
 }
 
 /* A frame in a store set. */
-.shot {
+.app-shot {
   position: relative;
   aspect-ratio: 1242 / 2688;
   padding: 8% 8% 0;
@@ -411,11 +411,11 @@
   container-type: inline-size;
 }
 
-.shot .frame {
+.app-shot .app-frame {
   border-radius: 8% / 3.7%;
 }
 
-.appicon {
+.app-icon {
   position: relative;
   display: block;
   aspect-ratio: 1;
@@ -425,7 +425,7 @@
   container-type: inline-size;
 }
 
-.appicon i {
+.app-icon i {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -436,7 +436,7 @@
   background: var(--s-moon);
 }
 
-.appicon i::after {
+.app-icon i::after {
   content: "";
   position: absolute;
   top: -6%;
@@ -447,47 +447,47 @@
   background: var(--s-sky);
 }
 
-.appicon.v1 i {
+.app-icon.app-v1 i {
   width: 64cqw;
   height: 64cqw;
   margin: -32cqw;
 }
 
-.appicon.v2 {
+.app-icon.app-v2 {
   background: var(--s-acc);
 }
 
-.appicon.v2 i {
+.app-icon.app-v2 i {
   background: var(--s-on);
 }
 
-.appicon.v2 i::after {
+.app-icon.app-v2 i::after {
   background: var(--s-acc);
 }
 
-.appicon.v4 i::after {
+.app-icon.app-v4 i::after {
   top: 8%;
   left: 22%;
 }
 
 /* A wireframe: structure on the same coordinates. */
-.wf {
+.app-wf {
   position: absolute;
   inset: 0;
   background: var(--wf-bg);
   font-family: var(--mono);
 }
 
-.w-b,
-.w-l,
-.w-r,
-.w-d {
+.app-w-b,
+.app-w-l,
+.app-w-r,
+.app-w-d {
   position: absolute;
   top: calc(var(--t) * 1%);
   left: calc(var(--l) * 1%);
 }
 
-.w-b {
+.app-w-b {
   display: grid;
   place-items: center;
   width: calc(var(--w) * 1%);
@@ -498,49 +498,49 @@
   font-size: 3.2cqw;
 }
 
-.w-b.h {
+.app-w-b.app-h {
   background: var(--wf-hi);
   color: var(--wf-hi-ink);
 }
 
-.w-b.c {
+.app-w-b.app-c {
   background: var(--wf-cta);
   color: var(--wf-on-cta);
 }
 
-.w-b.p {
+.app-w-b.app-p {
   background: var(--wf-pad);
   box-shadow: inset 0 0 0 0.4cqw var(--wf-pad-line);
 }
 
-.w-b.q {
+.app-w-b.app-q {
   background: var(--wf-quiet);
 }
 
-.w-b.round {
+.app-w-b.app-round {
   border-radius: 50%;
 }
 
-.w-l {
+.app-w-l {
   width: calc(var(--w) * 1%);
   height: 3cqw;
   border-radius: 1.5cqw;
   background: var(--wf-line);
 }
 
-.w-l.s {
+.app-w-l.app-s {
   height: 2cqw;
   background: var(--wf-line-soft);
 }
 
-.w-r {
+.app-w-r {
   width: 11cqw;
   height: 11cqw;
   border-radius: 50%;
   background: var(--wf-block);
 }
 
-.w-d {
+.app-w-d {
   width: 13cqw;
   height: 2cqw;
   border-radius: 1cqw;
@@ -548,7 +548,7 @@
 }
 
 /* The phone of one rule's history. */
-.d-phone {
+.app-demo-phone {
   position: relative;
   height: 336px;
   overflow: hidden;
@@ -556,7 +556,7 @@
   background: var(--surface);
 }
 
-.d-bar {
+.app-demo-bar {
   position: relative;
   z-index: 2;
   display: flex;
@@ -566,12 +566,12 @@
   padding-inline: 16px;
 }
 
-.d-title {
+.app-demo-title {
   font-size: 15px;
   font-weight: 600;
 }
 
-.d-btn {
+.app-demo-btn {
   display: grid;
   place-items: center;
   width: 44px;
@@ -581,7 +581,7 @@
   font-weight: 700;
 }
 
-.d-menu {
+.app-demo-menu {
   position: absolute;
   top: 12px;
   right: 16px;
@@ -596,30 +596,30 @@
   transform-origin: top right;
 }
 
-.d-menu i {
+.app-demo-menu i {
   padding: 9px 12px;
   font-size: 14px;
   font-style: normal;
 }
 
-.d-menu i + i {
+.app-demo-menu i + i {
   box-shadow: 0 -1px 0 var(--line);
 }
 
-.d-body {
+.app-demo-body {
   display: grid;
   gap: 8px;
   padding: 8px 16px;
 }
 
-.d-body i {
+.app-demo-body i {
   height: 68px;
   border-radius: 12px;
   background: var(--raised);
   opacity: 0.7;
 }
 
-.d-check {
+.app-demo-check {
   position: absolute;
   z-index: 3;
   right: 16px;
@@ -632,25 +632,25 @@
   opacity: 0;
 }
 
-[data-rung="0"] .d-menu {
+[data-rung="0"] .app-demo-menu {
   top: 68px;
   right: 36px;
 }
 
-[data-rung]:not([data-rung="0"]) .d-btn {
+[data-rung]:not([data-rung="0"]) .app-demo-btn {
   opacity: 0;
 }
 
-[data-rung="4"] .d-check {
+[data-rung="4"] .app-demo-check {
   opacity: 1;
 }
 
-[data-rung="4"] .d-menu {
+[data-rung="4"] .app-demo-menu {
   box-shadow: 0 0 0 1.5px var(--success);
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .d-menu {
+  .app-demo-menu {
     transition:
       top var(--duration-base) var(--ease-out),
       right var(--duration-base) var(--ease-out);

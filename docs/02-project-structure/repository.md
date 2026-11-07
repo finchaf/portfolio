@@ -58,10 +58,11 @@ portfolio/
     «Проекты», `exp-` у опыта, `talk-` у финала; общий каркас глав — `chapter-` и `stop-` в `features/home/scenes.css`;
   - оболочка: `capsule-` у капсулы, `write-` у листа «Написать», `footer-` у футера, `lost-` у 404, `dot-` у курсора,
     `world-` у смены страницы;
-  - `ui/`: `control-`, `segmented-`, `scroll-`, `code-`.
+  - `ui/`: `control-`, `segmented-`, `scroll-`, `code-`, `app-` у экранов условного приложения в `ui/app-screens.*`:
+    их одевают страница Флоу и её глава на главной.
 
-  На 07.11.2026 без префикса остаются страница Флоу (`features/flow/flow.css`), экраны условного приложения
-  (`ui/app-screens.css`) и четыре имени главной и оболочки: `work`, `after-work`, `finale-title`, `page-lead`.
+  На 07.11.2026 без префикса остаются страница Флоу (`features/flow/flow.css`) и четыре имени главной и оболочки:
+  `work`, `after-work`, `finale-title`, `page-lead`.
   Префикс держит `src/stylesheets.test.ts`: его таблица повторяет этот список, а имена без префикса выписаны в нём
   поимённо, и этот перечень только сокращается.
 - **Файлы маршрутов тонкие.** Разметка и логика — в `features/`.

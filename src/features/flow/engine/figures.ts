@@ -87,7 +87,7 @@ export function setupCompare(root: HTMLElement, signal: AbortSignal) {
     for (const button of all("button[data-cut]", figure)) {
       button.setAttribute("aria-pressed", String(value >= 50 === (button.dataset.cut === "100")));
     }
-    const frames = all(".device .frame", figure);
+    const frames = all(".device .app-frame", figure);
     if (matchMedia(NARROW).matches || row.offsetWidth === 0) {
       for (const frame of frames) frame.style.setProperty("--cx", value >= 50 ? "100%" : "0%");
       return;

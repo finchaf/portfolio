@@ -214,24 +214,24 @@
   text-align: left;
 }
 
-.map-tile .frame {
+.map-tile .app-frame {
   border-radius: 0.625rem;
   outline: 2px solid transparent;
   outline-offset: 2px;
   transition: outline-color var(--duration-quick) var(--ease-out);
 }
 
-.map-tile[aria-pressed="true"] .frame,
-.map-tile:focus-visible .frame {
+.map-tile[aria-pressed="true"] .app-frame,
+.map-tile:focus-visible .app-frame {
   outline-color: var(--accent-strong);
 }
 
 @media (hover: hover) {
-  .map-tile:hover .frame {
+  .map-tile:hover .app-frame {
     outline-color: color-mix(in srgb, var(--accent-strong) 50%, transparent);
   }
 
-  .map-tile[aria-pressed="true"]:hover .frame {
+  .map-tile[aria-pressed="true"]:hover .app-frame {
     outline-color: var(--accent-strong);
   }
 }
@@ -270,7 +270,7 @@
   position: relative;
 }
 
-.map-phone .frame {
+.map-phone .app-frame {
   box-shadow:
     0 0 0 2px var(--page),
     0 14px 34px -16px light-dark(color-mix(in srgb, var(--ink) 40%, transparent), transparent);
@@ -325,7 +325,7 @@
   gap: 0.625rem;
 }
 
-.map-file-icons .appicon {
+.map-file-icons .app-icon {
   width: 100%;
 }
 
@@ -335,11 +335,11 @@
   align-items: center;
 }
 
-.map-ladder .demo {
+.map-ladder .app-demo {
   width: min(100%, 15rem);
 }
 
-.map-ladder .d-phone {
+.map-ladder .app-demo-phone {
   height: 17rem;
 }
 

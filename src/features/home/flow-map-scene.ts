@@ -716,7 +716,7 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
     const at = room * share;
     for (const phone of phones) {
       if (phone.offsetWidth === 0) continue;
-      const frame = phone.querySelector<HTMLElement>(".frame");
+      const frame = phone.querySelector<HTMLElement>(".app-frame");
       frame?.style.setProperty(
         "--cx",
         `${css(clamp(at - phone.offsetLeft, 0, phone.offsetWidth))}px`,
@@ -1021,7 +1021,7 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
     window.removeEventListener("wheel", onWheel);
     window.removeEventListener("keydown", onKey);
     for (const element of chapter.querySelectorAll<HTMLElement>("[style]")) {
-      if (element !== stage && !element.closest(".frame")) element.removeAttribute("style");
+      if (element !== stage && !element.closest(".app-frame")) element.removeAttribute("style");
     }
     // What the scene wrote besides its styles goes back to the HTML's own, for a plain section
     // that reduced motion may bring on a page already open: the real figures, the whole history of
@@ -1033,7 +1033,7 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
       item.removeAttribute("data-past");
     }
     for (const phone of phones) {
-      const screen = phone.querySelector<HTMLElement>(".frame");
+      const screen = phone.querySelector<HTMLElement>(".app-frame");
       screen?.style.removeProperty("--cx");
       if (screen?.getAttribute("style") === "") screen.removeAttribute("style");
     }
