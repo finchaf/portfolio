@@ -319,27 +319,17 @@ function SectionDemo({ id }: { id: SectionId }) {
 /** The page of this site. Its words are in `messages/<locale>/portfolio.json`. */
 export function PortfolioPage() {
   const t = useTranslations("portfolio");
-  const projects = useTranslations("projects");
-  const locale = useLocale();
   return (
     <ProjectShell
-      back={{ href: localizedPath(locale, "/projects"), label: t("back") }}
       brief={BRIEF.map(([label, text]) => ({
         label: t(`brief.${label}`),
         text: t(`brief.${text}`),
       }))}
-      chip={projects("portfolio.chip")}
-      color="pink"
       project="portfolio"
       facts={<ProjectFacts />}
-      labels={{
-        layers: t("layers"),
-        properties: t("properties"),
-        refs: t("open"),
-        section: (name) => t("section", { name }),
-      }}
       lead={t("lead")}
       links={<SubLinks />}
+      refsLabel={t("open")}
       sections={SECTIONS.map(({ id, paragraphs, refs }) => ({
         id,
         name: t(`sections.${id}.name`),
@@ -350,7 +340,6 @@ export function PortfolioPage() {
         demo: <SectionDemo id={id} />,
         refs,
       }))}
-      state={projects("portfolio.state")}
       title={t("title")}
     />
   );

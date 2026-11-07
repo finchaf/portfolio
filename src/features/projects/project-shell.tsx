@@ -1,5 +1,8 @@
+import { useLocale, useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
+import { localizedPath } from "@/i18n/localized-path";
+import { PROJECTS, type ProjectId } from "@/ui/board/board-layout";
 import { World } from "@/ui/world";
 
 import { BackToBoard } from "./back-to-board";
@@ -21,27 +24,27 @@ export interface ShellSection {
 }
 
 interface Props {
-  /** The project's id on the board, which the way back opens. */
-  project: string;
-  color: "pink" | "teal";
-  chip: string;
-  state: string;
+  /**
+   * The project's id on the board, which the way back opens. It gives the colour, the chip and the
+   * state, as the board shows them, and names the page's own messages: the way back, the panels.
+   */
+  project: ProjectId;
   title: string;
   lead: string;
   brief: readonly { label: string; text: ReactNode }[];
   /** The project's numbers and properties: in the right panel, and under the head on a phone. */
   facts: ReactNode;
   links: ReactNode;
-  back: { href: string; label: string };
-  labels: {
-    layers: string;
-    properties: string;
-    /** The heading over a section's files. */
-    refs: string;
-    /** The panel's heading over the files of the section in view. */
-    section: (name: string) => string;
-  };
+  /** The heading over a section's files, which each project words its own way. */
+  refsLabel: string;
   sections: readonly ShellSection[];
+}
+
+/** The colour of a project on the board, which its page keeps. */
+function colorOf(project: ProjectId) {
+  const found = PROJECTS.find(({ id }) => id === project);
+  if (!found) throw new Error(`No project ${project} on the board`);
+  return found.color;
 }
 
 function Refs({ refs }: { refs: readonly Ref[] }) {
@@ -65,23 +68,29 @@ function Refs({ refs }: { refs: readonly Ref[] }) {
  */
 export function ProjectShell({
   project,
-  color,
-  chip,
-  state,
   title,
   lead,
   brief,
   facts,
   links,
-  back,
-  labels,
+  refsLabel,
   sections,
 }: Props) {
+  const t = useTranslations(project);
+  const board = useTranslations("projects");
+  const locale = useLocale();
+  const color = colorOf(project);
+  const chip = board(`${project}.chip`);
+  const labels = { layers: t("layers"), properties: t("properties") };
   return (
     <World name="projects">
       <div className="pj-sub" data-capsule-held="" data-project={project} data-subpage>
         <aside className="pj-panel pj-sub-left">
-          <BackToBoard href={back.href} label={back.label} project={project} />
+          <BackToBoard
+            href={localizedPath(locale, "/projects")}
+            label={t("back")}
+            project={project}
+          />
           <p className="pj-panel-label">{labels.layers}</p>
           <nav aria-label={labels.layers} className="pj-tree">
             <a data-color={color} data-goto="top" href="#top">
@@ -129,7 +138,7 @@ export function ProjectShell({
               <div className="pj-sub-demo">{demo}</div>
               {refs.length > 0 && (
                 <div className="pj-sub-refs">
-                  <p>{labels.refs}</p>
+                  <p>{refsLabel}</p>
                   <Refs refs={refs} />
                 </div>
               )}
@@ -140,7 +149,7 @@ export function ProjectShell({
         <aside aria-label={labels.properties} className="pj-panel pj-sub-right">
           <p className="pj-panel-label">{labels.properties}</p>
           <span className="pj-state" data-color={color}>
-            {state}
+            {board(`${project}.state`)}
           </span>
           {facts}
           {links}
@@ -148,7 +157,7 @@ export function ProjectShell({
             {sections.map(({ id, name, refs }) =>
               refs.length > 0 ? (
                 <div className="pj-ins-frame" data-inspect={id} hidden key={id}>
-                  <p className="pj-panel-label">{labels.section(name)}</p>
+                  <p className="pj-panel-label">{t("section", { name })}</p>
                   <Refs refs={refs} />
                 </div>
               ) : null,

@@ -3,10 +3,9 @@ import "./projects.css";
 import "./portfolio.css";
 import "./latex.css";
 
-import { useFormatter, useLocale, useTranslations } from "next-intl";
+import { useFormatter, useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
-import { localizedPath } from "@/i18n/localized-path";
 import { ButtonLink } from "@/ui/button-link";
 
 import { DemoPages } from "./demo-pages";
@@ -361,20 +360,10 @@ const BRIEF = ["what", "how", "open"] as const;
 export function LatexPage() {
   const t = useTranslations("latex");
   const projects = useTranslations("projects");
-  const locale = useLocale();
   return (
     <ProjectShell
-      back={{ href: localizedPath(locale, "/projects"), label: t("back") }}
       brief={BRIEF.map((key) => ({ label: t(`brief.${key}`), text: t(`brief.${key}Text`) }))}
-      chip={projects("latex.chip")}
-      color="teal"
       facts={<LatexFacts />}
-      labels={{
-        layers: t("layers"),
-        properties: t("properties"),
-        refs: t("open"),
-        section: (name) => t("section", { name }),
-      }}
       lead={t("lead")}
       links={
         <p className="pj-panel-links">
@@ -387,6 +376,7 @@ export function LatexPage() {
         </p>
       }
       project="latex"
+      refsLabel={t("open")}
       sections={SECTIONS.map(({ id, paragraphs, refs }) => ({
         id,
         name: t(`sections.${id}.name`),
@@ -397,7 +387,6 @@ export function LatexPage() {
         demo: <SectionDemo id={id} />,
         refs,
       }))}
-      state={projects("latex.state")}
       title={t("title")}
     />
   );
