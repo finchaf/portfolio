@@ -1,5 +1,4 @@
 import { useTranslations } from "next-intl";
-import type { CSSProperties } from "react";
 
 /** The six looks of the made-up app, in src/themes/flow-looks.css, and the one its tool recommended. */
 export const APP_LOOKS = ["a", "b", "c", "d", "e", "f"] as const;
@@ -21,9 +20,8 @@ function Wire({
   height?: number;
   label?: string;
 }) {
-  const style = { "--t": top, "--l": left, "--w": width, "--ht": height } as CSSProperties;
   return (
-    <div className={shape} style={style}>
+    <div className={shape} style={{ "--t": top, "--l": left, "--w": width, "--ht": height }}>
       {label ? <span>{label}</span> : null}
     </div>
   );
