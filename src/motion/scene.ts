@@ -77,8 +77,8 @@ export function undo(made: gsap.Context | gsap.MatchMedia) {
   }
 }
 
-/** Whether a view transition of the page is on the screen now. */
-function changing() {
+/** The animations of the page's view transition now on the screen, if any. */
+function pageChangeAnimations() {
   return document
     .getAnimations()
     .filter((animation) =>
@@ -97,7 +97,7 @@ function afterPageChange(start: () => void) {
   let frame = 0;
   const look = () => {
     if (cancelled) return;
-    const playing = changing();
+    const playing = pageChangeAnimations();
     if (playing.length > 0) {
       void Promise.allSettled(playing.map(({ finished }) => finished)).then(() => {
         if (!cancelled) start();
