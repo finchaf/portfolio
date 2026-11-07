@@ -374,10 +374,6 @@
 }
 
 @media (min-width: 64rem) {
-  .hero-twin > .hero-source {
-    right: auto;
-  }
-
   .hero-near {
     top: 50%;
     right: calc(100% + 1rem);
@@ -419,8 +415,7 @@
 }
 
 /* In the code layer a control is its hatching alone. */
-.hero-code .hero-tools,
-.hero-code .segmented {
+.hero-code .hero-tools {
   background: none;
   box-shadow: none;
 }
@@ -1335,7 +1330,6 @@
         transition:
           opacity var(--duration-base) var(--ease-out),
           transform var(--duration-slow) var(--ease-out);
-        transition-delay: calc(var(--i) * 7ms);
       }
 
       .story-chart:not([data-seen]) .story-bar i {
@@ -1502,8 +1496,6 @@
       }
 
       .story-collage {
-        position: relative;
-        display: block;
         flex: none;
         width: calc(var(--u) * 73);
         height: calc(var(--u) * 38);
@@ -1512,11 +1504,9 @@
       }
 
       .story-scrap {
-        position: absolute;
         top: calc(var(--u) * var(--top));
         left: calc(var(--u) * var(--left));
         width: calc(var(--u) * var(--size));
-        margin: 0;
         rotate: none;
         will-change: transform;
       }
@@ -1690,10 +1680,6 @@
         stroke-width: 2;
       }
 
-      .story-node-lit {
-        stroke: var(--accent);
-      }
-
       .story-branch-list {
         position: static;
         display: block;
@@ -1799,7 +1785,6 @@
       .story-score {
         flex: 1 1 0;
         align-self: stretch;
-        height: auto;
         margin-block: calc(var(--u) * -1.5);
         aspect-ratio: auto;
         touch-action: pan-y pinch-zoom;
