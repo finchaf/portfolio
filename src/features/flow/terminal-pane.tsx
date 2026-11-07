@@ -43,8 +43,16 @@ export function TerminalPane() {
           <ChevronDown aria-hidden size={16} />
         </button>
       </div>
-      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- the log scrolls: a key must reach it. */}
-      <div aria-label={t("label")} className="term-log" id="term-log" role="log" tabIndex={0} />
+      {/* The run plays by itself, so its log keeps quiet until the reader takes the terminal. */}
+      <div
+        aria-label={t("label")}
+        aria-live="off"
+        className="term-log"
+        id="term-log"
+        role="log"
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- the log scrolls: a key must reach it.
+        tabIndex={0}
+      />
       <div className="term-foot">
         <div className="term-chips" id="term-chips" />
         <form className="term-line" id="term-form">

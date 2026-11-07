@@ -286,6 +286,8 @@ export function makeTerminal(host: TerminalHost) {
       text.classList.remove("typing");
       return;
     }
+    // A reader hears the command once it is typed, not a letter at a time.
+    node.setAttribute("aria-hidden", "true");
     for (const letter of command) {
       text.textContent += letter;
       await sleep(34);
@@ -295,6 +297,7 @@ export function makeTerminal(host: TerminalHost) {
       }
     }
     text.classList.remove("typing");
+    node.removeAttribute("aria-hidden");
     await sleep(240);
   }
 
@@ -556,7 +559,13 @@ export function makeTerminal(host: TerminalHost) {
   const history: string[] = [];
   let historyAt = 0;
 
+  /** The reader has taken the terminal: from now on its log is read out as it grows. */
+  function listen() {
+    log.setAttribute("aria-live", "polite");
+  }
+
   function command(raw: string) {
+    listen();
     const value = raw.trim();
     const low = value.toLowerCase();
     const parts = low.split(/\s+/);
@@ -792,6 +801,7 @@ export function makeTerminal(host: TerminalHost) {
     openPane,
     command,
     togglePause() {
+      listen();
       if (state.auto) pause();
       else resume();
     },
