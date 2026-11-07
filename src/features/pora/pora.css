@@ -1409,8 +1409,11 @@ a.pora-window-row:focus-visible {
   opacity: 1;
 }
 
-.pora-window-picture:active {
-  scale: 0.98;
+/* A press gives way, as the card's does, only where motion is welcome. */
+@media (prefers-reduced-motion: no-preference) {
+  .pora-window-picture:active {
+    scale: 0.98;
+  }
 }
 
 .pora-window-figure figcaption {
