@@ -121,12 +121,30 @@ interface SavedRun {
   lane: number;
 }
 
-function readSaved(): SavedRun | null {
+/**
+ * A run kept by this tab, or null. The value outlives a release: one of an older shape, or one
+ * edited by hand, starts the run over rather than stopping the page.
+ */
+export function parseSaved(raw: string | null): SavedRun | null {
+  let value: unknown;
   try {
-    return JSON.parse(session.get(RUN_KEY) ?? "null") as SavedRun | null;
+    value = JSON.parse(raw ?? "null");
   } catch {
     return null;
   }
+  if (typeof value !== "object" || value === null) return null;
+  const run = value as Record<string, unknown>;
+  const fits =
+    Number.isInteger(run.i) &&
+    Number.isInteger(run.lane) &&
+    typeof run.style === "string" &&
+    Object.hasOwn(STYLE_NAMES, run.style) &&
+    Array.isArray(run.made) &&
+    run.made.every((id) => typeof id === "string") &&
+    typeof run.stage === "string" &&
+    typeof run.phase === "string" &&
+    typeof run.finished === "boolean";
+  return fits ? (run as unknown as SavedRun) : null;
 }
 
 export interface TerminalHost {
@@ -716,7 +734,7 @@ export function makeTerminal(host: TerminalHost) {
   );
 
   function start() {
-    const saved = readSaved();
+    const saved = parseSaved(session.get(RUN_KEY));
     for (const node of all("[data-run-status]", root)) node.textContent = t.notStarted;
     setNow(escape(t.notStarted));
     setChips(baseChips());

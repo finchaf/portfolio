@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { CATALOG } from "@/i18n/catalog";
 import { LOCALES } from "@/i18n/locales";
 
-import { CLOSING, completion, RUN, STAGE_TWO, stepKey } from "./terminal";
+import { CLOSING, completion, parseSaved, RUN, STAGE_TWO, stepKey } from "./terminal";
 
 describe("the run of the terminal", () => {
   const steps = RUN.flatMap((step) => ("s" in step ? [step.s] : []));
@@ -47,5 +47,37 @@ describe("the completion of a command", () => {
     ["Help", ""],
   ])("finishes %j as %j", (value, hit) => {
     expect(completion(value, notes)).toBe(hit);
+  });
+});
+
+describe("the run a tab kept", () => {
+  const run = {
+    i: 5,
+    style: "c",
+    made: ["state", "brief"],
+    stage: "stage1",
+    phase: "s1.board",
+    finished: false,
+    lane: 2,
+  };
+
+  it("comes back as it was kept", () => {
+    expect(parseSaved(JSON.stringify(run))).toEqual(run);
+  });
+
+  it.each([
+    ["nothing", null],
+    ["broken JSON", "{"],
+    ["a bare value", "5"],
+    ["no notes made", JSON.stringify({ ...run, made: undefined })],
+    ["a note that is no name", JSON.stringify({ ...run, made: ["state", 3] })],
+    ["a step between steps", JSON.stringify({ ...run, i: 1.5 })],
+    ["a step as text", JSON.stringify({ ...run, i: "5" })],
+    ["a look the board has not", JSON.stringify({ ...run, style: "z" })],
+    ["a name every object has", JSON.stringify({ ...run, style: "toString" })],
+    ["no lane", JSON.stringify({ ...run, lane: undefined })],
+    ["a finish as text", JSON.stringify({ ...run, finished: "false" })],
+  ])("is dropped with %s", (_, raw) => {
+    expect(parseSaved(raw)).toBeNull();
   });
 });
