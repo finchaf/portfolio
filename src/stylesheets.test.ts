@@ -429,12 +429,6 @@ describe("the colours", () => {
   );
 });
 
-/** Selectors that set a property again in the same block on 07.11.2026. The list only shrinks. */
-const OVERRIDDEN: Record<string, string[]> = {
-  // Three blocks resized right below themselves.
-  "ui/app-screens.css": [".ben", ".memo", ".scr-cta"],
-};
-
 describe("the rules", () => {
   // A selector may come back further down, a section of its own; but a property it sets twice in the
   // same block keeps only the last value, and the first is dead: the copy of a block, most often.
@@ -448,6 +442,6 @@ describe("the rules", () => {
       for (const { property } of declarations) before.add(property);
       seen.set(key, before);
     }
-    expect(unique(twice)).toEqual(OVERRIDDEN[path] ?? []);
+    expect(unique(twice)).toEqual([]);
   });
 });
