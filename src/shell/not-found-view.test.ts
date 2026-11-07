@@ -22,6 +22,7 @@ describe("the language of the 404", () => {
     ["/en", "ru", "en"],
     ["/ru/nowhere", "en-US", "ru"],
     ["/ru", "de", "ru"],
+    ["/en/", "ru", "en"],
   ])("is the one %s asks for, whatever the browser's %s", (pathname, language, lang) => {
     expect(runLostScript(pathname, language)).toBe(lang);
   });
@@ -35,5 +36,13 @@ describe("the language of the 404", () => {
     ["rus", "en"],
   ])("of an address without one follows a browser in %s", (language, lang) => {
     expect(runLostScript("/nowhere", language)).toBe(lang);
+  });
+
+  it.each([
+    ["/enter", "ru"],
+    ["/english/nowhere", "ru"],
+    ["/russia", "en-US"],
+  ])("is not asked for by %s, which only starts like a language", (pathname, language) => {
+    expect(runLostScript(pathname, language)).toBe(language.slice(0, 2));
   });
 });

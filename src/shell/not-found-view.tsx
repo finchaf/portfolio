@@ -66,6 +66,9 @@ export function NotFoundView() {
 
 /**
  * Keeps one language of the 404 before it paints: the one the address asks for, or else the
- * reader's. Without a script both stay, one under the other.
+ * reader's. Without a script both stay, one under the other. The address names a language only as
+ * its whole first segment, so `/enter` is no English. Built from LOCALES, as the theme script is.
  */
-export const LOST_SCRIPT = `(()=>{const p=location.pathname,r=document.documentElement;const l=p.startsWith("/en")?"en":p.startsWith("/ru")?"ru":/^ru\\b/i.test(navigator.language)?"ru":"en";r.lang=l;r.dataset.lost=l})()`;
+export const LOST_SCRIPT = `(()=>{const p=location.pathname,r=document.documentElement;const m=/^\\/(${LOCALES.join(
+  "|",
+)})(\\/|$)/.exec(p);const l=m?m[1]:/^ru\\b/i.test(navigator.language)?"ru":"en";r.lang=l;r.dataset.lost=l})()`;
