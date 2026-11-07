@@ -31,6 +31,10 @@ import {
 
 const CLIENTS = ["ios", "android", "web"] as const;
 
+/** The tallest bar of each chart: the launch's best day, the clients' busiest month. */
+const DOWNLOADS_PEAK = Math.max(...LAUNCH_DOWNLOADS);
+const COMMITS_PEAK = Math.max(...CLIENTS.flatMap((client) => CLIENT_COMMITS[client]));
+
 /**
  * The lessons' window, made a chapter of the case: the product's «Окно пары» (apps/schedule,
  * lesson-dialog.tsx), its sizes times 1.25, and wider, as a chapter is read and not glanced at.
@@ -91,34 +95,28 @@ function LessonPage({
   const [start, end] = SLOTS[lesson.slot] ?? SLOTS[0];
   const day = DAYS[lesson.day] ?? DAYS[0];
   const id = `${WINDOW_ID}-${lesson.id}`;
-  const peak = Math.max(...LAUNCH_DOWNLOADS);
-  const commitPeak = Math.max(
-    ...CLIENT_COMMITS.ios,
-    ...CLIENT_COMMITS.android,
-    ...CLIENT_COMMITS.web,
-  );
 
   /** The launch by day: the bars in the lesson's colour, the peak named. */
-  const downloads = (key: string) => (
+  const downloads = (root: string) => (
     <figure className="pora-window-chart">
       <figcaption>
-        <b>{text(`${key}.title`)}</b>
-        <span>{text(`${key}.source`)}</span>
-        <span className="pora-sr">{text(`${key}.summary`)}</span>
+        <b>{text(`${root}.title`)}</b>
+        <span>{text(`${root}.source`)}</span>
+        <span className="pora-sr">{text(`${root}.summary`)}</span>
       </figcaption>
       <div aria-hidden className="pora-window-bars">
         {LAUNCH_DOWNLOADS.map((count, index) => (
           <i
-            data-peak={count === peak ? "" : undefined}
+            data-peak={count === DOWNLOADS_PEAK ? "" : undefined}
             data-value={count}
             key={index}
-            style={{ "--share": count / peak }}
+            style={{ "--share": count / DOWNLOADS_PEAK }}
           />
         ))}
       </div>
       <p aria-hidden className="pora-window-axis">
-        <span>{text(`${key}.from`)}</span>
-        <span>{text(`${key}.to`)}</span>
+        <span>{text(`${root}.from`)}</span>
+        <span>{text(`${root}.to`)}</span>
       </p>
     </figure>
   );
@@ -207,7 +205,7 @@ function LessonPage({
                           data-client={client}
                           data-value={count > 0 ? count : undefined}
                           key={client}
-                          style={{ "--share": count / commitPeak }}
+                          style={{ "--share": count / COMMITS_PEAK }}
                         />
                       );
                     })}
