@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from "react";
 
+import { isCalm } from "@/motion/reduced";
+
 /** How long a letter takes to appear, in milliseconds: an even, unhurried hand. */
 const LETTER_MS = 48;
 
@@ -16,7 +18,7 @@ export function ChatDraft({ text }: { text: string }) {
 
   useEffect(() => {
     const node = typed.current;
-    if (!node || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!node || isCalm()) return;
     let timer: ReturnType<typeof setInterval> | undefined;
     node.textContent = "";
     const seen = new IntersectionObserver(

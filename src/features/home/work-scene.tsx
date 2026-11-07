@@ -2,7 +2,8 @@
 
 import { useRef, type ReactNode } from "react";
 
-import { gsap, MOTION_ALLOWED, ScrollTrigger } from "@/motion/gsap";
+import { gsap, ScrollTrigger } from "@/motion/gsap";
+import { MOTION_ALLOWED, NARROW, WIDE } from "@/motion/reduced";
 import { useScene } from "@/motion/scene";
 import { SCENE } from "@/motion/tokens";
 
@@ -16,8 +17,8 @@ const SHEET = { radius: "2rem", sunk: 0.93, dimmed: 0.55, lastStretch: 0.06 };
 
 /** Both, so that a window or a tablet crossing the line builds the scene again. */
 const WIDTHS = {
-  wide: `${MOTION_ALLOWED} and (min-width: 64rem)`,
-  narrow: `${MOTION_ALLOWED} and (width < 64rem)`,
+  wide: `${MOTION_ALLOWED} and ${WIDE}`,
+  narrow: `${MOTION_ALLOWED} and ${NARROW}`,
 };
 
 /** How much of the move between two stops the old stop takes to leave. */

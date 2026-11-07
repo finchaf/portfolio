@@ -3,7 +3,8 @@
 import { useRef, type ReactNode } from "react";
 
 import { driftLines } from "@/motion/drift-lines";
-import { gsap, MOTION_ALLOWED, ScrollTrigger } from "@/motion/gsap";
+import { gsap, ScrollTrigger } from "@/motion/gsap";
+import { MOTION_ALLOWED, NARROW, WIDE } from "@/motion/reduced";
 import { useScene } from "@/motion/scene";
 import { DURATION, SCENE } from "@/motion/tokens";
 
@@ -12,8 +13,9 @@ import { FORK_HOLD, RIBBON_HOLD } from "./story-data";
 import { createRuler } from "./story-ruler";
 import { createScore } from "./story-score";
 
-const WIDE = `${MOTION_ALLOWED} and (min-width: 64rem)`;
-const NARROW = `${MOTION_ALLOWED} and (width < 64rem)`;
+/** A wide screen runs the story as a ribbon, a narrower one as a column. */
+const RIBBON = `${MOTION_ALLOWED} and ${WIDE}`;
+const COLUMN = `${MOTION_ALLOWED} and ${NARROW}`;
 
 /** How fast the ruler slides, as a share of the ribbon. */
 const RULER_PACE = 0.35;
@@ -705,11 +707,11 @@ export function StoryScene({ children }: { children: ReactNode }) {
       };
     };
     motion.add(
-      WIDE,
+      RIBBON,
       live(() => runRibbon(section, track, mark)),
     );
     motion.add(
-      NARROW,
+      COLUMN,
       live(() => runColumn(section, mark)),
     );
   }, scope);
