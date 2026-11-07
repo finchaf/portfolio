@@ -96,11 +96,11 @@
   background: light-dark(var(--page), var(--ink));
 }
 
-.write-code-module {
+.write-code .link-code-module {
   fill: light-dark(var(--ink), var(--page));
 }
 
-.write-code-mark {
+.write-code .link-code-mark {
   fill: light-dark(var(--accent-strong), color-mix(in srgb, var(--accent-strong) 50%, var(--page)));
 }
 

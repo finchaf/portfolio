@@ -110,7 +110,7 @@ describe("the shadows", () => {
 const SHEETS: Record<string, { own: string[]; dresses?: string[] }> = {
   "app/globals.css": { own: [] },
   "features/flow/flow.css": { own: [] },
-  "features/home/after-work.css": { own: ["exp", "talk"], dresses: ["write"] },
+  "features/home/after-work.css": { own: ["exp", "talk"], dresses: ["link-code"] },
   "features/home/flow-map.css": { own: ["map"], dresses: ["chapter", "stop"] },
   "features/home/scenes.css": {
     own: ["hero", "story", "chapter", "stop"],
@@ -128,7 +128,7 @@ const SHEETS: Record<string, { own: string[]; dresses?: string[] }> = {
   "shell/footer.css": { own: ["footer"] },
   "shell/not-found.css": { own: ["lost"] },
   "shell/page-change.css": { own: ["world"], dresses: ["dot"] },
-  "shell/write.css": { own: ["write"] },
+  "shell/write.css": { own: ["write"], dresses: ["link-code"] },
   "themes/flow-looks.css": { own: [] },
   "themes/flow.css": { own: [] },
   "themes/home.css": { own: [] },

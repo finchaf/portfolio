@@ -21,6 +21,7 @@ function finder(x: number, y: number) {
  * An address as a code a phone reads, drawn during the build, so the page carries a picture and no
  * library. The finders are rounded a little; `mark` puts the logo's slash in the middle, which the
  * highest error correction absorbs. Without it the code keeps fewer modules and reads from further.
+ * It has no look of its own: its place colours `link-code-module` and `link-code-mark`.
  */
 export function LinkCode({
   url,
@@ -56,15 +57,15 @@ export function LinkCode({
       role="img"
       viewBox={`${String(-QUIET)} ${String(-QUIET)} ${String(size + 2 * QUIET)} ${String(size + 2 * QUIET)}`}
     >
-      <path className="write-code-module" d={modules} />
+      <path className="link-code-module" d={modules} />
       <path
-        className="write-code-mark"
+        className="link-code-mark"
         d={[finder(0, 0), finder(size - 7, 0), finder(0, size - 7)].join("")}
         fillRule="evenodd"
       />
       {mark && (
         <path
-          className="write-code-mark"
+          className="link-code-mark"
           d={SLASH_PATH}
           transform={`translate(${String(left)} ${String(start + 1)}) scale(${String(scale)})`}
         />

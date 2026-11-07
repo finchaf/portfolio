@@ -20,7 +20,7 @@ export function WriteMenu() {
         <h2 className="write-tag">{t("footer.telegram")}</h2>
         <p className="write-value font-display">{TELEGRAM_HANDLE}</p>
         <div className="write-scan">
-          <TelegramCode label={t("contact.code")} />
+          <TelegramCode className="write-code" label={t("contact.code")} />
           <p>{t("contact.scan")}</p>
         </div>
         <ButtonLink href={TELEGRAM_URL} rel="noreferrer" size="small" target="_blank">

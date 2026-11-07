@@ -4,11 +4,11 @@ import { LinkCode } from "@/ui/link-code";
 /** The way to the chat as a code a phone reads, with the logo's slash in its middle. */
 export function TelegramCode({
   label,
-  className = "write-code",
+  className,
 }: {
   label: string;
-  /** Where it stands: the sheet's look by default. */
-  className?: string;
+  /** Its look where it stands. */
+  className: string;
 }) {
   return <LinkCode className={className} label={label} url={TELEGRAM_URL} />;
 }

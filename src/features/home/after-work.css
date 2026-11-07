@@ -554,12 +554,12 @@
   background: light-dark(var(--page), var(--ink));
 }
 
-.talk-code .write-code-module,
-.talk-code .write-code-mark {
+.talk-code .link-code-module,
+.talk-code .link-code-mark {
   fill: light-dark(var(--ink), var(--page));
 }
 
-.talk-code .write-code-mark:last-child {
+.talk-code .link-code-mark:last-child {
   fill: var(--accent-strong);
 }
 
