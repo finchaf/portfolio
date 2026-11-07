@@ -26,6 +26,19 @@ describe("the vault's Markdown", () => {
     expect(note.body).toBe("Текст.\n");
   });
 
+  it("skips a front-matter line that is no property", () => {
+    const note = parseNote("---\ntitle: brief\ntags\nзадача: 000\n---\n\nТекст.\n");
+    expect(note.title).toBe("brief");
+    expect(note.properties).toEqual([{ key: "задача", value: "000" }]);
+  });
+
+  it("keeps a paragraph that starts with a tag a paragraph", () => {
+    expect(parseBlocks("#repeat раз\nдва\n\n## Этап\n")).toEqual([
+      { kind: "paragraph", text: "#repeat раз два" },
+      { kind: "heading", level: 2, text: "Этап", scene: undefined },
+    ]);
+  });
+
   it("reads a heading's scene, a table's numeric column and a callout", () => {
     const blocks = parseBlocks(
       "## Этап ^scene-2\n\n| Тема | Правил |\n| --- | ---: |\n| Иконка | 6 |\n\n> [!info] Важно\n> Текст\n",

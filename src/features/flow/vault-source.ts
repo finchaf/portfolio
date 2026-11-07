@@ -24,10 +24,14 @@ const FRONT_MATTER = /^---\n([\s\S]*?)\n---\n+/;
 /** Splits a note's file into its front matter and its Markdown. */
 export function parseNote(raw: string): NoteSource {
   const match = FRONT_MATTER.exec(raw);
-  const fields = (match?.[1] ?? "").split("\n").map((line) => {
-    const at = line.indexOf(": ");
-    return { key: line.slice(0, at), value: line.slice(at + 2) };
-  });
+  // A line with no `key: value` in it is no property: cut at -1, it would lose a letter.
+  const fields = (match?.[1] ?? "")
+    .split("\n")
+    .filter((line) => line.includes(": "))
+    .map((line) => {
+      const at = line.indexOf(": ");
+      return { key: line.slice(0, at), value: line.slice(at + 2) };
+    });
   const field = (key: string) => fields.find((item) => item.key === key)?.value ?? "";
   return {
     title: field("title"),

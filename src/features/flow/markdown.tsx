@@ -76,8 +76,11 @@ const cells = (line: string) =>
     .split(/(?<!\\)\|/)
     .map((cell) => cell.trim().replaceAll("\\|", "|"));
 
+/** A heading, as the block parser takes one: a `#tag` at the start of a line stays in its paragraph. */
+const HEADING = /^#{1,6} /;
+
 function isBlockStart(line: string) {
-  return /^(#{2,3} |- |\d+\. |\||```|> |!\[\[)/.test(line);
+  return HEADING.test(line) || /^(- |\d+\. |\||```|> |!\[\[)/.test(line);
 }
 
 /** Lines into blocks. */
@@ -94,7 +97,7 @@ export function parseBlocks(source: string): Block[] {
     const line = lines[index] ?? "";
     if (line.trim() === "") {
       index += 1;
-    } else if (line.startsWith("#")) {
+    } else if (HEADING.test(line)) {
       index += 1;
       const [, marks = "", text = "", scene] = /^(#+) (.*?)(?: \^scene-(\d))?$/.exec(line) ?? [];
       blocks.push({ kind: "heading", level: marks.length, text, scene });
