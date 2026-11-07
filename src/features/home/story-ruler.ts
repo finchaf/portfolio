@@ -1,3 +1,5 @@
+import { fitCanvas } from "./story-canvas";
+
 /** Pixels between two ticks. */
 const STEP = 10;
 
@@ -23,8 +25,6 @@ const FULL_HEIGHT = 92;
 /** The share of the ruler's height the needle hangs down, and the size of its head. */
 const NEEDLE = 0.65;
 const HEAD = 7;
-
-const PIXEL_RATIO_LIMIT = 2;
 
 export function tickKind(index: number) {
   if (index % 10 === 0) return MAJOR;
@@ -75,12 +75,7 @@ export function createRuler(
   let markColor = "";
 
   const measure = () => {
-    const ratio = Math.min(window.devicePixelRatio, PIXEL_RATIO_LIMIT);
-    width = canvas.clientWidth;
-    height = canvas.clientHeight;
-    canvas.width = Math.round(width * ratio);
-    canvas.height = Math.round(height * ratio);
-    pen.setTransform(ratio, 0, 0, ratio, 0, 0);
+    ({ width, height } = fitCanvas(canvas, pen));
     needle = marks.offsetLeft;
     plain = toneOf(canvas);
     tones = bands.map((band) => ({ band, tone: toneOf(band) }));

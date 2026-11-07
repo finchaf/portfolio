@@ -1,3 +1,4 @@
+import { fitCanvas } from "./story-canvas";
 import { SCORE_DAYS, SCORE_MARKED, SCORE_ROWS } from "./story-data";
 
 /** Lessons a day can hold on a row. */
@@ -190,12 +191,7 @@ export function createScore(canvas: HTMLCanvasElement, days: HTMLElement[]): Sco
   };
 
   const measure = () => {
-    const ratio = Math.min(window.devicePixelRatio, 2);
-    width = canvas.clientWidth;
-    height = canvas.clientHeight;
-    canvas.width = Math.round(width * ratio);
-    canvas.height = Math.round(height * ratio);
-    pen.setTransform(ratio, 0, 0, ratio, 0, 0);
+    ({ width, height } = fitCanvas(canvas, pen));
     const style = getComputedStyle(canvas);
     ink = style.color;
     accent = style.outlineColor;
