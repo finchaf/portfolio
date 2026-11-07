@@ -1788,7 +1788,6 @@ a.pora-window-row:focus-visible {
 
 .pora-install-go {
   display: inline-flex;
-  flex: none;
   align-items: center;
   gap: 0.46875rem;
   height: 2.5rem;
