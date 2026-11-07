@@ -188,7 +188,16 @@ function drawBranches(section: HTMLElement, scrollTrigger: ScrollTrigger.Vars) {
   const circle = (name: string) => graph.querySelector(`[data-node="${name}"]`);
   const label = (name: string) => section.querySelector<HTMLElement>(`[data-branch="${name}"]`);
 
-  let lines: { path: SVGPathElement; length: number; from: number; line: Line }[] = [];
+  // The words and the two lights of each line are found once, on a layout, not on every frame.
+  let lines: {
+    path: SVGPathElement;
+    length: number;
+    from: number;
+    line: Line;
+    words: HTMLElement | null;
+    fork: Element | null;
+    tip: Element | null;
+  }[] = [];
   let reach = 1;
   const pen = { done: 0 };
 
@@ -198,18 +207,17 @@ function drawBranches(section: HTMLElement, scrollTrigger: ScrollTrigger.Vars) {
   };
   const draw = () => {
     const at = pen.done * reach;
-    lines.forEach(({ path, length, from, line }) => {
+    lines.forEach(({ path, length, from, line, words, fork, tip }) => {
       const drawn = gsap.utils.clamp(0, length, at - from);
       path.style.strokeDashoffset = String(length - drawn);
       if (line === "trunk") return;
       const near = gsap.utils.clamp(0, 1, (drawn / length - LABEL_ARRIVES) / (1 - LABEL_ARRIVES));
-      const words = label(line);
       if (words) {
         words.style.opacity = String(near);
         words.style.transform = `translateY(${String((1 - near) * LABEL_RISE)}px)`;
       }
-      show(circle(`fork-${line}`), drawn > 0);
-      show(circle(`tip-${line}`), drawn >= length);
+      show(fork, drawn > 0);
+      show(tip, drawn >= length);
     });
   };
   const layout = () => {
@@ -221,7 +229,17 @@ function drawBranches(section: HTMLElement, scrollTrigger: ScrollTrigger.Vars) {
       graph.querySelector(`[data-shape="${line}"]`)?.setAttribute("d", d);
       const length = path.getTotalLength();
       path.style.strokeDasharray = `${String(length)} ${String(length + 2)}`;
-      return [{ path, length, from, line }];
+      return [
+        {
+          path,
+          length,
+          from,
+          line,
+          words: label(line),
+          fork: circle(`fork-${line}`),
+          tip: circle(`tip-${line}`),
+        },
+      ];
     });
     reach = Math.max(...lines.map(({ from, length }) => from + length));
     (["open", "masters"] as const).forEach((line) => {
