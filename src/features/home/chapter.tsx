@@ -20,11 +20,12 @@ export interface ChapterProps {
   /** How many screens of stops the chapter holds, when its scene does not step tick by tick. */
   stops?: number;
   /**
-   * The bar in the dress of the product it belongs to: `status` is the status line of tmux and
-   * lualine, `vault` the bottom of Obsidian. Its rail can be pressed, the ways out are the theme's
-   * buttons, `mark` follows the name, and `left` and `right` hold the scene's own modules.
+   * The bar in the dress of the product it belongs to: `paper` is the sidebar paper of Pora na
+   * Paru, `status` the status line of tmux and lualine, `vault` the bottom of Obsidian. Its rail
+   * can be pressed, the ways out are the theme's buttons, `mark` follows the name, and `left` and
+   * `right` hold the scene's own modules.
    */
-  bar?: {
+  bar: {
     skin: "status" | "vault" | "paper";
     mark?: ReactNode;
     left?: ReactNode;
@@ -52,7 +53,6 @@ export function Chapter({
   children,
 }: ChapterProps) {
   const locale = useLocale();
-  const pressable = axis === "x" || bar !== undefined;
   return (
     <article
       aria-label={name}
@@ -60,7 +60,7 @@ export function Chapter({
       data-axis={axis}
       data-chapter={world}
       data-tint={world}
-      data-bar={bar?.skin}
+      data-bar={bar.skin}
       data-tint-fonts
       id={`work-${world}`}
       style={{ "--stops": stops }}
@@ -78,53 +78,30 @@ export function Chapter({
             <ViewTransition default="none" name={`world-${world}`} share="world-name">
               <span className="font-display font-semibold">{name}</span>
             </ViewTransition>
-            {bar?.mark}
+            {bar.mark}
           </p>
-          {bar?.left}
-          <ol aria-hidden={!pressable} className="chapter-rail">
+          {bar.left}
+          <ol className="chapter-rail">
             {ticks.map((tick, position) => (
               <li data-active={position === 0 ? "" : undefined} data-tick key={tick}>
-                {pressable ? (
-                  <button data-go={position} type="button">
-                    {bar?.skin === "status" ? <span aria-hidden>{position + 1}</span> : null}
-                    {tick}
-                  </button>
-                ) : (
-                  tick
-                )}
+                <button data-go={position} type="button">
+                  {bar.skin === "status" ? <span aria-hidden>{position + 1}</span> : null}
+                  {tick}
+                </button>
               </li>
             ))}
           </ol>
-          {bar?.right}
+          {bar.right}
           <p className="chapter-actions">
-            {bar ? (
-              <>
-                <a
-                  className="chapter-next control-button control-quiet control-small"
-                  href={next.href}
-                >
-                  {next.label}
-                </a>
-                <Link
-                  className="control-button control-primary control-small"
-                  href={localizedPath(locale, path)}
-                >
-                  {open}
-                </Link>
-              </>
-            ) : (
-              <>
-                <a className="chapter-next text-sm text-muted" href={next.href}>
-                  {next.label} ↓
-                </a>
-                <Link
-                  className="rounded-full bg-accent-strong px-3.5 py-1.5 text-sm font-medium whitespace-nowrap text-on-accent"
-                  href={localizedPath(locale, path)}
-                >
-                  {open} →
-                </Link>
-              </>
-            )}
+            <a className="chapter-next control-button control-quiet control-small" href={next.href}>
+              {next.label}
+            </a>
+            <Link
+              className="control-button control-primary control-small"
+              href={localizedPath(locale, path)}
+            >
+              {open}
+            </Link>
           </p>
         </div>
       </div>
