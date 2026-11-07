@@ -64,14 +64,10 @@ interface Piece {
   bare: boolean;
 }
 
-interface Line {
-  element: HTMLElement;
-}
-
 interface Stop {
   node: MapNode;
   pieces: Piece[];
-  lines: Line[];
+  lines: HTMLElement[];
   title: HTMLElement | null;
   titleAt: { x: number; y: number; width: number; scale: number };
   /** How much of the title is out of the node's name, this frame. */
@@ -148,7 +144,7 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
   const stops: Stop[] = items.map((item, index) => ({
     node: map.stops[index] as MapNode,
     pieces: [],
-    lines: gsap.utils.toArray<HTMLElement>("[data-map-line]", item).map((element) => ({ element })),
+    lines: gsap.utils.toArray<HTMLElement>("[data-map-line]", item),
     title: item.querySelector("[data-map-title]"),
     titleAt: { x: 0, y: 0, width: 0, scale: 0.2 },
     titled: 0,
@@ -198,7 +194,7 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
       page,
       ink: read("--ink"),
       dot: `rgba(${mark},${dark ? "0.5" : "0.55"})`,
-      closed: `rgba(${mark},${dark ? "0.3" : "0.3"})`,
+      closed: `rgba(${mark},0.3)`,
       hub: `rgba(${mark},${dark ? "0.7" : "0.72"})`,
       line: `rgba(${mark},${dark ? "0.13" : "0.14"})`,
       spine: `rgba(${mark},${dark ? "0.26" : "0.22"})`,
@@ -664,7 +660,7 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
       const leaving = index === stop && move > 0;
       const entering = index === stop + 1 && move > 0;
       const resting = index === stop && move === 0;
-      item.lines.forEach(({ element }, order) => {
+      item.lines.forEach((element, order) => {
         const style = element.style;
         if (resting) {
           style.transform = "none";
@@ -842,9 +838,7 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
     const loop = stop === LAST_STOP ? inOut(between(0.05, 0.75, rest)) : 0;
     if (!map.settled) settleMap(map, gathering > 0 ? 200 : 6);
     runTerminal(x, now);
-    if (pointer.on || hovered) {
-      if (camera) pick(gathering);
-    }
+    if ((pointer.on || hovered) && camera) pick(gathering);
     const nearest = Math.round(x);
     if (nearest !== lastStop) {
       lastStop = nearest;
@@ -886,7 +880,8 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
     if ((event.key !== "ArrowRight" && event.key !== "ArrowLeft") || !inside()) return;
     if (event.altKey || event.ctrlKey || event.metaKey) return;
     event.preventDefault();
-    const here = Math.round(momentAt(scroll.progress).stop + momentAt(scroll.progress).move);
+    const { stop, move } = momentAt(scroll.progress);
+    const here = Math.round(stop + move);
     to(clamp(here + (event.key === "ArrowRight" ? 1 : -1), 0, LAST_STOP), "smooth");
   };
   const onClick = (event: MouseEvent) => {
