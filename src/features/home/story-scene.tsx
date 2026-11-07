@@ -414,10 +414,8 @@ function wakeAhead(
   move: gsap.core.Tween,
   distance: () => number,
 ) {
-  const chapters = gsap.utils.toArray<HTMLElement>(
-    "[data-collage], [data-chapter-of-story]",
-    section,
-  );
+  // A chapter is woken once and leaves the list: what is left is still asleep.
+  let asleep = gsap.utils.toArray<HTMLElement>("[data-collage], [data-chapter-of-story]", section);
   const heading = () => {
     const along = move.scrollTrigger;
     if (!along) return 0;
@@ -425,13 +423,15 @@ function wakeAhead(
     return gsap.utils.clamp(0, 1, share) * distance();
   };
   const wake = () => {
+    if (asleep.length === 0) return;
     const passed = Math.max(-Number(gsap.getProperty(track, "x")), heading());
     const reach = AHEAD * window.innerWidth + passed;
-    chapters.forEach((chapter) => {
-      if (chapter.offsetLeft > reach) return;
+    asleep = asleep.filter((chapter) => {
+      if (chapter.offsetLeft > reach) return true;
       chapter.querySelectorAll("img").forEach((image) => {
         image.loading = "eager";
       });
+      return false;
     });
   };
   ScrollTrigger.create({
