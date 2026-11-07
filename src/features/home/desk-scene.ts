@@ -81,6 +81,8 @@ export function runDesk(
   let shownZoom = "";
   let focusWidth = 1;
   let heights: number[] = [];
+  /** The height of the words' list, read on a measure: only a measure changes it. */
+  let room = 0;
   /** Where the board starts to show under the words on a phone, this frame. */
   let fade = 0;
 
@@ -140,6 +142,7 @@ export function runDesk(
 
   const measure = () => {
     fitWords();
+    room = list?.offsetHeight ?? 0;
     // Offsets, not boxes: the stage may be sliding in or sinking under the next sheet.
     const tallest = Math.max(0, ...heights);
     focusWidth = Math.max(1, focus.offsetWidth);
@@ -197,7 +200,6 @@ export function runDesk(
   const words = ({ stop, move }: DeskMoment) => {
     const phone = heights.length > 0;
     const travel = phone ? 12 : 35;
-    const room = list?.offsetHeight ?? 0;
     copies.forEach((copy, index) => {
       let opacity = index === stop && move === 0 ? 1 : 0;
       let shift = 0;
