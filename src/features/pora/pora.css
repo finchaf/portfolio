@@ -1042,7 +1042,6 @@ button.pora-list-item:focus-visible {
   background: var(--type);
 }
 
-.pora-window-timeline li + li::after,
 .pora-window-timeline li:not(:last-child)::after {
   content: "";
   position: absolute;
@@ -1055,10 +1054,6 @@ button.pora-list-item:focus-visible {
 
 .pora-window-timeline li:last-child {
   padding-bottom: 0;
-}
-
-.pora-window-timeline li:last-child::after {
-  content: none;
 }
 
 .pora-window-row {
