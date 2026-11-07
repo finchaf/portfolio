@@ -66,8 +66,16 @@ export function FlowPage() {
         role="dialog"
       >
         <div className="prompt">
-          <input aria-label={t("flow.ui.search")} id="prompt-input" />
-          <ul id="prompt-list" />
+          <input
+            aria-autocomplete="list"
+            aria-controls="prompt-list"
+            aria-expanded="true"
+            aria-label={t("flow.ui.search")}
+            id="prompt-input"
+            role="combobox"
+          />
+          {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-to-interactive-role -- the input's list of options, as a combobox has it. */}
+          <ul aria-label={t("flow.ui.search")} id="prompt-list" role="listbox" />
           <p className="prompt-hint">{t("flow.ui.searchHint")}</p>
         </div>
       </div>

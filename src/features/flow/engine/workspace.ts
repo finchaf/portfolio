@@ -384,11 +384,23 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
     promptList.textContent = "";
     hits.forEach((hit, index) => {
       const item = element("li");
+      item.id = `prompt-option-${String(index)}`;
+      item.setAttribute("role", "option");
       item.dataset.index = String(index);
-      item.toggleAttribute("data-selected", index === 0);
       item.append(element("b", "", hit.title), element("span", "", hit.hint));
       promptList.append(item);
     });
+    markSelected(all("li", promptList));
+  }
+  /** The arrows' choice, drawn by `data-selected` and read out through the input. */
+  function markSelected(items: HTMLElement[]) {
+    items.forEach((item, index) => {
+      item.toggleAttribute("data-selected", index === selected);
+      item.setAttribute("aria-selected", String(index === selected));
+    });
+    const chosen = items[selected];
+    if (chosen) promptInput.setAttribute("aria-activedescendant", chosen.id);
+    else promptInput.removeAttribute("aria-activedescendant");
   }
   function pick(index: number) {
     const hit = hits[index];
@@ -412,9 +424,7 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
         event.preventDefault();
         const step = event.key === "ArrowDown" ? 1 : -1;
         selected = (selected + step + items.length) % items.length;
-        items.forEach((item, index) => {
-          item.toggleAttribute("data-selected", index === selected);
-        });
+        markSelected(items);
         items[selected]?.scrollIntoView({ block: "nearest" });
       } else if (event.key === "Enter") {
         event.preventDefault();
