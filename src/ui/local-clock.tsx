@@ -2,6 +2,8 @@
 
 import { useSyncExternalStore } from "react";
 
+import type { Locale } from "@/i18n/locales";
+
 const TICK_MS = 20_000;
 
 function subscribe(onChange: () => void): () => void {
@@ -15,7 +17,7 @@ function subscribe(onChange: () => void): () => void {
  * The time in Moscow, once a browser can tell it: the HTML is built long before anyone reads it.
  * It follows a city by default, after a comma; `bare` gives the time alone.
  */
-export function LocalClock({ locale, bare = false }: { locale: string; bare?: boolean }) {
+export function LocalClock({ locale, bare = false }: { locale: Locale; bare?: boolean }) {
   const time = useSyncExternalStore(
     subscribe,
     () =>
