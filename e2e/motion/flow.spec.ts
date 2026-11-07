@@ -171,6 +171,21 @@ test.describe("the Flow vault", () => {
     expect(errors).toEqual([]);
   });
 
+  test("leaves the graph's link panels empty and its tags whole", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(`${FLOW}#graph`);
+    await started(page);
+    await page.locator('[data-right-tab="tags"]').click();
+    await expect(page.locator('[data-right-panel="tags"] .panel-row')).not.toHaveCount(0);
+    await page.locator('#tree a[data-note="critic"]').click();
+    await page.locator('[data-right-tab="backlinks"]').click();
+    const backlinks = page.locator('[data-right-panel="backlinks"]');
+    await expect(backlinks.locator(".panel-row")).not.toHaveCount(0);
+    await page.goBack();
+    await expect(page).toHaveURL(/#graph$/);
+    await expect(backlinks.locator(".panel-empty")).toBeVisible();
+  });
+
   test("searches what the notes say, not their source", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(FLOW);

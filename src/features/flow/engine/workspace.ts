@@ -287,15 +287,13 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
   }
 
   function renderPanels() {
-    if (!current || current === "graph") {
-      renderOutline();
-      return;
-    }
+    // The graph is no note: nothing links to it, and its links are the whole vault's.
+    const note = current !== "" && current !== "graph";
     listPanel(
       "backlinks",
-      noteIds.filter((id) => outgoing.get(id)?.includes(current)).map(noteLink),
+      note ? noteIds.filter((id) => outgoing.get(id)?.includes(current)).map(noteLink) : [],
     );
-    listPanel("outgoing", (outgoing.get(current) ?? []).map(noteLink));
+    listPanel("outgoing", note ? (outgoing.get(current) ?? []).map(noteLink) : []);
     const counts = new Map<string, number>();
     for (const tag of all("[data-tag]", notesRoot)) {
       const name = tag.dataset.tag ?? "";
