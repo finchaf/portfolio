@@ -2,6 +2,7 @@ import { BASE_FIGURES } from "@/lib/base-graph";
 import { session } from "@/lib/session";
 import { isCalm } from "@/motion/reduced";
 import { saveTheme } from "@/themes/theme";
+import { APP_LOOKS, DEFAULT_LOOK, isLook, LOOK_SPECS } from "@/ui/app-looks";
 
 import { all, element, find, isWide } from "./dom";
 import type { makeLanes } from "./figures";
@@ -9,14 +10,6 @@ import type { Graph } from "./graph";
 import { fill, type Remark, type VaultStrings } from "./strings";
 
 const RUN_KEY = "flow-run";
-const STYLE_NAMES: Record<string, { font: string; tokens: string[] }> = {
-  a: { font: "Geist", tokens: ["#0e1330", "#1a2147", "#eef0ff", "#f5c26b"] },
-  b: { font: "Geologica", tokens: ["#f4efe6", "#fffdf8", "#211c16", "#d9573f"] },
-  c: { font: "Nunito", tokens: ["#efeaff", "#ffffff", "#2a2352", "#5b3df5"] },
-  d: { font: "Geologica", tokens: ["#070707", "#171717", "#ffffff", "#d4ff3f"] },
-  e: { font: "JetBrains Mono", tokens: ["#e8eef1", "#ffffff", "#102027", "#0f6e84"] },
-  f: { font: "Golos Text", tokens: ["#ffe6d6", "#fff5ee", "#3a1a12", "#c8391f"] },
-};
 const TOKEN_NAMES = ["Surface", "Card", "Text", "Accent"];
 
 type Step =
@@ -141,7 +134,7 @@ export function parseSaved(raw: string | null): SavedRun | null {
     Number.isInteger(run.i) &&
     Number.isInteger(run.lane) &&
     typeof run.style === "string" &&
-    Object.hasOwn(STYLE_NAMES, run.style) &&
+    isLook(run.style) &&
     Array.isArray(run.made) &&
     run.made.every((id) => typeof id === "string") &&
     typeof run.stage === "string" &&
@@ -180,7 +173,7 @@ export function makeTerminal(host: TerminalHost) {
     auto: !isCalm(),
     wait: null as "style" | "stop" | null,
     hold: false,
-    style: "c",
+    style: DEFAULT_LOOK,
     made: new Set<string>(),
     stage: "stage1",
     phase: "s1.start",
@@ -331,7 +324,7 @@ export function makeTerminal(host: TerminalHost) {
   }
 
   const styleChips = () =>
-    ["a", "b", "c", "d", "e", "f"].map((look) => ({
+    APP_LOOKS.map((look) => ({
       label: look.toUpperCase(),
       value: look,
       ask: true,
@@ -395,7 +388,7 @@ export function makeTerminal(host: TerminalHost) {
 
   function pickStyle(look: string, byReplay = false) {
     state.style = look;
-    const info = STYLE_NAMES[look];
+    const info = isLook(look) ? LOOK_SPECS[look] : undefined;
     const name = strings.board[look] ?? look;
     for (const node of all("[data-sk]", root)) node.dataset.style = look;
     for (const button of all(".vault-sdir", root)) {
@@ -569,7 +562,7 @@ export function makeTerminal(host: TerminalHost) {
     const rest = value.slice(name.length).trim();
     line(`<span class="vault-p">$</span> ${escape(value)}`, "vault-cmd");
     openPane();
-    if (state.wait === "style" && /^[a-f]$/.test(low)) {
+    if (state.wait === "style" && isLook(low)) {
       pickStyle(low);
       return;
     }
@@ -744,7 +737,7 @@ export function makeTerminal(host: TerminalHost) {
     setNow(escape(t.notStarted));
     setChips(baseChips());
     paintAuto();
-    pickStyle(saved?.style ?? "c");
+    pickStyle(saved?.style ?? DEFAULT_LOOK);
 
     if (saved && saved.i > 0 && !isCalm()) {
       saved.made.forEach((id) => {

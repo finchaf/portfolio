@@ -1,8 +1,6 @@
 import { useTranslations } from "next-intl";
 
-/** The six looks of the made-up app, in src/themes/flow-looks.css, and the one its tool recommended. */
-export const APP_LOOKS = ["a", "b", "c", "d", "e", "f"] as const;
-export const DEFAULT_LOOK = "c";
+export { APP_LOOKS, DEFAULT_LOOK } from "./app-looks";
 
 /** A block of a wireframe, placed in percent of the frame. */
 function Wire({
