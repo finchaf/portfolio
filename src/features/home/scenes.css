@@ -263,7 +263,7 @@
 
 .hero[data-layer="design"] [data-tab="design"] .code-face > span,
 .hero[data-layer="code"] [data-tab="code"] .code-face > span,
-.hero:has([data-open]) [data-tab="settings"] .code-face > span {
+.hero:has(.hero-settings[data-open]) [data-tab="settings"] .code-face > span {
   background: var(--accent);
   color: var(--on-accent);
 }
