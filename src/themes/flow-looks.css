@@ -80,3 +80,19 @@
   --s-r: 1.8em;
   --s-sky: #ffd8c2;
 }
+
+/* The app's wireframe: one grey drawing under every look, in either mode. */
+:root {
+  --wf-bg: #f4f4f6;
+  --wf-block: #e2e2e8;
+  --wf-ink: #6c6c78;
+  --wf-hi: #dcd8f6;
+  --wf-hi-ink: #5b50a8;
+  --wf-cta: #2f6fed;
+  --wf-on-cta: #ffffff;
+  --wf-pad: #ecebf3;
+  --wf-pad-line: #b5b3c9;
+  --wf-quiet: #e9e9ee;
+  --wf-line: #bcbcc8;
+  --wf-line-soft: #d3d3dc;
+}

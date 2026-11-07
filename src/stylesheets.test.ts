@@ -389,20 +389,6 @@ const LITERAL_COLOURS: Record<string, string[]> = {
     "rgb(0 0 0 / 7%)",
     "rgb(0 0 0 / 90%)",
   ],
-  "ui/app-screens.css": [
-    "#2f6fed",
-    "#5b50a8",
-    "#6c6c78",
-    "#b5b3c9",
-    "#bcbcc8",
-    "#d3d3dc",
-    "#dcd8f6",
-    "#e2e2e8",
-    "#e9e9ee",
-    "#ecebf3",
-    "#f4f4f6",
-    "#ffffff",
-  ],
 };
 
 describe("the colours", () => {

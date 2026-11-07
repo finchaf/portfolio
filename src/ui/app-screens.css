@@ -488,7 +488,7 @@
 .wf {
   position: absolute;
   inset: 0;
-  background: #f4f4f6;
+  background: var(--wf-bg);
   font-family: var(--mono);
 }
 
@@ -507,28 +507,28 @@
   width: calc(var(--w) * 1%);
   height: calc(var(--ht) * 1%);
   border-radius: 3cqw;
-  background: #e2e2e8;
-  color: #6c6c78;
+  background: var(--wf-block);
+  color: var(--wf-ink);
   font-size: 3.2cqw;
 }
 
 .w-b.h {
-  background: #dcd8f6;
-  color: #5b50a8;
+  background: var(--wf-hi);
+  color: var(--wf-hi-ink);
 }
 
 .w-b.c {
-  background: #2f6fed;
-  color: #ffffff;
+  background: var(--wf-cta);
+  color: var(--wf-on-cta);
 }
 
 .w-b.p {
-  background: #ecebf3;
-  box-shadow: inset 0 0 0 0.4cqw #b5b3c9;
+  background: var(--wf-pad);
+  box-shadow: inset 0 0 0 0.4cqw var(--wf-pad-line);
 }
 
 .w-b.q {
-  background: #e9e9ee;
+  background: var(--wf-quiet);
 }
 
 .w-b.round {
@@ -539,26 +539,26 @@
   width: calc(var(--w) * 1%);
   height: 3cqw;
   border-radius: 1.5cqw;
-  background: #bcbcc8;
+  background: var(--wf-line);
 }
 
 .w-l.s {
   height: 2cqw;
-  background: #d3d3dc;
+  background: var(--wf-line-soft);
 }
 
 .w-r {
   width: 11cqw;
   height: 11cqw;
   border-radius: 50%;
-  background: #e2e2e8;
+  background: var(--wf-block);
 }
 
 .w-d {
   width: 13cqw;
   height: 2cqw;
   border-radius: 1cqw;
-  background: #bcbcc8;
+  background: var(--wf-line);
 }
 
 /* The phone of one rule's history. */
