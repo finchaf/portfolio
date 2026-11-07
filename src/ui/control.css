@@ -101,12 +101,6 @@
   color: var(--on-control);
 }
 
-.control-inverse {
-  --control-mark: var(--accent-strong);
-  background: var(--on-accent);
-  color: var(--accent-strong);
-}
-
 .control-quiet {
   --control-mark: var(--control-cap-quiet-ink, var(--accent-strong));
   --control-cap: var(--control-cap-quiet, transparent);

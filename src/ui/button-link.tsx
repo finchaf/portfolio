@@ -2,11 +2,7 @@ import "./control.css";
 
 import type { ComponentProps } from "react";
 
-const TONES = {
-  primary: "control-primary",
-  quiet: "control-quiet",
-  inverse: "control-inverse",
-} as const;
+const TONES = { primary: "control-primary", quiet: "control-quiet" } as const;
 
 const SIZES = { regular: "control-regular", small: "control-small" } as const;
 
