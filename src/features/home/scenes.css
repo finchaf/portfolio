@@ -288,14 +288,6 @@
   height: var(--row);
 }
 
-:root[data-js] .hero-tools > fieldset > legend {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-}
-
 /* The switch and the settings are one instrument: the two rules go around them both. */
 .hero-tools {
   position: relative;

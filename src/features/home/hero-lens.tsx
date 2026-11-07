@@ -285,6 +285,7 @@ export function HeroLens({ labels, settings, children }: HeroLensProps) {
         <div className="hero-tools">
           <Segmented
             label={labels.label}
+            legend="hidden"
             name="hero-layer"
             onChange={choose}
             options={[
