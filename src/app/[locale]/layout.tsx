@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 
 import { DEFAULT_LOCALE, isLocale, LOCALES } from "@/i18n/locales";
-import { SITE_ICONS, SITE_ORIGIN } from "@/lib/site";
+import { SITE_ICONS, SITE_ORIGIN, SITE_VIEWPORT } from "@/lib/site";
 import { DotCursor } from "@/shell/dot-cursor";
 import { Footer } from "@/shell/footer";
 import { Header } from "@/shell/header";
@@ -17,8 +17,7 @@ import { StillImages } from "@/shell/still-images";
 import { ThemeScript } from "@/themes/theme-script";
 import { ScrollBar } from "@/ui/scroll-bar";
 
-// Tells the browser both modes exist before the stylesheet arrives.
-export const viewport: Viewport = { colorScheme: "light dark" };
+export const viewport: Viewport = SITE_VIEWPORT;
 
 export function generateStaticParams() {
   return LOCALES.map((locale) => ({ locale }));

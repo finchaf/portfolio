@@ -10,6 +10,9 @@ export const SITE_ICONS = {
   apple: "/apple-touch-icon.png",
 };
 
+/** Tells the browser both modes exist before the stylesheet arrives, on every page and the 404. */
+export const SITE_VIEWPORT = { colorScheme: "light dark" } as const;
+
 /** The site's name on a link shared in a chat or a feed: the logo's word, the same in any language. */
 export const SITE_NAME = "finchaf";
 
