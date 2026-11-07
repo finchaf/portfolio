@@ -1,3 +1,4 @@
+import { BASE_FIGURES } from "@/lib/base-graph";
 import { session } from "@/lib/session";
 import { isCalm } from "@/motion/reduced";
 import { saveTheme } from "@/themes/theme";
@@ -432,7 +433,7 @@ export function makeTerminal(host: TerminalHost) {
       list.prepend(item);
     }
     for (const node of all('#tree [data-note="rules"] .vault-nav-count', root)) {
-      node.textContent = "234 + 1";
+      node.textContent = `${String(BASE_FIGURES.rules)} + 1`;
     }
   }
 

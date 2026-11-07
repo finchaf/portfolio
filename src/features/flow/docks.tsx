@@ -38,6 +38,7 @@ import { LinksIn, LinksOut } from "./link-icons";
 import { type FolderId, FOLDERS, MAIN_NOTE } from "./notes";
 import { readNote } from "./vault-source";
 import type { Locale } from "@/i18n/locales";
+import { BASE_FIGURES, CHECKLISTS } from "@/lib/base-graph";
 
 /** A borderless icon button, with the app's tooltip under it. */
 function Action({
@@ -184,7 +185,14 @@ export function LeftDock({ locale }: { locale: Locale }) {
           <nav aria-label={t("ui.notesNav")} className="vault-nav-files" id="tree">
             <Row id={MAIN_NOTE} title={readNote(locale, MAIN_NOTE).title} />
             <Folder folder="process" locale={locale} />
-            <Folder counts={{ checklists: "16", rules: "234" }} folder="quality" locale={locale} />
+            <Folder
+              counts={{
+                checklists: String(CHECKLISTS.length),
+                rules: String(BASE_FIGURES.rules),
+              }}
+              folder="quality"
+              locale={locale}
+            />
             <Folder folder="task" locale={locale} tag={t("folders.madeUp")} />
             <Folder folder="results" locale={locale} />
             <span data-js-only="">
