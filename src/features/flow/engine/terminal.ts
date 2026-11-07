@@ -60,12 +60,33 @@ export const RUN: Step[] = [
   { s: "harvest" },
   { fin: "closed" },
 ];
-/** Where the `stage-2` and `done` commands start the run from. */
-export const STAGE_TWO = 17;
-export const CLOSING = 36;
+/** Where in the run the step `is` picks stands: a step gone from the run stops the page loudly. */
+function indexOf(is: (step: Step) => boolean) {
+  const index = RUN.findIndex(is);
+  if (index < 0) throw new Error("The terminal's run has lost a step it counts on");
+  return index;
+}
+const commandAt = (cmd: string) => indexOf((step) => "cmd" in step && step.cmd === cmd);
+const askAt = (ask: "style" | "stop") => indexOf((step) => "ask" in step && step.ask === ask);
 
-/** How far the run must be when a heading of the main note is reached. */
-const SCENES: Record<string, number> = { 0: 1, 1: 5, 2: 23, 3: 23, 4: 24, 5: RUN.length };
+/** Where the `stage-2` and `done` commands start the run from. */
+export const STAGE_TWO = commandAt("stage-2");
+export const CLOSING = commandAt("done");
+const ASK_STYLE = askAt("style");
+const ASK_STOP = askAt("stop");
+
+/**
+ * How far the run must be when a heading of the main note is reached: at its first step, at the
+ * style question, at the stop review twice, past the review, at its end.
+ */
+const SCENES: Record<string, number> = {
+  0: indexOf((step) => "s" in step && step.s === "s1.start"),
+  1: ASK_STYLE,
+  2: ASK_STOP,
+  3: ASK_STOP,
+  4: ASK_STOP + 1,
+  5: RUN.length,
+};
 
 const COMMANDS = [
   "help",
@@ -410,7 +431,7 @@ export function makeTerminal(host: TerminalHost) {
       line(`<span class="vault-mk">›</span>${escape(text)}`, byReplay ? "vault-dim" : "");
       say(t.alone);
       answer();
-    } else if (state.i > 5) {
+    } else if (state.i > ASK_STYLE) {
       say(`style.md: ${look.toUpperCase()}, ${name} · tokens.js`);
     }
     persist();
