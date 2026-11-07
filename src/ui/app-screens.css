@@ -246,8 +246,6 @@
   font-size: 2.8em;
 }
 .app-ring {
-  /* Tailwind has a utility of this name: without this it draws a frame around the dial. */
-  box-shadow: none;
   position: relative;
   width: 25em;
   height: 25em;
