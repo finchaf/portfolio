@@ -6,9 +6,10 @@ import { useEffect, useRef } from "react";
 const LETTER_MS = 48;
 
 /**
- * The first message of a conversation, typed out once when it comes into view. The HTML holds the
- * whole line, so without a script, with reduced motion and for a screen reader it is simply there.
- * The whole line also sizes the bubble from the start, so typing never moves it.
+ * The first message of a conversation, typed out once when it comes into view. It is part of the
+ * thread's picture, which assistive tech never reads: the send names the link. The HTML holds the
+ * whole line, so without a script and with reduced motion it is simply there, and a hidden copy of
+ * it sizes the bubble from the start, so typing never moves it.
  */
 export function ChatDraft({ text }: { text: string }) {
   const typed = useRef<HTMLSpanElement>(null);
@@ -48,7 +49,6 @@ export function ChatDraft({ text }: { text: string }) {
         <span ref={typed}>{text}</span>
         <i className="talk-caret" />
       </span>
-      <span className="sr-only">{text}</span>
     </span>
   );
 }
