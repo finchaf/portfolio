@@ -452,6 +452,7 @@
     opacity: 0;
   }
 
+  /* The head's place in the editor is set with the panels above; this is only its way out. */
   :root[data-js] .pj-board-head {
     transition: opacity var(--duration-base) var(--ease-out);
   }
