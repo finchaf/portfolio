@@ -184,10 +184,7 @@
   white-space: pre;
 }
 
-.map-terminal-body p[data-line="run"] {
-  color: var(--ink);
-}
-
+.map-terminal-body p[data-line="run"],
 .map-terminal-body p[data-line="done"] {
   color: var(--ink);
 }
