@@ -300,6 +300,11 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
       note ? noteIds.filter((id) => outgoing.get(id)?.includes(current)).map(noteLink) : [],
     );
     listPanel("outgoing", note ? (outgoing.get(current) ?? []).map(noteLink) : []);
+    renderOutline();
+  }
+
+  /** The tags and properties of the whole vault, which no note shown changes: listed once. */
+  function renderCounts() {
     const counts = new Map<string, number>();
     for (const tag of all("[data-tag]", notesRoot)) {
       const name = tag.dataset.tag ?? "";
@@ -329,29 +334,35 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
         return row;
       }),
     );
-    renderOutline();
   }
 
   const outline = find("#outline");
+  // The headings the outline's links lead to, in their order: one listener serves every link.
+  let outlined: HTMLElement[] = [];
   function renderOutline() {
     outline.textContent = "";
+    outlined = [];
     const article = meta.get(current)?.element;
     if (!article) return;
-    for (const heading of all("[data-outline]", article)) {
+    outlined = all("[data-outline]", article);
+    for (const heading of outlined) {
       const link = element("a", "", heading.textContent);
       link.href = `#${current}`;
-      link.addEventListener(
-        "click",
-        (event) => {
-          event.preventDefault();
-          heading.scrollIntoView({ behavior: isCalm() ? "auto" : "smooth", block: "start" });
-        },
-        on,
-      );
       outline.append(link);
     }
     spy();
   }
+  outline.addEventListener(
+    "click",
+    (event) => {
+      const link = (event.target as Element).closest("a");
+      if (!link) return;
+      event.preventDefault();
+      const heading = outlined[all("a", outline).indexOf(link)];
+      heading?.scrollIntoView({ behavior: isCalm() ? "auto" : "smooth", block: "start" });
+    },
+    on,
+  );
 
   function spy() {
     markOutline(spyAt());
@@ -577,6 +588,7 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
     closeMenu();
     const box = element("div", "vault-menu");
     box.setAttribute("role", "menu");
+    const runs = new Map<Element, (() => void) | undefined>();
     for (const item of items) {
       const row = element(item.href ? "a" : "button", "vault-menu-item");
       row.setAttribute("role", "menuitem");
@@ -584,16 +596,16 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
       if (item.on) row.dataset.on = "";
       if (item.href) (row as HTMLAnchorElement).href = item.href;
       else (row as HTMLButtonElement).type = "button";
-      row.addEventListener(
-        "click",
-        () => {
-          closeMenu();
-          item.run?.();
-        },
-        on,
-      );
+      runs.set(row, item.run);
       box.append(row);
     }
+    // One listener, on the box: it goes with the box, so a menu closed leaves nothing behind.
+    box.addEventListener("click", (event) => {
+      const row = (event.target as Element).closest(".vault-menu-item");
+      if (!row) return;
+      closeMenu();
+      runs.get(row)?.();
+    });
     document.body.append(box);
     const place = anchor.getBoundingClientRect();
     const left = Math.max(8, Math.min(innerWidth - box.offsetWidth - 8, place.left));
@@ -1048,6 +1060,7 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
 
   if (isWide()) terminal.pane.dataset.open = "";
   paintTermToggles();
+  renderCounts();
   setLeft("files");
   setRight("graph");
   const start = location.hash.slice(1) || MAIN_NOTE;
