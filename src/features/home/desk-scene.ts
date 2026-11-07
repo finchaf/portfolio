@@ -68,7 +68,6 @@ export function runDesk(
   const world = chapter.querySelector<HTMLElement>("[data-desk-world]");
   const focus = chapter.querySelector<HTMLElement>("[data-desk-focus]");
   if (!desk || !view || !world || !focus) return () => undefined;
-  const board = world;
   const copies = gsap.utils.toArray<HTMLElement>("[data-desk-copy]", chapter);
   const crumbs = gsap.utils.toArray<HTMLElement>("[data-crumb]", chapter);
   const ticks = gsap.utils.toArray<HTMLElement>("[data-tick]", chapter);
@@ -88,18 +87,18 @@ export function runDesk(
   const target = (index: number) => {
     const shot = SHOTS[index];
     if (!shot || shot.kind === "all") return null;
-    return board.querySelector<HTMLElement>(
+    return world.querySelector<HTMLElement>(
       shot.kind === "sec" ? `[data-sec="${shot.key}"]` : `[data-frame="${shot.key}"]`,
     );
   };
 
   /** A stop's box in board units: layout offsets, which the camera's transform leaves alone. */
-  function boxOf(index: number) {
+  const boxOf = (index: number) => {
     const shot = SHOTS[index] ?? SHOTS[0];
     const node = target(index);
-    let rect = { x: 0, y: -LABEL, width: board.offsetWidth, height: board.offsetHeight + LABEL };
+    let rect = { x: 0, y: -LABEL, width: world.offsetWidth, height: world.offsetHeight + LABEL };
     if (node) {
-      const section = node.offsetParent === board ? null : (node.offsetParent as HTMLElement);
+      const section = node.offsetParent === world ? null : (node.offsetParent as HTMLElement);
       const top = shot.kind === "sec" ? LABEL : 0;
       rect = {
         x: node.offsetLeft + (section?.offsetLeft ?? 0),
@@ -114,13 +113,13 @@ export function runDesk(
       width: rect.width * (1 + 2 * shot.pad),
       height: rect.height * (1 + 2 * shot.pad),
     };
-  }
+  };
 
   /** On a phone the words take the room their longest stop needs, and the board takes the rest. */
-  function fitWords() {
+  const fitWords = () => {
     heights = [];
-    desk?.style.removeProperty("--desk-words");
-    desk?.style.removeProperty("--desk-fade");
+    desk.style.removeProperty("--desk-words");
+    desk.style.removeProperty("--desk-fade");
     if (!list || window.innerWidth >= 1024) return;
     list.style.height = "1px";
     // The bottom of the last thing said: a scroll height stops at the box, which is 1px here.
@@ -136,13 +135,12 @@ export function runDesk(
       ),
     );
     list.style.removeProperty("height");
-    desk?.style.setProperty("--desk-words", `${String(Math.max(...heights))}px`);
-  }
+    desk.style.setProperty("--desk-words", `${String(Math.max(...heights))}px`);
+  };
 
-  function measure() {
+  const measure = () => {
     fitWords();
     // Offsets, not boxes: the stage may be sliding in or sinking under the next sheet.
-    if (!view || !focus) return;
     const tallest = Math.max(0, ...heights);
     focusWidth = Math.max(1, focus.offsetWidth);
     shots = SHOTS.map((_, index) => {
@@ -166,10 +164,10 @@ export function runDesk(
       };
     });
     shown = -1;
-  }
+  };
 
   /** The camera between two shots, a share of the way along. */
-  function place(from: Shot, to: Shot, along: number, creep: number) {
+  const place = (from: Shot, to: Shot, along: number, creep: number) => {
     const share = inOut(along);
     const far = (Math.hypot(to.x - from.x, to.y - from.y) * Math.min(from.z, to.z)) / focusWidth;
     const back = clamp(far - 0.25, 0, 1.1) * PULL_BACK * Math.sin(Math.PI * share);
@@ -183,20 +181,20 @@ export function runDesk(
     const x = mix(from.cx, to.cx, share) - z * mix(from.x, to.x, share);
     const y = mix(from.cy, to.cy, room) - z * mix(from.y, to.y, share);
     fade = mix(from.words, to.words, room);
-    world?.style.setProperty(
+    world.style.setProperty(
       "transform",
       `translate3d(${x.toFixed(2)}px,${y.toFixed(2)}px,0) scale(${z.toFixed(4)})`,
     );
-    world?.style.setProperty("--z", z.toFixed(4));
+    world.style.setProperty("--z", z.toFixed(4));
     const percent = `${String(Math.round(z * 100))}%`;
     if (zoom && percent !== shownZoom) {
       shownZoom = percent;
       zoom.textContent = percent;
     }
-  }
+  };
 
   /** Words slide by a share of their room: on a phone a short way, past the board below them. */
-  function words({ stop, move }: DeskMoment) {
+  const words = ({ stop, move }: DeskMoment) => {
     const phone = heights.length > 0;
     const travel = phone ? 12 : 35;
     const room = list?.offsetHeight ?? 0;
@@ -219,13 +217,13 @@ export function runDesk(
         fade = Math.max(fade, (heights[index] ?? 0) + (shift / 100) * room);
       }
     });
-    if (phone) desk?.style.setProperty("--desk-fade", `${fade.toFixed(1)}px`);
-  }
+    if (phone) desk.style.setProperty("--desk-fade", `${fade.toFixed(1)}px`);
+  };
 
-  function mark(stop: number) {
+  const mark = (stop: number) => {
     if (stop === shown) return;
     shown = stop;
-    for (const node of world?.querySelectorAll("[data-selected]") ?? []) {
+    for (const node of world.querySelectorAll("[data-selected]")) {
       node.removeAttribute("data-selected");
     }
     target(stop)?.setAttribute("data-selected", "");
@@ -238,9 +236,9 @@ export function runDesk(
     copies.forEach((copy, index) => {
       copy.toggleAttribute("data-active", index === stop);
     });
-  }
+  };
 
-  function render(progress: number) {
+  const render = (progress: number) => {
     if (shots.length === 0) return;
     const moment = deskMomentAt(progress);
     const { stop, move, rest } = moment;
@@ -251,7 +249,7 @@ export function runDesk(
     words(moment);
     mark(move >= 1 - ARRIVING ? next : stop);
     progressBar?.style.setProperty("transform", `scaleX(${progress.toFixed(4)})`);
-  }
+  };
 
   const scroll = { progress: 0 };
   const scene = gsap.to(scroll, {
@@ -309,6 +307,7 @@ export function runDesk(
     chapter.removeEventListener("click", onClick);
     chapter.removeEventListener("focusin", onFocus);
     desk.style.removeProperty("--desk-words");
+    desk.style.removeProperty("--desk-fade");
     world.removeAttribute("style");
     for (const node of [...copies, ...(progressBar ? [progressBar] : [])]) {
       node.removeAttribute("style");
