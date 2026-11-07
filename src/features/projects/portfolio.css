@@ -751,11 +751,7 @@
 /* The wide layout */
 
 @media (min-width: 64rem) {
-  :root:has([data-subpage]) body {
-    --left: 15.75rem;
-    --right: 17.25rem;
-  }
-
+  /* The panels' widths, --left and --right, are the board's: `projects.css` sets them. */
   .pj-sub {
     grid-template-columns: var(--left) minmax(0, 1fr) var(--right);
     gap: 2rem;
@@ -848,13 +844,6 @@
   .pj-release-demo {
     grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
     align-items: start;
-  }
-}
-
-@media (min-width: 64rem) and (max-width: 82.5rem) {
-  :root:has([data-subpage]) body {
-    --left: 12.25rem;
-    --right: 14.5rem;
   }
 }
 

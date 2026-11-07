@@ -252,10 +252,28 @@
 
 /* The editor */
 
+/*
+ * The widths of the side panels: the board's and a project page's, which keeps them. The board
+ * reads them only under `:root[data-js]`, where its editor runs.
+ */
 @media (min-width: 64rem) {
-  :root[data-js] .pj-board {
+  .pj-board,
+  .pj-sub {
     --left: 15.75rem;
     --right: 17.25rem;
+  }
+}
+
+@media (min-width: 64rem) and (max-width: 82.5rem) {
+  .pj-board,
+  .pj-sub {
+    --left: 12.25rem;
+    --right: 14.5rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  :root[data-js] .pj-board {
     --edge: 1rem;
     --top: 4.75rem;
     --dot: 1.5rem;
@@ -350,6 +368,7 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.75rem;
+    /* Two sections side by side over one's height: 2 × 680 and the gap's 28 over 826. */
     width: min(100%, calc((100svh - var(--top) - 4rem) * 1388 / 826));
     transform-origin: 0 0;
   }
@@ -502,12 +521,5 @@
     transition:
       translate var(--duration-slow) var(--ease-in-out),
       opacity var(--duration-base) var(--ease-out);
-  }
-}
-
-@media (min-width: 64rem) and (max-width: 82.5rem) {
-  :root[data-js] .pj-board {
-    --left: 12.25rem;
-    --right: 14.5rem;
   }
 }
