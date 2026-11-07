@@ -4,12 +4,11 @@ import { Image } from "@/ui/image";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 
-import { isLocale } from "@/i18n/locales";
 import { localizedPath } from "@/i18n/localized-path";
 import { GITHUB_URL, TELEGRAM_HANDLE, TELEGRAM_URL } from "@/lib/site";
-import { LocalClock } from "@/ui/local-clock";
 
 import { DriftTitle } from "./drift-title";
+import { LiveLine } from "./live-line";
 import portrait from "./portrait.avif";
 
 /** The rows of work, by the year each began, the latest first; a path is where the fact goes on. */
@@ -68,8 +67,7 @@ export function Experience() {
   const t = useTranslations("home.experience");
   const hero = useTranslations("home.hero");
   const cv = useTranslations("home.cv");
-  const current = useLocale();
-  const locale = isLocale(current) ? current : "ru";
+  const locale = useLocale();
   const rows: Line[] = ROWS.map((row) => ({
     years: t(`rows.${row.key}.years`),
     place: t(`rows.${row.key}.place`),
@@ -118,14 +116,7 @@ export function Experience() {
             <span>{hero("role")}</span>
             <span>{hero("roleNote")}</span>
           </p>
-          <p className="exp-live">
-            <span aria-hidden className="exp-dot" />
-            <span>{hero("status")}</span>
-            <span className="exp-where">
-              {hero("city")}
-              <LocalClock locale={locale} />
-            </span>
-          </p>
+          <LiveLine />
           <p className="exp-about">{t("about")}</p>
           <p className="exp-links">
             <a

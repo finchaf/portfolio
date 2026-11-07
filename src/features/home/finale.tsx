@@ -3,7 +3,6 @@ import "./after-work.css";
 import { Image } from "@/ui/image";
 import { useLocale, useTranslations } from "next-intl";
 
-import { isLocale } from "@/i18n/locales";
 import { EMAIL, GITHUB_HANDLE, GITHUB_URL, TELEGRAM_HANDLE, TELEGRAM_URL } from "@/lib/site";
 import { CopyAddress } from "@/ui/copy-address";
 import { LocalClock } from "@/ui/local-clock";
@@ -11,6 +10,7 @@ import { TelegramCode } from "@/ui/telegram-code";
 
 import { ChatDraft } from "./chat-draft";
 import { DriftTitle } from "./drift-title";
+import { LiveLine } from "./live-line";
 import face from "./portrait-small.avif";
 
 /** The face beside the name is the same person the name says: a screen reader hears it once. */
@@ -28,20 +28,12 @@ export function Finale() {
   const t = useTranslations("home.finale");
   const shell = useTranslations("shell");
   const hero = useTranslations("home.hero");
-  const current = useLocale();
-  const locale = isLocale(current) ? current : "ru";
+  const locale = useLocale();
   return (
     <section aria-labelledby="finale-title" className="talk" id="contact">
       <div className="talk-in">
         <div className="talk-copy">
-          <p className="exp-live">
-            <span aria-hidden className="exp-dot" />
-            <span>{hero("status")}</span>
-            <span className="exp-where">
-              {hero("city")}
-              <LocalClock locale={locale} />
-            </span>
-          </p>
+          <LiveLine />
           <DriftTitle
             className="talk-title finale-title font-display font-extrabold"
             cross
