@@ -86,7 +86,6 @@ export function Paper({ name, alt = "", sizes }: { name: PaperName; alt?: string
         loading="lazy"
         sizes={sizes}
         src={light}
-        unoptimized
       />
       <Image
         alt={alt}
@@ -95,7 +94,6 @@ export function Paper({ name, alt = "", sizes }: { name: PaperName; alt?: string
         loading="lazy"
         sizes={sizes}
         src={dark}
-        unoptimized
       />
     </>
   );

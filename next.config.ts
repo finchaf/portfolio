@@ -24,6 +24,8 @@ const [commit, updated] = lastCommit();
 const base: NextConfig = {
   // The site is plain files behind Caddy (ADR-0002): a page that needs a server fails the build.
   output: "export",
+  // Plain files resize no picture on request: every image ships as it was built, said once here.
+  images: { unoptimized: true },
   poweredByHeader: false,
   reactStrictMode: true,
   // `next dev` writes AGENTS.md and CLAUDE.md into the project unless told not to.

@@ -111,7 +111,6 @@ export function Experience() {
               draggable={false}
               sizes="(min-width: 64rem) 22rem, 20rem"
               src={portrait}
-              unoptimized
             />
           </figure>
           <p className="exp-name">{hero("name")}</p>

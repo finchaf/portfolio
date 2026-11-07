@@ -48,7 +48,6 @@ export function StoryMenus() {
                 left: `${String(-((menu - 1) % SPRITE.columns) * 100)}%`,
                 top: `${String(-Math.floor((menu - 1) / SPRITE.columns) * 100)}%`,
               }}
-              unoptimized
             />
           </div>
         </div>

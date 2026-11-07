@@ -101,7 +101,6 @@ export function DemoWalls({
           height={826}
           loading="lazy"
           src={wall.light}
-          unoptimized
           width={776}
         />
         <Image
@@ -111,7 +110,6 @@ export function DemoWalls({
           height={826}
           loading="lazy"
           src={wall.dark}
-          unoptimized
           width={776}
         />
       </div>

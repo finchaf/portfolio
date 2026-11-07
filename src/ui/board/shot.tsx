@@ -55,22 +55,8 @@ export function Shot({
   const [light, dark] = SHOTS[name];
   return (
     <>
-      <Image
-        alt={alt}
-        className="pj-only-light"
-        loading="lazy"
-        sizes={sizes}
-        src={light}
-        unoptimized
-      />
-      <Image
-        alt={alt}
-        className="pj-only-dark"
-        loading="lazy"
-        sizes={sizes}
-        src={dark}
-        unoptimized
-      />
+      <Image alt={alt} className="pj-only-light" loading="lazy" sizes={sizes} src={light} />
+      <Image alt={alt} className="pj-only-dark" loading="lazy" sizes={sizes} src={dark} />
     </>
   );
 }

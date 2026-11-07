@@ -142,7 +142,6 @@ function LessonPage({
           loading="lazy"
           sizes="(min-width: 64rem) 40rem, 100vw"
           src={each.light}
-          unoptimized
         />
         {each.dark && (
           <Image
@@ -151,7 +150,6 @@ function LessonPage({
             loading="lazy"
             sizes="(min-width: 64rem) 40rem, 100vw"
             src={each.dark}
-            unoptimized
           />
         )}
         <Maximize2 aria-hidden />

@@ -34,13 +34,7 @@ export function StoryCollage() {
             "--narrow-size": narrow.size,
           }}
         >
-          <Image
-            alt={t(`scraps.${key}`)}
-            className="story-image"
-            data-scrap
-            src={PICTURES[key]}
-            unoptimized
-          />
+          <Image alt={t(`scraps.${key}`)} className="story-image" data-scrap src={PICTURES[key]} />
         </figure>
       ))}
     </div>

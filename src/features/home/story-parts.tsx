@@ -140,7 +140,7 @@ export function StoryPhoto({
       style={{ "--size": size, "--tilt": `${String(tilt)}deg` }}
     >
       <figure className="story-print" data-reveal>
-        <Image alt={label} className="story-image" src={src} unoptimized />
+        <Image alt={label} className="story-image" src={src} />
         {caption && <figcaption className="story-caption">{caption}</figcaption>}
       </figure>
     </div>
@@ -167,7 +167,7 @@ export function StoryBleed({ label, src }: { label: string; src: StaticImageData
       data-tint="home"
       style={{ "--ratio": src.width / src.height }}
     >
-      <Image alt={label} className="story-bleed-image" data-bleed-image src={src} unoptimized />
+      <Image alt={label} className="story-bleed-image" data-bleed-image src={src} />
     </figure>
   );
 }

@@ -277,7 +277,6 @@ function SectionDemo({ id }: { id: SectionId }) {
                 loading="lazy"
                 sizes="(min-width: 64rem) 14rem, 45vw"
                 src={CV[locale]}
-                unoptimized
               />
               <span>{t("demo.cv")}</span>
             </a>

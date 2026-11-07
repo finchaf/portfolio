@@ -67,7 +67,6 @@ function Both({
         loading="lazy"
         sizes={sizes}
         src={light}
-        unoptimized
       />
       <Image
         alt={alt}
@@ -76,7 +75,6 @@ function Both({
         loading="lazy"
         sizes={sizes}
         src={dark}
-        unoptimized
       />
     </>
   );
@@ -136,7 +134,6 @@ function Phone({ kind, children }: { kind: keyof typeof DEVICES; children: React
         loading="lazy"
         sizes={PHONE}
         src={DEVICE_PICTURES[kind]}
-        unoptimized
       />
     </div>
   );
@@ -343,7 +340,6 @@ export function WorkPora() {
                   loading="lazy"
                   sizes="(min-width: 64rem) 22rem, 70vw"
                   src={appStore}
-                  unoptimized
                 />
               </figure>
               <figure className="pair-chart">

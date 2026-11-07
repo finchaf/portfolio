@@ -76,7 +76,7 @@ export function Finale() {
           <a className="talk-window" href={TELEGRAM_URL} rel="noreferrer" target="_blank">
             {/* The window's own head and thread are a picture of the chat: the send names the link. */}
             <span aria-hidden className="talk-bar">
-              <Image alt={DECORATIVE} className="talk-avatar" src={face} unoptimized />
+              <Image alt={DECORATIVE} className="talk-avatar" src={face} />
               <span className="talk-who">
                 <b>{hero("name")}</b>
                 <span>
