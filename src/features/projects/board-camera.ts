@@ -521,6 +521,16 @@ export function attachBoard(board: HTMLElement, { open, duration }: Options) {
     all("[data-frame]").forEach((node) => {
       node.style.translate = "";
     });
+    // Below the editor the panels are a list, with no frame selected: the frame's block goes, and
+    // its place is read from the layout again, as every frame is back where it was drawn.
+    all("[data-inspect]").forEach((block) => {
+      block.hidden = true;
+      const data = FRAMES.find((each) => each.key === block.dataset.inspect);
+      if (!data) return;
+      block.querySelectorAll<HTMLElement>("[data-axis]").forEach((cell) => {
+        cell.textContent = String(cell.dataset.axis === "y" ? data.y : data.x);
+      });
+    });
     delete board.dataset.leaving;
   };
 }

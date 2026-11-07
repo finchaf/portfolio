@@ -211,6 +211,23 @@ test.describe("the board of projects", () => {
     expect(await page.evaluate(() => sessionStorage.getItem("board-return"))).toBeNull();
   });
 
+  test("hands the list back whole when the editor goes", async ({ page }) => {
+    await page.goto("/ru/projects");
+    await ready(page);
+    const box = await page.locator('[data-frame="gates"]').boundingBox();
+    if (!box) throw new Error("no frame");
+    await page.mouse.move(box.x + 20, box.y + 20);
+    await page.mouse.down();
+    await page.mouse.move(box.x + 60, box.y + 40, { steps: 4 });
+    await page.mouse.up();
+    const block = page.locator('[data-inspect="gates"]');
+    await expect(block.locator('[data-axis="x"]')).not.toHaveText("24");
+    await page.setViewportSize({ width: 390, height: 664 });
+    await expect(block).toBeHidden();
+    await expect(block.locator('[data-axis="x"]')).toHaveText("24");
+    await expect(block.locator('[data-axis="y"]')).toHaveText("604");
+  });
+
   test("keeps typed code as typed, with no joined signs", async ({ page }) => {
     await page.goto("/ru/projects");
     await expect(page.locator('[data-frame="snippets"] .pj-lines')).toHaveCSS(
