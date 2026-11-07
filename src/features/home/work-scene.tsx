@@ -8,7 +8,7 @@ import { SCENE } from "@/motion/tokens";
 
 import { snapToRests } from "./chapter-snap";
 import { runDesk } from "./desk-scene";
-import { runFlowMap } from "./flow-map-scene";
+import { pickLooks, runFlowMap } from "./flow-map-scene";
 import { pairFlight } from "./pair-scene";
 
 /** The corners of a sheet rising over the page, and how far what it covers sinks. */
@@ -279,6 +279,7 @@ function lendTheme(chapters: HTMLElement[], after: HTMLElement | null) {
 /**
  * Directs the three chapters. Stages hold by CSS `sticky` and the page scrolls natively; with
  * reduced motion or no script the chapters are plain sections, and only the capsule's colour follows.
+ * The tiles of Flow's brief choose a style with reduced motion too: a choice moves nothing.
  */
 export function WorkScene({ children }: { children: ReactNode }) {
   const scope = useRef<HTMLDivElement>(null);
@@ -290,6 +291,8 @@ export function WorkScene({ children }: { children: ReactNode }) {
     const stage = (chapter: HTMLElement | undefined) =>
       chapter?.querySelector<HTMLElement>("[data-stage]") ?? null;
     const undoTheme = lendTheme(chapters, after);
+    const flowChapter = chapters.find((chapter) => chapter.dataset.chapter === "flow");
+    const undoLooks = flowChapter ? pickLooks(flowChapter) : undefined;
 
     const motion = gsap.matchMedia();
     motion.add(WIDTHS, ({ conditions }) => {
@@ -329,6 +332,7 @@ export function WorkScene({ children }: { children: ReactNode }) {
 
     return () => {
       undoTheme();
+      undoLooks?.();
       undo(motion);
     };
   }, scope);

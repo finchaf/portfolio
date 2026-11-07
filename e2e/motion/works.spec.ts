@@ -4,6 +4,29 @@ import { expectNoSideScroll, height, HOME, jump, topOf } from "../helpers";
 
 // The three works on the home page: «Пора на пару», Flow and Projects.
 
+test.describe("the home page with reduced motion", () => {
+  test.use({ reducedMotion: "reduce" });
+
+  test("still lets a reader choose the style of Flow's screens", async ({ page }) => {
+    await page.goto(HOME);
+    const tile = page.locator('#work-flow [data-look="f"]');
+    // The choice listens from hydration: a press before it does nothing, so press until it holds.
+    await expect(async () => {
+      await tile.click();
+      await expect(tile).toHaveAttribute("aria-pressed", "true", { timeout: 500 });
+    }).toPass();
+    await expect(page.locator('#work-flow [data-look="c"]')).toHaveAttribute(
+      "aria-pressed",
+      "false",
+    );
+    await expect(page.locator("#work-flow [data-look-target]").first()).toHaveAttribute(
+      "data-style",
+      "f",
+    );
+    await expect(page.locator("#work-flow [data-look-letter]")).toHaveText("F");
+  });
+});
+
 test.describe("the home page in motion", () => {
   test("casts no shadow in the dark, and keeps it in the light", async ({ page }) => {
     const none = "rgba(0, 0, 0, 0)";

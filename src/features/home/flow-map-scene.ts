@@ -104,6 +104,33 @@ function parts(chapter: HTMLElement) {
 }
 
 /**
+ * The tiles of the brief give the screens ahead their style. Choosing moves nothing, so it works
+ * with reduced motion too, where the chapter is a plain section; without a script the screens keep
+ * the style the HTML gives them.
+ */
+export function pickLooks(chapter: HTMLElement) {
+  const choose = (look: string) => {
+    for (const tile of chapter.querySelectorAll<HTMLElement>("[data-look]")) {
+      tile.setAttribute("aria-pressed", String(tile.dataset.look === look));
+    }
+    for (const target of chapter.querySelectorAll<HTMLElement>("[data-look-target]")) {
+      target.dataset.style = look;
+    }
+    for (const letter of chapter.querySelectorAll<HTMLElement>("[data-look-letter]")) {
+      letter.textContent = look.toUpperCase();
+    }
+  };
+  const onClick = (event: MouseEvent) => {
+    const tile = (event.target as Element).closest<HTMLElement>("[data-look]");
+    if (tile?.dataset.look) choose(tile.dataset.look);
+  };
+  chapter.addEventListener("click", onClick);
+  return () => {
+    chapter.removeEventListener("click", onClick);
+  };
+}
+
+/**
  * Flow as a flight along its graph. The scroll moves one number, and each frame draws from it: the
  * camera, the fans that open as the pen reaches them, the objects that leave their node along a
  * line, and at the end the strip of checklists gathering into the round base of the Flow page.
@@ -859,11 +886,8 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
     to(clamp(here + (event.key === "ArrowRight" ? 1 : -1), 0, LAST_STOP), "smooth");
   };
   const onClick = (event: MouseEvent) => {
-    const target = event.target as Element;
-    const go = target.closest<HTMLElement>("[data-go]");
+    const go = (event.target as Element).closest<HTMLElement>("[data-go]");
     if (go) to(Number(go.dataset.go), "smooth");
-    const tile = target.closest<HTMLElement>("[data-look]");
-    if (tile?.dataset.look) choose(tile.dataset.look);
   };
   const onFocus = (event: FocusEvent) => {
     const item = (event.target as Element).closest<HTMLElement>("[data-map-stop]");
@@ -901,18 +925,6 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
     pointer.nearX = -1;
     pointer.nearY = -1;
   };
-
-  function choose(look: string) {
-    for (const tile of gsap.utils.toArray<HTMLElement>("[data-look]", chapter)) {
-      tile.setAttribute("aria-pressed", String(tile.dataset.look === look));
-    }
-    for (const target of gsap.utils.toArray<HTMLElement>("[data-look-target]", chapter)) {
-      target.dataset.style = look;
-    }
-    for (const letter of gsap.utils.toArray<HTMLElement>("[data-look-letter]", chapter)) {
-      letter.textContent = look.toUpperCase();
-    }
-  }
 
   /* ---------- on and off ---------- */
 
