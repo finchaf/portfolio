@@ -27,10 +27,9 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { LOCALES, type Locale } from "../../src/i18n/locales.ts";
 import { EVERY_PAGE, EVERY_PATH } from "../../src/lib/pages.ts";
 import { DAYS, LESSONS, SLOTS, type Lesson } from "../../src/lib/product-week.ts";
+import { WORLDS } from "../../src/themes/worlds.ts";
 import { escape, fontFaces, read, text } from "../print/html.ts";
 import { flowGraph, flowGraphSource } from "./flow-graph.ts";
-
-const THEMES = ["home", "pora", "flow", "projects"];
 
 /** The faces the cards are set in. */
 const FONTS = ["geist", "inter", "jetbrains-mono", "nunito"];
@@ -317,7 +316,7 @@ const BODIES: Record<Card, (words: ReturnType<typeof strings>, graph: () => stri
 };
 
 const STYLE = [
-  ...THEMES.map((theme) => text(`src/themes/${theme}.css`)),
+  ...WORLDS.map((theme) => text(`src/themes/${theme}.css`)),
   fontFaces(FONTS),
   text("scripts/og/card.css"),
 ].join("\n");

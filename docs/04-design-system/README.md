@@ -142,9 +142,10 @@ x от 285 до 915: его оставляют площадки, которые 
 
 1. Файл в `src/themes/`, селекторы `:root:has([data-world="<имя>"])` и `[data-tint="<имя>"]`, все токены
    парами `light-dark()`; шрифты — в `:root:has(...)` и `[data-tint="<имя>"][data-tint-fonts]`.
-2. Импорт в `src/app/globals.css`, имя в `THEMES` в `themes.test.ts`.
+2. Импорт в `src/app/globals.css`.
 3. Шрифт: пакет `@fontsource-variable/*` и импорт в `src/themes/fonts.ts`.
-4. На странице `<World name="<имя>">`.
+4. Имя в `WORLDS` в `src/themes/worlds.ts`: его читают `World`, тест тем и карточки ссылок; на странице
+   `<World name="<имя>">`.
 
 ## Режим на части страницы
 

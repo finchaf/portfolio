@@ -3,7 +3,8 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-const THEMES = ["home", "pora", "flow", "projects"];
+import { PAGES } from "@/lib/pages";
+import { WORLDS } from "./worlds";
 
 const COLORS = [
   "page",
@@ -108,7 +109,11 @@ describe.each([
   });
 });
 
-describe.each(THEMES)("the %s theme", (theme) => {
+it("dresses every page of the header in a world of its own", () => {
+  expect(Object.values(PAGES)).toEqual(WORLDS);
+});
+
+describe.each(WORLDS)("the %s theme", (theme) => {
   const css = read(theme);
 
   it.each(COLORS)("gives --%s a value in both modes", (name) => {
@@ -144,7 +149,7 @@ describe("a piece tinted with another theme", () => {
   // Only some themes set these parts of a skin: the rest would inherit them from the page around.
   const optional = [
     ...new Set(
-      THEMES.flatMap((theme) =>
+      WORLDS.flatMap((theme) =>
         [...read(theme).matchAll(/(--control-[a-z-]+):/g)].map((match) => match[1] ?? ""),
       ),
     ),

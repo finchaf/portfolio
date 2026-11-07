@@ -14,6 +14,7 @@ import {
   TELEGRAM_HANDLE,
   TELEGRAM_URL,
 } from "@/lib/site";
+import { WORLDS } from "@/themes/worlds";
 import { CopyAddress } from "@/ui/copy-address";
 import { LocalClock } from "@/ui/local-clock";
 import { Logo, Wordmark } from "@/ui/logo";
@@ -22,8 +23,6 @@ import { LanguageTabs } from "./language-tabs";
 import { ThemeSwitcher } from "./theme-switcher";
 
 import "./footer.css";
-
-const WORLDS = ["home", "pora", "flow", "projects"] as const;
 
 /** The day of the build: the short form reads one way in Russian, but `11/3/26` does not in English. */
 const UPDATED_STYLE: Record<Locale, "short" | "medium"> = { ru: "short", en: "medium" };
