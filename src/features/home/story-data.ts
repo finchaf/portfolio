@@ -123,6 +123,10 @@ export const BRANCH_RISE = 0.13;
 
 /** How wide each part of the ribbon is, in widths of the screen. */
 export const SPANS = {
+  /**
+   * The opening's share of the section's height alone: scenes.css draws it `--u * 118` wide, the
+   * same on most screens and narrower on one more than 1.7 times as wide as it is high.
+   */
   open: 1.18,
   omsk: 1.02,
   university: 1.2,

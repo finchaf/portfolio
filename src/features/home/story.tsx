@@ -12,7 +12,7 @@ import plane from "./photos/plane.avif";
 import room from "./photos/room.avif";
 import stage from "./photos/stage.avif";
 import { StoryCollage } from "./story-collage";
-import { CHAPTERS, RIBBON_BLEEDS, RIBBON_HOLD, RIBBON_SPANS, SPANS } from "./story-data";
+import { CHAPTERS, RIBBON_BLEEDS, RIBBON_HOLD, RIBBON_SPANS } from "./story-data";
 import { LaunchSheet, NightLog, StoryBranches, StoryScore } from "./story-figures";
 import { StoryMenus } from "./story-menus";
 import {
@@ -257,7 +257,7 @@ export function Story() {
           <div aria-hidden className="story-grain" data-story-paper />
           <Ruler />
           <div className="story-track" data-story-track>
-            <div className="story-open" style={{ "--span": SPANS.open }}>
+            <div className="story-open">
               <div className="story-open-copy">
                 <h2 className="story-title font-display" data-title id="story-title">
                   {t("title")}
