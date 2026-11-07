@@ -1,3 +1,4 @@
+import type { AnyPagePath } from "../lib/pages";
 import { SITE_ORIGIN } from "../lib/site";
 import { LOCALES, type Locale } from "./locales";
 import { localizedPath } from "./localized-path";
@@ -13,7 +14,7 @@ export interface Alternates {
  *
  * @param path the page's path without the prefix: `""` for the home page, `"/flow"`
  */
-export function alternates(locale: Locale, path: string): Alternates {
+export function alternates(locale: Locale, path: AnyPagePath): Alternates {
   const languages = Object.fromEntries(
     LOCALES.map((each) => [each, `${SITE_ORIGIN}${localizedPath(each, path)}`]),
   ) as Record<Locale, string>;

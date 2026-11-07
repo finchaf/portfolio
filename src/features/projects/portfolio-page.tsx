@@ -156,7 +156,7 @@ function SectionDemo({ id }: { id: SectionId }) {
           frames={CHAPTERS.map(([chapter, shot]) => ({
             key: chapter,
             name: all(`${chapter}.title` as never),
-            href: `${localizedPath(locale, "/")}#work-${chapter}`,
+            href: `${localizedPath(locale, "")}#work-${chapter}`,
             shot: (
               <Shot
                 alt={t("demo.chapterAlt", { name: all(`${chapter}.title` as never) })}
