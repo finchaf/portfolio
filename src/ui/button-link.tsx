@@ -17,12 +17,15 @@ export interface ButtonLinkProps extends ComponentProps<"a"> {
 export function ButtonLink({
   tone = "primary",
   size = "regular",
-  className = "",
+  className,
   children,
   ...link
 }: ButtonLinkProps) {
   return (
-    <a className={`control-button ${TONES[tone]} ${SIZES[size]} ${className}`} {...link}>
+    <a
+      className={["control-button", TONES[tone], SIZES[size], className].filter(Boolean).join(" ")}
+      {...link}
+    >
       {children}
     </a>
   );

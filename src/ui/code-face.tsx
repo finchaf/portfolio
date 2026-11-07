@@ -11,9 +11,9 @@ export interface CodeFaceProps {
 }
 
 /** The view of a control in the code layer, in the place and the size of the control itself. */
-export function CodeFace({ shape, className = "", children }: CodeFaceProps) {
+export function CodeFace({ shape, className, children }: CodeFaceProps) {
   return (
-    <span className={`relative inline-grid ${className}`}>
+    <span className={["relative inline-grid", className].filter(Boolean).join(" ")}>
       <span className="invisible">{shape}</span>
       <span className="code-face">
         <span>{children}</span>

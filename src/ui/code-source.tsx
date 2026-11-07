@@ -17,9 +17,9 @@ export interface CodeSourceProps {
 }
 
 /** Lines of real source, coloured the way an editor would: a picture, for the code layer. */
-export function CodeSource({ lines, className = "" }: CodeSourceProps) {
+export function CodeSource({ lines, className }: CodeSourceProps) {
   return (
-    <pre className={`code-source ${className}`}>
+    <pre className={["code-source", className].filter(Boolean).join(" ")}>
       {/* The lines never move, and two of them may read the same: a line's place is its key. */}
       {lines.map((line, row) => (
         <code className="block" key={row}>
