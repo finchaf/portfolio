@@ -160,8 +160,10 @@ export function Footer() {
             >
               <span>
                 {t("shell.footer.updated", {
+                  // The commit's day, read in UTC: the zone of the machine that builds has no say.
                   date: format.dateTime(new Date(SITE_UPDATED), {
                     dateStyle: UPDATED_STYLE[locale],
+                    timeZone: "UTC",
                   }),
                 })}
               </span>
