@@ -151,7 +151,11 @@ export function HeroLens({ labels, settings, children }: HeroLensProps) {
     };
     measure();
     ScrollTrigger.addEventListener("refresh", measure);
-    void document.fonts.ready.then(measure);
+    // The fonts may settle after the page is left: then there is nothing to measure any more.
+    let stopped = false;
+    void document.fonts.ready.then(() => {
+      if (!stopped) measure();
+    });
 
     const motion = gsap.matchMedia();
     motion.add(MOTION_ALLOWED, () => {
@@ -225,12 +229,19 @@ export function HeroLens({ labels, settings, children }: HeroLensProps) {
     if (!matchMedia(MOTION_ALLOWED).matches) root.removeAttribute("data-intro");
 
     return () => {
+      stopped = true;
       ScrollTrigger.removeEventListener("refresh", measure);
       window.removeEventListener("scroll", turn);
       gsap.ticker.remove(paint);
       painting.kill();
       undo(motion);
+      // The capsule is the shell's and stays on every page after this one: it leaves clean.
       capsule?.removeAttribute("data-lens");
+      for (const name of ["--lens-x", "--lens-y", "--lens-r"]) capsule?.style.removeProperty(name);
+      if (capsule) delete capsule.dataset.size;
+      for (const item of capsule?.querySelectorAll<HTMLElement>("[data-measure]") ?? []) {
+        delete item.dataset.size;
+      }
     };
   }, scope);
 
