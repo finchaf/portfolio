@@ -28,9 +28,9 @@
   line-height: 1.5;
 }
 
+/* Weightier than the site's rule in globals.css, so a vault pane's own `display` gives way to it. */
 :root[data-js] .vault [data-no-js-only],
-:root:not([data-js]) .vault [data-js-only],
-:root:not([data-js]) [data-js-only] {
+:root:not([data-js]) .vault [data-js-only] {
   display: none;
 }
 

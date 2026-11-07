@@ -33,6 +33,14 @@ test.describe("the board of projects", () => {
       await expect(panels.nth(1)).toBeVisible();
       await expect(panels.nth(1).getByRole("heading", { level: 2 })).toHaveText("LaTeX");
     });
+
+    test("hides what only the editor can do", async ({ page }) => {
+      await page.goto("/ru/projects");
+      const panel = page.locator(".pj-board-inspector").first();
+      await expect(panel.locator(".pj-ins-hint")).toBeHidden();
+      await expect(panel.locator(".pj-panel-label").first()).toBeHidden();
+      await expect(panel.locator(".pj-chip")).toBeHidden();
+    });
   });
 
   test("a click selects a frame and leaves the address alone", async ({ page }) => {
@@ -337,6 +345,8 @@ test.describe("the LaTeX project's page", () => {
       await expect(page.locator(".pj-tx")).toHaveAttribute("data-render-at", "2");
       await expect(page.locator(".pj-walls-tag")).toHaveText("v2026.06.10");
       await expect(page.locator(".pj-thesis-code")).toBeHidden();
+      // The lens, the fields and the source switch only with a script: without one, no dead switch.
+      await expect(page.locator(".pj-thesis .pj-seg")).toBeHidden();
     });
   });
 

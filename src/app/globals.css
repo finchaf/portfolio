@@ -11,3 +11,12 @@
 img {
   -webkit-user-drag: none;
 }
+
+/*
+ * What works only with a script is not in a page without one, and what stands in for it goes once a
+ * script runs. Every route loads this sheet, so a no-JS visit to any page hides the dead controls.
+ */
+:root:not([data-js]) [data-js-only],
+:root[data-js] [data-no-js-only] {
+  display: none;
+}
