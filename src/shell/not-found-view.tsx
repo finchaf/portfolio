@@ -22,7 +22,11 @@ export function NotFoundView() {
     <div className="lost">
       <a className="lost-mark" href="/">
         <Wordmark className="lost-wordmark" />
-        <span className="sr-only">{CATALOG.ru.shell.siteName}</span>
+        {LOCALES.map((locale) => (
+          <span className="sr-only" data-lost-lang={locale} key={locale} lang={locale}>
+            {CATALOG[locale].shell.siteName}
+          </span>
+        ))}
       </a>
       <p aria-hidden className="lost-code font-display font-extrabold">
         {CODE}
