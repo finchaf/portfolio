@@ -1663,15 +1663,15 @@ a.pora-window-row:focus-visible {
   font-variant-numeric: tabular-nums;
 }
 
-[data-client="ios"] {
+.pora-page [data-client="ios"] {
   --client: var(--lesson-seminar);
 }
 
-[data-client="android"] {
+.pora-page [data-client="android"] {
   --client: var(--lesson-test);
 }
 
-[data-client="web"] {
+.pora-page [data-client="web"] {
   --client: var(--accent);
 }
 
