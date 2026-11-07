@@ -240,7 +240,12 @@
   top: 6px;
   left: 6px;
   color: var(--faint);
-  transition: rotate 100ms ease-in-out;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .collapse-icon {
+    transition: rotate 100ms ease-in-out;
+  }
 }
 
 .nav-folder[open] > summary .collapse-icon {

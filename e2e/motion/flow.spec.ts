@@ -108,5 +108,13 @@ test.describe("the Flow vault", () => {
       await expect(page.locator("#term-log")).toContainText("harvest");
       await expect(page.locator('#tree [data-note="brief"]')).toBeVisible();
     });
+
+    test("turns a folder's chevron at once, and still turns it", async ({ page }) => {
+      await page.setViewportSize({ width: 1440, height: 900 });
+      await page.goto(FLOW);
+      const chevron = page.locator("#tree details[open] > summary .collapse-icon").first();
+      await expect(chevron).toHaveCSS("transition-duration", "0s");
+      await expect(chevron).toHaveCSS("rotate", "90deg");
+    });
   });
 });
