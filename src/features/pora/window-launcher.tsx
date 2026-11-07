@@ -227,7 +227,8 @@ export function WindowLauncher() {
       close();
     };
 
-    // ← and → walk the lessons, as the footer says, unless a key is busy with a control.
+    // ← and → walk the lessons, as the footer says, while the window is open; the picture viewer
+    // takes them first while it is open over the window (picture-viewer.tsx).
     const onKey = (event: KeyboardEvent) => {
       if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
       if (event.altKey || event.metaKey || event.ctrlKey || event.shiftKey) return;
