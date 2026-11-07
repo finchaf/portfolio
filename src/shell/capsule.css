@@ -73,9 +73,15 @@
   background: var(--capsule-narrow, var(--capsule-write-fill, var(--control-fill)));
   box-shadow: var(--capsule-write-edge, none);
   color: var(--capsule-narrow-ink, var(--capsule-write-ink, var(--on-control)));
-  transition:
-    translate var(--duration-quick) var(--ease-out),
-    background-image var(--duration-quick) var(--ease-out);
+  transition: background-image var(--duration-quick) var(--ease-out);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .capsule-action {
+    transition:
+      translate var(--duration-quick) var(--ease-out),
+      background-image var(--duration-quick) var(--ease-out);
+  }
 }
 
 @media (hover: hover) {
@@ -144,8 +150,16 @@
   --capsule-gap: 0.125rem;
   --capsule-away: 200%;
   left: 50vw;
-  transition-duration: var(--duration-slow), var(--duration-base), var(--duration-base);
-  transition-property: color, opacity, translate;
+  transition-duration: var(--duration-slow), var(--duration-base);
+  transition-property: color, opacity;
+}
+
+/* It slides away only for a reader who allows motion; with reduced motion it fades where it is. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-capsule] {
+    transition-duration: var(--duration-slow), var(--duration-base), var(--duration-base);
+    transition-property: color, opacity, translate;
+  }
 }
 
 /* A scene clears the screen for its photographs. A key still finds the capsule. */

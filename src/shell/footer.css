@@ -281,9 +281,17 @@
   font-weight: 700;
   opacity: calc(var(--footer-here, 0));
   translate: calc(0.3em * (1 - var(--footer-here, 0))) 0;
-  transition:
-    opacity var(--duration-quick) var(--ease-out),
-    translate var(--duration-base) var(--ease-out);
+  transition: opacity var(--duration-quick) var(--ease-out);
+}
+
+/* The slash slides in only for a reader who has not asked for less motion; else it only shows. */
+@media (prefers-reduced-motion: no-preference) {
+  .footer-value::before,
+  .footer-sections .footer-link::before {
+    transition:
+      opacity var(--duration-quick) var(--ease-out),
+      translate var(--duration-base) var(--ease-out);
+  }
 }
 
 /* On a phone the slash would hang at the edge of the screen: the page the reader is on takes it in line. */
@@ -355,9 +363,15 @@
   display: inline-block;
   margin-left: var(--control-close-gap, 0.375em);
   opacity: 0.55;
-  transition:
-    opacity var(--duration-quick) var(--ease-out),
-    translate var(--duration-base) var(--ease-out);
+  transition: opacity var(--duration-quick) var(--ease-out);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .footer-up > span::after {
+    transition:
+      opacity var(--duration-quick) var(--ease-out),
+      translate var(--duration-base) var(--ease-out);
+  }
 }
 
 @media (hover: hover) {

@@ -21,7 +21,6 @@
   font-size: calc(var(--control-text) * 1rem);
   font-weight: 500;
   white-space: nowrap;
-  transition: translate var(--duration-quick) var(--ease-out);
 }
 
 .control-button::before {
@@ -34,16 +33,30 @@
   margin-left: calc(var(--control-pad) * -1 * var(--control-cap-room, 0));
   background: var(--control-cap, transparent);
   color: var(--control-mark);
-  transition: min-width var(--duration-base) var(--ease-out);
 }
 
 .control-button::after {
   content: var(--control-close) / "";
   margin-left: var(--control-close-gap, 0.375em);
   opacity: 0.55;
-  transition:
-    translate var(--duration-base) var(--ease-out),
-    opacity var(--duration-quick) var(--ease-out);
+  transition: opacity var(--duration-quick) var(--ease-out);
+}
+
+/* The lift, the cap and the arrow move only for a reader who has not asked for less motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .control-button {
+    transition: translate var(--duration-quick) var(--ease-out);
+  }
+
+  .control-button::before {
+    transition: min-width var(--duration-base) var(--ease-out);
+  }
+
+  .control-button::after {
+    transition:
+      translate var(--duration-base) var(--ease-out),
+      opacity var(--duration-quick) var(--ease-out);
+  }
 }
 
 /* A finger leaves a hover behind it: only a pointer that can leave gets one. */
