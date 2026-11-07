@@ -305,9 +305,7 @@
     z-index: 2;
     overflow: auto;
     scrollbar-width: none;
-    transition:
-      translate var(--duration-slow) var(--ease-in-out),
-      opacity var(--duration-base) var(--ease-out);
+    transition: opacity var(--duration-base) var(--ease-out);
   }
 
   :root[data-js] .pj-board-layers {
@@ -455,9 +453,7 @@
   }
 
   :root[data-js] .pj-board-head {
-    transition:
-      translate var(--duration-slow) var(--ease-in-out),
-      opacity var(--duration-base) var(--ease-out);
+    transition: opacity var(--duration-base) var(--ease-out);
   }
 
   :root[data-js] .pj-board-zoom {
@@ -494,6 +490,17 @@
       background: var(--raised);
       color: var(--ink);
     }
+  }
+}
+
+/* The panels slide aside only for a reader who allows motion; for the others they only fade. */
+@media (prefers-reduced-motion: no-preference) and (min-width: 64rem) {
+  :root[data-js] .pj-board-head,
+  :root[data-js] .pj-board-layers,
+  :root[data-js] .pj-board-inspector {
+    transition:
+      translate var(--duration-slow) var(--ease-in-out),
+      opacity var(--duration-base) var(--ease-out);
   }
 }
 
