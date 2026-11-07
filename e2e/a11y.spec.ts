@@ -217,6 +217,14 @@ test("the first Tab reaches the skip link, and it leads to the page", async ({ p
   await page.keyboard.press("Tab");
   const skip = page.getByRole("link", { name: "К содержанию" });
   await expect(skip).toBeFocused();
+  // Focused is not seen: the page's own layer must not paint over the link.
+  const box = await skip.boundingBox();
+  if (!box) throw new Error("no skip link");
+  const onTop = await skip.evaluate(
+    (link, { x, y }) => document.elementFromPoint(x, y)?.closest("a") === link,
+    { x: box.x + box.width / 2, y: box.y + box.height / 2 },
+  );
+  expect(onTop).toBe(true);
   await page.keyboard.press("Enter");
   await expect(page.locator("#content")).toBeFocused();
 });
