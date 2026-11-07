@@ -12,7 +12,7 @@ import { Work } from "./work";
 /** A scene in which the axis of movement changes: down, around a wheel, across the works, down. */
 export function HomePage() {
   return (
-    <World bleed name="home">
+    <World name="home">
       <PersonData />
       <Hero />
       <Story />

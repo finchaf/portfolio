@@ -78,7 +78,7 @@ export function ProjectShell({
   sections,
 }: Props) {
   return (
-    <World bleed name="projects">
+    <World name="projects">
       <div className="pj-sub" data-capsule-held="" data-project={project} data-subpage>
         <aside className="pj-panel pj-sub-left">
           <BackToBoard href={back.href} label={back.label} project={project} />

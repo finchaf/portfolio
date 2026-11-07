@@ -107,7 +107,7 @@ export function PoraPage() {
   };
 
   return (
-    <World bleed name="pora">
+    <World name="pora">
       <div className="pora-page" data-capsule-held="">
         <h1 className="pora-sr">{t("title")}</h1>
 

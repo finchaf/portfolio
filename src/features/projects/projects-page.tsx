@@ -38,7 +38,7 @@ export function ProjectsPage() {
   const locale = useLocale();
 
   return (
-    <World bleed name="projects">
+    <World name="projects">
       <div className="pj-board" data-board data-capsule-held="">
         <header className="pj-board-head">
           <h1>{t("title")}</h1>

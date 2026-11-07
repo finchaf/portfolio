@@ -31,7 +31,7 @@ export function FlowPage() {
     href: localizedPath(locale, path),
   }));
   return (
-    <World bleed name="flow">
+    <World name="flow">
       <div className="vault" data-capsule-flat="" id="vault">
         <div aria-hidden className="vault-titlebar" />
         <MobileBar />
