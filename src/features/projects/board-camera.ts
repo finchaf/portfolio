@@ -61,16 +61,23 @@ export function attachBoard(board: HTMLElement, { open, duration }: Options) {
   const { signal } = stop;
   let flight = 0;
 
+  /**
+   * Reads the layout before it writes a style, so a frame of a flight costs one layout, not two. The
+   * writes move nothing the reads measure: the world's place and the section's width do not depend
+   * on the camera.
+   */
   const paint = () => {
+    const { offsetLeft, offsetTop } = world;
+    const width = section.offsetWidth;
     world.style.transform = `translate(${String(camera.x)}px, ${String(camera.y)}px) scale(${String(camera.z)})`;
     world.style.setProperty("--z", String(camera.z));
     board.style.setProperty("--dot", `${String(1.5 * camera.z)}rem`);
     board.style.setProperty(
       "--dot-x",
-      `${String(world.offsetLeft + camera.x)}px ${String(world.offsetTop + camera.y)}px`,
+      `${String(offsetLeft + camera.x)}px ${String(offsetTop + camera.y)}px`,
     );
     if (readout) {
-      const scale = (section.offsetWidth * camera.z) / SECTION.width;
+      const scale = (width * camera.z) / SECTION.width;
       readout.textContent = `${String(Math.round(scale * 100))}%`;
     }
   };
