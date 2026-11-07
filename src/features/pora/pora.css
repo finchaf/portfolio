@@ -521,8 +521,6 @@
 
 button.pora-card,
 button.pora-list-item {
-  color: inherit;
-  font: inherit;
   text-align: left;
   cursor: pointer;
 }
@@ -547,10 +545,6 @@ button.pora-card:focus-visible {
 
 button.pora-list-item {
   width: 100%;
-  border-top: 0;
-  border-right: 0;
-  border-left: 0;
-  background: none;
 }
 
 button.pora-list-item:focus-visible {
@@ -1167,7 +1161,6 @@ a.pora-window-row:focus-visible {
   padding: 0 0.3125rem;
   border-radius: 0.625rem;
   color: var(--ink);
-  font: inherit;
   cursor: pointer;
   transition: background-color 150ms ease;
 }
