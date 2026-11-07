@@ -3,7 +3,7 @@
 import "./page-change.css";
 
 import { usePathname } from "next/navigation";
-import { useLayoutEffect, useRef, ViewTransition } from "react";
+import { useEffect, useLayoutEffect, useRef, ViewTransition } from "react";
 
 import { PAGE_PATHS, type PagePath } from "@/lib/pages";
 import { markPageShown } from "@/motion/scene";
@@ -33,6 +33,8 @@ export function PageChange() {
   const pathname = usePathname();
   const last = useRef(pathname);
   const settle = useRef(0);
+  const quiet = useRef(0);
+  const quietMark = useRef(0);
 
   // React drops the picture of the whole page unless the name is already set on the element.
   // It also runs after the first page's scenes have started: any scene after it came by a change.
@@ -40,6 +42,17 @@ export function PageChange() {
     document.documentElement.style.viewTransitionName = "root";
     markPageShown();
   }, []);
+
+  // Nothing of this outlives the shell: its timers stop, and the marks they would take off go now.
+  useEffect(
+    () => () => {
+      window.clearTimeout(settle.current);
+      window.clearTimeout(quiet.current);
+      document.documentElement.removeAttribute("data-page-change");
+      document.documentElement.removeAttribute("data-page-quiet");
+    },
+    [],
+  );
 
   useLayoutEffect(() => {
     const back = placeOf(pathname) < placeOf(last.current);
@@ -57,10 +70,16 @@ export function PageChange() {
         root.removeAttribute("data-page-change");
       }, DURATION.page * 1000);
     }
-    // A page that moved its own camera asked for no second movement on top: `data-page-quiet`.
-    if (root.hasAttribute("data-page-quiet")) {
-      window.setTimeout(() => {
-        root.removeAttribute("data-page-quiet");
+    // A page that moved its own camera asked for no second movement on top: `data-page-quiet`. The
+    // change takes the request by writing its own mark into it, and takes it off only while that
+    // mark is still there: a camera that asks again before then writes over it, and keeps its own.
+    const asked = root.getAttribute("data-page-quiet");
+    if (asked !== null && asked !== String(quietMark.current)) {
+      window.clearTimeout(quiet.current);
+      const mark = String(++quietMark.current);
+      root.setAttribute("data-page-quiet", mark);
+      quiet.current = window.setTimeout(() => {
+        if (root.getAttribute("data-page-quiet") === mark) root.removeAttribute("data-page-quiet");
       }, QUIET_FOR);
     }
   }, [pathname]);
