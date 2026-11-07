@@ -205,7 +205,7 @@ export function StoryBranches() {
       <ul className="story-branch-list" data-branch-list>
         {BRANCHES.map(({ key, label, y, below }) => (
           <li
-            className={`story-branch ${below ? "story-branch-below" : ""}`}
+            className={["story-branch", below ? "story-branch-below" : ""].join(" ")}
             data-branch={key}
             data-reveal
             data-tint={key === "next" ? "pora" : undefined}

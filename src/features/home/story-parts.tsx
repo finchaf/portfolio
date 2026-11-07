@@ -60,7 +60,7 @@ export function StoryCol({
 }) {
   return (
     <div
-      className={`story-col story-col-${at} ${spot ? "story-spot" : ""}`}
+      className={["story-col", `story-col-${at}`, spot ? "story-spot" : ""].join(" ")}
       data-ruler-band={spot ? "" : undefined}
       style={{ "--weight": weight }}
     >
