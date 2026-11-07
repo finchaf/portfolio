@@ -527,12 +527,12 @@ button.pora-list-item {
   cursor: pointer;
 }
 
+/* Inside a button these are spans; they stand as blocks. The meta row keeps its own flex. */
 .pora-card-text,
 .pora-list-when,
 .pora-list-slot,
 .pora-list-title,
-.pora-list-text,
-.pora-list-meta {
+.pora-list-text {
   display: block;
 }
 
