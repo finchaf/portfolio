@@ -1,5 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
+import { height, jump, topOf } from "../helpers";
+
 // The board of projects and the pages of the two projects.
 
 test.describe("the board of projects", () => {
@@ -116,6 +118,44 @@ test.describe("the board of projects", () => {
     await ready(page);
     await expect(page.locator('[data-frame="themes"]')).toHaveCSS("position", "absolute");
     await expect.poll(() => page.locator('[data-sec="latex"]').boundingBox()).toEqual(before);
+  });
+
+  test("leaves the home page's board as a fresh load draws it", async ({ page }) => {
+    await page.goto("/ru/projects");
+    await ready(page);
+    await page.locator("[data-capsule]").getByRole("link", { name: "Главная" }).click();
+    await expect(page).toHaveURL(/\/ru$/);
+    const chapter = page.locator("#work-projects");
+    await jump(page, (await topOf(page, "#work-projects")) + (await height(page)));
+    // The editor's sheet stays loaded here, and its handles, shown by `display`, must not reach the
+    // chapter's, which are always laid out and fade in under the pointer.
+    await expect(
+      chapter.locator(".pj-frame:not([data-selected]) .pj-frame-handles").first(),
+    ).toHaveCSS("display", "block");
+    await expect
+      .poll(async () => {
+        const spot = await chapter.evaluate((node) => {
+          for (const frame of node.querySelectorAll<HTMLElement>(
+            ".pj-frame:not([data-selected])",
+          )) {
+            const box = frame.getBoundingClientRect();
+            const x = box.left + box.width / 2;
+            const y = box.top + box.height / 2;
+            if (document.elementFromPoint(x, y)?.closest(".pj-frame") === frame) {
+              return { key: frame.dataset.frame ?? "", x, y };
+            }
+          }
+          return null;
+        });
+        if (!spot) return "no frame in reach";
+        await page.mouse.move(spot.x, spot.y);
+        return chapter
+          .locator(`[data-frame="${spot.key}"] .pj-frame-handles`)
+          .evaluate(
+            (node) => `${getComputedStyle(node).display} ${getComputedStyle(node).opacity}`,
+          );
+      })
+      .toBe("block 1");
   });
 
   test("keeps typed code as typed, with no joined signs", async ({ page }) => {

@@ -350,27 +350,32 @@
     transform-origin: 0 0;
   }
 
-  :root[data-js] .pj-sec {
+  /*
+   * The selection, at the camera's scale. Every rule is under the board: the home page's chapter
+   * draws the same sections and dresses them from its own sheet, and this one stays loaded there
+   * after a visit.
+   */
+  :root[data-js] .pj-board .pj-sec {
     margin: 0;
   }
 
-  :root[data-js] .pj-sec-label {
+  :root[data-js] .pj-board .pj-sec-label {
     margin-bottom: calc(0.5rem / var(--z));
     transform: scale(calc(1 / var(--z)));
     transform-origin: 0 100%;
   }
 
-  :root[data-js] .pj-sec[data-selected] {
+  :root[data-js] .pj-board .pj-sec[data-selected] {
     outline: calc(2px / var(--z)) solid var(--accent-strong);
     outline-offset: calc(3px / var(--z));
   }
 
-  :root[data-js] .pj-sec[data-hover]:not([data-selected]) {
+  :root[data-js] .pj-board .pj-sec[data-hover]:not([data-selected]) {
     outline: calc(1.5px / var(--z)) solid var(--accent-strong);
     outline-offset: calc(3px / var(--z));
   }
 
-  :root[data-js] .pj-frame-name {
+  :root[data-js] .pj-board .pj-frame-name {
     position: absolute;
     bottom: 100%;
     left: 0;
@@ -387,7 +392,7 @@
     white-space: nowrap;
   }
 
-  :root[data-js] .pj-frame-handles {
+  :root[data-js] .pj-board .pj-frame-handles {
     position: absolute;
     inset: 0;
     display: none;
@@ -395,8 +400,8 @@
     pointer-events: none;
   }
 
-  :root[data-js] .pj-frame-handles::before,
-  :root[data-js] .pj-frame-handles::after {
+  :root[data-js] .pj-board .pj-frame-handles::before,
+  :root[data-js] .pj-board .pj-frame-handles::after {
     content: "";
     position: absolute;
     width: 7px;
@@ -406,22 +411,22 @@
     transform: scale(calc(1 / var(--z)));
   }
 
-  :root[data-js] .pj-frame-handles::before {
+  :root[data-js] .pj-board .pj-frame-handles::before {
     top: -3.5px;
     left: -3.5px;
   }
 
-  :root[data-js] .pj-frame-handles::after {
+  :root[data-js] .pj-board .pj-frame-handles::after {
     right: -3.5px;
     bottom: -3.5px;
   }
 
-  :root[data-js] .pj-frame[data-selected] {
+  :root[data-js] .pj-board .pj-frame[data-selected] {
     z-index: 3;
   }
 
-  :root[data-js] .pj-frame[data-selected] .pj-frame-handles,
-  :root[data-js] .pj-frame[data-hover] .pj-frame-handles {
+  :root[data-js] .pj-board .pj-frame[data-selected] .pj-frame-handles,
+  :root[data-js] .pj-board .pj-frame[data-hover] .pj-frame-handles {
     display: block;
   }
 
