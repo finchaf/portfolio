@@ -18,11 +18,9 @@ import { THESIS_URL } from "./site";
  * PDFKit, `doc.string` split on white space; size in bytes as GitHub serves the asset.
  * Documents, the product's private repository, branch master:
  *   commits          git rev-list --count master
- *   decisions        git ls-files 'docs/decisions/0*.md' | wc -l
  *   gates            the timed steps of `scripts/check.py`
  *   tests            git grep -c 'def test_' -- 'scripts/test_*.py', summed
  *   types            the document types the class knows
- *   classLines       wc -l pnp.cls styles/*.sty
  */
 export const LATEX = {
   date: "03.11.2026",
@@ -40,15 +38,12 @@ export const LATEX = {
     last: "03.06.2025",
   },
   snippets: { all: 139, auto: 132, math: 44 },
-  thesis: { pages: 130, words: 23049, releases: 10, commits: 22 },
+  thesis: { pages: 130, words: 23049, releases: 10 },
   documents: {
     commits: 433,
-    decisions: 20,
     gates: 11,
     tests: 465,
     types: 6,
-    classLines: 1181,
-    first: "30.09.2026",
   },
 } as const;
 

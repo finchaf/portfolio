@@ -69,9 +69,9 @@ export const DAYS = [
 
 /** `python3 scripts/deploy.py --status`, newest first. */
 export const RELEASES = [
-  ["00f836b6267e", "06.11", "record the Pora chapter and the refreshed site page"],
-  ["6534e6491252", "05.11", "record the Pora skin, motion and link-preview decisions"],
-  ["41387ec62038", "05.11", "wake the far story pictures from where the ribbon is going"],
+  ["00f836b6267e", "06.11"],
+  ["6534e6491252", "05.11"],
+  ["41387ec62038", "05.11"],
 ] as const;
 
 /** Kilobytes of first-load JavaScript, gzip. */
