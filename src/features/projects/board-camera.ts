@@ -23,6 +23,12 @@ const SLACK = 80;
 const DOUBLE = 420;
 /** Movement of the pointer, in pixels, below which a press is a click. */
 const CLICK = 4;
+/** How far a framed box keeps from the canvas's top edge, in pixels: a margin of its own. */
+const FRAMING_TOP = 88;
+/** How far it keeps from the bottom edge: the canvas's bottom padding, 1.5rem in `projects.css`. */
+const FRAMING_BOTTOM = 24;
+/** The share of the covering scale the camera takes inside a section, going in and coming back. */
+const INSIDE = 0.9;
 
 const clamp = (value: number, low: number, high: number) => Math.max(low, Math.min(high, value));
 const easeInOut = (t: number) => (t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) ** 3 / 2);
@@ -42,7 +48,6 @@ export function attachBoard(board: HTMLElement, { open, duration }: Options) {
   const [first] = sections;
   const readout = pick("[data-zoom-value]");
   if (!canvas || !world || !first) return () => undefined;
-  const section = first;
 
   /** A project's section, by its id; the first one for anything else. */
   const sectionOf = (project: string | undefined) =>
@@ -68,7 +73,7 @@ export function attachBoard(board: HTMLElement, { open, duration }: Options) {
    */
   const paint = () => {
     const { offsetLeft, offsetTop } = world;
-    const width = section.offsetWidth;
+    const width = first.offsetWidth;
     world.style.transform = `translate(${String(camera.x)}px, ${String(camera.y)}px) scale(${String(camera.z)})`;
     world.style.setProperty("--z", String(camera.z));
     board.style.setProperty("--dot", `${String(1.5 * camera.z)}rem`);
@@ -128,8 +133,8 @@ export function attachBoard(board: HTMLElement, { open, duration }: Options) {
     const left = pick(".pj-board-layers")?.getBoundingClientRect().right ?? 0;
     const right =
       pick(".pj-board-inspector[data-current]")?.getBoundingClientRect().left ?? canvasBox.right;
-    const top = canvasBox.top + 88;
-    const bottom = canvasBox.bottom - 24;
+    const top = canvasBox.top + FRAMING_TOP;
+    const bottom = canvasBox.bottom - FRAMING_BOTTOM;
     const z = clamp(
       Math.min(((right - left) * room) / box.w, ((bottom - top) * room) / box.h),
       MIN,
@@ -152,6 +157,37 @@ export function attachBoard(board: HTMLElement, { open, duration }: Options) {
       w: own.width / camera.z,
       h: own.height / camera.z,
     };
+  };
+
+  /** The camera inside a section, centred, a little short of covering the canvas. */
+  const inside = (node: HTMLElement) => {
+    const box = boxOf(node);
+    const canvasBox = canvas.getBoundingClientRect();
+    const z = Math.max(canvasBox.width / box.w, canvasBox.height / box.h) * INSIDE;
+    return {
+      z,
+      x: canvasBox.width / 2 - world.offsetLeft - (box.x + box.w / 2) * z,
+      y: canvasBox.height / 2 - world.offsetTop - (box.y + box.h / 2) * z,
+    };
+  };
+
+  /** Zooms by `ratio` round a point of the screen, which stays where it is. */
+  const zoomAt = (ratio: number, screenX: number, screenY: number) => {
+    const box = canvas.getBoundingClientRect();
+    const px = screenX - box.left - world.offsetLeft;
+    const py = screenY - box.top - world.offsetTop;
+    const z = clamp(camera.z * ratio, MIN, MAX);
+    camera.x = px - ((px - camera.x) * z) / camera.z;
+    camera.y = py - ((py - camera.y) * z) / camera.z;
+    camera.z = z;
+    hold();
+    paint();
+  };
+
+  /** Zooms round the canvas's middle, as the buttons and the keys do. */
+  const zoomCentre = (ratio: number) => {
+    const box = canvas.getBoundingClientRect();
+    zoomAt(ratio, box.left + box.width / 2, box.top + box.height / 2);
   };
 
   /* What is selected */
@@ -193,22 +229,11 @@ export function attachBoard(board: HTMLElement, { open, duration }: Options) {
   const enter = (key: string | null) => {
     const href = hrefOf(key);
     board.dataset.leaving = "";
-    const box = boxOf(sectionOf(current));
-    const canvasBox = canvas.getBoundingClientRect();
-    const z = Math.max(canvasBox.width / box.w, canvasBox.height / box.h) * 0.9;
-    const go = () => {
+    fly(inside(sectionOf(current)), () => {
       session.set(ARRIVE_KEY, "1");
       document.documentElement.setAttribute("data-page-quiet", "");
       open(href);
-    };
-    fly(
-      {
-        z,
-        x: canvasBox.width / 2 - world.offsetLeft - (box.x + box.w / 2) * z,
-        y: canvasBox.height / 2 - world.offsetTop - (box.y + box.h / 2) * z,
-      },
-      go,
-    );
+    });
   };
 
   /* The pointer */
@@ -227,7 +252,7 @@ export function attachBoard(board: HTMLElement, { open, duration }: Options) {
   const fingers = new Map<number, { x: number; y: number }>();
   let pinch = 0;
 
-  const toLocal = () => SECTION.width / section.offsetWidth;
+  const toLocal = () => SECTION.width / first.offsetWidth;
 
   const readAxes = (frame: HTMLElement) => {
     const key = frame.dataset.frame ?? "";
@@ -317,9 +342,8 @@ export function attachBoard(board: HTMLElement, { open, duration }: Options) {
     const key = was.frame?.dataset.frame ?? was.onSection ?? null;
     if (!key) return;
     select(key);
-    const target = key;
-    if (last.target === target && event.timeStamp - last.at < DOUBLE) enter(was.frame ? key : null);
-    last = { at: event.timeStamp, target };
+    if (last.target === key && event.timeStamp - last.at < DOUBLE) enter(was.frame ? key : null);
+    last = { at: event.timeStamp, target: key };
   };
   canvas.addEventListener("pointerup", release, { signal });
   canvas.addEventListener("pointercancel", release, { signal });
@@ -342,19 +366,6 @@ export function attachBoard(board: HTMLElement, { open, duration }: Options) {
     },
     { capture: true, signal },
   );
-
-  function zoomAt(ratio: number, screenX: number, screenY: number) {
-    const box = canvas?.getBoundingClientRect();
-    if (!box || !world) return;
-    const px = screenX - box.left - world.offsetLeft;
-    const py = screenY - box.top - world.offsetTop;
-    const z = clamp(camera.z * ratio, MIN, MAX);
-    camera.x = px - ((px - camera.x) * z) / camera.z;
-    camera.y = py - ((py - camera.y) * z) / camera.z;
-    camera.z = z;
-    hold();
-    paint();
-  }
 
   // The wheel pans, and at the lower edge of the board it is the page's: the footer stays in reach.
   canvas.addEventListener(
@@ -390,10 +401,7 @@ export function attachBoard(board: HTMLElement, { open, duration }: Options) {
       const target = event.target instanceof Element ? event.target : null;
       const zoom = target?.closest<HTMLElement>("[data-zoom]")?.dataset.zoom;
       if (zoom === "all") fit();
-      else if (zoom) {
-        const box = canvas.getBoundingClientRect();
-        zoomAt(zoom === "in" ? 1.25 : 0.8, box.left + box.width / 2, box.top + box.height / 2);
-      }
+      else if (zoom) zoomCentre(zoom === "in" ? 1.25 : 0.8);
       const layer = target?.closest<HTMLElement>("[data-layer]")?.dataset.layer;
       if (layer) {
         const frame = frameNode(layer);
@@ -444,7 +452,6 @@ export function attachBoard(board: HTMLElement, { open, duration }: Options) {
     (event) => {
       // A key with Ctrl, Cmd or Alt is the browser's: its zoom, its history.
       if (event.ctrlKey || event.metaKey || event.altKey) return;
-      const box = canvas.getBoundingClientRect();
       const pans: Record<string, [number, number]> = {
         ArrowLeft: [STEP, 0],
         ArrowRight: [-STEP, 0],
@@ -459,9 +466,9 @@ export function attachBoard(board: HTMLElement, { open, duration }: Options) {
         hold();
         paint();
       } else if (event.key === "+" || event.key === "=") {
-        zoomAt(1.25, box.left + box.width / 2, box.top + box.height / 2);
+        zoomCentre(1.25);
       } else if (event.key === "-") {
-        zoomAt(0.8, box.left + box.width / 2, box.top + box.height / 2);
+        zoomCentre(0.8);
       } else if (event.key === "0") {
         fit();
       } else if (event.key === "Escape") {
@@ -499,12 +506,7 @@ export function attachBoard(board: HTMLElement, { open, duration }: Options) {
   if (back) {
     session.remove(RETURN_KEY);
     if (!isCalm()) {
-      const box = boxOf(sectionOf(current));
-      const size = canvas.getBoundingClientRect();
-      const z = Math.max(size.width / box.w, size.height / box.h) * 0.9;
-      camera.z = z;
-      camera.x = size.width / 2 - world.offsetLeft - (box.x + box.w / 2) * z;
-      camera.y = size.height / 2 - world.offsetTop - (box.y + box.h / 2) * z;
+      Object.assign(camera, inside(sectionOf(current)));
       board.dataset.leaving = "";
       paint();
       requestAnimationFrame(() => {
