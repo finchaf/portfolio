@@ -77,6 +77,23 @@ function Roles({ me, tool }: { me: string; tool: string }) {
   );
 }
 
+/** What every stop opens with: its number, its title and its text. */
+function StepHead({ number, title, text }: { number: number; title: string; text: string }) {
+  return (
+    <>
+      <p className="map-number" data-map-line>
+        {String(number).padStart(2, "0")}
+      </p>
+      <h3 className="stop-title" data-map-title>
+        {title}
+      </h3>
+      <p className="stop-text" data-map-line>
+        {text}
+      </p>
+    </>
+  );
+}
+
 function StepCopy({
   step,
   number,
@@ -87,15 +104,7 @@ function StepCopy({
   const f = useTranslations(`home.work.flow.steps.${step}`);
   return (
     <>
-      <p className="map-number" data-map-line>
-        {String(number).padStart(2, "0")}
-      </p>
-      <h3 className="stop-title" data-map-title>
-        {f("title")}
-      </h3>
-      <p className="stop-text" data-map-line>
-        {f("text")}
-      </p>
+      <StepHead number={number} text={f("text")} title={f("title")} />
       <Roles me={f("me")} tool={f("tool")} />
       <p className="map-command" data-map-line>
         {f("command")}
@@ -361,15 +370,7 @@ export function WorkFlow() {
           <MapStop
             copy={
               <>
-                <p className="map-number" data-map-line>
-                  {String(5).padStart(2, "0")}
-                </p>
-                <h3 className="stop-title" data-map-title>
-                  {f("steps.rule.title")}
-                </h3>
-                <p className="stop-text" data-map-line>
-                  {f("steps.rule.text")}
-                </p>
+                <StepHead number={5} text={f("steps.rule.text")} title={f("steps.rule.title")} />
                 <p className="map-command" data-map-line>
                   {f("steps.rule.command")}
                 </p>
@@ -380,15 +381,7 @@ export function WorkFlow() {
           <MapStop
             copy={
               <>
-                <p className="map-number" data-map-line>
-                  {String(6).padStart(2, "0")}
-                </p>
-                <h3 className="stop-title" data-map-title>
-                  {f("steps.base.title")}
-                </h3>
-                <p className="stop-text" data-map-line>
-                  {f("steps.base.text")}
-                </p>
+                <StepHead number={6} text={f("steps.base.text")} title={f("steps.base.title")} />
                 <dl className="map-figures" data-map-line>
                   {figures.map((figure) => (
                     <div key={figure}>
