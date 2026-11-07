@@ -10,7 +10,14 @@ export function DemoSlash({
 }: {
   a: ReactNode;
   b: ReactNode;
-  strings: { before: string; after: string; play: string; beforeNote: string; afterNote: string };
+  strings: {
+    before: string;
+    after: string;
+    play: string;
+    beforeNote: string;
+    afterNote: string;
+    label: string;
+  };
 }) {
   const [way, setWay] = useState<"before" | "after">("after");
   const [turn, setTurn] = useState(0);
@@ -24,7 +31,7 @@ export function DemoSlash({
 
   return (
     <div className="pj-slash-demo" data-way={way}>
-      <div className="pj-seg" role="group">
+      <div aria-label={strings.label} className="pj-seg" role="group">
         {(["after", "before"] as const).map((key) => (
           <button
             aria-pressed={key === way}

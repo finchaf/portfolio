@@ -18,7 +18,7 @@ export function DemoLens({
 }: {
   design: ReactNode;
   code: ReactNode;
-  strings: { hint: string; design: string; code: string; lens: string };
+  strings: { hint: string; design: string; code: string; lens: string; label: string };
 }) {
   const frame = useRef<HTMLDivElement>(null);
   const layer = useRef<HTMLDivElement>(null);
@@ -80,7 +80,7 @@ export function DemoLens({
 
   return (
     <div className="pj-lens-demo" data-view={view}>
-      <div className="pj-seg" role="group">
+      <div aria-label={strings.label} className="pj-seg" role="group">
         {(["lens", "design", "code"] as const).map((key) => (
           <button
             aria-pressed={key === view}

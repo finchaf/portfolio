@@ -131,6 +131,7 @@ function SectionDemo({ id }: { id: SectionId }) {
             design: demo("demo.lensDesign"),
             code: demo("demo.lensCode"),
             lens: demo("demo.lensBoth"),
+            label: demo("demo.lensLabel"),
           }}
         />
       );
@@ -145,6 +146,7 @@ function SectionDemo({ id }: { id: SectionId }) {
             play: demo("demo.play"),
             beforeNote: demo("demo.beforeNote"),
             afterNote: demo("demo.afterNote"),
+            label: demo("demo.slashLabel"),
           }}
         />
       );
@@ -163,6 +165,7 @@ function SectionDemo({ id }: { id: SectionId }) {
               />
             ),
           }))}
+          label={t("sections.chapters.name")}
           open={demo("demo.openChapter")}
         />
       );

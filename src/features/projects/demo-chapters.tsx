@@ -14,12 +14,21 @@ export interface ChapterFrame {
  * The three chapters of the home page, each on a stop as the reader sees it. The frames are all in
  * the HTML; the ones not chosen have no box, so their pictures are never fetched.
  */
-export function DemoChapters({ frames, open }: { frames: readonly ChapterFrame[]; open: string }) {
+export function DemoChapters({
+  frames,
+  label,
+  open,
+}: {
+  frames: readonly ChapterFrame[];
+  /** The name of the row of chapters, as the reader hears it. */
+  label: string;
+  open: string;
+}) {
   const [chosen, choose] = useState(frames[0]?.key);
   const shown = frames.find((frame) => frame.key === chosen) ?? frames[0];
   return (
     <div className="pj-chapters-demo">
-      <div className="pj-seg" role="group">
+      <div aria-label={label} className="pj-seg" role="group">
         {frames.map((frame) => (
           <button
             aria-pressed={frame.key === shown?.key}
