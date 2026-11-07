@@ -161,6 +161,18 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
   const phones = row ? gsap.utils.toArray<HTMLElement>(".map-phone", row) : [];
   const rungList = chapter.querySelector<HTMLElement>(".map-rungs");
   let rungsAt = { left: 0, top: 0, right: 0, bottom: 0 };
+  /** The row of screens and the phones shown in it, read on a measure: offsets ignore transforms. */
+  let wipeAt = {
+    room: 0,
+    phones: [] as { frame: HTMLElement | null; left: number; width: number }[],
+  };
+  /**
+   * The figures last shown, NaN before any. The wipe writes on every drawn frame even when its share
+   * stays: skipping those writes changed how Chromium painted a moving line of the screens' stop.
+   */
+  const shownCounts = counts.map(() => Number.NaN);
+  /** The tip's width, read when its words change or the page is measured again: -1 until then. */
+  let tipWidth = -1;
 
   const view = { width: 1, height: 1, ratio: 1, narrow: false };
   const scroll = { progress: 0 };
@@ -258,6 +270,17 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
         bottom: told.bottom - box.top,
       };
     }
+    wipeAt = {
+      room: row?.offsetWidth ?? 0,
+      phones: phones
+        .filter((phone) => phone.offsetWidth > 0)
+        .map((phone) => ({
+          frame: phone.querySelector<HTMLElement>(".app-frame"),
+          left: phone.offsetLeft,
+          width: phone.offsetWidth,
+        })),
+    };
+    tipWidth = -1;
     drawn = -1;
   }
 
@@ -712,15 +735,9 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
     if (stop === STOP.screens && move === 0) share = inOut(between(0, 0.86, rest));
     else if (stop === STOP.screens - 1) share = 0;
     else if (stop >= STOP.screens) share = 1;
-    const room = row.offsetWidth;
-    const at = room * share;
-    for (const phone of phones) {
-      if (phone.offsetWidth === 0) continue;
-      const frame = phone.querySelector<HTMLElement>(".app-frame");
-      frame?.style.setProperty(
-        "--cx",
-        `${css(clamp(at - phone.offsetLeft, 0, phone.offsetWidth))}px`,
-      );
+    const at = wipeAt.room * share;
+    for (const { frame, left, width } of wipeAt.phones) {
+      frame?.style.setProperty("--cx", `${css(clamp(at - left, 0, width))}px`);
     }
     if (cut) {
       cut.style.transform = `translate3d(${css(at)}px,0,0)`;
@@ -744,10 +761,12 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
   }
 
   function runCounts(share: number) {
-    for (const count of counts) {
-      const target = Number(count.dataset.count);
-      count.textContent = String(Math.round(target * share));
-    }
+    counts.forEach((count, index) => {
+      const shown = Math.round(Number(count.dataset.count) * share);
+      if (shown === shownCounts[index]) return;
+      shownCounts[index] = shown;
+      count.textContent = String(shown);
+    });
   }
 
   function runTerminal(x: number, now: number) {
@@ -787,11 +806,15 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
         : null;
       const named = best?.kind === "rule" ? best.hub : best;
       tip.hidden = !named?.label;
-      if (named?.label) tip.textContent = `${named.label} · ${String(named.rules)} ${unit}`;
+      if (named?.label) {
+        tip.textContent = `${named.label} · ${String(named.rules)} ${unit}`;
+        tipWidth = -1;
+      }
       drawn = -1;
     }
     if (hovered && !tip.hidden) {
-      const x = clamp(hovered.sx - tip.offsetWidth / 2, 8, view.width - tip.offsetWidth - 8);
+      if (tipWidth < 0) tipWidth = tip.offsetWidth;
+      const x = clamp(hovered.sx - tipWidth / 2, 8, view.width - tipWidth - 8);
       tip.style.transform = shift(x, hovered.sy - 34);
     }
   }
