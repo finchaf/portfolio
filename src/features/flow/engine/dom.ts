@@ -1,3 +1,5 @@
+import { WIDE } from "@/motion/reduced";
+
 // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters -- a caller names what it expects.
 export function find<T extends Element = HTMLElement>(
   selector: string,
@@ -26,10 +28,6 @@ export function element<K extends keyof HTMLElementTagNameMap>(
   return node;
 }
 
-export function isStill() {
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-}
-
 export function isWide() {
-  return window.matchMedia("(min-width: 64rem)").matches;
+  return window.matchMedia(WIDE).matches;
 }

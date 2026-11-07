@@ -1,7 +1,8 @@
+import { isCalm } from "@/motion/reduced";
 import { readTheme, saveTheme } from "@/themes/theme";
 
 import { MAIN_NOTE, TASK_NOTES } from "../notes";
-import { all, element, find, isStill, isWide } from "./dom";
+import { all, element, find, isWide } from "./dom";
 import { makeLanes, setupCompare, setupLadder } from "./figures";
 import { makeGraph } from "./graph";
 import type { VaultStrings } from "./strings";
@@ -87,7 +88,7 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
     notes: noteIds.map((id) => ({
       id,
       label: titleOf(id),
-      hidden: TASK_NOTES.includes(id) && !isStill(),
+      hidden: TASK_NOTES.includes(id) && !isCalm(),
     })),
     links: edges,
     hubLabel: (id) => strings.checklists[id] ?? id,
@@ -340,7 +341,7 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
         "click",
         (event) => {
           event.preventDefault();
-          heading.scrollIntoView({ behavior: isStill() ? "auto" : "smooth", block: "start" });
+          heading.scrollIntoView({ behavior: isCalm() ? "auto" : "smooth", block: "start" });
         },
         on,
       );

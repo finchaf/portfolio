@@ -1,4 +1,6 @@
-import { all, find, isStill } from "./dom";
+import { isCalm } from "@/motion/reduced";
+
+import { all, find } from "./dom";
 
 const NS = "http://www.w3.org/2000/svg";
 
@@ -181,7 +183,7 @@ export function setupLadder(root: HTMLElement, signal: AbortSignal) {
       },
       { signal },
     );
-    if (isStill()) {
+    if (isCalm()) {
       show(LAST);
       continue;
     }

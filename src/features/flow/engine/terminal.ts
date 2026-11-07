@@ -1,7 +1,8 @@
 import { session } from "@/lib/session";
+import { isCalm } from "@/motion/reduced";
 import { saveTheme } from "@/themes/theme";
 
-import { all, element, find, isStill, isWide } from "./dom";
+import { all, element, find, isWide } from "./dom";
 import type { makeLanes } from "./figures";
 import type { Graph } from "./graph";
 import { fill, type Remark, type VaultStrings } from "./strings";
@@ -175,7 +176,7 @@ export function makeTerminal(host: TerminalHost) {
   const state = {
     i: 0,
     target: 0,
-    auto: !isStill(),
+    auto: !isCalm(),
     wait: null as "style" | "stop" | null,
     hold: false,
     style: "c",
@@ -190,7 +191,7 @@ export function makeTerminal(host: TerminalHost) {
   let rearm: (() => void) | null = null;
   let wakeSleep: (() => void) | null = null;
 
-  const fast = () => isStill() || state.i < state.target;
+  const fast = () => isCalm() || state.i < state.target;
   // Read after an await: the page may have gone while the run waited.
   const stopped = () => signal.aborted;
 
@@ -741,7 +742,7 @@ export function makeTerminal(host: TerminalHost) {
     paintAuto();
     pickStyle(saved?.style ?? "c");
 
-    if (saved && saved.i > 0 && !isStill()) {
+    if (saved && saved.i > 0 && !isCalm()) {
       saved.made.forEach((id) => {
         make(id, true);
       });
@@ -763,7 +764,7 @@ export function makeTerminal(host: TerminalHost) {
       }
       paintAuto();
       setChips(baseChips());
-    } else if (isStill()) {
+    } else if (isCalm()) {
       state.target = RUN.length;
       state.auto = false;
       paintAuto();

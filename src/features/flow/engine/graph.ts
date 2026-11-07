@@ -1,6 +1,5 @@
 import { CHECKLISTS, relax, type BodyKind } from "@/lib/base-graph";
-
-import { isStill } from "./dom";
+import { isCalm } from "@/motion/reduced";
 
 /**
  * The graph of the base, drawn on canvas: the notes, the 16 checklists and every one of the 234
@@ -287,7 +286,7 @@ export function makeGraph({ notes, links, hubLabel, open, signal }: GraphInput) 
 
   function settle(power: number) {
     alpha = Math.max(alpha, power);
-    if (isStill()) {
+    if (isCalm()) {
       while (alpha > 0.03) tick();
       draw(performance.now());
       return;
@@ -410,7 +409,7 @@ export function makeGraph({ notes, links, hubLabel, open, signal }: GraphInput) 
     },
     pulse(id: string) {
       const node = byId.get(id);
-      if (!node || isStill()) return;
+      if (!node || isCalm()) return;
       pulses.push({ node, start: performance.now() });
       wake();
     },
@@ -420,7 +419,7 @@ export function makeGraph({ notes, links, hubLabel, open, signal }: GraphInput) 
     },
     /** The app's wand: the graph grows in the order the base grew, on the one loop of frames. */
     animate() {
-      if (isStill()) return;
+      if (isCalm()) return;
       revealStart = performance.now();
       reveal = 0;
       wake();
