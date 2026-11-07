@@ -6,7 +6,7 @@
  */
 .footer {
   --footer-gutter: 1rem;
-  --footer-rule: var(--line);
+  --footer-rule: color-mix(in srgb, var(--ink) 16%, transparent);
   position: relative;
   padding-bottom: var(--dock);
   background: var(--surface);
@@ -277,10 +277,6 @@
 
 /* ================= Главная: «Набор», typeset like the logo ================= */
 
-.footer {
-  --footer-rule: color-mix(in srgb, var(--ink) 16%, transparent);
-}
-
 /* A link under the pointer takes the slash of the command; the page the reader is on keeps it. */
 .footer-value::before,
 .footer-sections .footer-link::before {
@@ -291,7 +287,7 @@
   color: var(--accent-strong);
   font-family: var(--mono);
   font-weight: 700;
-  opacity: calc(var(--footer-here, 0));
+  opacity: var(--footer-here, 0);
   translate: calc(0.3em * (1 - var(--footer-here, 0))) 0;
   transition: opacity var(--duration-quick) var(--ease-out);
 }
@@ -329,9 +325,7 @@
     opacity: 1;
     translate: 0 0;
   }
-}
 
-@media (hover: hover) {
   .footer-aside .footer-link:hover {
     text-decoration: underline;
     text-underline-offset: 0.25rem;
@@ -528,7 +522,7 @@
     text-decoration-thickness: 2px;
   }
 
-  [data-external] :is(.footer-value)::after,
+  [data-external] .footer-value::after,
   .footer-link[data-external]::after {
     content: "" / "";
     display: inline-block;
@@ -760,9 +754,7 @@
     color: var(--ink);
   }
 
-  .footer-module > b,
-  .footer-own > b,
-  .footer-up > b {
+  .footer-module > b {
     display: grid;
     place-items: center;
     align-self: stretch;

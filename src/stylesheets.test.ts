@@ -432,8 +432,6 @@ describe("the colours", () => {
 
 /** Selectors that set a property again in the same block on 07.11.2026. The list only shrinks. */
 const OVERRIDDEN: Record<string, string[]> = {
-  // `--footer-rule`: the home page's value, further down, replaces the first one.
-  "shell/footer.css": [".footer"],
   // The block of the wireframes twice over, and three blocks resized right below themselves.
   "ui/app-screens.css": [
     ".ben",
