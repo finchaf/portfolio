@@ -151,6 +151,13 @@ export function HeroLens({ labels, settings, children }: HeroLensProps) {
     };
     measure();
     ScrollTrigger.addEventListener("refresh", measure);
+    // The open code layer reaches the screen's far corners, and a wider or taller screen has
+    // corners further off: it opens again over the new one. Outside the motion query, since with
+    // reduced motion the switch opens the layer the same way.
+    const reopen = () => {
+      if (shown() === "code" && !root.hasAttribute("data-intro")) open("code", 0);
+    };
+    ScrollTrigger.addEventListener("refresh", reopen);
     // The fonts may settle after the page is left: then there is nothing to measure any more.
     let stopped = false;
     void document.fonts.ready.then(() => {
@@ -231,6 +238,7 @@ export function HeroLens({ labels, settings, children }: HeroLensProps) {
     return () => {
       stopped = true;
       ScrollTrigger.removeEventListener("refresh", measure);
+      ScrollTrigger.removeEventListener("refresh", reopen);
       window.removeEventListener("scroll", turn);
       gsap.ticker.remove(paint);
       painting.kill();

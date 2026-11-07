@@ -25,6 +25,21 @@ test.describe("the home page with reduced motion", () => {
       )
       .toBeGreaterThan(500);
   });
+
+  test("opens the source over the whole screen again when the screen grows", async ({ page }) => {
+    await page.setViewportSize({ width: 1024, height: 700 });
+    await page.goto(HOME);
+    await page.getByRole("radio", { name: "Код" }).check({ force: true });
+    // How far the lens reaches past the screen's diagonal, the furthest any corner can be.
+    const spare = () =>
+      page.locator(".hero").evaluate((hero) => {
+        const { width, height } = hero.getBoundingClientRect();
+        return parseFloat(hero.style.getPropertyValue("--lens-r")) - Math.hypot(width, height);
+      });
+    await expect.poll(spare).toBeGreaterThan(-1);
+    await page.setViewportSize({ width: 1800, height: 1000 });
+    await expect.poll(spare).toBeGreaterThan(-1);
+  });
 });
 
 test.describe("the home page in motion", () => {
