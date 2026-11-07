@@ -176,6 +176,19 @@ test.describe("the sheet out of the capsule", () => {
     await expect(page).toHaveURL(/\/ru\/flow$/);
   });
 
+  test("shuts when the reader goes back through history", async ({ page }) => {
+    await page.goto(HOME);
+    await page.locator("[data-capsule] nav").getByRole("link", { name: "Флоу" }).click();
+    await expect(page).toHaveURL(/\/ru\/flow$/);
+    await openWriteSheet(page);
+    await expect(page.locator(".write-sheet")).toBeVisible();
+    await page.goBack();
+    await expect(page).toHaveURL(/\/ru$/);
+    await expect(page.locator(".write-sheet")).toBeHidden();
+    await expect(page.locator("html")).not.toHaveAttribute("data-writing");
+    await expect(write(page)).toHaveAttribute("aria-expanded", "false");
+  });
+
   test("shuts when a key leaves it", async ({ page }) => {
     await page.goto(HOME);
     await openWriteSheet(page);

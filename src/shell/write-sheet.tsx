@@ -20,6 +20,13 @@ export interface WriteSheetProps {
 export function WriteSheet({ label, children }: WriteSheetProps) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  // A move through history leaves no press and no focus behind: the sheet closes with the page it
+  // opened on, during render, and the effect below takes the attributes back.
+  const [shownOn, setShownOn] = useState(pathname);
+  if (shownOn !== pathname) {
+    setShownOn(pathname);
+    setOpen(false);
+  }
   const sheet = useRef<HTMLDivElement>(null);
   const opener = useRef<HTMLElement>(null);
   const id = useId();
