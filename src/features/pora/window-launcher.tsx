@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from "react";
 
+import { isCalm } from "@/motion/reduced";
+import { EASE } from "@/motion/tokens";
 import { announceTopLayer } from "@/ui/top-layer";
 
 import { WINDOW_ID } from "./week";
@@ -10,7 +12,6 @@ import { WINDOW_ID } from "./week";
 const LEAVE_MS = 160;
 /** A page turns in this long: the new one comes over the old one, the chapters slide a little. */
 const TURN_MS = 220;
-const TURN_EASE = "cubic-bezier(0.2, 0.8, 0.2, 1)";
 
 /**
  * Opens the lessons' window on a card's page and closes it the product's way: Esc, a press beside
@@ -26,7 +27,6 @@ export function WindowLauncher() {
     const root = mark.current?.closest<HTMLElement>("[data-pora-week]");
     const dialog = root?.querySelector<HTMLDialogElement>(`#${WINDOW_ID}`);
     if (!root || !dialog) return;
-    const calm = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let opener: HTMLElement | null = null;
     let leaving = 0;
     /** Ends the turn going on at once, if one is. */
@@ -114,7 +114,7 @@ export function WindowLauncher() {
     const close = () => {
       if (!dialog.open || dialog.hasAttribute("data-closing")) return;
       turning?.();
-      if (calm()) {
+      if (isCalm()) {
         finish();
         return;
       }
@@ -151,12 +151,12 @@ export function WindowLauncher() {
         from.removeAttribute("data-leaving");
       };
       turning = end;
-      if (calm()) {
+      if (isCalm()) {
         end();
         return;
       }
       const side = way === "previous" ? -1 : 1;
-      const timing = { duration: TURN_MS, easing: TURN_EASE };
+      const timing = { duration: TURN_MS, easing: EASE.out };
       const columns = (page: HTMLElement) => page.querySelector(".pora-window-columns");
       motions.push(to.animate([{ opacity: 0 }, { opacity: 1 }], timing));
       const coming = columns(to);

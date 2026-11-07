@@ -3,11 +3,12 @@
 import { ArrowLeft, ArrowRight, X } from "lucide-react";
 import { useEffect, useRef } from "react";
 
+import { isCalm } from "@/motion/reduced";
+import { EASE } from "@/motion/tokens";
 import { announceTopLayer } from "@/ui/top-layer";
 
 /** The picture grows from its place in the chapter to the screen, and goes back there. */
 const GROW_MS = 240;
-const GROW_EASE = "cubic-bezier(0.2, 0.8, 0.2, 1)";
 const SHRINK_MS = 180;
 
 /** The picture is named once it is chosen: its thumbnail's words. */
@@ -39,7 +40,6 @@ export function PictureViewer({ words }: { words: Words }) {
     const caption = viewer?.querySelector<HTMLElement>(".pora-viewer-caption");
     const counter = viewer?.querySelector<HTMLElement>(".pora-viewer-count");
     if (!viewer || !root || !image || !caption || !counter) return;
-    const calm = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let list: HTMLElement[] = [];
     let index = 0;
     let motion: Animation | null = null;
@@ -84,8 +84,8 @@ export function PictureViewer({ words }: { words: Words }) {
       motion?.cancel();
       const from = shown(button)?.getBoundingClientRect();
       const to = image.getBoundingClientRect();
-      if (calm() || !from || to.width === 0) return;
-      motion = image.animate(flight(from, to), { duration: GROW_MS, easing: GROW_EASE });
+      if (isCalm() || !from || to.width === 0) return;
+      motion = image.animate(flight(from, to), { duration: GROW_MS, easing: EASE.out });
     };
 
     const finish = () => {
@@ -103,7 +103,7 @@ export function PictureViewer({ words }: { words: Words }) {
       const button = list[index];
       const thumb = button ? shown(button)?.getBoundingClientRect() : undefined;
       const to = image.getBoundingClientRect();
-      if (calm() || !thumb || thumb.width === 0 || to.width === 0) {
+      if (isCalm() || !thumb || thumb.width === 0 || to.width === 0) {
         finish();
         return;
       }
@@ -114,7 +114,7 @@ export function PictureViewer({ words }: { words: Words }) {
       motion = seen
         ? image.animate([...flight(thumb, to)].reverse(), {
             duration: SHRINK_MS,
-            easing: GROW_EASE,
+            easing: EASE.out,
             fill: "forwards",
           })
         : image.animate([{ opacity: 1 }, { opacity: 0 }], {
@@ -129,13 +129,13 @@ export function PictureViewer({ words }: { words: Words }) {
       index = (index + step + list.length) % list.length;
       motion?.cancel();
       fill();
-      if (calm()) return;
+      if (isCalm()) return;
       motion = image.animate(
         [
           { opacity: 0, translate: `${String(step * 1.5)}rem 0` },
           { opacity: 1, translate: "0 0" },
         ],
-        { duration: GROW_MS, easing: GROW_EASE },
+        { duration: GROW_MS, easing: EASE.out },
       );
     };
 
