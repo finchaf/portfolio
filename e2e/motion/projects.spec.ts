@@ -158,6 +158,12 @@ test.describe("the board of projects", () => {
       .toBe("block 1");
   });
 
+  test("tells how to open a project where the camera can", async ({ page }) => {
+    await page.goto("/ru/projects");
+    await ready(page);
+    await expect(page.locator(".pj-board-inspector[data-current] .pj-ins-hint")).toBeVisible();
+  });
+
   test("keeps typed code as typed, with no joined signs", async ({ page }) => {
     await page.goto("/ru/projects");
     await expect(page.locator('[data-frame="snippets"] .pj-lines')).toHaveCSS(
@@ -173,6 +179,13 @@ test.describe("the board of projects", () => {
       await page.goto("/ru/projects");
       await page.locator('[data-frame="journal"]').click();
       await expect(page).toHaveURL(/\/ru\/projects\/portfolio#decisions$/);
+    });
+
+    test("promises no double press, which only the wide editor answers", async ({ page }) => {
+      await page.goto("/ru/projects");
+      await expect(page.locator(".pj-board-inspector").first()).toBeVisible();
+      await expect(page.locator(".pj-ins-hint")).toHaveCount(2);
+      for (const hint of await page.locator(".pj-ins-hint").all()) await expect(hint).toBeHidden();
     });
   });
 });

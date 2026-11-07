@@ -185,7 +185,9 @@
   display: none;
 }
 
+/* How to open a project from the canvas: only where the camera runs, in the editor. */
 .pj-ins-hint {
+  display: none;
   color: var(--muted);
   font-size: 0.75rem;
 }
@@ -327,6 +329,10 @@
 
   :root[data-js] .pj-board-inspector .pj-panel-links {
     margin-top: auto;
+  }
+
+  :root[data-js] .pj-ins-hint {
+    display: block;
   }
 
   :root[data-js] .pj-board-canvas {
