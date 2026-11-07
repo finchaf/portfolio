@@ -141,6 +141,35 @@ test.describe("the home page in motion", () => {
     await expect(page.locator("#work-flow [data-look-letter]")).toHaveText("F");
   });
 
+  test("gives Flow's plain section its own figures, rule and screens when motion stops", async ({
+    page,
+  }) => {
+    await page.goto(HOME);
+    await jump(page, await topOf(page, "#work-flow"));
+    const chapter = page.locator("#work-flow");
+    const ladder = chapter.locator("[data-rung]");
+    const counts = chapter.locator("[data-count]");
+    // The first stop of the flight: no figure counted yet, the rule on its first rung, wireframes.
+    await expect(ladder).toHaveAttribute("data-rung", "0");
+    await expect(counts.first()).toHaveText("0");
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    const last = (await chapter.locator("[data-rung-row]").count()) - 1;
+    await expect(ladder).toHaveAttribute("data-rung", String(last));
+    await expect(
+      chapter.locator("[data-rung-row][data-on], [data-rung-row][data-past]"),
+    ).toHaveCount(0);
+    for (const count of await counts.all()) {
+      await expect(count).toHaveText((await count.getAttribute("data-count")) ?? "");
+    }
+    const cuts = () =>
+      chapter
+        .locator(".map-phone .frame")
+        .evaluateAll((frames) =>
+          frames.map((frame) => (frame as HTMLElement).style.getPropertyValue("--cx")),
+        );
+    expect(new Set(await cuts())).toEqual(new Set([""]));
+  });
+
   test("keeps the way to the product's page through a chapter", async ({ page }) => {
     await page.goto(HOME);
     const link = page.locator("#work-pora .chapter-bar").getByRole("link", { name: /Открыть/ });

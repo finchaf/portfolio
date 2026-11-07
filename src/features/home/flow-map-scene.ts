@@ -1024,6 +1024,20 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
     for (const element of chapter.querySelectorAll<HTMLElement>("[style]")) {
       if (element !== stage && !element.closest(".frame")) element.removeAttribute("style");
     }
+    // What the scene wrote besides its styles goes back to the HTML's own, for a plain section
+    // that reduced motion may bring on a page already open: the real figures, the whole history of
+    // the rule, the finished screens.
+    for (const count of counts) count.textContent = count.dataset.count ?? "";
+    if (ladder) ladder.dataset.rung = String(rungs.length - 1);
+    for (const item of rungs) {
+      item.removeAttribute("data-on");
+      item.removeAttribute("data-past");
+    }
+    for (const phone of phones) {
+      const screen = phone.querySelector<HTMLElement>(".frame");
+      screen?.style.removeProperty("--cx");
+      if (screen?.getAttribute("style") === "") screen.removeAttribute("style");
+    }
     tip.hidden = true;
   };
 }
