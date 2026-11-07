@@ -24,6 +24,10 @@ export const LESSON_HUES = [
   { type: "other", hue: "zinc", light: "#71717b", dark: "#9f9fa9" },
 ] as const;
 
+/** The ring round the time left in a lesson going on, in its 16 × 16 box: the radius and the length. */
+export const RING_RADIUS = 6.25;
+export const RING = 2 * Math.PI * RING_RADIUS;
+
 export const minutes = (time: string): number => {
   const [hours = 0, rest = 0] = time.split(":").map(Number);
   return hours * 60 + rest;

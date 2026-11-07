@@ -8,8 +8,18 @@ import { World } from "@/ui/world";
 
 import { LessonWindow } from "./lesson-window";
 import { PictureViewer } from "./picture-viewer";
-import { DAYS, LESSONS, OPENING, SLOTS, WINDOW_ID, WINDOWS, type Lesson } from "./week";
-import { RING, WeekClock } from "./week-clock";
+import {
+  DAYS,
+  LESSONS,
+  OPENING,
+  RING,
+  RING_RADIUS,
+  SLOTS,
+  WINDOW_ID,
+  WINDOWS,
+  type Lesson,
+} from "./week";
+import { WeekClock } from "./week-clock";
 import { WindowLauncher } from "./window-launcher";
 
 /**
@@ -30,8 +40,8 @@ export function PoraPage() {
   const left = (
     <span className="pora-left" data-pora-left="">
       <svg aria-hidden className="pora-ring" viewBox="0 0 16 16">
-        <circle cx="8" cy="8" r="6.25" />
-        <circle cx="8" cy="8" r="6.25" strokeDasharray={RING} strokeDashoffset={RING} />
+        <circle cx="8" cy="8" r={RING_RADIUS} />
+        <circle cx="8" cy="8" r={RING_RADIUS} strokeDasharray={RING} strokeDashoffset={RING} />
       </svg>
       <span data-pora-minutes="" />
     </span>

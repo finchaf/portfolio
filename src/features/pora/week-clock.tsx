@@ -2,13 +2,10 @@
 
 import { useEffect, useRef } from "react";
 
-import { DAYS, LESSONS, minutes, placeInDay, SLOTS } from "./week";
+import { DAYS, LESSONS, minutes, placeInDay, RING, SLOTS } from "./week";
 
 const TICK_MS = 30_000;
 const DAY_MS = 86_400_000;
-
-/** The length of the ring round the time left, r = 6.25. */
-export const RING = 2 * Math.PI * 6.25;
 
 interface Now {
   year: number;
