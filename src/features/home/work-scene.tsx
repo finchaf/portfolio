@@ -11,6 +11,7 @@ import { snapToRests } from "./chapter-snap";
 import { runDesk } from "./desk-scene";
 import { pickLooks, runFlowMap } from "./flow-map-scene";
 import { pairFlight } from "./pair-scene";
+import { scrubFollow } from "./scrub-follow";
 
 /** The corners of a sheet rising over the page, and how far what it covers sinks. */
 const SHEET = { radius: "2rem", sunk: 0.93, dimmed: 0.55, lastStretch: 0.06 };
@@ -26,8 +27,6 @@ const LEAVING = 0.65;
 
 /** How long before it settles a stop counts as the current one, and takes a press. */
 const ARRIVING = 0.25;
-
-const follow = () => (ScrollTrigger.isTouch === 1 ? true : SCENE.catchUp);
 
 const toTop = (element: Element) => element.getBoundingClientRect().top + window.scrollY;
 
@@ -95,7 +94,7 @@ function runStops(
       trigger: chapter,
       start,
       end,
-      scrub: follow(),
+      scrub: scrubFollow(),
       invalidateOnRefresh: true,
       onRefresh: () => {
         snap?.place();
@@ -172,7 +171,7 @@ function handOver(from: HTMLElement, to: HTMLElement) {
       trigger: to,
       start: "top top",
       end: () => `+=${window.innerHeight}`,
-      scrub: follow(),
+      scrub: scrubFollow(),
     },
   });
   gsap.set(toStage, { xPercent: 100 });
@@ -306,13 +305,13 @@ export function WorkScene({ children }: { children: ReactNode }) {
         () => `+=${pora.offsetHeight - 2 * window.innerHeight}`,
         pairFlight(pora),
       );
-      const undoFlow = runFlowMap(flow, follow());
+      const undoFlow = runFlowMap(flow, scrubFollow());
       handOver(flow, projects);
       const undoProjects = runDesk(
         projects,
         () => `top top-=${String(window.innerHeight)}`,
         () => `+=${String(projects.offsetHeight - 3 * window.innerHeight)}`,
-        follow(),
+        scrubFollow(),
       );
 
       const poraStage = stage(pora);

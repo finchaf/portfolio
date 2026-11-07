@@ -6,8 +6,9 @@ import { driftLines } from "@/motion/drift-lines";
 import { gsap, ScrollTrigger } from "@/motion/gsap";
 import { MOTION_ALLOWED, NARROW, WIDE } from "@/motion/reduced";
 import { useScene } from "@/motion/scene";
-import { DURATION, SCENE } from "@/motion/tokens";
+import { DURATION } from "@/motion/tokens";
 
+import { scrubFollow } from "./scrub-follow";
 import { branchRoutes, type Line } from "./story-branches";
 import { FORK_HOLD, RIBBON_HOLD } from "./story-data";
 import { createRuler } from "./story-ruler";
@@ -61,8 +62,6 @@ const SCORING = 0.92;
 const AHEAD = 2.5;
 
 type Mark = (index: number) => void;
-
-const follow = () => (ScrollTrigger.isTouch === 1 ? true : SCENE.catchUp);
 
 /**
  * Keeps the ruler drawn. It goes on after the scroll has stopped, until the lens settles, and it
@@ -240,7 +239,7 @@ function drawBranches(section: HTMLElement, scrollTrigger: ScrollTrigger.Vars) {
     done: 1,
     ease: "none",
     onUpdate: draw,
-    scrollTrigger: { ...scrollTrigger, scrub: follow(), invalidateOnRefresh: true },
+    scrollTrigger: { ...scrollTrigger, scrub: scrubFollow(), invalidateOnRefresh: true },
   });
   return {
     trigger: drawing.scrollTrigger,
@@ -503,7 +502,7 @@ function runRibbon(section: HTMLElement, track: HTMLElement, mark: Mark) {
     trigger: section,
     start: "top top",
     end: () => `+=${String(ride())}`,
-    scrub: follow(),
+    scrub: scrubFollow(),
     invalidateOnRefresh: true,
   };
   const fork = holdTheFork(section, track);
