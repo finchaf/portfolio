@@ -15,7 +15,7 @@ export type PagePath = keyof typeof PAGES;
 export const PAGE_PATHS = Object.keys(PAGES) as PagePath[];
 
 /** Pages inside a page: not in the capsule, in everything else that walks over the pages. */
-export const SUBPAGES = {
+const SUBPAGES = {
   "/projects/portfolio": "portfolio",
   "/projects/latex": "latex",
 } as const;
