@@ -238,7 +238,6 @@
     "github": "GitHub",
     "ways": "Другие пути",
     "chat": {
-      "label": "Чат в Telegram",
       "service": "Telegram",
       "day": "сегодня",
       "hello": "Здравствуйте! Пишите сюда, отвечу в этом чате.",
@@ -329,7 +328,6 @@
         },
         "site": "vcourse.app",
         "siteUrl": "https://vcourse.app/ru",
-        "stores": "Магазины",
         "chart": {
           "title": "Загрузки по дням",
           "source": "App Store Connect",

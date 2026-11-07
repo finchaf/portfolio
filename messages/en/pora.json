@@ -918,7 +918,6 @@
       "links": "Links",
       "previous": "Previous lesson",
       "next": "Next lesson",
-      "when": "{day}, {slot}",
       "look": "Open full screen: {what}",
       "hue": "{light} · {dark}"
     },

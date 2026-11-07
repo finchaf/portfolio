@@ -238,7 +238,6 @@
     "github": "GitHub",
     "ways": "Other ways",
     "chat": {
-      "label": "Telegram chat",
       "service": "Telegram",
       "day": "today",
       "hello": "Hello! Write here and I’ll reply in this chat.",
@@ -329,7 +328,6 @@
         },
         "site": "vcourse.app",
         "siteUrl": "https://vcourse.app/en",
-        "stores": "Stores",
         "chart": {
           "title": "Downloads by day",
           "source": "App Store Connect",

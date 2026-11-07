@@ -11,7 +11,6 @@
   "section": "This section: {name}",
   "title": "This site",
   "lead": "A portfolio built as a product: a static build, a look of its own for every page, an open decision log, and checks before every commit.",
-  "briefLabel": "In short",
   "brief": {
     "what": "What it is",
     "whatText": "A site in two languages: Home, Pora na Paru, Flow, and Projects with its two project pages, plus a CV in PDF. It is plain files with no application server, served by Caddy.",
@@ -47,8 +46,6 @@
     "beforeNote": "The whole document as one layer: the browser squeezes it to the screen.",
     "afterNote": "Only the screen is captured, and the new page arrives along the slash.",
     "slashLabel": "Page change",
-    "pageA": "One page",
-    "pageB": "Another page",
     "deploy": "Release a new build",
     "rollback": "Roll back",
     "current": "current",
