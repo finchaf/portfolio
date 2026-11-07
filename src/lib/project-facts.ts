@@ -10,31 +10,31 @@
  *   home      document.documentElement.scrollHeight on /ru at 1440 × 900
  */
 export const FACTS = {
-  date: "06.11.2026",
-  commits: 166,
+  date: "07.11.2026",
+  commits: 407,
   decisions: 16,
   checks: 14,
-  unit: 353,
-  browser: 309,
+  unit: 804,
+  browser: 332,
   themes: 4,
   languages: 2,
 } as const;
 
 export const GATES = [
   ["Docs", 0.1],
-  ["Public", 0.2],
-  ["Types", 3.1],
-  ["Lint", 14.1],
-  ["Format", 2.6],
+  ["Public", 0.1],
+  ["Types", 8.4],
+  ["Lint", 11.6],
+  ["Format", 2.7],
   ["Content", 0],
-  ["Unit", 1.4],
-  ["Build", 14.9],
+  ["Unit", 2.2],
+  ["Build", 16.7],
   ["Bundle", 0.3],
-  ["Addresses", 18.3],
-  ["SEO", 8],
-  ["A11y", 56.7],
-  ["Motion", 300.8],
-  ["Themes", 54.8],
+  ["Addresses", 16.5],
+  ["SEO", 6.6],
+  ["A11y", 65.3],
+  ["Motion", 244.5],
+  ["Themes", 11.9],
 ] as const;
 
 /** Commands as they are typed: code, the same in every language. */
@@ -64,18 +64,19 @@ export const DAYS = [
   ["03.11", "nov03", 8],
   ["04.11", "nov04", 7],
   ["05.11", "nov05", 6],
-  ["06.11", "nov06", 10],
+  ["06.11", "nov06", 19],
+  ["07.11", "nov07", 232],
 ] as const;
 
 /** `python3 scripts/deploy.py --status`, newest first. */
 export const RELEASES = [
+  ["cf0aa9715a4b", "06.11"],
   ["00f836b6267e", "06.11"],
   ["6534e6491252", "05.11"],
-  ["41387ec62038", "05.11"],
 ] as const;
 
 /** Kilobytes of first-load JavaScript, gzip. */
-export const BUDGET = { limit: 280, home: 251.1, flow: 239.9, other: 239.3 } as const;
+export const BUDGET = { limit: 280, home: 254.2, flow: 243.2, other: 242.2 } as const;
 
 /** The records of the log, as the file names give them. */
 export const JOURNAL = [

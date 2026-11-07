@@ -105,7 +105,7 @@ docs are in Russian; this README is their English summary. There are 16
 `python3 scripts/check.py` runs 14 gates: docs, a check that nothing private is published, types,
 lint, format, content, unit tests, the build, the JavaScript budget of 280 KB a page, and five browser gates
 against the build behind a real Caddy. CI runs the same command on every pull request. The run of
-06.11.2026: 353 unit and 309 browser tests, all green.
+07.11.2026: 804 unit and 332 browser tests, all green.
 
 ## Working here
 

@@ -170,7 +170,8 @@
     "nov03": "The Projects board, the pages of this site and LaTeX, chapters dressed as their apps",
     "nov04": "The footer in each page’s components, Experience and the CV in PDF, the Pora na Paru week",
     "nov05": "The week’s chapters and lesson windows, the capsule and previews in the product’s style",
-    "nov06": "The Pora na Paru chapter on real screens, this page finished"
+    "nov06": "The Pora na Paru chapter on real screens, this page finished",
+    "nov07": "An audit of the whole repository: the README, tagged releases, tests by scene, class prefixes"
   },
   "journal": {
     "a0001": "A knowledge base in docs/",
