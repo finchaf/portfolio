@@ -80,6 +80,7 @@ export function WindowLauncher() {
     const open = (lesson: string, card: HTMLElement) => {
       const page = pageOf(lesson);
       if (!page || dialog.open) return;
+      window.clearTimeout(leaving);
       present(page);
       follow(card);
       document.documentElement.style.overflow = "hidden";
@@ -100,6 +101,8 @@ export function WindowLauncher() {
     // However the window went — by us or by the browser, on a second Esc — the page comes back.
     const onClose = (event: Event) => {
       if (event.target !== dialog) return;
+      // A close of our own may still be counting down: it must not shut the window opened next.
+      window.clearTimeout(leaving);
       turning?.();
       dialog.removeAttribute("data-closing");
       document.documentElement.style.removeProperty("overflow");
