@@ -2,7 +2,7 @@ import { Image } from "@/ui/image";
 import { useTranslations } from "next-intl";
 
 import menus from "./photos/menus.avif";
-import { FIELD, FIELD_RATIO, MENUS, SPRITE } from "./story-data";
+import { FIELD, FIELD_RATIO, FRAME_RATIO, MENUS, SPRITE } from "./story-data";
 
 /** Every frame shows a cell of the one picture, which says all there is to say by itself. */
 const DECORATIVE = "";
@@ -22,7 +22,12 @@ export function StoryMenus() {
       className="story-menus"
       data-menus
       role="img"
-      style={{ "--field": FIELD_RATIO }}
+      style={{
+        "--field": FIELD_RATIO,
+        "--frame": FRAME_RATIO,
+        "--sprite-columns": SPRITE.columns,
+        "--sprite-rows": SPRITE.rows,
+      }}
     >
       {MENUS.map(({ menu, left, top, fromX, fromY }) => (
         <div

@@ -7,8 +7,14 @@ const WALL = [10, 10, 10, 10, 7];
 /** The grid of the wall, in widths and heights of a frame. */
 const STEP = { x: 98 / 88, y: 73.2 / 56.8 };
 
+/** A frame's own size in the file, which gives its shape. */
+const FRAME_SIZE = { width: 110, height: 71 };
+
 /** A frame's own width over its height. */
-const FRAME = 110 / 71;
+const FRAME = FRAME_SIZE.width / FRAME_SIZE.height;
+
+/** The same shape as CSS writes it, for `aspect-ratio`. */
+export const FRAME_RATIO = `${String(FRAME_SIZE.width)} / ${String(FRAME_SIZE.height)}`;
 
 /** The picture all the frames share, one request for 47 elements: columns and rows of its cells. */
 export const SPRITE = { columns: 8, rows: 6 };

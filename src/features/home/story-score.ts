@@ -9,6 +9,9 @@ const LESSON = 0.16;
 const LESSON_STEP = 0.21;
 const LESSON_START = 0.1;
 
+/** How tall a lesson stands, in shares of the height: the canvas keeps it to 7px at least. */
+export const LESSON_SHARE = 0.013;
+
 /** Where the rows run, in shares of the height. */
 const FIRST_ROW = 0.14;
 const ROWS_SPAN = 0.72;
@@ -168,7 +171,7 @@ export function createScore(canvas: HTMLCanvasElement, days: HTMLElement[]): Sco
       pen.lineWidth = marked ? 1.75 : 1;
       pen.stroke();
     }
-    const lessonHeight = Math.max(7, height * 0.013);
+    const lessonHeight = Math.max(7, height * LESSON_SHARE);
     pen.lineWidth = 1;
     BEATS.forEach((beat) => {
       const along = beatStart(beat);

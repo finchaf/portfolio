@@ -614,7 +614,7 @@
 
 .story-menu {
   position: absolute;
-  aspect-ratio: 110 / 71;
+  aspect-ratio: var(--frame);
 }
 
 /* The name Figma writes over a frame. */
@@ -636,9 +636,9 @@
 
 .story-menu-sprite {
   position: absolute;
-  width: 800%;
+  width: calc(var(--sprite-columns) * 100%);
   max-width: none;
-  height: 600%;
+  height: calc(var(--sprite-rows) * 100%);
 }
 
 /* The notice is a card of its own. */
@@ -866,7 +866,7 @@
   position: absolute;
   inset: 0;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(var(--days), 1fr);
   margin: 0;
   padding: 0;
   list-style: none;

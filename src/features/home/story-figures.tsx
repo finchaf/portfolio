@@ -11,7 +11,7 @@ import {
   SCORE_MARKED,
   SCORE_ROWS,
 } from "./story-data";
-import { BEAT_WIDTH, BEATS, beatStart, rowAt } from "./story-score";
+import { BEAT_WIDTH, BEATS, beatStart, LESSON_SHARE, rowAt } from "./story-score";
 
 /** The first three days and the first two weeks, added up from the export. */
 const FIRST_DAYS = LAUNCH_DOWNLOADS.slice(0, 3).reduce((sum, count) => sum + count, 0);
@@ -42,11 +42,11 @@ function ScoreStill() {
       {BEATS.map((beat) => (
         <rect
           data-marked={beat.row === SCORE_MARKED ? "" : undefined}
-          height={13}
+          height={LESSON_SHARE * SIZE}
           key={`${String(beat.row)}-${String(beat.day)}-${String(beat.slot)}`}
           width={BEAT_WIDTH * SIZE}
           x={beatStart(beat) * SIZE}
-          y={rowAt(beat.row) * SIZE - 6.5}
+          y={rowAt(beat.row) * SIZE - (LESSON_SHARE * SIZE) / 2}
         />
       ))}
     </svg>
@@ -58,7 +58,7 @@ export function StoryScore() {
   const t = useTranslations("home.story.fork");
   return (
     <figure aria-label={t("score")} className="story-score" data-score role="img">
-      <ol aria-hidden className="story-score-days">
+      <ol aria-hidden className="story-score-days" style={{ "--days": SCORE_DAYS.length }}>
         {SCORE_DAYS.map((day) => (
           <li data-score-day key={day}>
             {t(`days.${day}`)}
