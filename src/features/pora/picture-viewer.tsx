@@ -157,17 +157,35 @@ export function PictureViewer({ words }: { words: Words }) {
       open(button);
     };
 
+    /** Off the picture and its words: the cross, the veil, the room round the picture. */
+    const off = (target: EventTarget | null) =>
+      !(target instanceof Element && target.closest(".pora-viewer-keep"));
+    /**
+     * Whether the last press began off them. A selection dragged out of the caption and let go
+     * beside it clicks the room round the picture too, and must leave the picture open.
+     */
+    let pressedOff = false;
+    const onPress = (event: PointerEvent) => {
+      pressedOff = off(event.target);
+    };
+
     const onClick = (event: MouseEvent) => {
       const target = event.target as Element;
+      const pressed = pressedOff;
+      pressedOff = false;
       const way = target.closest<HTMLElement>("[data-pora-viewer-go]");
       if (way) {
         go(way.dataset.poraViewerGo === "previous" ? -1 : 1);
         return;
       }
-      // The cross, the veil, the room round the picture: everything but the picture and its words.
-      if (target.closest("[data-pora-viewer-close]") || !target.closest(".pora-viewer-keep")) {
+      if (target.closest("[data-pora-viewer-close]")) {
         close();
+        return;
       }
+      // The veil, the room round the picture: everything but the picture and its words, pressed and
+      // let go there. A click from a key has no pointer behind it: `detail` is 0.
+      const released = document.elementFromPoint(event.clientX, event.clientY);
+      if (off(target) && (event.detail === 0 || (pressed && off(released)))) close();
     };
 
     const onCancel = (event: Event) => {
@@ -186,12 +204,14 @@ export function PictureViewer({ words }: { words: Words }) {
     };
 
     root.addEventListener("click", onRootClick);
+    viewer.addEventListener("pointerdown", onPress);
     viewer.addEventListener("click", onClick);
     viewer.addEventListener("cancel", onCancel);
     viewer.addEventListener("close", finish);
     document.addEventListener("keydown", onKey, true);
     return () => {
       root.removeEventListener("click", onRootClick);
+      viewer.removeEventListener("pointerdown", onPress);
       viewer.removeEventListener("click", onClick);
       viewer.removeEventListener("cancel", onCancel);
       viewer.removeEventListener("close", finish);

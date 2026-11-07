@@ -177,6 +177,26 @@ export function WindowLauncher() {
       void Promise.all(motions.map((motion) => motion.finished)).then(end, () => undefined);
     };
 
+    /** A press on the veil lands on the dialog itself, outside its box. */
+    const onVeil = (event: MouseEvent) => {
+      if (event.target !== dialog) return false;
+      const box = dialog.getBoundingClientRect();
+      return (
+        event.clientX < box.left ||
+        event.clientX > box.right ||
+        event.clientY < box.top ||
+        event.clientY > box.bottom
+      );
+    };
+    /**
+     * Whether the last press began on the veil. A selection dragged out of the chapter and let go
+     * over the veil also clicks the dialog outside its box, and must leave the window open.
+     */
+    let pressedVeil = false;
+    const onPress = (event: PointerEvent) => {
+      pressedVeil = onVeil(event);
+    };
+
     const onClick = (event: MouseEvent) => {
       const target = event.target as Element;
       const card = target.closest<HTMLElement>("[data-pora-opens]");
@@ -185,6 +205,8 @@ export function WindowLauncher() {
         return;
       }
       if (!dialog.contains(target)) return;
+      const pressed = pressedVeil;
+      pressedVeil = false;
       const step = target.closest<HTMLElement>("[data-pora-go]");
       if (step) {
         // A click from a key has no pointer behind it: `detail` is 0.
@@ -195,16 +217,8 @@ export function WindowLauncher() {
         close();
         return;
       }
-      // A press on the veil lands on the dialog itself, outside its box.
-      if (target === dialog) {
-        const box = dialog.getBoundingClientRect();
-        const outside =
-          event.clientX < box.left ||
-          event.clientX > box.right ||
-          event.clientY < box.top ||
-          event.clientY > box.bottom;
-        if (outside) close();
-      }
+      // Only a press that both began and ended on the veil shuts the window.
+      if (pressed && onVeil(event)) close();
     };
 
     const onCancel = (event: Event) => {
@@ -227,11 +241,13 @@ export function WindowLauncher() {
     };
 
     root.addEventListener("click", onClick);
+    dialog.addEventListener("pointerdown", onPress);
     dialog.addEventListener("cancel", onCancel);
     dialog.addEventListener("close", onClose);
     document.addEventListener("keydown", onKey);
     return () => {
       root.removeEventListener("click", onClick);
+      dialog.removeEventListener("pointerdown", onPress);
       dialog.removeEventListener("cancel", onCancel);
       dialog.removeEventListener("close", onClose);
       document.removeEventListener("keydown", onKey);
