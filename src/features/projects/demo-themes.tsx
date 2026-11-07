@@ -2,7 +2,10 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
-const THEMES = ["projects", "home", "pora", "flow"] as const;
+import type { WorldName } from "@/themes/worlds";
+
+/** The worlds in the demo's order: this page's own first. */
+const THEMES = ["projects", "home", "pora", "flow"] as const satisfies readonly WorldName[];
 const VARIABLES = ["--control-face", "--control-radius", "--control-open", "--control-close"];
 
 type Theme = (typeof THEMES)[number];
