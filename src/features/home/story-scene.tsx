@@ -309,7 +309,15 @@ function holdTheFork(section: HTMLElement, track: HTMLElement) {
   const stay = section.querySelector<HTMLElement>("[data-stay]");
   const chapter = stay?.parentElement;
   const score = runScore(section);
-  if (!stay || !chapter) return { pass: () => undefined, held: () => 0, stop: score?.stop };
+  if (!stay || !chapter) {
+    return {
+      pass: () => undefined,
+      held: () => 0,
+      stop: () => {
+        score?.stop();
+      },
+    };
+  }
   const place = gsap.quickSetter(stay, "x", "px") as (value: number) => void;
   let begins = 0;
   let held = 0;
@@ -608,7 +616,7 @@ function runRibbon(section: HTMLElement, track: HTMLElement, mark: Mark) {
 
   return () => {
     section.removeEventListener("focusin", meet);
-    fork.stop?.();
+    fork.stop();
     branches.stop();
     stopLines();
     stopRuler();

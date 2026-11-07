@@ -7,6 +7,9 @@ import { BLEEDS, SPANS } from "./story-data";
 
 type Part = Exclude<keyof typeof SPANS, "open">;
 
+/** What full-height photographs add to each chapter: most add nothing. */
+const bleeds: Partial<Record<Part, number>> = BLEEDS;
+
 /** One chapter of the ribbon: on a wide screen a run of columns, on a phone one column. */
 export function StoryChapter({
   id,
@@ -21,7 +24,7 @@ export function StoryChapter({
   settles?: boolean;
   children: ReactNode;
 }) {
-  const bleed = id in BLEEDS ? BLEEDS[id as keyof typeof BLEEDS] : 0;
+  const bleed = bleeds[id] ?? 0;
   return (
     <li
       className={`story-chapter story-${id}`}
