@@ -1,9 +1,10 @@
+import "@/ui/control.css";
 import "./capsule.css";
 
 import { useLocale, useTranslations } from "next-intl";
 
 import { localizedPath } from "@/i18n/localized-path";
-import { PAGE_PATHS, PAGES } from "@/lib/pages";
+import { PAGE_PATHS, PAGES, type PagePath } from "@/lib/pages";
 import { TELEGRAM_URL } from "@/lib/site";
 import { CodeFace } from "@/ui/code-face";
 import { CodeSource } from "@/ui/code-source";
@@ -26,8 +27,8 @@ function Mark() {
   );
 }
 
-const WRITE = "capsule-write grid size-8 place-items-center";
-const WRITE_WIDE = "lg:block lg:size-auto lg:px-3.5 lg:py-1.5";
+const WRITE =
+  "capsule-write grid size-8 place-items-center lg:block lg:size-auto lg:px-3.5 lg:py-1.5";
 
 /**
  * One capsule for every page: the sections and the way to write. It floats over the page, at the
@@ -39,9 +40,10 @@ const WRITE_WIDE = "lg:block lg:size-auto lg:px-3.5 lg:py-1.5";
 export function Header() {
   const t = useTranslations();
   const locale = useLocale();
+  const title = (path: Exclude<PagePath, "">) => t(`${PAGES[path]}.title`);
   return (
     <header
-      className="fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom))] left-1/2 z-30 flex max-w-[calc(100vw-1rem)] -translate-x-1/2 items-center p-1 text-ink transition-colors duration-(--duration-slow) lg:top-3.5 lg:bottom-auto"
+      className="fixed bottom-[calc(0.75rem+env(safe-area-inset-bottom))] z-30 flex max-w-[calc(100vw-1rem)] items-center p-1 text-ink lg:top-3.5 lg:bottom-auto"
       data-capsule
       style={{ "--write-chars": t("shell.write").length }}
     >
@@ -55,7 +57,7 @@ export function Header() {
             {PAGE_PATHS.map((path) => (
               <li key={path}>
                 <NavLink
-                  chars={path === "" ? undefined : t(`${PAGES[path]}.title`).length}
+                  chars={path === "" ? undefined : title(path).length}
                   href={localizedPath(locale, path)}
                   label={path === "" ? t("home.title") : undefined}
                 >
@@ -65,12 +67,7 @@ export function Header() {
             ))}
           </ul>
         </nav>
-        <a
-          aria-label={t("shell.write")}
-          className={`${WRITE} ${WRITE_WIDE} capsule-action shrink-0`}
-          data-write
-          href={TELEGRAM_URL}
-        >
+        <a className={`${WRITE} capsule-action shrink-0`} data-write href={TELEGRAM_URL}>
           <span className="max-lg:sr-only">{t("shell.write")}</span>
           <svg
             aria-hidden
@@ -98,15 +95,13 @@ export function Header() {
                 shape={
                   <span
                     className="capsule-link"
-                    style={
-                      path === "" ? undefined : { "--chars": t(`${PAGES[path]}.title`).length }
-                    }
+                    style={path === "" ? undefined : { "--chars": title(path).length }}
                   >
-                    {path === "" ? <Mark /> : t(`${PAGES[path]}.title`)}
+                    {path === "" ? <Mark /> : title(path)}
                   </span>
                 }
               >
-                {path === "" ? <Wordmark className="h-2.5 w-[47px]" /> : t(`${PAGES[path]}.title`)}
+                {path === "" ? <Wordmark className="h-2.5 w-[47px]" /> : title(path)}
               </CodeFace>
             </li>
           ))}
@@ -114,7 +109,7 @@ export function Header() {
         <CodeFace
           className="control-shape shrink-0"
           shape={
-            <span className={`${WRITE} ${WRITE_WIDE}`}>
+            <span className={WRITE}>
               <span className="max-lg:hidden">{t("shell.write")}</span>
             </span>
           }

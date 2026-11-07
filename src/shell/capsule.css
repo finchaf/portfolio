@@ -10,6 +10,8 @@
 [data-capsule] {
   --capsule-pad: 0.625rem;
   --capsule-advance: calc(0.6 * 0.8125rem);
+  --capsule-gap: 0.125rem;
+  --capsule-away: 200%;
 }
 
 /* The narrowest phones: the cells give up their margins before the list has to scroll. */
@@ -145,13 +147,16 @@
   gap: var(--capsule-gap);
 }
 
-/* Centred on the window, not the page: a scrollbar comes and goes between pages, the window stays. */
+/*
+ * Centred on the window, not the page: a scrollbar comes and goes between pages, the window stays.
+ * Its translate and its curve are its own, not a utility's: the curve is Tailwind's default ease.
+ */
 [data-capsule] {
-  --capsule-gap: 0.125rem;
-  --capsule-away: 200%;
   left: 50vw;
+  translate: -50% 0;
   transition-duration: var(--duration-slow), var(--duration-base);
   transition-property: color, opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* It slides away only for a reader who allows motion; with reduced motion it fades where it is. */
@@ -164,7 +169,7 @@
 
 /* A scene clears the screen for its photographs. A key still finds the capsule. */
 :root[data-bare] [data-capsule]:not(:has(:focus-visible)) {
-  --tw-translate-y: var(--capsule-away);
+  translate: -50% var(--capsule-away);
   opacity: 0;
   pointer-events: none;
 }
@@ -181,11 +186,8 @@
 
 @media (min-width: 64rem) {
   [data-capsule] {
-    --capsule-away: -200%;
-  }
-
-  [data-capsule] {
     --capsule-pad: 0.75rem;
+    --capsule-away: -200%;
   }
 
   /* Two signs of the skin around the word, however a theme uses them. */
@@ -197,10 +199,7 @@
   .capsule-action {
     background: var(--capsule-write-fill, var(--control-fill));
     color: var(--capsule-write-ink, var(--on-control));
-  }
-
-  /* A skin with a cap: the word moves over, and the cell stays the size it is in every theme. */
-  .capsule-action {
+    /* A skin with a cap: the word moves over, and the cell stays the size it is in every theme. */
     position: relative;
     overflow: var(--control-clip, visible);
     padding-left: calc(1.25rem * var(--control-cap-room, 0) + 0.875rem);
