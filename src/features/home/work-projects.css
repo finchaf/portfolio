@@ -150,7 +150,7 @@
       left: 0;
       grid-template-columns: repeat(2, 680px);
       gap: 28px;
-      width: 1388px;
+      width: calc(2 * 680px + 28px);
       transform-origin: 0 0;
       will-change: transform;
     }
