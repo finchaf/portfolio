@@ -116,11 +116,11 @@ function afterPageChange(start: () => void) {
 }
 
 /**
- * A page's scene: GSAP's work in a context scoped to the page, as `useGSAP` gives it, with two
- * differences that keep the change of page fluid. A page that came by a change of page starts its
- * scene once the slash has played, not inside the update the transition waits for: the HTML already
- * shows the page as it stands without motion. And a page that leaves drops its scene instead of
- * reverting it. `setup` may return a cleanup; it runs in both cases.
+ * A page's scene: GSAP's work in a context scoped to the page, as @gsap/react's `useGSAP` gives it,
+ * with two differences that keep the change of page fluid. A page that came by a change of page
+ * starts its scene once the slash has played, not inside the update the transition waits for: the
+ * HTML already shows the page as it stands without motion. And a page that leaves drops its scene
+ * instead of reverting it. `setup` may return a cleanup; it runs in both cases.
  */
 export function useScene(
   setup: () => (() => void) | undefined,
@@ -137,7 +137,7 @@ export function useScene(
       cancel?.();
       if (context) takeDown(context);
     };
-    // A scene is set up once for its page, as `useGSAP` without dependencies does.
+    // A scene is set up once for its page, as @gsap/react's `useGSAP` without dependencies does.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 }
