@@ -40,6 +40,8 @@ export function DemoWalls({
     const node = box.current;
     if (!node) return;
     let frame = 0;
+    // A reader who has taken the slider, or a page that has gone, keeps the sweep from starting.
+    let stopped = false;
     const near = new IntersectionObserver(
       ([entry]) => {
         if (!entry?.isIntersecting) return;
@@ -59,6 +61,7 @@ export function DemoWalls({
         );
         if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
         void Promise.all(loads).then(() => {
+          if (stopped) return;
           const start = performance.now();
           const step = (now: number) => {
             const t = Math.min(1, (now - start) / 3600);
@@ -72,6 +75,7 @@ export function DemoWalls({
     );
     near.observe(node);
     const stop = () => {
+      stopped = true;
       cancelAnimationFrame(frame);
     };
     node.addEventListener("pointerdown", stop);

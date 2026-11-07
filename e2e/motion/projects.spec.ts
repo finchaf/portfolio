@@ -334,6 +334,43 @@ test.describe("the LaTeX project's page", () => {
     await expect(page.locator(".pj-walls-pages b")).toHaveText("3");
   });
 
+  test("the slider keeps a release picked before the walls have come", async ({ page }) => {
+    let arrive: () => void = () => undefined;
+    const held = new Promise<void>((done) => {
+      arrive = done;
+    });
+    const came = new Set<string>();
+    page.on("requestfinished", (request) => {
+      if (request.url().includes("/wall-")) came.add(request.url());
+    });
+    await page.route(/\/wall-/, async (route) => {
+      await held;
+      await route.continue();
+    });
+    await page.goto("/ru/projects/latex");
+    const walls = page.locator(".pj-walls");
+    const range = page.locator(".pj-walls-range");
+    await walls.evaluate((node) => {
+      node.scrollIntoView({ block: "center", behavior: "instant" });
+    });
+    const count = Number(await range.getAttribute("max")) + 1;
+    await range.focus();
+    await page.keyboard.press("ArrowLeft");
+    const tag = page.locator(".pj-walls-tag");
+    await expect(tag).not.toHaveText("v2026.06.10");
+    const picked = (await tag.textContent()) ?? "";
+    arrive();
+    await expect.poll(() => came.size).toBeGreaterThanOrEqual(count);
+    // A sweep would start a frame after the last wall has come.
+    await page.evaluate(
+      () =>
+        new Promise((done) => {
+          requestAnimationFrame(() => requestAnimationFrame(() => requestAnimationFrame(done)));
+        }),
+    );
+    await expect(tag).toHaveText(picked);
+  });
+
   test("the lens shows the page's source under the pointer", async ({ page }) => {
     await page.goto("/ru/projects/latex");
     const paper = page.locator(".pj-thesis-paper");
