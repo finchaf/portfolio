@@ -269,6 +269,7 @@
 
 .talk .talk-title {
   font-size: clamp(3rem, 7vw, 7.5rem);
+  letter-spacing: -0.035em;
   line-height: 0.95;
 }
 

@@ -1201,12 +1201,6 @@
   }
 }
 
-.finale-title {
-  font-size: clamp(3rem, 12vw, 11rem);
-  letter-spacing: -0.035em;
-  line-height: 1;
-}
-
 @media (prefers-reduced-motion: no-preference) {
   .hero-dot,
   .story-node-live,

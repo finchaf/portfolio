@@ -35,7 +35,7 @@ export function Finale() {
         <div className="talk-copy">
           <LiveLine />
           <DriftTitle
-            className="talk-title finale-title font-display font-extrabold"
+            className="talk-title font-display font-extrabold"
             cross
             depth={TITLE_DEPTH}
             id="finale-title"

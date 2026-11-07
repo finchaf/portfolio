@@ -151,8 +151,8 @@ const UTILITIES = ["fill-accent", "fill-ink", "font-display"];
  * list, and the test fails on a name that is gone: the list only shrinks.
  */
 const UNPREFIXED: Record<string, string[]> = {
-  // The section of the works, the block after it and the title of the finale.
-  "features/home/scenes.css": ["after-work", "finale-title", "work"],
+  // The section of the works and the block after it.
+  "features/home/scenes.css": ["after-work", "work"],
   // The layer that leads a page in.
   "shell/page-change.css": ["page-lead"],
 };
