@@ -44,7 +44,9 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
   ];
   const outgoing = new Map(noteIds.map((id) => [id, linksOf((meta.get(id) as Meta).element)]));
 
-  // The notes that link to each note close it, as the app's embedded backlinks do.
+  // The notes that link to each note close it, as the app's embedded backlinks do. They go with
+  // the script that added them, so a second start (StrictMode in development) adds no second box.
+  const backlinks: HTMLElement[] = [];
   for (const id of noteIds) {
     const from = noteIds.filter((other) => outgoing.get(other)?.includes(id));
     if (from.length === 0) continue;
@@ -52,7 +54,11 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
     box.append(element("p", "", ui.backlinks));
     for (const other of from) box.append(noteLink(other));
     find(".note-view", (meta.get(id) as Meta).element).append(box);
+    backlinks.push(box);
   }
+  signal.addEventListener("abort", () => {
+    for (const box of backlinks) box.remove();
+  });
 
   function noteLink(id: string) {
     const link = element("a", "internal-link", titleOf(id));

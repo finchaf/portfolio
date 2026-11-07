@@ -780,6 +780,8 @@ export function makeTerminal(host: TerminalHost) {
   signal.addEventListener("abort", () => {
     wakeSleep?.();
     answerWait?.();
+    // The log is the server's empty box again, so a second start (StrictMode) writes it anew.
+    log.textContent = "";
   });
 
   return {
