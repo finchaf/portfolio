@@ -8,6 +8,32 @@ import { ADDRESSES } from "./pages";
 // by hand.
 const TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"];
 
+/**
+ * What a machine can see of a page's structure, its landmarks and headings, on top of WCAG: axe
+ * files these under best practice, which the tags above leave out. Each rule is chosen, not the
+ * whole tag. `landmark-complementary-is-top-level` is not among them: the axe this site runs marks
+ * it deprecated and keeps it off.
+ */
+const STRUCTURE = [
+  "landmark-one-main",
+  "landmark-main-is-top-level",
+  "landmark-banner-is-top-level",
+  "landmark-contentinfo-is-top-level",
+  "landmark-no-duplicate-main",
+  "landmark-no-duplicate-banner",
+  "landmark-no-duplicate-contentinfo",
+  "landmark-unique",
+  "page-has-heading-one",
+  "heading-order",
+];
+
+/** The whole page: WCAG and its structure. A part of a page is scanned with the tags alone. */
+const scanPage = (page: Page) =>
+  new AxeBuilder({ page }).options({
+    runOnly: { type: "tag", values: TAGS },
+    rules: Object.fromEntries(STRUCTURE.map((rule) => [rule, { enabled: true }])),
+  });
+
 /** Waits out an element's entrance: half way through, it is half transparent to axe. */
 const settle = (node: Locator) =>
   node.evaluate((element) =>
@@ -40,7 +66,7 @@ for (const colorScheme of ["light", "dark"] as const) {
       await page.emulateMedia({ colorScheme });
       await page.goto(address);
       await expect(page.locator("html")).not.toHaveAttribute("data-intro");
-      const { violations } = await new AxeBuilder({ page }).withTags(TAGS).analyze();
+      const { violations } = await scanPage(page).analyze();
       expect(
         violations.map(({ id, nodes }) => `${id}: ${nodes.map((node) => node.target).join(", ")}`),
       ).toEqual([]);
