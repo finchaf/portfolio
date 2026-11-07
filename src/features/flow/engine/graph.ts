@@ -34,6 +34,7 @@ interface Palette {
   accent: string;
   text: string;
   hub: string;
+  font: string;
 }
 
 export interface GraphInput {
@@ -139,6 +140,8 @@ export function makeGraph({ notes, links, hubLabel, open, signal }: GraphInput) 
       line: `rgba(${mix},0.1)`,
       accent: readAccent(),
       text: `rgba(${mix},0.72)`,
+      // Read with the colours, when the theme changes, and not on every frame of every view.
+      font: getComputedStyle(document.body).fontFamily,
     };
   }
 
@@ -235,7 +238,7 @@ export function makeGraph({ notes, links, hubLabel, open, signal }: GraphInput) 
       }
       context.globalAlpha = 1;
       context.textAlign = "center";
-      context.font = `${view.full ? "13" : "11"}px ${getComputedStyle(document.body).fontFamily}`;
+      context.font = `${view.full ? "13" : "11"}px ${palette.font}`;
       for (const node of nodes) {
         if (!node.on || node.kind === "rule" || !node.label) continue;
         const named =
