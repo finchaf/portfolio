@@ -354,15 +354,24 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
   }
 
   function spy() {
+    markOutline(spyAt());
+  }
+  /** The heading read now: the last one above 42% of the screen, -1 for none, null with no note. */
+  function spyAt() {
     const article = meta.get(current)?.element;
-    if (!article) return;
+    if (!article) return null;
     const headings = all("[data-outline]", article);
     let best = -1;
     headings.forEach((heading, index) => {
       if (heading.getBoundingClientRect().top < window.innerHeight * 0.42) best = index;
     });
+    return best;
+  }
+  function markOutline(best: number | null) {
+    if (best === null) return;
     all("a", outline).forEach((link, index) => {
-      link.setAttribute("aria-current", String(index === best));
+      const value = String(index === best);
+      if (link.getAttribute("aria-current") !== value) link.setAttribute("aria-current", value);
     });
   }
 
@@ -644,7 +653,11 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
   const thumb = find("#scroll-thumb");
   const rootSplit = find("#root-split");
   function paintThumb() {
-    if (!isWide()) return;
+    drawThumb(measureThumb());
+  }
+  /** Where the thumb goes: undefined on a phone, which has none, null where nothing scrolls. */
+  function measureThumb() {
+    if (!isWide()) return undefined;
     const header = find(".vault-view-header", rootSplit).getBoundingClientRect();
     const pane = terminal.pane.getBoundingClientRect();
     const top = header.bottom;
@@ -654,18 +667,23 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
     const footer =
       total - rootSplit.offsetHeight - rootSplit.getBoundingClientRect().top - scrollerY();
     const range = total - visible - Math.max(0, footer);
-    if (range <= 4 || track <= 0) {
+    if (range <= 4 || track <= 0) return null;
+    const size = Math.max(THUMB_MIN, (track * visible) / (range + visible));
+    const share = Math.min(1, scrollerY() / range);
+    const left = rootSplit.getBoundingClientRect().right - 12;
+    return { size, left, y: top + (track - size) * share, track: track - size, range };
+  }
+  function drawThumb(place: ReturnType<typeof measureThumb>) {
+    if (place === undefined) return;
+    if (place === null) {
       thumb.hidden = true;
       return;
     }
     thumb.hidden = false;
-    const size = Math.max(THUMB_MIN, (track * visible) / (range + visible));
-    const share = Math.min(1, scrollerY() / range);
-    const left = rootSplit.getBoundingClientRect().right - 12;
-    thumb.style.height = `${String(size)}px`;
-    thumb.style.transform = `translate(${String(left)}px, ${String(top + (track - size) * share)}px)`;
-    thumb.dataset.track = String(track - size);
-    thumb.dataset.range = String(range);
+    thumb.style.height = `${String(place.size)}px`;
+    thumb.style.transform = `translate(${String(place.left)}px, ${String(place.y)}px)`;
+    thumb.dataset.track = String(place.track);
+    thumb.dataset.range = String(place.range);
   }
   thumb.addEventListener(
     "pointerdown",
@@ -984,15 +1002,20 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
     }
   })();
 
+  // Every box is read before anything is written, so a scroll lays the page out once, not once a
+  // heading. What is written moves none of what is read: the outline, a fixed thumb, the terminal.
   function onScroll() {
-    spy();
-    paintThumb();
-    if (current !== MAIN_NOTE) return;
-    for (const heading of all("[data-scene]", (meta.get(MAIN_NOTE) as Meta).element)) {
-      if (heading.getBoundingClientRect().top < innerHeight * 0.62) {
-        terminal.catchUp(heading.dataset.scene ?? "");
-      }
-    }
+    const best = spyAt();
+    const place = measureThumb();
+    const reached =
+      current === MAIN_NOTE
+        ? all("[data-scene]", (meta.get(MAIN_NOTE) as Meta).element).filter(
+            (heading) => heading.getBoundingClientRect().top < innerHeight * 0.62,
+          )
+        : [];
+    markOutline(best);
+    drawThumb(place);
+    for (const heading of reached) terminal.catchUp(heading.dataset.scene ?? "");
   }
   window.addEventListener("scroll", onScroll, { passive: true, signal });
   window.addEventListener("resize", relayout, on);
