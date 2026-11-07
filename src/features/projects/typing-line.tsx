@@ -38,5 +38,3 @@ export function TypingRenders() {
 }
 
 export const TYPING_STEPS = TYPING.steps;
-export const TYPING_KEYS = TYPING.keys;
-export const TYPING_LINE = TYPING.line;

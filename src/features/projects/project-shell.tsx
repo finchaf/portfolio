@@ -44,7 +44,7 @@ interface Props {
   sections: readonly ShellSection[];
 }
 
-export function Refs({ refs }: { refs: readonly Ref[] }) {
+function Refs({ refs }: { refs: readonly Ref[] }) {
   return (
     <ul className="pj-refs">
       {refs.map(({ label, href }) => (

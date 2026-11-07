@@ -3,7 +3,7 @@
 const HEAD = { snippets: "snippets/tex/", verify: "$ collect_verify.py" } as const;
 
 /** Triggers of the owner's LuaSnip snippets and what each one becomes. */
-export const SNIPPETS = [
+const SNIPPETS = [
   ["mm", "$ $"],
   ["ff", "\\frac{}{}"],
   [";e", "\\epsilon"],
