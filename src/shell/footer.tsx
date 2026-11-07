@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
 
-import { isLocale, type Locale } from "@/i18n/locales";
+import type { Locale } from "@/i18n/locales";
 import { localizedPath } from "@/i18n/localized-path";
 import { PAGE_PATHS, PAGES } from "@/lib/pages";
 import {
@@ -22,6 +22,7 @@ import { Logo, Wordmark } from "@/ui/logo";
 import { LanguageTabs } from "./language-tabs";
 import { ThemeSwitcher } from "./theme-switcher";
 
+import "@/ui/control.css";
 import "./footer.css";
 
 /** The day of the build: the short form reads one way in Russian, but `11/3/26` does not in English. */
@@ -36,8 +37,7 @@ const UPDATED_STYLE: Record<Locale, "short" | "medium"> = { ru: "short", en: "me
 export function Footer() {
   const t = useTranslations();
   const format = useFormatter();
-  const current = useLocale();
-  const locale: Locale = isLocale(current) ? current : "ru";
+  const locale = useLocale();
   return (
     <footer className="footer">
       <div className="footer-in">
