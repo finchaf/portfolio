@@ -8,12 +8,12 @@ import {
   Maximize2,
   X,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 
 import { localizedPath } from "@/i18n/localized-path";
 import { CLIENT_COMMITS, LAUNCH_DOWNLOADS } from "@/lib/product";
+import { Image } from "@/ui/image";
 import { LinkCode } from "@/ui/link-code";
 import { ScrollBar } from "@/ui/scroll-bar";
 
