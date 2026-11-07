@@ -3,6 +3,8 @@ import { isCalm } from "@/motion/reduced";
 
 interface Node {
   id: string;
+  /** Its place in the order the base grew, which the wand reveals it by. */
+  index: number;
   kind: BodyKind;
   label: string;
   x: number;
@@ -79,6 +81,7 @@ export function makeGraph({ notes, links, hubLabel, open, signal }: GraphInput) 
     const radius = Math.sqrt(random()) * 0.9;
     const node: Node = {
       id,
+      index: nodes.length,
       kind,
       label,
       x: Math.cos(angle) * radius,
@@ -206,7 +209,7 @@ export function makeGraph({ notes, links, hubLabel, open, signal }: GraphInput) 
       context.clearRect(0, 0, view.width, view.height);
       const near = hovered ? neighbours(hovered) : null;
       const shown = Math.floor(nodes.length * reveal);
-      const visible = (node: Node) => nodes.indexOf(node) < shown;
+      const visible = (node: Node) => node.index < shown;
 
       context.lineWidth = 1;
       for (const { a, b } of liveEdges()) {
