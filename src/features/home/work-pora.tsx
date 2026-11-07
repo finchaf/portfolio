@@ -311,7 +311,7 @@ export function WorkPora() {
                   <li key={number}>
                     <b>{p(`origin.numbers.${number}.n`)}</b>
                     <span>{p(`origin.numbers.${number}.l`)}</span>
-                    <time>{p(`origin.numbers.${number}.d`)}</time>
+                    <span className="pair-numbers-when">{p(`origin.numbers.${number}.d`)}</span>
                   </li>
                 ))}
               </ul>

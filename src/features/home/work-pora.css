@@ -172,7 +172,8 @@
   line-height: 1.3;
 }
 
-.pair-numbers time {
+/* When each held: not a date a machine could read, so a span, whose rule outranks the plain one. */
+.pair-numbers .pair-numbers-when {
   color: var(--muted);
   font: 400 0.75rem/1.2 var(--mono);
 }
@@ -671,7 +672,7 @@
     /* A phone's stop leaves its frame the room under the words: the facts wait for the page. */
     .chapter[data-chapter="pora"] .pair-facts,
     .chapter[data-chapter="pora"] .pair-note,
-    .chapter[data-chapter="pora"] .pair-numbers time,
+    .chapter[data-chapter="pora"] .pair-numbers .pair-numbers-when,
     .chapter[data-chapter="pora"] .pair-origin {
       display: none;
     }

@@ -388,8 +388,8 @@ export function WorkFlow() {
                 <dl className="map-figures" data-map-line>
                   {figures.map((figure) => (
                     <div key={figure}>
-                      <dd data-count={BASE_FIGURES[figure]}>{BASE_FIGURES[figure]}</dd>
                       <dt>{b(figure)}</dt>
+                      <dd data-count={BASE_FIGURES[figure]}>{BASE_FIGURES[figure]}</dd>
                     </div>
                   ))}
                 </dl>
