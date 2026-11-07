@@ -1,5 +1,7 @@
 import { CHECKLISTS, relax, type Body, type Tie } from "@/lib/base-graph";
 
+import { stopTimeline } from "./stop-timeline";
+
 /** The stops of Flow's chapter, each a node of the graph. */
 export const STOPS = ["intro", "brief", "research", "screens", "handoff", "rule", "base"] as const;
 
@@ -14,42 +16,8 @@ export const LAST_STOP = STOPS.length - 1;
 const RESTS = [0.6, 1, 1, 1.6, 1, 2.4, 0.7] as const;
 const MOVES = [1, 1, 1, 1, 1, 0.7] as const;
 
-const total =
-  RESTS.reduce<number>((sum, rest) => sum + rest, 0) +
-  MOVES.reduce<number>((sum, move) => sum + move, 0);
-
-export interface Moment {
-  /** The stop the scene rests on or is leaving. */
-  stop: number;
-  /** How far the move to the next stop has gone, 0 at rest. */
-  move: number;
-  /** How far the rest has gone, 0 on the move. */
-  rest: number;
-}
-
-/** Where a scroll of 0 to 1 stands: rests and moves take turns, so nothing fights for the wheel. */
-export function momentAt(progress: number): Moment {
-  let left = Math.min(Math.max(progress, 0), 1) * total;
-  for (let stop = 0; stop <= LAST_STOP; stop += 1) {
-    const rest = RESTS[stop] as number;
-    if (left < rest) return { stop, move: 0, rest: left / rest };
-    left -= rest;
-    if (stop === LAST_STOP) break;
-    const flight = MOVES[stop] as number;
-    if (left < flight) return { stop, move: left / flight, rest: 0 };
-    left -= flight;
-  }
-  return { stop: LAST_STOP, move: 0, rest: 1 };
-}
-
-/** The share of the scroll at which a reader is settled on a stop. */
-export function progressOf(stop: number) {
-  let at = 0;
-  for (let index = 0; index < stop; index += 1) {
-    at += (RESTS[index] as number) + (MOVES[index] as number);
-  }
-  return (at + (RESTS[stop] as number) * 0.3) / total;
-}
+/** Where a scroll of 0 to 1 stands, and the share of the scroll settled on a stop. */
+export const { momentAt, progressOf } = stopTimeline(RESTS, MOVES);
 
 export interface MapNode extends Body {
   id: string;

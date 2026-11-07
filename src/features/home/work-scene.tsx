@@ -12,6 +12,7 @@ import { runDesk } from "./desk-scene";
 import { pickLooks, runFlowMap } from "./flow-map-scene";
 import { pairFlight } from "./pair-scene";
 import { scrubFollow } from "./scrub-follow";
+import { SETTLE } from "./stop-timeline";
 
 /** The corners of a sheet rising over the page, and how far what it covers sinks. */
 const SHEET = { radius: "2rem", sunk: 0.93, dimmed: 0.55, lastStretch: 0.06 };
@@ -136,12 +137,11 @@ function runStops(
     window.scrollTo({ top: trigger.labelToScroll(`stop-${index}`), behavior: "instant" });
   };
   chapter.addEventListener("focusin", meet);
-  // Each stop rests from its label for `SCENE.rest`: a flick settles a third of the way in, and a
-  // stop pressed in the bar is reached there too.
+  // Each stop rests from its label for `SCENE.rest`, and a reader settles `SETTLE` of the way in.
   const restOf = (index: number) => {
     const trigger = scene.scrollTrigger;
     if (!trigger) return undefined;
-    const at = (scene.labels[`stop-${String(index)}`] ?? 0) + SCENE.rest * 0.3;
+    const at = (scene.labels[`stop-${String(index)}`] ?? 0) + SCENE.rest * SETTLE;
     return trigger.start + (at / scene.duration()) * (trigger.end - trigger.start);
   };
   const go = (event: MouseEvent) => {
