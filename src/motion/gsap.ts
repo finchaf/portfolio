@@ -11,7 +11,6 @@ import { SplitText } from "gsap/SplitText";
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
 ScrollTrigger.config({ ignoreMobileResize: true });
 
-/** The query under which every scene runs: without it the page stays as the HTML has it. */
-export const MOTION_ALLOWED = "(prefers-reduced-motion: no-preference)";
+export { MOTION_ALLOWED } from "./reduced";
 
 export { gsap, ScrollTrigger, SplitText };
