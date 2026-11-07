@@ -113,7 +113,7 @@ const SHEETS: Record<string, { own: string[]; dresses?: string[] }> = {
   "features/home/after-work.css": { own: ["exp", "talk"], dresses: ["link-code"] },
   "features/home/flow-map.css": { own: ["map"], dresses: ["chapter", "stop", "app"] },
   "features/home/scenes.css": {
-    own: ["hero", "story", "chapter", "stop"],
+    own: ["hero", "story", "chapter", "stop", "work"],
     dresses: ["capsule", "code", "segmented"],
   },
   "features/home/work-pora.css": { own: ["pair"], dresses: ["chapter", "stop"] },
@@ -151,8 +151,6 @@ const UTILITIES = ["fill-accent", "fill-ink", "font-display"];
  * list, and the test fails on a name that is gone: the list only shrinks.
  */
 const UNPREFIXED: Record<string, string[]> = {
-  // The section of the works and the block after it.
-  "features/home/scenes.css": ["after-work", "work"],
   // The layer that leads a page in.
   "shell/page-change.css": ["page-lead"],
 };

@@ -17,7 +17,7 @@ export function HomePage() {
       <Hero />
       <Story />
       <Work />
-      <div className="after-work" data-after-work>
+      <div className="work-after" data-after-work>
         <Experience />
         <Finale />
       </div>

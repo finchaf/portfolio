@@ -9,7 +9,7 @@ import { WorkScene } from "./work-scene";
 export function Work() {
   const t = useTranslations("home.work");
   return (
-    <section aria-labelledby="work-title" className="work" id="work">
+    <section aria-labelledby="work-title" className="work-section" id="work">
       <h2 className="sr-only" id="work-title">
         {t("title")}
       </h2>

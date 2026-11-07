@@ -1103,7 +1103,7 @@
  * Works. In the plain flow a chapter is a section in its theme: its stops one under another, Flow's
  * panels too. Everything a scene needs is further down, under `[data-js]`.
  */
-.work {
+.work-section {
   scroll-margin-top: calc(-1 * (var(--header) + 1rem));
 }
 
@@ -1864,7 +1864,7 @@
      * next sheet covers it: the next one is pulled up by that much. --length is the scroll of its
      * own timeline. The chapter after Flow also waits behind it for one screen, off to the right.
      */
-    .work {
+    .work-section {
       position: relative;
       z-index: 2;
       margin-top: -100svh;
@@ -2002,7 +2002,7 @@
     }
 
     /* `clip`, not `hidden`: a scroll box here would stop the CV's profile from holding with `sticky`. */
-    .after-work {
+    .work-after {
       position: relative;
       z-index: 3;
       margin-top: -100svh;
