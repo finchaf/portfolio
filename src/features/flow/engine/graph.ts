@@ -1,10 +1,6 @@
 import { CHECKLISTS, relax, type BodyKind } from "@/lib/base-graph";
 import { isCalm } from "@/motion/reduced";
 
-/**
- * The graph of the base, drawn on canvas: the notes, the 16 checklists and every one of the 234
- * rules as a dot on its checklist.
- */
 interface Node {
   id: string;
   kind: BodyKind;
@@ -62,6 +58,10 @@ function readAccent() {
   return accent;
 }
 
+/**
+ * The graph of the base, drawn on canvas: the notes, the 16 checklists and every one of the 234
+ * rules as a dot on its checklist.
+ */
 export function makeGraph({ notes, links, hubLabel, open, signal }: GraphInput) {
   const nodes: Node[] = [];
   const byId = new Map<string, Node>();
