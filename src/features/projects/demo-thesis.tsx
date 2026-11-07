@@ -2,6 +2,8 @@
 
 import { type ReactNode, useState } from "react";
 
+import { ScrollBar } from "@/ui/scroll-bar";
+
 import { useLens } from "./use-lens";
 
 export interface SourceBlock {
@@ -119,11 +121,14 @@ export function DemoThesis({
       <p className="pj-demo-note" data-js-only>
         {strings.hint}
       </p>
-      <pre className="pj-thesis-preamble">
-        {preamble.map((line) => (
-          <code key={line}>{painted(line)}</code>
-        ))}
-      </pre>
+      <div className="pj-scroll pj-thesis-preamble-box">
+        <pre className="pj-thesis-preamble">
+          {preamble.map((line) => (
+            <code key={line}>{painted(line)}</code>
+          ))}
+        </pre>
+        <ScrollBar axis="x" />
+      </div>
     </div>
   );
 }

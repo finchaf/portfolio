@@ -33,6 +33,26 @@ html::-webkit-scrollbar {
   z-index: 90;
 }
 
+/* Along the bottom, for a scroller that runs sideways. */
+.scroll-bar[data-axis="x"] {
+  top: auto;
+  left: 0;
+  width: auto;
+  height: 0.625rem;
+  border-top: 1px solid transparent;
+  border-left: 0;
+}
+
+/*
+ * On a wide screen Flow is an app: its note pane draws its own bar, at the pane's edge, as Obsidian
+ * has it (ADR-0013), and the page's steps aside so there is one.
+ */
+@media (min-width: 64rem) {
+  :root[data-js]:has([data-capsule-flat]) .scroll-bar[data-page] {
+    display: none;
+  }
+}
+
 .scroll-bar[data-shown]:not([data-empty]),
 .scroll-bar[data-dragged] {
   opacity: 1;
@@ -42,6 +62,11 @@ html::-webkit-scrollbar {
 .scroll-bar > i {
   flex: none;
   width: 100%;
+}
+
+.scroll-bar[data-axis="x"] > i {
+  width: auto;
+  height: 100%;
   border-radius: 999px;
   background: var(--line);
   will-change: translate;

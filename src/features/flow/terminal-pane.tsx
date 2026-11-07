@@ -1,6 +1,8 @@
 import { ChevronDown, Pause, Play, Terminal, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 
+import { ScrollBar } from "@/ui/scroll-bar";
+
 /** The pane under the note, with a tab strip like every pane in the app. */
 export function TerminalPane() {
   const t = useTranslations("flow.terminal");
@@ -51,15 +53,18 @@ export function TerminalPane() {
         </button>
       </div>
       {/* The run plays by itself, so its log keeps quiet until the reader takes the terminal. */}
-      <div
-        aria-label={t("label")}
-        aria-live="off"
-        className="vault-term-log"
-        id="term-log"
-        role="log"
-        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- the log scrolls: a key must reach it.
-        tabIndex={0}
-      />
+      <div className="vault-term-scroll">
+        <div
+          aria-label={t("label")}
+          aria-live="off"
+          className="vault-term-log"
+          id="term-log"
+          role="log"
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- the log scrolls: a key must reach it.
+          tabIndex={0}
+        />
+        <ScrollBar />
+      </div>
       <div className="vault-term-foot">
         <div className="vault-term-chips" id="term-chips" />
         <form className="vault-term-line" id="term-form">

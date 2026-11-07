@@ -508,7 +508,24 @@
   border-radius: 0.5rem;
   background: var(--crust);
   font: 500 0.75rem/1.62 var(--mono);
-  scrollbar-width: thin;
+  scrollbar-width: none;
+}
+
+/* A block of code that runs sideways, with the drawn bar along its bottom (ADR-0016). */
+.pj-scroll {
+  position: relative;
+  display: grid;
+  min-width: 0;
+}
+
+.pj-thesis-preamble-box {
+  width: 100%;
+  max-width: 34rem;
+}
+
+.pj-thesis-preamble::-webkit-scrollbar,
+.pj-tx-request pre::-webkit-scrollbar {
+  display: none;
 }
 
 /* Releases: a wall of pages per release */
@@ -630,7 +647,7 @@
 .pj-tx-request pre {
   overflow-x: auto;
   font: 500 0.75rem/1.55 var(--mono);
-  scrollbar-width: thin;
+  scrollbar-width: none;
 }
 
 /* A landscape page of the register, then the end of its table with the line of date and sources. */

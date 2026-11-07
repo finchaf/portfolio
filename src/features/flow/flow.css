@@ -357,6 +357,11 @@
   font-size: 13px;
 }
 
+/* A field holds the ring of focus its input gives up: inside it, in the accent. */
+.vault-search-input:has(> input:focus-visible) {
+  box-shadow: inset 0 0 0 2px var(--accent-strong);
+}
+
 .vault-search-results {
   display: grid;
   gap: 4px;
@@ -1836,6 +1841,18 @@
   background: var(--page);
 }
 
+.vault-term-scroll {
+  position: relative;
+  display: none;
+}
+
+.vault-term[data-open] .vault-term-scroll {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
 .vault-term[data-open] .vault-term-log {
   display: block;
   flex: 1;
@@ -1843,6 +1860,12 @@
   padding: 6px 14px 4px;
   overflow-y: auto;
   overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+.vault-term-log::-webkit-scrollbar,
+#prompt-list::-webkit-scrollbar {
+  display: none;
 }
 
 .vault-term[data-open] .vault-term-foot {
@@ -1887,6 +1910,12 @@
   position: relative;
   flex: 1;
   min-width: 0;
+}
+
+.vault-term-field:has(> input:focus-visible) {
+  border-radius: 2px;
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 3px;
 }
 
 .vault-term-field input {
@@ -2135,11 +2164,21 @@
   font: 400 16px var(--sans);
 }
 
+#prompt-input:focus-visible {
+  border-radius: 11px 11px 0 0;
+  box-shadow: inset 0 0 0 2px var(--accent-strong);
+}
+
+.vault-prompt-scroll {
+  position: relative;
+}
+
 #prompt-list {
   max-height: 320px;
   padding: 8px;
   overflow-y: auto;
   list-style: none;
+  scrollbar-width: none;
 }
 
 #prompt-list li {

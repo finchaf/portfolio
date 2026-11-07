@@ -7,6 +7,7 @@ import { useLocale, useMessages, useTranslations } from "next-intl";
 import { LOCALES } from "@/i18n/locales";
 import { localizedPath } from "@/i18n/localized-path";
 import { PAGE_PATHS, PAGES } from "@/lib/pages";
+import { ScrollBar } from "@/ui/scroll-bar";
 import { World } from "@/ui/world";
 
 import { LeftDock, MobileBar, RightDock, TabStrip, ViewHeader } from "./docks";
@@ -79,8 +80,11 @@ export function FlowPage() {
             id="prompt-input"
             role="combobox"
           />
-          {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-to-interactive-role -- the input's list of options, as a combobox has it. */}
-          <ul aria-label={t("flow.ui.search")} id="prompt-list" role="listbox" />
+          <div className="vault-prompt-scroll">
+            {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-to-interactive-role -- the input's list of options, as a combobox has it. */}
+            <ul aria-label={t("flow.ui.search")} id="prompt-list" role="listbox" />
+            <ScrollBar />
+          </div>
           <p className="vault-prompt-hint">{t("flow.ui.searchHint")}</p>
         </div>
       </div>

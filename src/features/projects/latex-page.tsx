@@ -7,6 +7,7 @@ import { useFormatter, useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
 import { ButtonLink } from "@/ui/button-link";
+import { ScrollBar } from "@/ui/scroll-bar";
 
 import { DemoPages } from "./demo-pages";
 import { DemoThesis, type SourceBlock } from "./demo-thesis";
@@ -304,7 +305,10 @@ function SectionDemo({ id }: { id: SectionId }) {
         <figure className="pj-tx-request">
           <div className="pj-term">
             <p className="pj-term-command">{CODE.request}</p>
-            <pre>{REQUEST}</pre>
+            <div className="pj-scroll">
+              <pre>{REQUEST}</pre>
+              <ScrollBar axis="x" />
+            </div>
           </div>
           <div className="pj-tx-spread">
             <span className="pj-paper">

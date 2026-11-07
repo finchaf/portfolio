@@ -17,9 +17,10 @@ const SHORTEST = 18;
  * it, in a parent that places it. It shows while the pointer is over what it scrolls, while that
  * scrolls and while it is dragged, and is not there when nothing overflows. The thumb can be
  * dragged, and a press on the track goes there. Hidden from assistive technology: the keys and the
- * wheel scroll as they always do.
+ * wheel scroll as they always do. `axis="x"` draws a bar along the bottom for a scroller that
+ * runs sideways, as a block of code does.
  */
-export function ScrollBar({ page = false }: { page?: boolean }) {
+export function ScrollBar({ page = false, axis = "y" }: { page?: boolean; axis?: "x" | "y" }) {
   const track = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
@@ -34,26 +35,36 @@ export function ScrollBar({ page = false }: { page?: boolean }) {
     let hiding = 0;
     let frame = 0;
     let over = false;
-    let drag: { y: number; top: number; ratio: number } | null = null;
+    let drag: { at: number; top: number; ratio: number } | null = null;
+    const x = !page && axis === "x";
 
-    const view = () => (page ? window.innerHeight : scroller.clientHeight);
-    const length = () => Math.max(0, scroller.scrollHeight - view());
-    const top = () => (page ? window.scrollY : scroller.scrollTop);
+    const view = () =>
+      page ? window.innerHeight : x ? scroller.clientWidth : scroller.clientHeight;
+    const full = () => (x ? scroller.scrollWidth : scroller.scrollHeight);
+    const length = () => Math.max(0, full() - view());
+    const top = () => (page ? window.scrollY : x ? scroller.scrollLeft : scroller.scrollTop);
     const to = (place: number, smooth = false) => {
-      const options: ScrollToOptions = { top: place, behavior: smooth ? "smooth" : "instant" };
+      const behavior: ScrollBehavior = smooth ? "smooth" : "instant";
+      const options: ScrollToOptions = x ? { left: place, behavior } : { top: place, behavior };
       if (page) window.scrollTo(options);
       else scroller.scrollTo(options);
     };
 
     /** The thumb's length and place, from the share of the content seen and how far it went. */
     const measure = () => {
-      const run = bar.clientHeight;
+      const run = x ? bar.clientWidth : bar.clientHeight;
       const rest = length();
       bar.toggleAttribute("data-empty", rest < 1 || run === 0);
       if (rest < 1 || run === 0) return { run, size: run, rest };
-      const size = Math.max(SHORTEST, Math.round((run * view()) / scroller.scrollHeight));
-      thumb.style.height = `${String(size)}px`;
-      thumb.style.translate = `0 ${String(((run - size) * Math.min(top(), rest)) / rest)}px`;
+      const size = Math.max(SHORTEST, Math.round((run * view()) / full()));
+      const place = String(((run - size) * Math.min(top(), rest)) / rest);
+      if (x) {
+        thumb.style.width = `${String(size)}px`;
+        thumb.style.translate = `${place}px 0`;
+      } else {
+        thumb.style.height = `${String(size)}px`;
+        thumb.style.translate = `0 ${place}px`;
+      }
       return { run, size, rest };
     };
 
@@ -101,18 +112,19 @@ export function ScrollBar({ page = false }: { page?: boolean }) {
       if (rest < 1) return;
       const ratio = rest / Math.max(1, run - size);
       if (event.target === thumb) {
-        drag = { y: event.clientY, top: top(), ratio };
+        drag = { at: x ? event.clientX : event.clientY, top: top(), ratio };
         bar.setPointerCapture(event.pointerId);
         bar.setAttribute("data-dragged", "");
         return;
       }
       // A press on the track brings the thumb's middle there.
       const box = bar.getBoundingClientRect();
-      to((event.clientY - box.top - size / 2) * ratio, true);
+      const from = x ? event.clientX - box.left : event.clientY - box.top;
+      to((from - size / 2) * ratio, true);
     };
     const onMove = (event: PointerEvent) => {
       if (!drag) return;
-      to(drag.top + (event.clientY - drag.y) * drag.ratio);
+      to(drag.top + ((x ? event.clientX : event.clientY) - drag.at) * drag.ratio);
     };
     const onUp = (event: PointerEvent) => {
       if (!drag) return;
@@ -159,10 +171,16 @@ export function ScrollBar({ page = false }: { page?: boolean }) {
       window.clearTimeout(hiding);
       cancelAnimationFrame(frame);
     };
-  }, [page]);
+  }, [page, axis]);
 
   return (
-    <span aria-hidden className="scroll-bar" data-page={page ? "" : undefined} ref={track}>
+    <span
+      aria-hidden
+      className="scroll-bar"
+      data-axis={axis === "x" ? "x" : undefined}
+      data-page={page ? "" : undefined}
+      ref={track}
+    >
       <i />
     </span>
   );
