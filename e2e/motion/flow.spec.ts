@@ -53,6 +53,26 @@ test.describe("the Flow vault", () => {
     await expect(chips).toHaveCount(6);
   });
 
+  test("keeps the run at its question when the reader leaves the page", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(FLOW);
+    await expect(page.locator("#term-now[data-ask]")).toBeVisible({ timeout: 15000 });
+    const kept = () =>
+      page.evaluate(
+        () => (JSON.parse(sessionStorage.getItem("flow-run") ?? "{}") as { i?: number }).i,
+      );
+    const asked = await kept();
+    // A link of the site's own: the page changes without a load, and the vault's script stops.
+    await expect
+      .poll(() => page.evaluate(() => document.documentElement.style.viewTransitionName))
+      .toBe("root");
+    await page.locator('[data-capsule] a[href$="/ru/projects"]').first().click();
+    await expect(page).toHaveURL(/\/ru\/projects$/);
+    // The vault's script has stopped once it takes its tooltip off <body>.
+    await expect(page.locator("body > .tooltip")).toHaveCount(0);
+    expect(await kept()).toBe(asked);
+  });
+
   test("keeps a theme chosen in the terminal", async ({ page }) => {
     await page.goto(FLOW);
     await started(page);

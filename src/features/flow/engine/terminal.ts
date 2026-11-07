@@ -191,6 +191,8 @@ export function makeTerminal(host: TerminalHost) {
   let wakeSleep: (() => void) | null = null;
 
   const fast = () => isStill() || state.i < state.target;
+  // Read after an await: the page may have gone while the run waited.
+  const stopped = () => signal.aborted;
 
   function sleep(ms: number) {
     return new Promise<void>((resolve) => {
@@ -292,6 +294,8 @@ export function makeTerminal(host: TerminalHost) {
     for (const letter of command) {
       text.textContent += letter;
       await sleep(34);
+      // The page has gone: the rest of the word has no one to be typed for.
+      if (signal.aborted) return;
       if (fast()) {
         text.textContent = command;
         break;
@@ -487,6 +491,8 @@ export function makeTerminal(host: TerminalHost) {
         setNow(`<b>${escape(t[step.fin])}</b>`);
         await sleep(fast() ? 0 : 1200);
       }
+      // Leaving the page cuts the step's wait short: it is not done, so the run keeps its place.
+      if (stopped()) break;
       state.i += 1;
       persist();
       if (!fast() && "s" in step) await sleep(120);
