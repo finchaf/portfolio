@@ -54,7 +54,7 @@ export function WelcomeScreen() {
         <i className="st s4" />
       </div>
       <div className="tx">
-        <h4>{t("welcomeTitle")}</h4>
+        <h3>{t("welcomeTitle")}</h3>
         <p>{t("welcomeText")}</p>
       </div>
       <div className="dots">
@@ -74,7 +74,7 @@ export function PaywallScreen() {
       <StatusBar />
       <div className="round x">{t("glyphClose")}</div>
       <div className="tx">
-        <h4>{t("paywallTitle")}</h4>
+        <h3>{t("paywallTitle")}</h3>
       </div>
       <ul className="ben">
         <li>
@@ -115,7 +115,7 @@ export function HomeScreen() {
     <div className="scr s-home">
       <StatusBar />
       <div className="bar">
-        <h4>{t("tonight")}</h4>
+        <h3>{t("tonight")}</h3>
         <div className="round">{t("glyphMore")}</div>
       </div>
       <div className="ring">
@@ -169,7 +169,7 @@ export function NightScreen() {
         <div className="round">{t("glyphMore")}</div>
       </div>
       <div className="tx">
-        <h4>{t("nightTitle")}</h4>
+        <h3>{t("nightTitle")}</h3>
         <p>{t("nightTime")}</p>
       </div>
       <svg aria-hidden className="hyp" preserveAspectRatio="none" viewBox="0 0 330 150">
