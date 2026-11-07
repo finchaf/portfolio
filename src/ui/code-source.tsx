@@ -1,7 +1,10 @@
-/** What in a line of source is a tag, a string, an expression or a variable. */
-const TOKEN = /(<\/?\w+|\/?>|"[^"]*"|\{[^}]*\}|--[\w-]+)/;
+/**
+ * What in a line of source is a tag, a string, an expression or a variable. An expression may hold
+ * one level of braces, as a template literal's `${}` does: it ends at its own closing brace.
+ */
+export const TOKEN = /(<\/?\w+|\/?>|"[^"]*"|\{(?:[^{}]|\{[^{}]*\})*\}|--[\w-]+)/;
 
-function tone(part: string): string | undefined {
+export function tone(part: string): string | undefined {
   if (part.startsWith("<") || part.endsWith(">") || part.startsWith("--")) return "text-accent";
   if (part.startsWith('"')) return "text-success";
   if (part.startsWith("{")) return "text-ink";
