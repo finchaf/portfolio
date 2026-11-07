@@ -1,23 +1,28 @@
 import { useTranslations } from "next-intl";
 
 import { COMMAND, GATES, JOURNAL, RELEASES } from "@/lib/project-facts";
+import { WORLDS, type WorldName } from "@/themes/worlds";
 
-const THEMES = ["home", "pora", "flow", "projects"] as const;
 const MODES = ["light", "dark"] as const;
 
-/** Every theme in both modes, painted by the theme itself. */
-export function ThemeTiles() {
+/** Each world's theme by the name of its page, as the header has it. */
+export function useThemeNames(): Record<WorldName, string> {
   const t = useTranslations();
-  const name = {
+  return {
     home: t("home.title"),
     pora: t("pora.title"),
     flow: t("flow.title"),
     projects: t("projects.title"),
   };
+}
+
+/** Every theme in both modes, painted by the theme itself. */
+export function ThemeTiles() {
+  const name = useThemeNames();
   return (
     <span className="pj-tiles">
       {MODES.flatMap((mode) =>
-        THEMES.map((theme) => (
+        WORLDS.map((theme) => (
           <span className={`pj-tile pj-scheme-${mode}`} data-tint={theme} key={`${mode}-${theme}`}>
             <b>{name[theme]}</b>
             <span className="pj-tile-dots">

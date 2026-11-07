@@ -7,7 +7,7 @@ import { useFormatter, useLocale, useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
 import { localizedPath } from "@/i18n/localized-path";
-import shareImages from "@/lib/share-images.json";
+import { SHARE_IMAGE, shareImagePath } from "@/lib/share-images";
 import { REPOSITORY_URL, SITE_ORIGIN } from "@/lib/site";
 import { ButtonLink } from "@/ui/button-link";
 
@@ -21,6 +21,7 @@ import { BUDGET, DAYS, FACTS, GATES, JOURNAL, RELEASES } from "@/lib/project-fac
 import { SECTIONS, type SectionId } from "./portfolio-sections";
 import { ProjectFacts } from "./project-parts";
 import { ProjectShell } from "./project-shell";
+import { useThemeNames } from "@/ui/board/board-frames";
 import { cvEn, cvRu, Shot } from "@/ui/board/shot";
 
 const FINDINGS = [
@@ -45,12 +46,7 @@ const CV = { ru: cvRu, en: cvEn } as const;
 const BUSIEST = Math.max(...DAYS.map(([, , commits]) => commits));
 
 /** The link pictures the section shows: the four worlds, as the chats get them. */
-const CARDS = [
-  ["home", "home"],
-  ["pora", "pora"],
-  ["flow", "flow"],
-  ["projects", "projects"],
-] as const;
+const CARDS = ["home", "pora", "flow", "projects"] as const;
 
 /** The skills of the repository, as they are typed. */
 const SKILLS = [
@@ -73,7 +69,7 @@ const RICH = {
   browser: FACTS.browser,
   commits: FACTS.commits,
   first: DAYS[0][0],
-  last: DAYS[DAYS.length - 1]?.[0] ?? "",
+  last: DAYS.at(-1)?.[0] ?? "",
   days: DAYS.length,
 };
 
@@ -83,7 +79,7 @@ function SectionDemo({ id }: { id: SectionId }) {
   const all = useTranslations();
   const format = useFormatter();
   const locale = useLocale();
-  const demo = (key: Parameters<typeof t>[0]) => t(key);
+  const themeNames = useThemeNames();
   switch (id) {
     case "form":
       return (
@@ -101,24 +97,19 @@ function SectionDemo({ id }: { id: SectionId }) {
         <DemoThemes
           locale={locale}
           strings={{
-            theme: demo("demo.theme"),
-            mode: demo("demo.mode"),
-            light: demo("demo.light"),
-            dark: demo("demo.dark"),
-            sample: demo("demo.sample"),
-            sampleText: demo("demo.sampleText"),
-            sampleAction: demo("demo.sampleAction"),
-            sampleQuiet: demo("demo.sampleQuiet"),
-            text: demo("demo.text"),
-            soft: demo("demo.soft"),
-            control: demo("demo.control"),
+            theme: t("demo.theme"),
+            mode: t("demo.mode"),
+            light: t("demo.light"),
+            dark: t("demo.dark"),
+            sample: t("demo.sample"),
+            sampleText: t("demo.sampleText"),
+            sampleAction: t("demo.sampleAction"),
+            sampleQuiet: t("demo.sampleQuiet"),
+            text: t("demo.text"),
+            soft: t("demo.soft"),
+            control: t("demo.control"),
           }}
-          themeNames={{
-            home: all("home.title"),
-            pora: all("pora.title"),
-            flow: all("flow.title"),
-            projects: all("projects.title"),
-          }}
+          themeNames={themeNames}
         />
       );
     case "lens":
@@ -127,11 +118,11 @@ function SectionDemo({ id }: { id: SectionId }) {
           design={<Shot name="home" sizes="(min-width: 64rem) 50vw, 100vw" />}
           code={<Shot name="homeCode" sizes="(min-width: 64rem) 50vw, 100vw" />}
           strings={{
-            hint: demo("demo.lensHint"),
-            design: demo("demo.lensDesign"),
-            code: demo("demo.lensCode"),
-            lens: demo("demo.lensBoth"),
-            label: demo("demo.lensLabel"),
+            hint: t("demo.lensHint"),
+            design: t("demo.lensDesign"),
+            code: t("demo.lensCode"),
+            lens: t("demo.lensBoth"),
+            label: t("demo.lensLabel"),
           }}
         />
       );
@@ -141,12 +132,12 @@ function SectionDemo({ id }: { id: SectionId }) {
           a={<Shot name="home" sizes="(min-width: 64rem) 50vw, 100vw" />}
           b={<Shot name="flow" sizes="(min-width: 64rem) 50vw, 100vw" />}
           strings={{
-            before: demo("demo.before"),
-            after: demo("demo.after"),
-            play: demo("demo.play"),
-            beforeNote: demo("demo.beforeNote"),
-            afterNote: demo("demo.afterNote"),
-            label: demo("demo.slashLabel"),
+            before: t("demo.before"),
+            after: t("demo.after"),
+            play: t("demo.play"),
+            beforeNote: t("demo.beforeNote"),
+            afterNote: t("demo.afterNote"),
+            label: t("demo.slashLabel"),
           }}
         />
       );
@@ -166,7 +157,7 @@ function SectionDemo({ id }: { id: SectionId }) {
             ),
           }))}
           label={t("sections.chapters.name")}
-          open={demo("demo.openChapter")}
+          open={t("demo.openChapter")}
         />
       );
     case "gates": {
@@ -179,7 +170,7 @@ function SectionDemo({ id }: { id: SectionId }) {
       return (
         <>
           <DemoGates
-            again={demo("demo.replay")}
+            again={t("demo.replay")}
             summary={t("demo.ofAll", {
               passed: GATES.length,
               all: GATES.length,
@@ -240,18 +231,18 @@ function SectionDemo({ id }: { id: SectionId }) {
           <DemoRelease
             releases={RELEASES.map(([hash]) => hash.slice(0, 12))}
             steps={[
-              demo("steps.refuse"),
-              demo("steps.gates"),
-              demo("steps.copy"),
-              demo("steps.switch"),
-              demo("steps.verify"),
-              demo("steps.back"),
+              t("steps.refuse"),
+              t("steps.gates"),
+              t("steps.copy"),
+              t("steps.switch"),
+              t("steps.verify"),
+              t("steps.back"),
             ]}
             strings={{
-              deploy: demo("demo.deploy"),
-              rollback: demo("demo.rollback"),
-              current: demo("demo.current"),
-              fresh: demo("demo.newRelease"),
+              deploy: t("demo.deploy"),
+              rollback: t("demo.rollback"),
+              current: t("demo.current"),
+              fresh: t("demo.newRelease"),
             }}
           />
         </div>
@@ -281,21 +272,18 @@ function SectionDemo({ id }: { id: SectionId }) {
               <span>{t("demo.cv")}</span>
             </a>
           </li>
-          {CARDS.map(([card, page]) => {
-            const key = `${locale}/${card}` as keyof typeof shareImages.files;
-            return (
-              <li key={card}>
-                {/* eslint-disable-next-line @next/next/no-img-element -- the file chats get, as it is. */}
-                <img
-                  alt={all(`${page}.meta.imageAlt` as never)}
-                  height={630}
-                  loading="lazy"
-                  src={`/og/${key}.png?v=${shareImages.files[key]}`}
-                  width={1200}
-                />
-              </li>
-            );
-          })}
+          {CARDS.map((card) => (
+            <li key={card}>
+              {/* eslint-disable-next-line @next/next/no-img-element -- the file chats get, as it is. */}
+              <img
+                alt={all(`${card}.meta.imageAlt` as never)}
+                height={SHARE_IMAGE.height}
+                loading="lazy"
+                src={shareImagePath(locale, card)}
+                width={SHARE_IMAGE.width}
+              />
+            </li>
+          ))}
         </ul>
       );
     case "process":
