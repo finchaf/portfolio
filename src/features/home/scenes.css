@@ -1197,7 +1197,7 @@
   .hero-dot,
   .story-node-live,
   .story-branch:first-child::before {
-    animation: hero-pulse 2.4s var(--ease-in-out) infinite;
+    animation: hero-pulse var(--duration-pulse) var(--ease-in-out) infinite;
   }
 
   .hero-menu {

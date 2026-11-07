@@ -5,6 +5,8 @@
   --duration-slow: 0.7s;
   --duration-page: 0.62s;
   --duration-grain: 1.2s;
+  --duration-pulse: 2.4s;
+  --duration-blink: 1s;
   --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 }

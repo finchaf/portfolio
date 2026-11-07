@@ -6,7 +6,7 @@ import { driftLines } from "@/motion/drift-lines";
 import { gsap, ScrollTrigger } from "@/motion/gsap";
 import { MOTION_ALLOWED, NARROW, WIDE } from "@/motion/reduced";
 import { useScene } from "@/motion/scene";
-import { DURATION } from "@/motion/tokens";
+import { DURATION, SCENE } from "@/motion/tokens";
 
 import { scrubFollow } from "./scrub-follow";
 import { branchRoutes, type Line } from "./story-branches";
@@ -134,7 +134,7 @@ function dealMenus(section: HTMLElement, scrollTrigger: (view: Element) => Scrol
   if (!view || frames.length === 0) return;
   const last = frames.length - 1;
   const scene = gsap.timeline({
-    defaults: { ease: "power2.out" },
+    defaults: { ease: SCENE.arrive },
     scrollTrigger: { ...scrollTrigger(view), scrub: true },
   });
   frames.forEach((frame) => {
@@ -161,7 +161,7 @@ function dealScraps(section: HTMLElement, scrollTrigger: ScrollTrigger.Vars) {
   };
   // A timeline, as for the menus: a staggered tween would put only the first one in the pile.
   const scene = gsap.timeline({
-    defaults: { ease: "power2.out" },
+    defaults: { ease: SCENE.arrive },
     scrollTrigger: { ...scrollTrigger, scrub: true, invalidateOnRefresh: true },
   });
   scraps.forEach((scrap, index) => {
@@ -392,7 +392,7 @@ function countUp(section: HTMLElement, arriving: (element: Element) => ScrollTri
         gsap.to(shown, {
           value: end,
           duration: DURATION.slow,
-          ease: "power2.out",
+          ease: SCENE.arrive,
           onUpdate: () => {
             element.textContent = format.format(Math.round(shown.value));
           },

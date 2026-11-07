@@ -14,8 +14,6 @@ type Layer = "design" | "code";
 
 const RADIUS = { phone: 110, wide: 170 };
 const WIDE = 640;
-/** How long the lens takes to cross the screen before a reader takes it, in seconds. */
-const WANDER = 7;
 /** How far the lens keeps above the words under the name, in pixels. */
 const CLEAR = 12;
 
@@ -174,8 +172,8 @@ export function HeroLens({ labels, settings, children }: HeroLensProps) {
       const wander = gsap.to(lens.current, {
         x: () => path().to.x,
         y: () => path().to.y,
-        duration: WANDER,
-        ease: "sine.inOut",
+        duration: SCENE.wander,
+        ease: SCENE.sway,
         repeat: -1,
         yoyo: true,
       });
@@ -215,7 +213,7 @@ export function HeroLens({ labels, settings, children }: HeroLensProps) {
           x: event.clientX - box.left,
           y: event.clientY - box.top,
           duration: SCENE.catchUp,
-          ease: "power3.out",
+          ease: SCENE.follow,
           overwrite: "auto",
         });
       };

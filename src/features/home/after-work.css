@@ -467,7 +467,7 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .talk-caret {
-    animation: talk-blink 1s steps(1) infinite;
+    animation: talk-blink var(--duration-blink) steps(1) infinite;
   }
 }
 
