@@ -35,7 +35,8 @@ export function WriteSheet({ label, children }: WriteSheetProps) {
 
   useEffect(() => {
     const press = (event: MouseEvent) => {
-      const link = (event.target as Element).closest<HTMLElement>(TRIGGER);
+      if (!(event.target instanceof Element)) return;
+      const link = event.target.closest<HTMLElement>(TRIGGER);
       const plain = !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
       if (!link || !plain || event.button !== 0) return;
       event.preventDefault();
@@ -53,7 +54,8 @@ export function WriteSheet({ label, children }: WriteSheetProps) {
     sheet.current?.focus({ preventScroll: true });
     // A pointer or a key that goes anywhere else. A trigger toggles the sheet by itself.
     const away = (event: Event) => {
-      const target = event.target as Element;
+      const target = event.target;
+      if (!(target instanceof Element)) return;
       if (!sheet.current?.contains(target) && !target.closest(TRIGGER)) setOpen(false);
     };
     const key = (event: KeyboardEvent) => {
