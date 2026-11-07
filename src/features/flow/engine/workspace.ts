@@ -623,12 +623,14 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
       const move = (next: PointerEvent) => {
         jumpTo(startScroll + (next.clientY - startY) * perPixel);
       };
+      // A cancelled pointer (a touch taken by a gesture) ends the drag as a lifted one does.
+      const ends = ["pointerup", "pointercancel", "lostpointercapture"] as const;
       const up = () => {
         thumb.removeEventListener("pointermove", move);
-        thumb.removeEventListener("pointerup", up);
+        for (const type of ends) thumb.removeEventListener(type, up);
       };
       thumb.addEventListener("pointermove", move, on);
-      thumb.addEventListener("pointerup", up, on);
+      for (const type of ends) thumb.addEventListener(type, up, on);
     },
     on,
   );
@@ -910,13 +912,16 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
       },
       on,
     );
-    handle.addEventListener(
-      "pointerup",
-      () => {
-        dragging = false;
-      },
-      on,
-    );
+    // A cancelled pointer ends the drag too, or the next hover would still resize the pane.
+    for (const type of ["pointerup", "pointercancel", "lostpointercapture"]) {
+      handle.addEventListener(
+        type,
+        () => {
+          dragging = false;
+        },
+        on,
+      );
+    }
   })();
 
   function onScroll() {

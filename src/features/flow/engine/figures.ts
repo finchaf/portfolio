@@ -143,7 +143,10 @@ export function setupCompare(root: HTMLElement, signal: AbortSignal) {
       },
       { signal },
     );
-    row.addEventListener("pointerup", () => (dragging = false), { signal });
+    // A cancelled pointer (a pen taken by a gesture) ends the drag as a lifted one does.
+    for (const type of ["pointerup", "pointercancel", "lostpointercapture"]) {
+      row.addEventListener(type, () => (dragging = false), { signal });
+    }
   }
 
   return {

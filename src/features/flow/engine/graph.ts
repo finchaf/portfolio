@@ -359,6 +359,12 @@ export function makeGraph({ notes, links, hubLabel, open, signal }: GraphInput) 
       },
       { signal },
     );
+    // A cancelled pointer lets the node go and opens nothing: only a lifted one is a click.
+    const letGo = () => {
+      dragged = null;
+    };
+    canvas.addEventListener("pointercancel", letGo, { signal });
+    canvas.addEventListener("lostpointercapture", letGo, { signal });
   }
 
   readPalette();
