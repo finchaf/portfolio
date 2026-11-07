@@ -183,7 +183,7 @@ function dealScraps(section: HTMLElement, scrollTrigger: ScrollTrigger.Vars) {
  */
 function drawBranches(section: HTMLElement, scrollTrigger: ScrollTrigger.Vars) {
   const graph = section.querySelector<SVGSVGElement>("[data-graph]");
-  if (!graph) return () => undefined;
+  if (!graph) return { trigger: undefined, stop: () => undefined };
   const circle = (name: string) => graph.querySelector(`[data-node="${name}"]`);
   const label = (name: string) => section.querySelector<HTMLElement>(`[data-branch="${name}"]`);
 
@@ -234,18 +234,21 @@ function drawBranches(section: HTMLElement, scrollTrigger: ScrollTrigger.Vars) {
 
   layout();
   ScrollTrigger.addEventListener("refresh", layout);
-  gsap.to(pen, {
+  const drawing = gsap.to(pen, {
     done: 1,
     ease: "none",
     onUpdate: draw,
     scrollTrigger: { ...scrollTrigger, scrub: follow(), invalidateOnRefresh: true },
   });
-  return () => {
-    ScrollTrigger.removeEventListener("refresh", layout);
-    gsap.utils.toArray<HTMLElement>("[data-branch]", section).forEach((words) => {
-      words.style.removeProperty("opacity");
-      words.style.removeProperty("transform");
-    });
+  return {
+    trigger: drawing.scrollTrigger,
+    stop: () => {
+      ScrollTrigger.removeEventListener("refresh", layout);
+      gsap.utils.toArray<HTMLElement>("[data-branch]", section).forEach((words) => {
+        words.style.removeProperty("opacity");
+        words.style.removeProperty("transform");
+      });
+    },
   };
 }
 
@@ -553,11 +556,21 @@ function runRibbon(section: HTMLElement, track: HTMLElement, mark: Mark) {
     end: "left 32%",
   }));
   dealScraps(section, { trigger: section, start: "top 58%", end: "top -14%" });
-  const stopBranches = drawBranches(section, {
+  const branches = drawBranches(section, {
     trigger: section,
     start: () => `top top-=${String(ride())}`,
     end: () => `top top-=${String(ride() + hold() * DRAWING)}`,
   });
+  // Opacity alone hides the branches, so the keyboard can reach them: the pen comes to meet the
+  // focus, and the words arrive with it. A press of the mouse lands on words already drawn, and a
+  // jump under it would take the link from under the pointer.
+  const meet = (event: FocusEvent) => {
+    const target = event.target as Element;
+    const trigger = branches.trigger;
+    if (!trigger || !target.closest("[data-branch]") || !target.matches(":focus-visible")) return;
+    window.scrollTo({ top: trigger.end, behavior: "instant" });
+  };
+  section.addEventListener("focusin", meet);
   const showShell = clearTheScreen(section, (run) => ({
     containerAnimation: move,
     trigger: run,
@@ -593,8 +606,9 @@ function runRibbon(section: HTMLElement, track: HTMLElement, mark: Mark) {
   );
 
   return () => {
+    section.removeEventListener("focusin", meet);
     fork.stop?.();
-    stopBranches();
+    branches.stop();
     stopLines();
     stopRuler();
     showShell();

@@ -228,6 +228,22 @@ test.describe("the home page in motion", () => {
     await expect(page.locator(".write-sheet")).toBeVisible();
   });
 
+  test("brings the pen to the way to write when the keyboard reaches it", async ({ page }) => {
+    await page.goto(HOME);
+    await expect(page.locator("#story")).toHaveAttribute("data-live", "");
+    const write = page.locator('[data-branch="open"] [data-write]');
+    await expect(write).not.toBeInViewport();
+    const { end, hold } = await storyGeometry(page);
+    // A key first, so that the focus that follows is the keyboard's.
+    await page.keyboard.press("Tab");
+    await write.focus();
+    const scroll = () => page.evaluate(() => window.scrollY);
+    await expect.poll(scroll).toBeGreaterThan(end - hold);
+    expect(await scroll()).toBeLessThan(end);
+    await expect(page.locator('[data-branch="open"]')).toHaveCSS("opacity", "1");
+    await expect(write).toBeInViewport();
+  });
+
   test("brings the last chapter's lines to rest straight", async ({ page }) => {
     await page.goto(HOME);
     const lefts = () =>
