@@ -119,11 +119,3 @@ body {
   outline: 2px solid var(--accent-strong);
   outline-offset: 2px;
 }
-
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-group(*),
-  ::view-transition-old(*),
-  ::view-transition-new(*) {
-    animation: none;
-  }
-}

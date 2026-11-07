@@ -9,6 +9,16 @@
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
+/* A reader who asked for less motion changes page at once. The longhands below set no name, so
+   they do not bring the animation back. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none;
+  }
+}
+
 /* A change of page, and a name flowing into the page it opens. */
 ::view-transition-group(*),
 ::view-transition-old(*),
