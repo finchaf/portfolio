@@ -11,7 +11,7 @@
  */
 export const FACTS = {
   date: "07.11.2026",
-  commits: 407,
+  commits: 410,
   decisions: 16,
   checks: 14,
   unit: 804,
@@ -65,7 +65,7 @@ export const DAYS = [
   ["04.11", "nov04", 7],
   ["05.11", "nov05", 6],
   ["06.11", "nov06", 19],
-  ["07.11", "nov07", 232],
+  ["07.11", "nov07", 235],
 ] as const;
 
 /** `python3 scripts/deploy.py --status`, newest first. */
