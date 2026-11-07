@@ -141,6 +141,18 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
     forward.toggleAttribute("data-faint", position >= furthest);
   }
 
+  /** The pencil follows the note shown: pressed on its source, gone where there is none. */
+  function paintSource() {
+    const button = find('[data-action="source"]', vault);
+    const source = (meta.get(current) as Meta).element.querySelector<HTMLElement>(
+      "pre.note-source",
+    );
+    button.hidden = !source;
+    const showing = source ? !source.hidden : false;
+    press(button, showing);
+    button.dataset.tip = (showing ? ui.reading : ui.source) ?? "";
+  }
+
   function apply(wanted: string) {
     const id = meta.has(wanted) ? wanted : MAIN_NOTE;
     for (const open of all(".note[data-open]", notesRoot)) open.removeAttribute("data-open");
@@ -152,6 +164,7 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
     }
     renderTabs();
     renderCrumb();
+    paintSource();
     for (const row of all("#tree .nav-file")) {
       if (row.dataset.note === id) row.setAttribute("aria-current", "page");
       else row.removeAttribute("aria-current");
@@ -765,13 +778,12 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
         break;
       case "source": {
         const article = (meta.get(current) as Meta).element;
-        const source = find("pre.note-source", article);
-        const view = find(".note-view", article);
+        const source = article.querySelector<HTMLElement>("pre.note-source");
+        if (!source) break;
         const showing = !source.hidden;
         source.hidden = showing;
-        view.hidden = !showing;
-        press(target, !showing);
-        target.dataset.tip = (showing ? ui.source : ui.reading) ?? "";
+        find(".note-view", article).hidden = !showing;
+        paintSource();
         break;
       }
       case "view-menu":

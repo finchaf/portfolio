@@ -9,6 +9,7 @@ test.describe("the Flow vault", () => {
   /** The vault's script has started: it takes the scroll over from the browser. */
   const started = (page: Page) =>
     expect.poll(() => page.evaluate(() => history.scrollRestoration)).toBe("manual");
+  const title = (page: Page) => page.locator(".note[data-open] .inline-title");
 
   test("opens a note by its address and Back returns to the place", async ({ page }) => {
     await page.goto(FLOW);
@@ -81,6 +82,28 @@ test.describe("the Flow vault", () => {
     const row = page.locator(".menu-item").first();
     await row.hover();
     await expect(row).not.toHaveCSS("background-color", TRANSPARENT);
+  });
+
+  test("keeps the pencil with the note shown, and off the graph", async ({ page }) => {
+    const errors: Error[] = [];
+    page.on("pageerror", (error) => errors.push(error));
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(FLOW);
+    await started(page);
+    const pencil = page.locator('.view-header [data-action="source"]');
+    await pencil.click();
+    await expect(pencil).toHaveAttribute("aria-pressed", "true");
+    await expect(page.locator(".note[data-open] pre.note-source")).toBeVisible();
+    await page.locator('#tree a[data-note="critic"]').click();
+    await expect(title(page)).toHaveText("Критик");
+    await expect(pencil).toHaveAttribute("aria-pressed", "false");
+    await page.goBack();
+    await expect(pencil).toHaveAttribute("aria-pressed", "true");
+    await page.locator("#term-in").fill("graph");
+    await page.locator("#term-in").press("Enter");
+    await expect(page).toHaveURL(/#graph$/);
+    await expect(pencil).toBeHidden();
+    expect(errors).toEqual([]);
   });
 
   test("sizes the graph's canvas to the pane", async ({ page }) => {
