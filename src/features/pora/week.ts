@@ -1,10 +1,10 @@
 import { PRODUCT_SITE_URL } from "@/lib/product";
-import { DAYS, type Lesson, LESSONS, type LessonType, SLOTS } from "@/lib/product-week";
+import { DAYS, type Lesson, LESSONS, SLOTS } from "@/lib/product-week";
 
 import { type Picture, PICTURES } from "./pictures";
 
 // The week itself lives in lib: the page's link picture draws it too (scripts/og).
-export { DAYS, LESSONS, SLOTS, type Lesson, type LessonType };
+export { DAYS, LESSONS, SLOTS, type Lesson };
 
 /**
  * The product's colours of the lesson types, both modes: Tailwind 4's 500 in the light, 300 in the

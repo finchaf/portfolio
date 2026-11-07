@@ -57,7 +57,6 @@ export function PictureViewer({ words }: { words: Words }) {
       image.alt = source.alt;
       image.width = source.naturalWidth || source.width;
       image.height = source.naturalHeight || source.height;
-      image.dataset.shape = button.dataset.shape ?? "";
       caption.textContent = button.dataset.caption ?? "";
       counter.textContent = words.count
         .replace("{n}", String(index + 1))
@@ -86,23 +85,13 @@ export function PictureViewer({ words }: { words: Words }) {
       const from = shown(button)?.getBoundingClientRect();
       const to = image.getBoundingClientRect();
       if (calm() || !from || to.width === 0) return;
-      viewer.setAttribute("data-growing", "");
       motion = image.animate(flight(from, to), { duration: GROW_MS, easing: GROW_EASE });
-      void motion.finished.then(
-        () => {
-          viewer.removeAttribute("data-growing");
-        },
-        () => {
-          viewer.removeAttribute("data-growing");
-        },
-      );
     };
 
     const finish = () => {
       motion?.cancel();
       motion = null;
       viewer.removeAttribute("data-leaving");
-      viewer.removeAttribute("data-growing");
       if (viewer.open) viewer.close();
       list[index]?.focus({ preventScroll: true });
       leaving = false;

@@ -1359,12 +1359,6 @@ a.pora-window-row:focus-visible {
     box-shadow 150ms ease;
 }
 
-/* A phone's screen keeps a phone's corners; a row of them stays a row of phones, not of tiles. */
-.pora-window-picture[data-shape="phone"] {
-  flex: 0 1 11.25rem;
-  border-radius: 1.5625rem;
-}
-
 .pora-window-picture img {
   width: 100%;
   height: auto;
@@ -1479,10 +1473,6 @@ a.pora-window-row:focus-visible {
   outline-offset: -1px;
   transform-origin: 0 0;
   cursor: default;
-}
-
-.pora-viewer-image[data-shape="phone"] {
-  border-radius: 1.875rem;
 }
 
 .pora-viewer-bar {
