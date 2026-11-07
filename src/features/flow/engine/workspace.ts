@@ -187,12 +187,26 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
 
   function go(id: string) {
     if (!meta.has(id)) return false;
+    const fromSheet = sheetOpen;
     closeSheets(true);
-    history.replaceState({ ...(history.state as object), flowY: scrollerY() }, "");
-    if (id !== current) {
-      position += 1;
-      furthest = position;
-      history.pushState({ flowY: 0, flowAt: position }, "", `#${id}`);
+    if (fromSheet) {
+      // The sheet's own step gives way: the note takes its place, or, for the note already shown,
+      // it is gone. The note under the sheet has kept its place since the sheet opened.
+      if (id !== current) {
+        position += 1;
+        furthest = position;
+        history.replaceState({ flowY: 0, flowAt: position }, "", `#${id}`);
+      } else {
+        ignorePop = true;
+        history.back();
+      }
+    } else {
+      history.replaceState({ ...(history.state as object), flowY: scrollerY() }, "");
+      if (id !== current) {
+        position += 1;
+        furthest = position;
+        history.pushState({ flowY: 0, flowAt: position }, "", `#${id}`);
+      }
     }
     apply(id);
     jumpTo(0);
@@ -565,6 +579,8 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
   let sheetOpen = false;
   const pushSheet = () => {
     sheetOpen = true;
+    // The note's own step keeps its place, for Back to find under the sheet's.
+    history.replaceState({ ...(history.state as object), flowY: scrollerY() }, "");
     history.pushState({ ...(history.state as object), flowSheet: true }, "");
   };
   function openTree() {

@@ -1,5 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
+import { jump } from "../helpers";
+
 // The Flow vault.
 
 test.describe("the Flow vault", () => {
@@ -80,6 +82,35 @@ test.describe("the Flow vault", () => {
     });
     await expect(page.locator(".capsule-surface")).toBeHidden();
     await expect(page.locator("[data-capsule]")).toHaveCSS("top", "0px");
+  });
+
+  test("opens a note from the phone's tree in one step of history", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(FLOW);
+    await started(page);
+    await jump(page, 900);
+    const steps = await page.evaluate(() => history.length);
+    const tree = page.locator('.mobile-bar [data-action="tree"]');
+    const scrolled = () => page.evaluate(() => window.scrollY);
+
+    await tree.click();
+    // The click may nudge the page to reach the sticky bar: the note's place is where it opened.
+    const place = await scrolled();
+    expect(place).toBeGreaterThan(800);
+    await page.locator('#tree a[data-note="critic"]').click();
+    await expect(title(page)).toHaveText("Критик");
+    // The note takes the sheet's step: one Back returns to the note under it, at its place.
+    expect(await page.evaluate(() => history.length)).toBe(steps + 1);
+    await page.goBack();
+    await expect(title(page)).toHaveText("Флоу");
+    await expect.poll(scrolled).toBe(place);
+
+    // The note already shown takes the sheet's step back with it.
+    await tree.click();
+    await page.locator('#tree a[data-note="flow"]').click();
+    await expect
+      .poll(() => page.evaluate(() => history.state as { flowSheet?: boolean }))
+      .not.toHaveProperty("flowSheet");
   });
 
   test("lights the switcher's choice and a menu's row under the pointer", async ({ page }) => {
