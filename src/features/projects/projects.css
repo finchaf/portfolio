@@ -6,7 +6,7 @@
  * of the projects are the tiles of the link picture, the same in both modes, as they are there.
  */
 /*
- * The cat, in type and nowhere loud: it walks beside the chosen layer and lies in the status line.
+ * The cat, in type and nowhere loud: it walks beside the chosen layer.
  * The three signs of ᓚᘏᗢ are in no face of the site, and a system
  * without them would show boxes, so they are drawn: Noto Sans Canadian Aboriginal, SIL OFL 1.1.
  */
@@ -20,7 +20,7 @@
   mask: var(--pj-cat) center / contain no-repeat;
 }
 
-/* The cat's outline, for the layers and the status line. */
+/* The cat's outline, for the layers of the board and of a project's page. */
 .pj-board,
 .pj-sub {
   --pj-cat: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 -726 2539 741'%3E%3Cpath d='M333 0Q264 0 213 -16Q162 -32 128 -64Q93 -95 76 -142Q59 -189 59 -252Q59 -308 77 -354Q95 -400 128 -432Q161 -465 208 -482Q254 -500 311 -500H410V-430H307Q256 -430 218 -407Q179 -384 158 -344Q137 -303 137 -250Q137 -188 160 -148Q182 -109 228 -90Q274 -71 344 -71H836V0Z M1333 -726Q1521 -726 1612 -634Q1702 -543 1702 -354V0H1624V-350Q1624 -508 1554 -582Q1483 -655 1333 -655Q1185 -655 1109 -576Q1033 -498 1033 -343Q1033 -59 1245 -59Q1331 -59 1377 -98Q1423 -138 1423 -214Q1423 -284 1390 -320Q1356 -357 1291 -357Q1262 -357 1232 -348Q1201 -338 1183 -323L1158 -391Q1178 -408 1216 -418Q1254 -429 1292 -429Q1390 -429 1446 -372Q1501 -314 1501 -213Q1502 -109 1434 -48Q1365 12 1246 12Q1101 12 1027 -78Q953 -168 953 -343Q953 -531 1050 -628Q1147 -726 1333 -726Z M2155 15Q2059 15 1998 -12Q1936 -38 1901 -90Q1866 -142 1852 -216Q1839 -291 1839 -387V-714H1904L2155 -559L2405 -714H2470V-387Q2470 -291 2456 -216Q2443 -142 2408 -90Q2374 -38 2312 -12Q2251 15 2155 15ZM2392 -620 2162 -481H2148L1917 -621V-361Q1917 -267 1937 -198Q1957 -130 2008 -94Q2060 -57 2155 -57Q2250 -57 2301 -94Q2352 -130 2372 -198Q2392 -267 2392 -361Z'/%3E%3C/svg%3E");
