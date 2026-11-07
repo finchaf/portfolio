@@ -694,7 +694,8 @@ export function makeTerminal(host: TerminalHost) {
     (event) => {
       if (event.key === "Tab") {
         const hit = completion(input.value, host.noteIds);
-        if (hit) {
+        // A command already whole has nothing to finish: Tab moves on, as it does everywhere.
+        if (hit && hit !== input.value) {
           event.preventDefault();
           input.value = hit;
           paintGhost();

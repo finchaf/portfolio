@@ -73,6 +73,18 @@ test.describe("the Flow vault", () => {
     expect(await kept()).toBe(asked);
   });
 
+  test("lets Tab leave a command already whole", async ({ page }) => {
+    await page.goto(FLOW);
+    await started(page);
+    const input = page.locator("#term-in");
+    await input.fill("hel");
+    await input.press("Tab");
+    await expect(input).toHaveValue("help");
+    await expect(input).toBeFocused();
+    await input.press("Tab");
+    await expect(input).not.toBeFocused();
+  });
+
   test("keeps a theme chosen in the terminal", async ({ page }) => {
     await page.goto(FLOW);
     await started(page);
