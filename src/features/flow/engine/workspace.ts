@@ -255,8 +255,9 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
       press(button, button.dataset.leftTab === tab);
     }
     if (tab === "search") {
-      find("#vault-search").focus();
-      renderSearch("");
+      const input = find<HTMLInputElement>("#vault-search");
+      input.focus();
+      renderSearch(input.value);
     }
   }
 
@@ -359,11 +360,15 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
   }
 
   /* ---------- the left panel's search ---------- */
+  /** What a note says as read: no source, no other notes' links under it, no panel's labels. */
+  function textOf(id: string) {
+    const view = find(".note-view", (meta.get(id) as Meta).element).cloneNode(true) as HTMLElement;
+    for (const chrome of all(".backlinks, .metadata-heading, .metadata-add", view)) chrome.remove();
+    return view.textContent;
+  }
   function matches(query: string) {
     const low = query.toLowerCase();
-    return noteIds.filter((id) =>
-      `${titleOf(id)} ${(meta.get(id) as Meta).element.textContent}`.toLowerCase().includes(low),
-    );
+    return noteIds.filter((id) => `${titleOf(id)} ${textOf(id)}`.toLowerCase().includes(low));
   }
   function renderSearch(query: string) {
     const box = find("#vault-search-results");

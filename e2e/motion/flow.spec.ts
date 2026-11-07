@@ -171,6 +171,25 @@ test.describe("the Flow vault", () => {
     expect(errors).toEqual([]);
   });
 
+  test("searches what the notes say, not their source", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(FLOW);
+    await started(page);
+    await page.locator('[data-left-tab="search"]').click();
+    const search = page.locator("#vault-search");
+    const found = page.locator("#vault-search-results a");
+    // Every note's front matter has the key, and no note says it.
+    await search.fill("heading:");
+    await expect(found).toHaveCount(0);
+    await search.fill("критик");
+    await expect(found).not.toHaveCount(0);
+    const count = await found.count();
+    await page.locator('[data-left-tab="files"]').click();
+    await page.locator('[data-left-tab="search"]').click();
+    await expect(search).toHaveValue("критик");
+    await expect(found).toHaveCount(count);
+  });
+
   test("draws the pane's scrollbar again when a dock folds", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(FLOW);
