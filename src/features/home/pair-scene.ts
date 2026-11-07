@@ -35,9 +35,12 @@ interface Box {
   h: number;
 }
 
-const between = (a: number, b: number, at: number) => a + (b - a) * at;
+const mix = (a: number, b: number, at: number) => a + (b - a) * at;
 const share = (at: number, from: number, to: number) =>
   Math.min(Math.max((at - from) / (to - from), 0), 1);
+
+/** The curve of a flight: the scene's own, as a function of how far the flight has gone. */
+const SCENE_EASE = gsap.parseEase(SCENE.move);
 
 /**
  * The flight of the lesson through «Пора на пару». A stop's place is read from the layout, not from
@@ -88,10 +91,10 @@ export function pairFlight(chapter: HTMLElement) {
     const free = boxes.get("free");
     if (hold === "clash" && box && free && state.clash > 0) {
       return {
-        x: between(box.x, free.x, state.clash),
-        y: between(box.y, free.y, state.clash),
-        w: between(box.w, free.w, state.clash),
-        h: between(box.h, free.h, state.clash),
+        x: mix(box.x, free.x, state.clash),
+        y: mix(box.y, free.y, state.clash),
+        w: mix(box.w, free.w, state.clash),
+        h: mix(box.h, free.h, state.clash),
       };
     }
     return box;
@@ -118,10 +121,10 @@ export function pairFlight(chapter: HTMLElement) {
     }
     const eased = SCENE_EASE(flight);
     const box = {
-      x: between(from.x, to.x, eased),
-      y: between(from.y, to.y, eased),
-      w: between(from.w, to.w, eased),
-      h: between(from.h, to.h, eased),
+      x: mix(from.x, to.x, eased),
+      y: mix(from.y, to.y, eased),
+      w: mix(from.w, to.w, eased),
+      h: mix(from.h, to.h, eased),
     };
     const leaving = PATH[stop]?.form ?? null;
     const coming = PATH[Math.min(stop + 1, PATH.length - 1)]?.form ?? null;
@@ -130,8 +133,7 @@ export function pairFlight(chapter: HTMLElement) {
       const weight = (name === leaving ? 1 - cross : 0) + (name === coming ? cross : 0);
       form.style.opacity = String(leaving === coming && name === leaving ? 1 : weight);
     }
-    const corner =
-      between(leaving ? CORNER[leaving] : 0, coming ? CORNER[coming] : 0, cross) * box.w;
+    const corner = mix(leaving ? CORNER[leaving] : 0, coming ? CORNER[coming] : 0, cross) * box.w;
     fly.style.opacity = "1";
     fly.style.transform = `translate3d(${box.x.toFixed(1)}px, ${box.y.toFixed(1)}px, 0)`;
     fly.style.width = `${box.w.toFixed(1)}px`;
@@ -187,6 +189,3 @@ export function pairFlight(chapter: HTMLElement) {
     };
   };
 }
-
-/** The curve of a flight: the scene's own, as a function of how far the flight has gone. */
-const SCENE_EASE = gsap.parseEase(SCENE.move);
