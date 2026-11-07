@@ -1273,7 +1273,7 @@ blockquote {
   border-radius: 10px;
 }
 
-.sdir[aria-checked="true"] .frame {
+.sdir[aria-pressed="true"] .frame {
   outline: 2px solid var(--accent-strong);
   outline-offset: 2px;
 }
@@ -1284,7 +1284,7 @@ blockquote {
     outline-offset: 2px;
   }
 
-  .sdir[aria-checked="true"]:hover .frame {
+  .sdir[aria-pressed="true"]:hover .frame {
     outline-color: var(--accent-strong);
   }
 }
@@ -1304,7 +1304,7 @@ blockquote {
   font-weight: 600;
 }
 
-.sdir[aria-checked="true"] .sdir-name {
+.sdir[aria-pressed="true"] .sdir-name {
   color: var(--ink);
 }
 

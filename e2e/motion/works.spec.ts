@@ -110,7 +110,7 @@ test.describe("the home page in motion", () => {
     const tile = page.locator('#work-flow [data-look="f"]');
     await expect(tile).toHaveCSS("opacity", "1");
     await tile.click();
-    await expect(tile).toHaveAttribute("aria-checked", "true");
+    await expect(tile).toHaveAttribute("aria-pressed", "true");
     await expect(page.locator("#work-flow [data-look-target]").first()).toHaveAttribute(
       "data-style",
       "f",

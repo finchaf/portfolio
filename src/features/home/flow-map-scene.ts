@@ -904,7 +904,7 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
 
   function choose(look: string) {
     for (const tile of gsap.utils.toArray<HTMLElement>("[data-look]", chapter)) {
-      tile.setAttribute("aria-checked", String(tile.dataset.look === look));
+      tile.setAttribute("aria-pressed", String(tile.dataset.look === look));
     }
     for (const target of gsap.utils.toArray<HTMLElement>("[data-look-target]", chapter)) {
       target.dataset.style = look;

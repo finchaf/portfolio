@@ -221,7 +221,7 @@
   transition: outline-color var(--duration-quick) var(--ease-out);
 }
 
-.map-tile[aria-checked="true"] .frame,
+.map-tile[aria-pressed="true"] .frame,
 .map-tile:focus-visible .frame {
   outline-color: var(--accent-strong);
 }
@@ -231,7 +231,7 @@
     outline-color: color-mix(in srgb, var(--accent-strong) 50%, transparent);
   }
 
-  .map-tile[aria-checked="true"]:hover .frame {
+  .map-tile[aria-pressed="true"]:hover .frame {
     outline-color: var(--accent-strong);
   }
 }
@@ -250,7 +250,7 @@
   color: var(--ink);
 }
 
-.map-tile[aria-checked="true"] .map-tile-name {
+.map-tile[aria-pressed="true"] .map-tile-name {
   color: var(--ink);
 }
 

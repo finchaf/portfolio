@@ -386,7 +386,7 @@ export function makeTerminal(host: TerminalHost) {
     const name = strings.board[look] ?? look;
     for (const node of all("[data-sk]", root)) node.dataset.style = look;
     for (const button of all(".sdir", root)) {
-      button.setAttribute("aria-checked", String(button.dataset.dir === look));
+      button.setAttribute("aria-pressed", String(button.dataset.dir === look));
     }
     for (const node of all("[data-style-name]", root)) {
       node.textContent = `${look.toUpperCase()}, ${name}`;

@@ -62,14 +62,13 @@ export function Board() {
   const t = useTranslations("flow.board");
   return (
     <figure className="board wide">
-      <div aria-label={t("label")} className="board-row" role="radiogroup">
+      <div aria-label={t("label")} className="board-row" role="group">
         {APP_LOOKS.map((look) => (
           <button
-            aria-checked={look === DEFAULT_LOOK}
+            aria-pressed={look === DEFAULT_LOOK}
             className="sdir"
             data-dir={look}
             key={look}
-            role="radio"
             type="button"
           >
             <span className="frame mini" data-style={look}>

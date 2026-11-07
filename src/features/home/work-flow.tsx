@@ -142,15 +142,14 @@ function Terminal() {
 function Board() {
   const t = useTranslations("flow.board");
   return (
-    <div aria-label={t("label")} className="map-board" role="radiogroup">
+    <div aria-label={t("label")} className="map-board" role="group">
       {APP_LOOKS.map((look) => (
         <button
-          aria-checked={look === DEFAULT_LOOK}
+          aria-pressed={look === DEFAULT_LOOK}
           className="map-tile"
           data-look={look}
           data-piece
           key={look}
-          role="radio"
           type="button"
         >
           <span className="frame" data-style={look}>
