@@ -1,8 +1,8 @@
 "use client";
 
-import { type ReactNode, useEffect, useRef, useState } from "react";
+import { type ReactNode, useState } from "react";
 
-import { isCalm } from "@/motion/reduced";
+import { useLens } from "./use-lens";
 
 export interface SourceBlock {
   text: string;
@@ -15,7 +15,8 @@ export interface SourceBlock {
 
 type View = "lens" | "fields" | "source";
 
-const clamp = (value: number, low: number, high: number) => Math.max(low, Math.min(high, value));
+/** The lens over page 69: a little larger and quicker, waiting on the text, kept on the page. */
+const LENS = { radius: 0.2, follow: 0.22, start: { x: 0.52, y: 0.34 }, bounded: true };
 
 /** LaTeX as Neovim colours it: commands apart from the words. */
 function painted(text: string) {
@@ -55,57 +56,7 @@ export function DemoThesis({
   };
 }) {
   const [view, setView] = useState<View>("lens");
-  const paper = useRef<HTMLDivElement>(null);
-  const code = useRef<HTMLDivElement>(null);
-  const ring = useRef<HTMLElement>(null);
-  const spot = useRef({ x: 0.52, y: 0.34, tx: 0.52, ty: 0.34, frame: 0 });
-
-  useEffect(() => {
-    const node = paper.current;
-    if (!node) return;
-    const s = spot.current;
-    const draw = () => {
-      const { x, y } = s;
-      const w = node.clientWidth;
-      const h = node.clientHeight;
-      const r = w * 0.2;
-      if (code.current) {
-        code.current.style.clipPath =
-          view === "lens" ? `circle(${String(r)}px at ${String(x * w)}px ${String(y * h)}px)` : "";
-      }
-      if (ring.current) {
-        ring.current.style.width = `${String(r * 2)}px`;
-        ring.current.style.height = `${String(r * 2)}px`;
-        ring.current.style.transform = `translate(${String(x * w - r)}px, ${String(y * h - r)}px)`;
-      }
-    };
-    const tick = () => {
-      const k = isCalm() ? 1 : 0.22;
-      s.x += (s.tx - s.x) * k;
-      s.y += (s.ty - s.y) * k;
-      draw();
-      s.frame =
-        Math.abs(s.tx - s.x) + Math.abs(s.ty - s.y) > 0.0006 ? requestAnimationFrame(tick) : 0;
-    };
-    const follow = (event: PointerEvent) => {
-      const box = node.getBoundingClientRect();
-      s.tx = clamp((event.clientX - box.left) / box.width, 0, 1);
-      s.ty = clamp((event.clientY - box.top) / box.height, 0, 1);
-      if (!s.frame) s.frame = requestAnimationFrame(tick);
-    };
-    node.addEventListener("pointermove", follow);
-    node.addEventListener("pointerdown", follow);
-    const size = new ResizeObserver(draw);
-    size.observe(node);
-    draw();
-    return () => {
-      node.removeEventListener("pointermove", follow);
-      node.removeEventListener("pointerdown", follow);
-      size.disconnect();
-      cancelAnimationFrame(s.frame);
-      s.frame = 0;
-    };
-  }, [view]);
+  const { frame, clip, ring } = useLens(view, LENS);
 
   const views: [View, string][] = [
     ["lens", strings.lens],
@@ -129,9 +80,9 @@ export function DemoThesis({
           </button>
         ))}
       </div>
-      <div className="pj-thesis-paper" ref={paper}>
+      <div className="pj-thesis-paper" ref={frame}>
         {page}
-        <div aria-hidden className="pj-thesis-code" ref={code}>
+        <div aria-hidden className="pj-thesis-code" ref={clip}>
           {blocks.map((block) => (
             <p
               data-head={block.head || undefined}
