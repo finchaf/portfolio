@@ -959,21 +959,35 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
   );
   /*
    * The graph's shape is worked out while the page is idle, long before the reader gets here: a
-   * piece of it in every frame of the scroll costs a phone its frames just as Flow rises.
+   * piece of it in every frame of the scroll costs a phone its frames just as Flow rises. A timer
+   * and an idle callback number their handles apart, so the wait is kept as the call that cancels
+   * it: a leave never cancels another one that happens to share the number.
    */
-  let idle = 0;
+  let cancel = () => {};
   const settleIdle = (deadline?: IdleDeadline) => {
     const budget = Math.max(2, Math.min(8, deadline?.timeRemaining() ?? 6));
-    if (!settleMap(map, budget)) idle = later(settleIdle);
+    if (!settleMap(map, budget)) cancel = later(settleIdle);
   };
   // Safari has no idle callback: there a short pause between pieces does the same.
-  const later = (run: (deadline?: IdleDeadline) => void): number =>
-    "requestIdleCallback" in window
-      ? window.requestIdleCallback(run, { timeout: 400 })
-      : Number(setTimeout(run, 40));
-  idle = window.setTimeout(() => {
-    idle = later(settleIdle);
+  const later = (run: (deadline?: IdleDeadline) => void): (() => void) => {
+    if ("requestIdleCallback" in window) {
+      const id = window.requestIdleCallback(run, { timeout: 400 });
+      return () => {
+        window.cancelIdleCallback(id);
+      };
+    }
+    // Past the check the type says there is no window left: the global timer is the same one.
+    const id = setTimeout(run, 40);
+    return () => {
+      clearTimeout(id);
+    };
+  };
+  const wait = window.setTimeout(() => {
+    cancel = later(settleIdle);
   }, 1500);
+  cancel = () => {
+    window.clearTimeout(wait);
+  };
   void document.fonts.ready.then(measure);
   tell(0);
   readColours();
@@ -982,8 +996,7 @@ export function runFlowMap(chapter: HTMLElement, scrub: number | boolean) {
 
   return () => {
     snap.undo();
-    window.clearTimeout(idle);
-    if ("cancelIdleCallback" in window) window.cancelIdleCallback(idle);
+    cancel();
     gsap.ticker.remove(frame);
     theme.disconnect();
     scheme.removeEventListener("change", readColours);
