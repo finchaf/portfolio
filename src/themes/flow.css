@@ -26,6 +26,23 @@
   --info: light-dark(#086ddd, #027aff);
   --info-text: light-dark(#0a64c9, #5aa9ff);
 
+  /*
+   * The app's chrome on the Flow page, for this theme alone: not in the contract of themes. A faint
+   * grey of icons and markers; the line and shadow of what floats, a menu and a preview; the shade
+   * and shadow of the quick switcher; a notice and a tooltip, dark in both modes.
+   */
+  --faint: light-dark(#ababab, #666666);
+  --float-line: light-dark(#dadada, #3f3f3f);
+  --float-shadow:
+    0 1px 2px light-dark(rgb(0 0 0 / 12%), rgb(0 0 0 / 12%)),
+    0 15px 30px light-dark(rgb(0 0 0 / 30%), rgb(0 0 0 / 30%));
+  --prompt-scrim: light-dark(rgb(0 0 0 / 50%), rgb(0 0 0 / 50%));
+  --prompt-shadow:
+    0 1.8px 7.3px light-dark(rgb(0 0 0 / 7%), rgb(0 0 0 / 7%)),
+    0 30px 90px light-dark(rgb(0 0 0 / 20%), rgb(0 0 0 / 20%));
+  --toast: light-dark(rgb(0 0 0 / 90%), rgb(0 0 0 / 90%));
+  --on-toast: light-dark(#fafafa, #fafafa);
+
   /* Controls: a wiki link. A button reads `[[Написать]]`, as a link reads in a note's source. */
   --control-face: var(--sans);
   --control-text: 0.9375;

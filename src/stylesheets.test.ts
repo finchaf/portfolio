@@ -322,21 +322,7 @@ describe("the class names", () => {
 });
 
 /** Colours written as values on 07.11.2026, outside the themes. The list only shrinks. */
-const LITERAL_COLOURS: Record<string, string[]> = {
-  "features/flow/flow.css": [
-    "#3f3f3f",
-    "#666666",
-    "#ababab",
-    "#dadada",
-    "#fafafa",
-    "rgb(0 0 0 / 12%)",
-    "rgb(0 0 0 / 20%)",
-    "rgb(0 0 0 / 30%)",
-    "rgb(0 0 0 / 50%)",
-    "rgb(0 0 0 / 7%)",
-    "rgb(0 0 0 / 90%)",
-  ],
-};
+const LITERAL_COLOURS: Record<string, string[]> = {};
 
 describe("the colours", () => {
   // A colour comes from a theme's token, in both modes (ADR-0010). A mask is no colour: its black
