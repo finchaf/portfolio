@@ -512,7 +512,8 @@ export function makeTerminal(host: TerminalHost) {
     state.auto = false;
     state.target = state.i;
     paintAuto();
-    setChips(baseChips());
+    // A question still waits for its answer, so its chips stay.
+    restoreChips();
     rearm?.();
   }
 
@@ -520,6 +521,7 @@ export function makeTerminal(host: TerminalHost) {
     state.auto = true;
     paintAuto();
     if (state.wait) {
+      restoreChips();
       rearm?.();
       return;
     }

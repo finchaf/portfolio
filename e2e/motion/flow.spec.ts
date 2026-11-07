@@ -37,6 +37,20 @@ test.describe("the Flow vault", () => {
     await expect(page).toHaveURL(/#rules$/);
   });
 
+  test("keeps a question's chips through a pause", async ({ page }) => {
+    await page.goto(FLOW);
+    await expect(page.locator("#term-now[data-ask]")).toBeVisible({ timeout: 15000 });
+    const chips = page.locator("#term-chips .chip");
+    const auto = page.locator("#auto-button");
+    await expect(chips).toHaveCount(6);
+    await auto.click();
+    await expect(auto).toHaveAttribute("data-on", "false");
+    await expect(chips).toHaveCount(6);
+    await auto.click();
+    await expect(auto).toHaveAttribute("data-on", "true");
+    await expect(chips).toHaveCount(6);
+  });
+
   test("keeps a theme chosen in the terminal", async ({ page }) => {
     await page.goto(FLOW);
     await started(page);
