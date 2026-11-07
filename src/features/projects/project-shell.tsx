@@ -80,7 +80,7 @@ export function ProjectShell({
   return (
     <World bleed name="projects">
       <div className="pj-sub" data-capsule-held="" data-project={project} data-subpage>
-        <aside aria-label={labels.layers} className="pj-panel pj-sub-left">
+        <aside className="pj-panel pj-sub-left">
           <BackToBoard href={back.href} label={back.label} project={project} />
           <p className="pj-panel-label">{labels.layers}</p>
           <nav aria-label={labels.layers} className="pj-tree">
