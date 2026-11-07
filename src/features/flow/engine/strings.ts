@@ -57,6 +57,7 @@ export interface VaultStrings {
   other: { label: string; locale: string };
 }
 
+/** A template's places filled. The words go in as they are: a `$&` the reader typed stays `$&`. */
 export function fill(template: string, x: string, y = ""): string {
-  return template.replace("{x}", x).replace("{y}", y);
+  return template.replace("{x}", () => x).replace("{y}", () => y);
 }

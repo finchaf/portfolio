@@ -12,6 +12,11 @@ describe("fill", () => {
     expect(fill("{x}{y}!", "ok")).toBe("ok!");
   });
 
+  it("puts what the reader typed as it is, dollar signs included", () => {
+    expect(fill("unknown: {x}", "$&")).toBe("unknown: $&");
+    expect(fill("{x} and {y}", "$'", "$`")).toBe("$' and $`");
+  });
+
   it("keeps a template without places as it is", () => {
     expect(fill("nothing here", "a", "b")).toBe("nothing here");
   });
