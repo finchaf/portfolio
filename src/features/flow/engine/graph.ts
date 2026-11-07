@@ -111,6 +111,7 @@ export function makeGraph({ notes, links, hubLabel, open, signal }: GraphInput) 
   let dragged: Node | null = null;
   let labels = false;
   let reveal = 1;
+  let revealStart = 0;
   let palette: Palette = {
     dot: "#888",
     line: "#444",
@@ -270,6 +271,7 @@ export function makeGraph({ notes, links, hubLabel, open, signal }: GraphInput) 
     for (let index = pulses.length - 1; index >= 0; index -= 1) {
       if (now - (pulses[index]?.start ?? 0) > 900) pulses.splice(index, 1);
     }
+    if (reveal < 1) reveal = Math.min(1, (now - revealStart) / 2400);
     draw(now);
     if (alpha > 0.03 || pulses.length > 0 || reveal < 1) wake();
   }
@@ -412,16 +414,12 @@ export function makeGraph({ notes, links, hubLabel, open, signal }: GraphInput) 
       labels = !labels;
       wake();
     },
-    /** The app's wand: the graph grows in the order the base grew. */
+    /** The app's wand: the graph grows in the order the base grew, on the one loop of frames. */
     animate() {
       if (isStill()) return;
-      const start = performance.now();
-      const grow = (now: number) => {
-        reveal = Math.min(1, (now - start) / 2400);
-        draw(now);
-        if (reveal < 1 && !signal.aborted) requestAnimationFrame(grow);
-      };
-      requestAnimationFrame(grow);
+      revealStart = performance.now();
+      reveal = 0;
+      wake();
     },
   };
 }
