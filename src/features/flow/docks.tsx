@@ -153,7 +153,11 @@ export function LeftDock({ locale }: { locale: Locale }) {
             <Bookmark aria-hidden size={18} strokeWidth={1.75} />
           </Action>
         </div>
-        <Action action="toggle-left" label={t("ui.toggleLeft")}>
+        <Action
+          action="toggle-left"
+          extra={{ "aria-controls": "dock-left", "aria-expanded": "true" }}
+          label={t("ui.toggleLeft")}
+        >
           <PanelLeft aria-hidden size={18} strokeWidth={1.75} />
         </Action>
       </div>
@@ -275,14 +279,22 @@ export function RightDock() {
             <GitFork aria-hidden size={18} strokeWidth={1.75} />
           </Action>
         </div>
-        <Action action="toggle-right" label={t("ui.toggleRight")}>
+        <Action
+          action="toggle-right"
+          extra={{ "aria-controls": "dock-right", "aria-expanded": "true" }}
+          label={t("ui.toggleRight")}
+        >
           <PanelRight aria-hidden size={18} strokeWidth={1.75} />
         </Action>
       </div>
       <div className="right-body">
         <div className="right-panel" data-right-panel="graph">
           <div className="graph-controls">
-            <Action action="graph-labels" label={t("ui.graphSettings")}>
+            <Action
+              action="graph-labels"
+              extra={{ "aria-pressed": "false" }}
+              label={t("ui.graphSettings")}
+            >
               <Settings aria-hidden size={16} />
             </Action>
             <Action action="graph-animate" label={t("ui.graphAnimate")}>
@@ -350,7 +362,7 @@ export function ViewHeader() {
       </span>
       <div className="view-crumb" id="view-crumb" />
       <span className="view-actions">
-        <Action action="source" label={t("source")}>
+        <Action action="source" extra={{ "aria-pressed": "false" }} label={t("source")}>
           <PencilLine aria-hidden size={16} />
         </Action>
         <Action action="view-menu" label={t("more")}>

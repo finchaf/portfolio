@@ -9,11 +9,12 @@ export function TerminalPane() {
       <div aria-hidden className="term-grip" data-grip="" />
       <div className="term-head">
         <div className="tab term-tab" data-on="">
-          <button className="tab-go" data-action="term-toggle" type="button">
+          <button aria-expanded="false" className="tab-go" data-action="term-toggle" type="button">
             <Terminal aria-hidden size={14} />
             {t("title")}
           </button>
           <button
+            aria-expanded="false"
             aria-label={t("collapse")}
             className="tab-x"
             data-action="term-toggle"
@@ -35,6 +36,7 @@ export function TerminalPane() {
           <Play aria-hidden data-when="off" size={16} />
         </button>
         <button
+          aria-expanded="false"
           aria-label={t("collapse")}
           className="clickable-icon term-fold"
           data-action="term-toggle"

@@ -211,12 +211,18 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
   );
 
   /* ---------- side panels ---------- */
+  /** A toggle's state: `data-active` draws it, `aria-pressed` says it. */
+  function press(button: HTMLElement, pressed: boolean) {
+    button.toggleAttribute("data-active", pressed);
+    button.setAttribute("aria-pressed", String(pressed));
+  }
+
   function setLeft(tab: string) {
     for (const panel of all("[data-left-panel]", vault)) {
       panel.hidden = panel.dataset.leftPanel !== tab;
     }
     for (const button of all("[data-left-tab]", vault)) {
-      button.toggleAttribute("data-active", button.dataset.leftTab === tab);
+      press(button, button.dataset.leftTab === tab);
     }
     if (tab === "search") {
       find("#vault-search").focus();
@@ -229,7 +235,7 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
       panel.hidden = panel.dataset.rightPanel !== tab;
     }
     for (const button of all("[data-right-tab]", vault)) {
-      button.toggleAttribute("data-active", button.dataset.rightTab === tab);
+      press(button, button.dataset.rightTab === tab);
     }
     renderPanels();
     graph.refresh();
@@ -735,10 +741,10 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
     }
     switch (action) {
       case "toggle-left":
-        vault.toggleAttribute("data-left-closed");
+        target.setAttribute("aria-expanded", String(!vault.toggleAttribute("data-left-closed")));
         break;
       case "toggle-right":
-        vault.toggleAttribute("data-right-closed");
+        target.setAttribute("aria-expanded", String(!vault.toggleAttribute("data-right-closed")));
         break;
       case "tree":
         openTree();
@@ -781,7 +787,7 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
         const showing = !source.hidden;
         source.hidden = showing;
         view.hidden = !showing;
-        target.toggleAttribute("data-active", !showing);
+        press(target, !showing);
         target.dataset.tip = (showing ? ui.source : ui.reading) ?? "";
         break;
       }
@@ -835,7 +841,7 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
       }
       case "graph-labels":
         graph.toggleLabels();
-        target.toggleAttribute("data-active");
+        press(target, !("active" in target.dataset));
         break;
       case "graph-animate":
         graph.animate();
@@ -976,7 +982,20 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
     signal,
   });
 
+  // The pane opens and closes from several places; its toggles say so from one.
+  const termToggles = all('[data-action="term-toggle"]', terminal.pane);
+  const paintTermToggles = () => {
+    const open = String("open" in terminal.pane.dataset);
+    for (const button of termToggles) button.setAttribute("aria-expanded", open);
+  };
+  const paneWatch = new MutationObserver(paintTermToggles);
+  paneWatch.observe(terminal.pane, { attributes: true, attributeFilter: ["data-open"] });
+  signal.addEventListener("abort", () => {
+    paneWatch.disconnect();
+  });
+
   if (isWide()) terminal.pane.dataset.open = "";
+  paintTermToggles();
   setLeft("files");
   setRight("graph");
   const start = location.hash.slice(1) || MAIN_NOTE;
