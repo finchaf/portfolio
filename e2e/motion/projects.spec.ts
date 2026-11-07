@@ -164,6 +164,18 @@ test.describe("the board of projects", () => {
     await expect(page.locator(".pj-board-inspector[data-current] .pj-ins-hint")).toBeVisible();
   });
 
+  test("leaves a click with a modifier to the browser", async ({ page }) => {
+    await page.goto("/ru/projects");
+    await ready(page);
+    const opened = page.context().waitForEvent("page");
+    await page
+      .locator(".pj-board-inspector[data-current] [data-open]")
+      .click({ modifiers: ["ControlOrMeta"] });
+    await expect(await opened).toHaveURL(/\/ru\/projects\/portfolio$/);
+    await expect(page).toHaveURL(/\/ru\/projects$/);
+    await expect(page.locator("[data-board]")).not.toHaveAttribute("data-leaving");
+  });
+
   test("the way back leaves a tab of its own to the browser", async ({ page }) => {
     await page.goto("/ru/projects/portfolio");
     const opened = page.context().waitForEvent("page");

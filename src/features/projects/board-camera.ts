@@ -395,7 +395,9 @@ export function attachBoard(board: HTMLElement, { open, duration }: Options) {
         fly(framing(boxOf(frame ?? sectionOf(layer)), frame ? 0.8 : 0.96));
       }
       const opener = target?.closest<HTMLElement>("[data-open]");
-      if (opener) {
+      // With a modifier the reader asks for a new tab or window, and that is the link's to open.
+      const elsewhere = event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
+      if (opener && !elsewhere) {
         event.preventDefault();
         const project = opener.dataset.open;
         if (project && project !== current) select(project);
