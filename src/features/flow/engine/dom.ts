@@ -33,22 +33,3 @@ export function isStill() {
 export function isWide() {
   return window.matchMedia("(min-width: 64rem)").matches;
 }
-
-/** Session storage that refuses quietly: a private window must not break the page. */
-export const session = {
-  read(key: string) {
-    try {
-      return sessionStorage.getItem(key);
-    } catch {
-      return null;
-    }
-  },
-  write(key: string, value: string | null) {
-    try {
-      if (value === null) sessionStorage.removeItem(key);
-      else sessionStorage.setItem(key, value);
-    } catch {
-      // Nothing to keep: the run simply starts over.
-    }
-  },
-};

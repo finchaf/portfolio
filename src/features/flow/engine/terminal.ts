@@ -1,4 +1,6 @@
-import { all, element, find, isStill, isWide, session } from "./dom";
+import { session } from "@/lib/session";
+
+import { all, element, find, isStill, isWide } from "./dom";
 import type { makeLanes } from "./figures";
 import type { Graph } from "./graph";
 import { fill, type Remark, type VaultStrings } from "./strings";
@@ -121,7 +123,7 @@ interface SavedRun {
 
 function readSaved(): SavedRun | null {
   try {
-    return JSON.parse(session.read(RUN_KEY) ?? "null") as SavedRun | null;
+    return JSON.parse(session.get(RUN_KEY) ?? "null") as SavedRun | null;
   } catch {
     return null;
   }
@@ -227,7 +229,7 @@ export function makeTerminal(host: TerminalHost) {
   }
 
   function persist() {
-    session.write(
+    session.set(
       RUN_KEY,
       JSON.stringify({
         i: state.i,
@@ -597,7 +599,7 @@ export function makeTerminal(host: TerminalHost) {
         for (const text of t.audit.split("\n")) line(escape(text), "dim");
         break;
       case "run":
-        session.write(RUN_KEY, null);
+        session.remove(RUN_KEY);
         location.hash = "";
         location.reload();
         break;
