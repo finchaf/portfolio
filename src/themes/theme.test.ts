@@ -1,8 +1,15 @@
 import { runInNewContext } from "node:vm";
 
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { parseTheme, THEME_SCRIPT, THEME_STORAGE_KEY } from "./theme";
+import {
+  parseTheme,
+  readTheme,
+  saveTheme,
+  THEME_CHANGE_EVENT,
+  THEME_SCRIPT,
+  THEME_STORAGE_KEY,
+} from "./theme";
 
 describe("parseTheme", () => {
   it("keeps a choice", () => {
@@ -72,4 +79,57 @@ describe("the theme script", () => {
       expect(dataset).toHaveProperty("js", "");
     },
   );
+});
+
+/** A page for saveTheme: its <html>, the events it heard and a storage that may refuse. */
+function stubPage(refuse = false) {
+  const kept = new Map<string, string>();
+  const heard: string[] = [];
+  const dataset: Record<string, string> = {};
+  const refused = () => {
+    throw new Error("blocked");
+  };
+  vi.stubGlobal("document", { documentElement: { dataset } });
+  vi.stubGlobal("window", { dispatchEvent: (event: Event) => heard.push(event.type) });
+  vi.stubGlobal("localStorage", {
+    getItem: refuse ? refused : (key: string) => kept.get(key) ?? null,
+    setItem: refuse ? refused : (key: string, value: string) => kept.set(key, value),
+    removeItem: refuse ? refused : (key: string) => kept.delete(key),
+  });
+  return { kept, heard, dataset };
+}
+
+describe("saveTheme", () => {
+  afterEach(() => {
+    // A kept choice clears the one held for a refusing page, so the next test starts clean.
+    stubPage();
+    saveTheme("system");
+    vi.unstubAllGlobals();
+  });
+
+  it("keeps a mode, puts it on the page and tells the switchers", () => {
+    const { kept, heard, dataset } = stubPage();
+    saveTheme("dark");
+    expect(kept.get(THEME_STORAGE_KEY)).toBe("dark");
+    expect(dataset.theme).toBe("dark");
+    expect(heard).toEqual([THEME_CHANGE_EVENT]);
+    expect(readTheme()).toBe("dark");
+  });
+
+  it("keeps the system's mode as no key at all", () => {
+    const { kept, dataset } = stubPage();
+    saveTheme("light");
+    saveTheme("system");
+    expect(kept.has(THEME_STORAGE_KEY)).toBe(false);
+    expect(dataset).not.toHaveProperty("theme");
+    expect(readTheme()).toBe("system");
+  });
+
+  it("holds a refused choice for the page", () => {
+    const { heard, dataset } = stubPage(true);
+    saveTheme("light");
+    expect(dataset.theme).toBe("light");
+    expect(heard).toEqual([THEME_CHANGE_EVENT]);
+    expect(readTheme()).toBe("light");
+  });
 });

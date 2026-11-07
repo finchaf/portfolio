@@ -21,6 +21,35 @@ export function applyTheme(theme: Theme, root: HTMLElement = document.documentEl
   else root.dataset.theme = theme;
 }
 
+/** What every switcher on the page listens for: the reader has chosen, here or in another one. */
+export const THEME_CHANGE_EVENT = "portfolio:theme";
+
+// The choice when `localStorage` refuses it, as in a private window: it holds for this page.
+let unsaved: Theme | null = null;
+
+/** The reader's choice: the kept one, or the one made on this page when keeping it was refused. */
+export function readTheme(): Theme {
+  if (unsaved !== null) return unsaved;
+  try {
+    return parseTheme(localStorage.getItem(THEME_STORAGE_KEY));
+  } catch {
+    return "system";
+  }
+}
+
+/** Keeps `theme`, puts it on the document and tells every switcher. The system's is no key. */
+export function saveTheme(theme: Theme): void {
+  try {
+    if (theme === "system") localStorage.removeItem(THEME_STORAGE_KEY);
+    else localStorage.setItem(THEME_STORAGE_KEY, theme);
+    unsaved = null;
+  } catch {
+    unsaved = theme;
+  }
+  applyTheme(theme);
+  window.dispatchEvent(new Event(THEME_CHANGE_EVENT));
+}
+
 /**
  * The script for <head>, run before the first paint so that a page in a chosen mode never flashes
  * the other one. `data-js` tells the stylesheet that scenes will run, so a page lays them out once:

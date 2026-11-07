@@ -1,4 +1,4 @@
-import { applyTheme, parseTheme, THEME_STORAGE_KEY, type Theme } from "@/themes/theme";
+import { readTheme, saveTheme } from "@/themes/theme";
 
 import { MAIN_NOTE, TASK_NOTES } from "../notes";
 import { all, element, find, isStill, isWide } from "./dom";
@@ -547,23 +547,6 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
   }
   signal.addEventListener("abort", closeMenu);
 
-  function readTheme(): Theme {
-    try {
-      return parseTheme(localStorage.getItem(THEME_STORAGE_KEY));
-    } catch {
-      return "system";
-    }
-  }
-  function setTheme(theme: Theme) {
-    try {
-      localStorage.setItem(THEME_STORAGE_KEY, theme);
-    } catch {
-      // The choice holds for this page.
-    }
-    applyTheme(theme);
-    window.dispatchEvent(new Event("portfolio:theme"));
-  }
-
   /* ---------- sheets on a phone ---------- */
   const scrim = find("#scrim");
   let sheetOpen = false;
@@ -829,7 +812,7 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
           label: ui[`theme${mode[0]?.toUpperCase() ?? ""}${mode.slice(1)}`] ?? mode,
           on: theme === mode,
           run: () => {
-            setTheme(mode);
+            saveTheme(mode);
           },
         }));
         const language = {
