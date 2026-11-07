@@ -11,20 +11,20 @@ export function makeLanes(root: HTMLElement) {
   function draw() {
     const box = root.querySelector<HTMLElement>("[data-lanes] ol");
     if (!box || box.offsetWidth === 0) return;
-    box.querySelector(".lanes-svg")?.remove();
+    box.querySelector(".vault-lanes-svg")?.remove();
     const frame = box.getBoundingClientRect();
     const points = all("li", box).map((item) => {
-      const node = find(".node", item).getBoundingClientRect();
+      const node = find(".vault-node", item).getBoundingClientRect();
       return {
         x: node.left + node.width / 2 - frame.left,
         y: node.top + node.height / 2 - frame.top,
       };
     });
     const svg = document.createElementNS(NS, "svg");
-    svg.setAttribute("class", "lanes-svg");
+    svg.setAttribute("class", "vault-lanes-svg");
     svg.setAttribute("aria-hidden", "true");
     const base = document.createElementNS(NS, "path");
-    base.setAttribute("class", "base");
+    base.setAttribute("class", "vault-base");
     let whole = "";
     const segments: string[] = [];
     points.forEach((point, index) => {
@@ -42,7 +42,7 @@ export function makeLanes(root: HTMLElement) {
     svg.appendChild(base);
     segments.forEach((segment, index) => {
       const pen = document.createElementNS(NS, "path");
-      pen.setAttribute("class", "pen");
+      pen.setAttribute("class", "vault-pen");
       pen.setAttribute("d", segment);
       pen.setAttribute("pathLength", "1");
       pen.dataset.seg = String(index);
@@ -65,7 +65,7 @@ export function makeLanes(root: HTMLElement) {
         item.dataset.past = "";
       }
     }
-    for (const pen of all<SVGPathElement>(".lanes-svg .pen", root)) {
+    for (const pen of all<SVGPathElement>(".vault-lanes-svg .vault-pen", root)) {
       if (Number(pen.dataset.seg) < step) pen.dataset.on = "";
     }
   }
@@ -81,13 +81,13 @@ export function setupCompare(root: HTMLElement, signal: AbortSignal) {
 
   function cut(figure: HTMLElement, value: number) {
     figure.dataset.cut = String(value);
-    const row = find(".compare-row", figure);
+    const row = find(".vault-compare-row", figure);
     const range = figure.querySelector<HTMLInputElement>("input[type=range]");
     if (range) range.value = String(value);
     for (const button of all("button[data-cut]", figure)) {
       button.setAttribute("aria-pressed", String(value >= 50 === (button.dataset.cut === "100")));
     }
-    const frames = all(".device .app-frame", figure);
+    const frames = all(".vault-device .app-frame", figure);
     if (matchMedia(NARROW).matches || row.offsetWidth === 0) {
       for (const frame of frames) frame.style.setProperty("--cx", value >= 50 ? "100%" : "0%");
       return;
@@ -105,7 +105,7 @@ export function setupCompare(root: HTMLElement, signal: AbortSignal) {
   }
 
   for (const figure of figures) {
-    const row = find(".compare-row", figure);
+    const row = find(".vault-compare-row", figure);
     const range = figure.querySelector<HTMLInputElement>("input[type=range]");
     range?.addEventListener(
       "input",

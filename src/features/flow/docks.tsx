@@ -54,7 +54,7 @@ function Action({
   return (
     <button
       aria-label={label}
-      className="clickable-icon"
+      className="vault-clickable-icon"
       data-action={action}
       data-tip={label}
       type="button"
@@ -67,9 +67,9 @@ function Action({
 
 function Row({ id, title, count }: { id: string; title: string; count?: string }) {
   return (
-    <a className="nav-file" data-note={id} href={`#${id}`}>
+    <a className="vault-nav-file" data-note={id} href={`#${id}`}>
       <span>{title}</span>
-      {count ? <i className="nav-count">{count}</i> : null}
+      {count ? <i className="vault-nav-count">{count}</i> : null}
     </a>
   );
 }
@@ -87,13 +87,13 @@ function Folder({
 }) {
   const t = useTranslations("flow.folders");
   return (
-    <details className="nav-folder" open>
-      <summary className="nav-folder-title">
-        <ChevronRight aria-hidden className="collapse-icon" size={14} strokeWidth={2.5} />
+    <details className="vault-nav-folder" open>
+      <summary className="vault-nav-folder-title">
+        <ChevronRight aria-hidden className="vault-collapse-icon" size={14} strokeWidth={2.5} />
         <span>{t(folder)}</span>
-        {tag ? <i className="nav-count">{tag}</i> : null}
+        {tag ? <i className="vault-nav-count">{tag}</i> : null}
       </summary>
-      <div className="nav-children" data-folder-id={folder}>
+      <div className="vault-nav-children" data-folder-id={folder}>
         {FOLDERS[folder].map((id) => (
           <Row count={counts?.[id]} id={id} key={id} title={readNote(locale, id).title} />
         ))}
@@ -105,7 +105,7 @@ function Folder({
 export function Ribbon() {
   const t = useTranslations("flow.ui");
   return (
-    <nav aria-label={t("ribbon")} className="ribbon" data-js-only="">
+    <nav aria-label={t("ribbon")} className="vault-ribbon" data-js-only="">
       <Action action="note:flow" label={t("ribbonNote")}>
         <FileSearch aria-hidden size={18} strokeWidth={1.75} />
       </Action>
@@ -136,9 +136,9 @@ const BOOKMARKS = ["flow", "rules", "critic", "results"];
 export function LeftDock({ locale }: { locale: Locale }) {
   const t = useTranslations("flow");
   return (
-    <aside aria-label={t("ui.files")} className="dock dock-left" id="dock-left">
-      <div className="dock-tabs" data-js-only="">
-        <div className="dock-tab-group">
+    <aside aria-label={t("ui.files")} className="vault-dock vault-dock-left" id="dock-left">
+      <div className="vault-dock-tabs" data-js-only="">
+        <div className="vault-dock-tab-group">
           <Action action="left:files" extra={{ "data-left-tab": "files" }} label={t("ui.files")}>
             <FolderClosed aria-hidden size={18} strokeWidth={1.75} />
           </Action>
@@ -162,9 +162,9 @@ export function LeftDock({ locale }: { locale: Locale }) {
         </Action>
       </div>
       <Ribbon />
-      <div className="sidebar">
-        <div className="left-panel" data-left-panel="files">
-          <div className="nav-header" data-js-only="">
+      <div className="vault-sidebar">
+        <div className="vault-left-panel" data-left-panel="files">
+          <div className="vault-nav-header" data-js-only="">
             <Action action="read-only" label={t("ui.newNote")}>
               <SquarePen aria-hidden size={16} />
             </Action>
@@ -181,7 +181,7 @@ export function LeftDock({ locale }: { locale: Locale }) {
               <ChevronsDownUp aria-hidden size={16} />
             </Action>
           </div>
-          <nav aria-label={t("ui.notesNav")} className="nav-files" id="tree">
+          <nav aria-label={t("ui.notesNav")} className="vault-nav-files" id="tree">
             <Row id={MAIN_NOTE} title={readNote(locale, MAIN_NOTE).title} />
             <Folder folder="process" locale={locale} />
             <Folder counts={{ checklists: "16", rules: "234" }} folder="quality" locale={locale} />
@@ -192,15 +192,15 @@ export function LeftDock({ locale }: { locale: Locale }) {
             </span>
           </nav>
         </div>
-        <div className="left-panel" data-left-panel="search" hidden>
-          <div className="search-input">
+        <div className="vault-left-panel" data-left-panel="search" hidden>
+          <div className="vault-search-input">
             <Search aria-hidden size={14} />
             <input aria-label={t("ui.search")} id="vault-search" type="search" />
           </div>
-          <div className="search-results" id="vault-search-results" />
+          <div className="vault-search-results" id="vault-search-results" />
         </div>
-        <div className="left-panel" data-left-panel="bookmarks" hidden>
-          <nav aria-label={t("ui.bookmarks")} className="nav-files">
+        <div className="vault-left-panel" data-left-panel="bookmarks" hidden>
+          <nav aria-label={t("ui.bookmarks")} className="vault-nav-files">
             {BOOKMARKS.map((id) => (
               <Row id={id} key={id} title={readNote(locale, id).title} />
             ))}
@@ -230,12 +230,12 @@ export function RightDock() {
   return (
     <aside
       aria-label={t("ui.rightGraph")}
-      className="dock dock-right"
+      className="vault-dock vault-dock-right"
       data-js-only=""
       id="dock-right"
     >
-      <div className="dock-tabs">
-        <div className="dock-tab-group">
+      <div className="vault-dock-tabs">
+        <div className="vault-dock-tab-group">
           <Action
             action="right:backlinks"
             extra={{ "data-right-tab": "backlinks" }}
@@ -287,9 +287,9 @@ export function RightDock() {
           <PanelRight aria-hidden size={18} strokeWidth={1.75} />
         </Action>
       </div>
-      <div className="right-body">
-        <div className="right-panel" data-right-panel="graph">
-          <div className="graph-controls">
+      <div className="vault-right-body">
+        <div className="vault-right-panel" data-right-panel="graph">
+          <div className="vault-graph-controls">
             <Action
               action="graph-labels"
               extra={{ "aria-pressed": "false" }}
@@ -301,19 +301,19 @@ export function RightDock() {
               <WandSparkles aria-hidden size={16} />
             </Action>
           </div>
-          <canvas className="graph-canvas" id="graph-mini">
+          <canvas className="vault-graph-canvas" id="graph-mini">
             {t("ui.graphLabel")}
           </canvas>
         </div>
-        <div className="right-panel" data-right-panel="backlinks" hidden />
-        <div className="right-panel" data-right-panel="outgoing" hidden />
-        <div className="right-panel" data-right-panel="tags" hidden />
-        <div className="right-panel" data-right-panel="properties" hidden />
-        <div className="right-panel" data-right-panel="outline" hidden>
-          <nav aria-label={t("ui.rightOutline")} className="outline" id="outline" />
+        <div className="vault-right-panel" data-right-panel="backlinks" hidden />
+        <div className="vault-right-panel" data-right-panel="outgoing" hidden />
+        <div className="vault-right-panel" data-right-panel="tags" hidden />
+        <div className="vault-right-panel" data-right-panel="properties" hidden />
+        <div className="vault-right-panel" data-right-panel="outline" hidden>
+          <nav aria-label={t("ui.rightOutline")} className="vault-outline" id="outline" />
         </div>
       </div>
-      <div className="status-bar">
+      <div className="vault-status-bar">
         <span>{t("terminal.statusRules")}</span>
       </div>
     </aside>
@@ -323,21 +323,21 @@ export function RightDock() {
 export function TabStrip() {
   const t = useTranslations("flow.ui");
   return (
-    <div className="tab-strip" data-js-only="">
-      <div aria-label={t("openNotes")} className="tab-list" id="tab-list" role="group" />
+    <div className="vault-tab-strip" data-js-only="">
+      <div aria-label={t("openNotes")} className="vault-tab-list" id="tab-list" role="group" />
       <button
         aria-label={t("newTab")}
-        className="clickable-icon"
+        className="vault-clickable-icon"
         data-action="search"
         data-tip={t("newTab")}
         type="button"
       >
         <Plus aria-hidden size={16} />
       </button>
-      <span className="tab-spacer" />
+      <span className="vault-tab-spacer" />
       <button
         aria-label={t("tabList")}
-        className="clickable-icon"
+        className="vault-clickable-icon"
         data-action="tab-menu"
         data-tip={t("tabList")}
         type="button"
@@ -351,8 +351,8 @@ export function TabStrip() {
 export function ViewHeader() {
   const t = useTranslations("flow.ui");
   return (
-    <div className="view-header" data-js-only="">
-      <span className="view-nav">
+    <div className="vault-view-header" data-js-only="">
+      <span className="vault-view-nav">
         <Action action="back" label={t("back")}>
           <ArrowLeft aria-hidden size={16} />
         </Action>
@@ -360,8 +360,8 @@ export function ViewHeader() {
           <ArrowRight aria-hidden size={16} />
         </Action>
       </span>
-      <div className="view-crumb" id="view-crumb" />
-      <span className="view-actions">
+      <div className="vault-view-crumb" id="view-crumb" />
+      <span className="vault-view-actions">
         <Action action="source" extra={{ "aria-pressed": "false" }} label={t("source")}>
           <PencilLine aria-hidden size={16} />
         </Action>
@@ -377,11 +377,11 @@ export function ViewHeader() {
 export function MobileBar() {
   const t = useTranslations("flow.ui");
   return (
-    <div aria-label={t("noteBar")} className="mobile-bar" data-js-only="" role="navigation">
+    <div aria-label={t("noteBar")} className="vault-mobile-bar" data-js-only="" role="navigation">
       <Action action="tree" label={t("files")}>
         <FolderClosed aria-hidden size={18} strokeWidth={1.75} />
       </Action>
-      <div className="mobile-crumb" id="mobile-crumb" />
+      <div className="vault-mobile-crumb" id="mobile-crumb" />
       <Action action="search" label={t("search")}>
         <Search aria-hidden size={18} strokeWidth={1.75} />
       </Action>

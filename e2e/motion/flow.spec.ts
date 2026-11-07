@@ -11,7 +11,7 @@ test.describe("the Flow vault", () => {
   /** The vault's script has started: it takes the scroll over from the browser. */
   const started = (page: Page) =>
     expect.poll(() => page.evaluate(() => history.scrollRestoration)).toBe("manual");
-  const title = (page: Page) => page.locator(".note[data-open] .inline-title");
+  const title = (page: Page) => page.locator(".vault-note[data-open] .vault-inline-title");
 
   test("opens a note by its address and Back returns to the place", async ({ page }) => {
     await page.goto(FLOW);
@@ -22,9 +22,9 @@ test.describe("the Flow vault", () => {
     });
     await page.locator('#tree a[data-note="critic"]').click();
     await expect(page).toHaveURL(/#critic$/);
-    await expect(page.locator(".note[data-open] .inline-title")).toHaveText("Критик");
+    await expect(page.locator(".vault-note[data-open] .vault-inline-title")).toHaveText("Критик");
     await page.goBack();
-    await expect(page.locator(".note[data-open] .inline-title")).toHaveText("Флоу");
+    await expect(page.locator(".vault-note[data-open] .vault-inline-title")).toHaveText("Флоу");
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(900);
   });
 
@@ -32,8 +32,8 @@ test.describe("the Flow vault", () => {
     await page.goto(FLOW);
     await expect(page.locator("#term-log")).toContainText("new-app 000", { timeout: 5000 });
     await expect(page.locator("#term-now[data-ask]")).toBeVisible({ timeout: 15000 });
-    await page.locator('.sdir[data-dir="a"]').click();
-    await expect(page.locator(".compare").first()).toHaveAttribute("data-style", "a");
+    await page.locator('.vault-sdir[data-dir="a"]').click();
+    await expect(page.locator(".vault-compare").first()).toHaveAttribute("data-style", "a");
     await page.locator("#term-in").fill("open rules");
     await page.locator("#term-in").press("Enter");
     await expect(page).toHaveURL(/#rules$/);
@@ -42,7 +42,7 @@ test.describe("the Flow vault", () => {
   test("keeps a question's chips through a pause", async ({ page }) => {
     await page.goto(FLOW);
     await expect(page.locator("#term-now[data-ask]")).toBeVisible({ timeout: 15000 });
-    const chips = page.locator("#term-chips .chip");
+    const chips = page.locator("#term-chips .vault-chip");
     const auto = page.locator("#auto-button");
     await expect(chips).toHaveCount(6);
     await auto.click();
@@ -69,7 +69,7 @@ test.describe("the Flow vault", () => {
     await page.locator('[data-capsule] a[href$="/ru/projects"]').first().click();
     await expect(page).toHaveURL(/\/ru\/projects$/);
     // The vault's script has stopped once it takes its tooltip off <body>.
-    await expect(page.locator("body > .tooltip")).toHaveCount(0);
+    await expect(page.locator("body > .vault-tooltip")).toHaveCount(0);
     expect(await kept()).toBe(asked);
   });
 
@@ -103,7 +103,10 @@ test.describe("the Flow vault", () => {
   test("keeps decisions on their side of the map", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(FLOW);
-    await expect(page.locator(".lane.me.lane-stop a").first()).toHaveCSS("text-align", "right");
+    await expect(page.locator(".vault-lane.vault-me.vault-lane-stop a").first()).toHaveCSS(
+      "text-align",
+      "right",
+    );
   });
 
   test("keeps the header flat over the page on a wide screen", async ({ page }) => {
@@ -122,7 +125,7 @@ test.describe("the Flow vault", () => {
     await started(page);
     await jump(page, 900);
     const steps = await page.evaluate(() => history.length);
-    const tree = page.locator('.mobile-bar [data-action="tree"]');
+    const tree = page.locator('.vault-mobile-bar [data-action="tree"]');
     const scrolled = () => page.evaluate(() => window.scrollY);
 
     await tree.click();
@@ -156,7 +159,7 @@ test.describe("the Flow vault", () => {
     );
     await page.keyboard.press("Escape");
     await page.locator('[data-action="settings-menu"]').click();
-    const row = page.locator(".menu-item").first();
+    const row = page.locator(".vault-menu-item").first();
     await row.hover();
     await expect(row).not.toHaveCSS("background-color", TRANSPARENT);
   });
@@ -167,10 +170,10 @@ test.describe("the Flow vault", () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(FLOW);
     await started(page);
-    const pencil = page.locator('.view-header [data-action="source"]');
+    const pencil = page.locator('.vault-view-header [data-action="source"]');
     await pencil.click();
     await expect(pencil).toHaveAttribute("aria-pressed", "true");
-    await expect(page.locator(".note[data-open] pre.note-source")).toBeVisible();
+    await expect(page.locator(".vault-note[data-open] pre.vault-note-source")).toBeVisible();
     await page.locator('#tree a[data-note="critic"]').click();
     await expect(title(page)).toHaveText("Критик");
     await expect(pencil).toHaveAttribute("aria-pressed", "false");
@@ -188,14 +191,14 @@ test.describe("the Flow vault", () => {
     await page.goto(`${FLOW}#graph`);
     await started(page);
     await page.locator('[data-right-tab="tags"]').click();
-    await expect(page.locator('[data-right-panel="tags"] .panel-row')).not.toHaveCount(0);
+    await expect(page.locator('[data-right-panel="tags"] .vault-panel-row')).not.toHaveCount(0);
     await page.locator('#tree a[data-note="critic"]').click();
     await page.locator('[data-right-tab="backlinks"]').click();
     const backlinks = page.locator('[data-right-panel="backlinks"]');
-    await expect(backlinks.locator(".panel-row")).not.toHaveCount(0);
+    await expect(backlinks.locator(".vault-panel-row")).not.toHaveCount(0);
     await page.goBack();
     await expect(page).toHaveURL(/#graph$/);
-    await expect(backlinks.locator(".panel-empty")).toBeVisible();
+    await expect(backlinks.locator(".vault-panel-empty")).toBeVisible();
   });
 
   test("searches what the notes say, not their source", async ({ page }) => {
@@ -235,7 +238,7 @@ test.describe("the Flow vault", () => {
     await page.goto(HOME);
     await page.goto(FLOW);
     await started(page);
-    const back = page.locator('.view-header [data-action="back"]');
+    const back = page.locator('.vault-view-header [data-action="back"]');
     await expect(back).toHaveAttribute("aria-disabled", "true");
     // Playwright waits for an aria-disabled control to be enabled; a reader's pointer does not.
     await back.click({ force: true });
@@ -260,8 +263,8 @@ test.describe("the Flow vault", () => {
 
     test("stands every note on the page", async ({ page }) => {
       await page.goto(FLOW);
-      await expect(page.locator("article.note:visible")).toHaveCount(17);
-      await expect(page.locator(".transcript")).toBeVisible();
+      await expect(page.locator("article.vault-note:visible")).toHaveCount(17);
+      await expect(page.locator(".vault-transcript")).toBeVisible();
     });
   });
 
@@ -277,7 +280,7 @@ test.describe("the Flow vault", () => {
     test("turns a folder's chevron at once, and still turns it", async ({ page }) => {
       await page.setViewportSize({ width: 1440, height: 900 });
       await page.goto(FLOW);
-      const chevron = page.locator("#tree details[open] > summary .collapse-icon").first();
+      const chevron = page.locator("#tree details[open] > summary .vault-collapse-icon").first();
       await expect(chevron).toHaveCSS("transition-duration", "0s");
       await expect(chevron).toHaveCSS("rotate", "90deg");
     });

@@ -26,7 +26,7 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
 
   /* ---------- the notes ---------- */
   const meta = new Map<string, Meta>();
-  for (const article of all("article.note", notesRoot)) {
+  for (const article of all("article.vault-note", notesRoot)) {
     const id = article.dataset.note ?? "";
     meta.set(id, {
       element: article,
@@ -38,7 +38,7 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
   const noteIds = [...meta.keys()].filter((id) => id !== "graph");
   const linksOf = (article: HTMLElement) => [
     ...new Set(
-      all("a[data-note]", find(".note-view", article))
+      all("a[data-note]", find(".vault-note-view", article))
         .map((link) => link.dataset.note ?? "")
         .filter((id) => id !== article.dataset.note && id !== "graph"),
     ),
@@ -51,10 +51,10 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
   for (const id of noteIds) {
     const from = noteIds.filter((other) => outgoing.get(other)?.includes(id));
     if (from.length === 0) continue;
-    const box = element("div", "backlinks");
+    const box = element("div", "vault-backlinks");
     box.append(element("p", "", ui.backlinks));
     for (const other of from) box.append(noteLink(other));
-    find(".note-view", (meta.get(id) as Meta).element).append(box);
+    find(".vault-note-view", (meta.get(id) as Meta).element).append(box);
     backlinks.push(box);
   }
   signal.addEventListener("abort", () => {
@@ -62,7 +62,7 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
   });
 
   function noteLink(id: string) {
-    const link = element("a", "internal-link", titleOf(id));
+    const link = element("a", "vault-internal-link", titleOf(id));
     link.href = `#${id}`;
     link.dataset.note = id;
     return link;
@@ -110,13 +110,13 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
   function renderTabs() {
     tabList.textContent = "";
     for (const id of openTabs) {
-      const tab = element("div", "tab");
+      const tab = element("div", "vault-tab");
       tab.dataset.tab = id;
       if (id === current) tab.dataset.on = "";
-      const open = element("button", "tab-go", titleOf(id));
+      const open = element("button", "vault-tab-go", titleOf(id));
       open.type = "button";
       if (id === current) open.setAttribute("aria-current", "page");
-      const close = element("button", "tab-x");
+      const close = element("button", "vault-tab-x");
       close.type = "button";
       close.setAttribute("aria-label", ui.closeTab ?? "");
       close.dataset.closeTab = id;
@@ -132,9 +132,9 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
     for (const box of [find("#view-crumb"), find("#mobile-crumb")]) {
       box.textContent = "";
       if (folder) {
-        box.append(element("span", "crumb", folder), element("span", "crumb-sep", "/"));
+        box.append(element("span", "vault-crumb", folder), element("span", "vault-crumb-sep", "/"));
       }
-      box.append(element("span", "crumb-current", title));
+      box.append(element("span", "vault-crumb-current", title));
     }
     faint(find('[data-action="back"]', vault), position === 0);
     faint(find('[data-action="forward"]', vault), position >= furthest);
@@ -151,7 +151,7 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
   function paintSource() {
     const button = find('[data-action="source"]', vault);
     const source = (meta.get(current) as Meta).element.querySelector<HTMLElement>(
-      "pre.note-source",
+      "pre.vault-note-source",
     );
     button.hidden = !source;
     const showing = source ? !source.hidden : false;
@@ -161,7 +161,7 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
 
   function apply(wanted: string) {
     const id = meta.has(wanted) ? wanted : MAIN_NOTE;
-    for (const open of all(".note[data-open]", notesRoot)) open.removeAttribute("data-open");
+    for (const open of all(".vault-note[data-open]", notesRoot)) open.removeAttribute("data-open");
     (meta.get(id) as Meta).element.dataset.open = "";
     current = id;
     if (!openTabs.includes(id)) {
@@ -171,7 +171,7 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
     renderTabs();
     renderCrumb();
     paintSource();
-    for (const row of all("#tree .nav-file")) {
+    for (const row of all("#tree .vault-nav-file")) {
       if (row.dataset.note === id) row.setAttribute("aria-current", "page");
       else row.removeAttribute("aria-current");
     }
@@ -282,11 +282,11 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
     const panel = find(`[data-right-panel="${name}"]`, vault);
     panel.textContent = "";
     if (items.length === 0) {
-      panel.append(element("p", "panel-empty", ui.noBacklinks));
+      panel.append(element("p", "vault-panel-empty", ui.noBacklinks));
       return;
     }
     for (const item of items) {
-      const row = element("div", "panel-row");
+      const row = element("div", "vault-panel-row");
       row.append(item);
       panel.append(row);
     }
@@ -308,21 +308,24 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
     listPanel(
       "tags",
       [...counts].map(([name, count]) => {
-        const row = element("span", "panel-pair");
-        row.append(element("span", "tag", `#${name}`), element("i", "nav-count", String(count)));
+        const row = element("span", "vault-panel-pair");
+        row.append(
+          element("span", "vault-tag", `#${name}`),
+          element("i", "vault-nav-count", String(count)),
+        );
         return row;
       }),
     );
     const keys = new Map<string, number>();
-    for (const key of all(".metadata-property dt", notesRoot)) {
+    for (const key of all(".vault-metadata-property dt", notesRoot)) {
       const name = key.textContent;
       keys.set(name, (keys.get(name) ?? 0) + 1);
     }
     listPanel(
       "properties",
       [...keys].map(([name, count]) => {
-        const row = element("span", "panel-pair");
-        row.append(element("span", "", name), element("i", "nav-count", String(count)));
+        const row = element("span", "vault-panel-pair");
+        row.append(element("span", "", name), element("i", "vault-nav-count", String(count)));
         return row;
       }),
     );
@@ -366,8 +369,14 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
   /* ---------- the left panel's search ---------- */
   /** What a note says as read: no source, no other notes' links under it, no panel's labels. */
   function textOf(id: string) {
-    const view = find(".note-view", (meta.get(id) as Meta).element).cloneNode(true) as HTMLElement;
-    for (const chrome of all(".backlinks, .metadata-heading, .metadata-add", view)) chrome.remove();
+    const view = find(".vault-note-view", (meta.get(id) as Meta).element).cloneNode(
+      true,
+    ) as HTMLElement;
+    for (const chrome of all(
+      ".vault-backlinks, .vault-metadata-heading, .vault-metadata-add",
+      view,
+    ))
+      chrome.remove();
     return view.textContent;
   }
   function matches(query: string) {
@@ -497,14 +506,14 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
   /* ---------- notices, tooltips, menus ---------- */
   const notices = find("#notices");
   function notice(text: string) {
-    const item = element("div", "notice", text);
+    const item = element("div", "vault-notice", text);
     notices.append(item);
     setTimeout(() => {
       item.remove();
     }, 3200);
   }
 
-  const tooltip = element("div", "tooltip");
+  const tooltip = element("div", "vault-tooltip");
   tooltip.hidden = true;
   document.body.append(tooltip);
   signal.addEventListener("abort", () => {
@@ -557,10 +566,10 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
     above = false,
   ) {
     closeMenu();
-    const box = element("div", "menu");
+    const box = element("div", "vault-menu");
     box.setAttribute("role", "menu");
     for (const item of items) {
-      const row = element(item.href ? "a" : "button", "menu-item");
+      const row = element(item.href ? "a" : "button", "vault-menu-item");
       row.setAttribute("role", "menuitem");
       row.textContent = item.label;
       if (item.on) row.dataset.on = "";
@@ -636,7 +645,7 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
   const rootSplit = find("#root-split");
   function paintThumb() {
     if (!isWide()) return;
-    const header = find(".view-header", rootSplit).getBoundingClientRect();
+    const header = find(".vault-view-header", rootSplit).getBoundingClientRect();
     const pane = terminal.pane.getBoundingClientRect();
     const top = header.bottom;
     const track = pane.top - top;
@@ -692,14 +701,17 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
     notesRoot.addEventListener(
       "mouseover",
       (event) => {
-        const link = (event.target as Element).closest<HTMLElement>(".internal-link[data-note]");
+        const link = (event.target as Element).closest<HTMLElement>(
+          ".vault-internal-link[data-note]",
+        );
         const id = link?.dataset.note ?? "";
         const target = meta.get(id);
         if (!link || !target || id === current) return;
         clearTimeout(previewTimer);
         previewTimer = window.setTimeout(() => {
-          const title = target.element.querySelector(".inline-title")?.textContent ?? target.title;
-          const text = target.element.querySelector(".note-view > p")?.textContent ?? "";
+          const title =
+            target.element.querySelector(".vault-inline-title")?.textContent ?? target.title;
+          const text = target.element.querySelector(".vault-note-view > p")?.textContent ?? "";
           preview.textContent = "";
           preview.append(element("b", "", title), element("p", "", text));
           preview.hidden = false;
@@ -714,7 +726,7 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
     notesRoot.addEventListener(
       "mouseout",
       (event) => {
-        if ((event.target as Element).closest(".internal-link[data-note]")) hidePreview();
+        if ((event.target as Element).closest(".vault-internal-link[data-note]")) hidePreview();
       },
       on,
     );
@@ -789,11 +801,11 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
         notice(ui.readOnly ?? "");
         break;
       case "sort": {
-        for (const list of all(".nav-children", vault)) list.toggleAttribute("data-reversed");
+        for (const list of all(".vault-nav-children", vault)) list.toggleAttribute("data-reversed");
         break;
       }
       case "reveal":
-        find('#tree .nav-file[aria-current="page"]').scrollIntoView({ block: "nearest" });
+        find('#tree .vault-nav-file[aria-current="page"]').scrollIntoView({ block: "nearest" });
         break;
       case "collapse":
         collapseAll();
@@ -809,11 +821,11 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
         break;
       case "source": {
         const article = (meta.get(current) as Meta).element;
-        const source = article.querySelector<HTMLElement>("pre.note-source");
+        const source = article.querySelector<HTMLElement>("pre.vault-note-source");
         if (!source) break;
         const showing = !source.hidden;
         source.hidden = showing;
-        find(".note-view", article).hidden = !showing;
+        find(".vault-note-view", article).hidden = !showing;
         paintSource();
         break;
       }
@@ -879,7 +891,7 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
     "click",
     (event) => {
       const target = event.target as Element;
-      if (menu && !target.closest(".menu")) closeMenu();
+      if (menu && !target.closest(".vault-menu")) closeMenu();
       const link = target.closest<HTMLAnchorElement>("a[data-note]");
       if (link && !(event.metaKey || event.ctrlKey)) {
         event.preventDefault();
@@ -887,7 +899,7 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
         go(link.dataset.note ?? "");
         return;
       }
-      const look = target.closest<HTMLElement>(".sdir");
+      const look = target.closest<HTMLElement>(".vault-sdir");
       if (look?.dataset.dir) {
         terminal.pickStyle(look.dataset.dir);
         return;
@@ -923,7 +935,7 @@ export function startVault(strings: VaultStrings, signal: AbortSignal) {
     },
     on,
   );
-  find(".term-head", vault).addEventListener(
+  find(".vault-term-head", vault).addEventListener(
     "click",
     (event) => {
       if (!isWide() && !(event.target as Element).closest("[data-action]")) toggleTerminal();

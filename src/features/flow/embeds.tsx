@@ -35,18 +35,20 @@ const ROWS = [
 export function Lanes() {
   const t = useTranslations("flow.lanes");
   return (
-    <div className="lanes" data-lanes="">
-      <p className="lane-head me">{t("me")}</p>
-      <p className="lane-head tool">{t("tool")}</p>
+    <div className="vault-lanes" data-lanes="">
+      <p className="vault-lane-head vault-me">{t("me")}</p>
+      <p className="vault-lane-head vault-tool">{t("tool")}</p>
       <ol>
         {ROWS.map((row, index) => (
           <li
-            className={["lane", row.lane, row.stop ? "lane-stop" : ""].join(" ")}
+            className={["vault-lane", `vault-${row.lane}`, row.stop ? "vault-lane-stop" : ""].join(
+              " ",
+            )}
             data-step={index}
             key={index}
           >
             <WikiLink note={row.note}>
-              <i aria-hidden className="node" />
+              <i aria-hidden className="vault-node" />
               <b>{t(`rows.r${index as 0}.title`)}</b>
               <span>{t(`rows.r${index as 0}.text`)}</span>
             </WikiLink>
@@ -61,12 +63,12 @@ export function Lanes() {
 export function Board() {
   const t = useTranslations("flow.board");
   return (
-    <figure className="board wide">
-      <div aria-label={t("label")} className="board-row" role="group">
+    <figure className="vault-board vault-wide">
+      <div aria-label={t("label")} className="vault-board-row" role="group">
         {APP_LOOKS.map((look) => (
           <button
             aria-pressed={look === DEFAULT_LOOK}
-            className="sdir"
+            className="vault-sdir"
             data-dir={look}
             key={look}
             type="button"
@@ -74,7 +76,7 @@ export function Board() {
             <span className="app-frame" data-style={look}>
               <WelcomeScreen />
             </span>
-            <span className="sdir-name">
+            <span className="vault-sdir-name">
               <b>{look.toUpperCase()}</b> {t(look)}
             </span>
           </button>
@@ -87,7 +89,7 @@ export function Board() {
 
 function Device({ wire, screen }: { wire: ReactNode; screen: ReactNode }) {
   return (
-    <div className="device">
+    <div className="vault-device">
       <div className="app-frame">
         {wire}
         <div className="app-ui">{screen}</div>
@@ -100,17 +102,22 @@ function Device({ wire, screen }: { wire: ReactNode; screen: ReactNode }) {
 export function Compare() {
   const t = useTranslations("flow.compare");
   return (
-    <figure className="compare wide" data-compare="" data-sk="" data-style={DEFAULT_LOOK}>
+    <figure
+      className="vault-compare vault-wide"
+      data-compare=""
+      data-sk=""
+      data-style={DEFAULT_LOOK}
+    >
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- it scrolls sideways on a phone. */}
-      <div className="compare-row" tabIndex={0}>
+      <div className="vault-compare-row" tabIndex={0}>
         <Device screen={<WelcomeScreen />} wire={<WelcomeWire />} />
         <Device screen={<PaywallScreen />} wire={<PaywallWire />} />
         <Device screen={<HomeScreen />} wire={<HomeWire />} />
         <Device screen={<NightScreen />} wire={<NightWire />} />
-        <i aria-hidden className="cutline" />
+        <i aria-hidden className="vault-cutline" />
       </div>
-      <div className="compare-ctl" data-js-only="">
-        <span className="seg">
+      <div className="vault-compare-ctl" data-js-only="">
+        <span className="vault-seg">
           <button data-cut="0" type="button">
             {t("wireframe")}
           </button>
@@ -131,9 +138,9 @@ const RUNGS = ["s0", "s1", "s2", "s3", "s4"] as const;
 export function Ladder() {
   const t = useTranslations("flow.ladder");
   return (
-    <figure className="ladder wide" data-ladder="" data-rung="0">
+    <figure className="vault-ladder vault-wide" data-ladder="" data-rung="0">
       <RuleDemo />
-      <ol className="rungs">
+      <ol className="vault-rungs">
         {RUNGS.map((rung, index) => (
           <li key={rung}>
             <button aria-pressed={index === 0} data-rung-to={index} type="button">
@@ -152,7 +159,7 @@ export function Ladder() {
 export function Figures() {
   const t = useTranslations("flow.figures");
   return (
-    <dl className="figures">
+    <dl className="vault-figures">
       <div>
         <dd>{BASE_FIGURES.rules}</dd>
         <dt>{t("rules")}</dt>
@@ -171,7 +178,7 @@ export function Figures() {
 
 export function Icons() {
   return (
-    <div className="icons">
+    <div className="vault-icons">
       {APP_LOOKS.map((look, index) => (
         <span className={`app-icon app-v${String(index)}`} data-style={look} key={look}>
           <i />
@@ -185,14 +192,14 @@ export function Icons() {
 export function Shelf() {
   const t = useTranslations("flow.shelf");
   return (
-    <figure className="shelf wide" data-sk="" data-style={DEFAULT_LOOK}>
-      <a className="shelf-screens" data-note="results" href="#results">
-        <span className="device">
+    <figure className="vault-shelf vault-wide" data-sk="" data-style={DEFAULT_LOOK}>
+      <a className="vault-shelf-screens" data-note="results" href="#results">
+        <span className="vault-device">
           <span className="app-frame">
             <HomeScreen />
           </span>
         </span>
-        <span className="device">
+        <span className="vault-device">
           <span className="app-frame">
             <NightScreen />
           </span>
@@ -212,7 +219,7 @@ export function Store() {
     { title: "store3", screen: <HomeScreen /> },
   ] as const;
   return (
-    <div className="store wide">
+    <div className="vault-store vault-wide">
       {shots.map(({ title, screen }) => (
         <div className="app-shot" data-sk="" data-style={DEFAULT_LOOK} key={title}>
           <p>{t(title)}</p>
@@ -226,8 +233,8 @@ export function Store() {
 export function Cta() {
   const t = useTranslations("flow");
   return (
-    <p className="note-cta">
-      <a className="mod-cta" data-write="" href="https://t.me/finchaf">
+    <p className="vault-note-cta">
+      <a className="vault-mod-cta" data-write="" href="https://t.me/finchaf">
         {t("cta")}
       </a>
     </p>
@@ -238,10 +245,10 @@ export function Cta() {
 export function Transcript() {
   const t = useTranslations("flow.transcript");
   return (
-    <section className="transcript" data-no-js-only="">
-      <h3 className="md-h2">{t("title")}</h3>
+    <section className="vault-transcript" data-no-js-only="">
+      <h3 className="vault-md-h2">{t("title")}</h3>
       <p>{t("text")}</p>
-      <pre className="code-block">
+      <pre className="vault-code-block">
         <code>{t("lines")}</code>
       </pre>
     </section>
@@ -261,5 +268,5 @@ export const EMBEDS: Record<string, ReactNode> = {
   store: <Store />,
   cta: <Cta />,
   transcript: <Transcript />,
-  tokens: <div className="style-tokens" data-style-tokens="" />,
+  tokens: <div className="vault-style-tokens" data-style-tokens="" />,
 };

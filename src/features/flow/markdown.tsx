@@ -10,7 +10,7 @@ const INLINE =
 
 export function WikiLink({ note, children }: { note: string; children: ReactNode }) {
   return (
-    <a className="internal-link" data-note={note} href={`#${note}`}>
+    <a className="vault-internal-link" data-note={note} href={`#${note}`}>
       {children}
     </a>
   );
@@ -41,14 +41,14 @@ export function Inline({ text }: { text: string }) {
     } else if (link) {
       const split = link.indexOf("](");
       parts.push(
-        <a className="external-link" href={link.slice(split + 2, -1)} key={key}>
+        <a className="vault-external-link" href={link.slice(split + 2, -1)} key={key}>
           {link.slice(1, split)}
           <ExternalLink aria-hidden size={12} />
         </a>,
       );
     } else if (tag) {
       parts.push(
-        <span className="tag" data-tag={tag.slice(1)} key={key}>
+        <span className="vault-tag" data-tag={tag.slice(1)} key={key}>
           {tag}
         </span>,
       );
@@ -156,7 +156,7 @@ export function Markdown({
         const Tag = `h${String(Math.min(block.level + depth, 6))}` as "h2" | "h3" | "h4";
         return (
           <Tag
-            className={`md-h${String(block.level)}`}
+            className={`vault-md-h${String(block.level)}`}
             data-outline=""
             data-scene={block.scene}
             key={index}
@@ -187,7 +187,7 @@ export function Markdown({
       }
       case "table":
         return (
-          <div className="table-wrap" key={index}>
+          <div className="vault-table-wrap" key={index}>
             <table>
               <thead>
                 <tr>
@@ -214,14 +214,14 @@ export function Markdown({
         );
       case "code":
         return (
-          <pre className="code-block" key={index}>
+          <pre className="vault-code-block" key={index}>
             <code>{block.text}</code>
           </pre>
         );
       case "callout":
         return (
-          <div className="callout" key={index}>
-            <p className="callout-title">
+          <div className="vault-callout" key={index}>
+            <p className="vault-callout-title">
               <Info aria-hidden size={18} />
               {block.title}
             </p>

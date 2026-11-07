@@ -35,37 +35,42 @@ export function FlowPage() {
       <div className="vault" data-capsule-flat="" id="vault">
         <div aria-hidden className="vault-titlebar" />
         <MobileBar />
-        <div className="workspace">
+        <div className="vault-workspace">
           <LeftDock locale={locale} />
-          <div className="root-split" id="root-split">
+          <div className="vault-root-split" id="root-split">
             <TabStrip />
             <ViewHeader />
-            <div className="notes" id="notes">
+            <div className="vault-notes" id="notes">
               {NOTE_IDS.map((id) => (
                 <Note id={id} key={id} />
               ))}
-              <article className="note graph-note" data-js-only="" data-note="graph" id="graph">
-                <canvas className="graph-canvas" id="graph-full">
+              <article
+                className="vault-note vault-graph-note"
+                data-js-only=""
+                data-note="graph"
+                id="graph"
+              >
+                <canvas className="vault-graph-canvas" id="graph-full">
                   {t("flow.ui.graphLabel")}
                 </canvas>
               </article>
             </div>
-            <i aria-hidden className="scroll-thumb" data-js-only="" id="scroll-thumb" />
+            <i aria-hidden className="vault-scroll-thumb" data-js-only="" id="scroll-thumb" />
             <TerminalPane />
           </div>
           <RightDock />
         </div>
       </div>
-      <div className="popover" hidden id="preview" />
+      <div className="vault-popover" hidden id="preview" />
       <div
         aria-label={t("flow.ui.search")}
         aria-modal="true"
-        className="prompt-shade"
+        className="vault-prompt-shade"
         hidden
         id="prompt"
         role="dialog"
       >
-        <div className="prompt">
+        <div className="vault-prompt">
           <input
             aria-autocomplete="list"
             aria-controls="prompt-list"
@@ -76,11 +81,11 @@ export function FlowPage() {
           />
           {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-to-interactive-role -- the input's list of options, as a combobox has it. */}
           <ul aria-label={t("flow.ui.search")} id="prompt-list" role="listbox" />
-          <p className="prompt-hint">{t("flow.ui.searchHint")}</p>
+          <p className="vault-prompt-hint">{t("flow.ui.searchHint")}</p>
         </div>
       </div>
-      <div className="scrim" hidden id="scrim" />
-      <div aria-live="polite" className="notices" id="notices" />
+      <div className="vault-scrim" hidden id="scrim" />
+      <div aria-live="polite" className="vault-notices" id="notices" />
       <FlowVault
         strings={{
           ui: messages.flow.ui,

@@ -36,21 +36,21 @@ function PropertyValue({ value, idle }: { value: string; idle: string }) {
   const live = PLACEHOLDERS[value];
   if (live) {
     return (
-      <span className="prop-live" {...{ [live]: "" }}>
+      <span className="vault-prop-live" {...{ [live]: "" }}>
         {value === "{run}" ? idle : null}
       </span>
     );
   }
   if (value === "true" || value === "false") {
     return (
-      <span className="checkbox" data-checked={value === "true" ? "" : undefined}>
+      <span className="vault-checkbox" data-checked={value === "true" ? "" : undefined}>
         <Check aria-hidden size={13} strokeWidth={3} />
       </span>
     );
   }
   if (DATE.test(value)) {
     return (
-      <span className="prop-date">
+      <span className="vault-prop-date">
         <CalendarDays aria-hidden size={14} />
         {value}
         <Link2 aria-hidden size={14} />
@@ -59,11 +59,11 @@ function PropertyValue({ value, idle }: { value: string; idle: string }) {
   }
   if (WIKI_LIST.test(value)) {
     return (
-      <span className="prop-pills">
+      <span className="vault-prop-pills">
         {value.split(", ").map((item) => {
           const [note = "", label] = item.slice(2, -2).split("|");
           return (
-            <span className="prop-pill" key={note}>
+            <span className="vault-prop-pill" key={note}>
               <WikiLink note={note}>{label}</WikiLink>
               <X aria-hidden size={13} />
             </span>
@@ -83,11 +83,11 @@ function Properties({ items }: { items: NoteProperty[] }) {
   const t = useTranslations("flow");
   if (items.length === 0) return null;
   return (
-    <section aria-label={t("ui.properties")} className="metadata">
-      <p className="metadata-heading">{t("ui.properties")}</p>
+    <section aria-label={t("ui.properties")} className="vault-metadata">
+      <p className="vault-metadata-heading">{t("ui.properties")}</p>
       <dl>
         {items.map(({ key, value }) => (
-          <div className="metadata-property" key={key}>
+          <div className="vault-metadata-property" key={key}>
             <dt>
               <PropertyIcon value={value} />
               {key}
@@ -98,7 +98,7 @@ function Properties({ items }: { items: NoteProperty[] }) {
           </div>
         ))}
       </dl>
-      <button className="metadata-add" data-read-only="" type="button">
+      <button className="vault-metadata-add" data-read-only="" type="button">
         <Plus aria-hidden size={16} />
         {t("ui.addProperty")}
       </button>
@@ -115,25 +115,25 @@ export function Note({ id }: { id: string }) {
   const main = id === MAIN_NOTE;
   return (
     <article
-      className="note"
+      className="vault-note"
       data-folder={folder ? t(`folders.${folder}`) : undefined}
       data-note={id}
       data-open={main ? "" : undefined}
       data-title={note.title}
       id={id}
     >
-      <div className="note-view">
+      <div className="vault-note-view">
         {main ? (
           <ViewTransition default="none" name="world-flow" share="world-name">
-            <h1 className="inline-title">{note.heading}</h1>
+            <h1 className="vault-inline-title">{note.heading}</h1>
           </ViewTransition>
         ) : (
-          <h2 className="inline-title">{note.heading}</h2>
+          <h2 className="vault-inline-title">{note.heading}</h2>
         )}
         <Properties items={note.properties} />
         <Markdown depth={main ? 0 : 1} embeds={EMBEDS} source={note.body} />
       </div>
-      <pre className="note-source" hidden>
+      <pre className="vault-note-source" hidden>
         {note.raw}
       </pre>
     </article>

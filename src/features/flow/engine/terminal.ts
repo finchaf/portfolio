@@ -206,15 +206,15 @@ export function makeTerminal(host: TerminalHost) {
   }
 
   function line(html: string, kind = "") {
-    const node = element("div", `l ${kind}`);
+    const node = element("div", `vault-l ${kind}`);
     node.innerHTML = html;
     const stick = log.scrollHeight - log.scrollTop - log.clientHeight < 40;
     log.appendChild(node);
     if (stick) log.scrollTop = log.scrollHeight;
     return node;
   }
-  const say = (text: string, kind = "dim") => {
-    line(`<span class="mk">${kind === "ok" ? "✓" : "·"}</span>${escape(text)}`, kind);
+  const say = (text: string, kind = "vault-dim") => {
+    line(`<span class="vault-mk">${kind === "vault-ok" ? "✓" : "·"}</span>${escape(text)}`, kind);
   };
 
   function setNow(html: string, asking = false) {
@@ -250,7 +250,7 @@ export function makeTerminal(host: TerminalHost) {
   function make(id: string, quiet = false) {
     if (state.made.has(id)) return;
     state.made.add(id);
-    const row = root.querySelector<HTMLElement>(`#tree .nav-file[data-note="${id}"]`);
+    const row = root.querySelector<HTMLElement>(`#tree .vault-nav-file[data-note="${id}"]`);
     if (row) {
       row.dataset.made = "";
       if (!quiet) {
@@ -265,11 +265,14 @@ export function makeTerminal(host: TerminalHost) {
   }
 
   async function typeCommand(command: string) {
-    const node = line('<span class="p">$</span> <span class="typing"></span>', "cmd");
-    const text = find(".typing", node);
+    const node = line(
+      '<span class="vault-p">$</span> <span class="vault-typing"></span>',
+      "vault-cmd",
+    );
+    const text = find(".vault-typing", node);
     if (fast()) {
       text.textContent = command;
-      text.classList.remove("typing");
+      text.classList.remove("vault-typing");
       return;
     }
     // A reader hears the command once it is typed, not a letter at a time.
@@ -284,7 +287,7 @@ export function makeTerminal(host: TerminalHost) {
         break;
       }
     }
-    text.classList.remove("typing");
+    text.classList.remove("vault-typing");
     node.removeAttribute("aria-hidden");
     await sleep(240);
   }
@@ -294,15 +297,15 @@ export function makeTerminal(host: TerminalHost) {
     state.phase = step.s;
     setNow(`<b>${step.s}</b> ${escape(text)}`);
     const node = line(
-      `<span class="mk">·</span><span class="id">${step.s}</span><span class="tx">${escape(text)}</span>`,
-      "step dim",
+      `<span class="vault-mk">·</span><span class="vault-id">${step.s}</span><span class="vault-tx">${escape(text)}</span>`,
+      "vault-step vault-dim",
     );
     await sleep(fast() ? 0 : 420 + Math.random() * 380);
-    node.className = "l step ok";
-    find(".mk", node).textContent = "✓";
+    node.className = "vault-l vault-step vault-ok";
+    find(".vault-mk", node).textContent = "✓";
     if (step.file) {
       make(step.file);
-      find(".tx", node).insertAdjacentHTML(
+      find(".vault-tx", node).insertAdjacentHTML(
         "beforeend",
         `  <a data-note="${step.file}" href="#${step.file}">${escape(host.titleOf(step.file))}</a>`,
       );
@@ -319,7 +322,7 @@ export function makeTerminal(host: TerminalHost) {
   function setChips(list: { label: string; value: string; ask?: boolean }[]) {
     chips.textContent = "";
     for (const item of list) {
-      const chip = element("button", `chip${item.ask ? " ask" : ""}`, item.label);
+      const chip = element("button", `vault-chip${item.ask ? " vault-ask" : ""}`, item.label);
       chip.type = "button";
       chip.dataset.value = item.value;
       chips.appendChild(chip);
@@ -362,7 +365,7 @@ export function makeTerminal(host: TerminalHost) {
   async function ask(kind: "style" | "stop") {
     state.wait = kind;
     const question = kind === "style" ? t.askStyle : t.askStop;
-    line(`<span class="mk">?</span>${escape(question)}`, "ask");
+    line(`<span class="vault-mk">?</span>${escape(question)}`, "vault-ask");
     setNow(escape(kind === "style" ? t.askStyle : t.askStopShort), true);
     setChips(kind === "style" ? styleChips() : stopChips());
     let timer = 0;
@@ -394,7 +397,7 @@ export function makeTerminal(host: TerminalHost) {
     const info = STYLE_NAMES[look];
     const name = strings.board[look] ?? look;
     for (const node of all("[data-sk]", root)) node.dataset.style = look;
-    for (const button of all(".sdir", root)) {
+    for (const button of all(".vault-sdir", root)) {
       button.setAttribute("aria-pressed", String(button.dataset.dir === look));
     }
     for (const node of all("[data-style-name]", root)) {
@@ -410,7 +413,7 @@ export function makeTerminal(host: TerminalHost) {
       const text = byReplay
         ? fill(t.autoChosen, look.toUpperCase())
         : fill(t.chosen, look.toUpperCase(), name);
-      line(`<span class="mk">›</span>${escape(text)}`, byReplay ? "dim" : "");
+      line(`<span class="vault-mk">›</span>${escape(text)}`, byReplay ? "vault-dim" : "");
       say(t.alone);
       answer();
     } else if (state.i > 5) {
@@ -428,7 +431,7 @@ export function makeTerminal(host: TerminalHost) {
       item.innerHTML = `<code>${remark.id}</code> ${escape(remark.line)}`;
       list.prepend(item);
     }
-    for (const node of all('#tree [data-note="rules"] .nav-count', root)) {
+    for (const node of all('#tree [data-note="rules"] .vault-nav-count', root)) {
       node.textContent = "234 + 1";
     }
   }
@@ -436,14 +439,14 @@ export function makeTerminal(host: TerminalHost) {
   async function editsScene(remark: Remark, added: boolean) {
     state.phase = "edits";
     setNow(`<b>edits</b> ${escape(remark.quote)}`);
-    line(`<span class="mk">›</span>«${escape(remark.quote)}»`);
+    line(`<span class="vault-mk">›</span>«${escape(remark.quote)}»`);
     await sleep(fast() ? 0 : 700);
     say(remark.what);
     await sleep(fast() ? 0 : 700);
     if (added) addRule(remark);
     line(
-      `<span class="mk">✓</span><a data-note="rules" href="#rules">${remark.id}</a>  ${escape(remark.line)}`,
-      "ok",
+      `<span class="vault-mk">✓</span><a data-note="rules" href="#rules">${remark.id}</a>  ${escape(remark.line)}`,
+      "vault-ok",
     );
     graph.pulse("checklists");
     await sleep(fast() ? 0 : 500);
@@ -470,7 +473,7 @@ export function makeTerminal(host: TerminalHost) {
       } else if ("ask" in step) {
         await ask(step.ask);
       } else {
-        line(`<span class="mk">✓</span>${escape(t[step.fin])}`, "done");
+        line(`<span class="vault-mk">✓</span>${escape(t[step.fin])}`, "vault-done");
         setNow(`<b>${escape(t[step.fin])}</b>`);
         await sleep(fast() ? 0 : 1200);
       }
@@ -563,7 +566,7 @@ export function makeTerminal(host: TerminalHost) {
     const parts = low.split(/\s+/);
     const name = parts[0] ?? "";
     const rest = value.slice(name.length).trim();
-    line(`<span class="p">$</span> ${escape(value)}`, "cmd");
+    line(`<span class="vault-p">$</span> ${escape(value)}`, "vault-cmd");
     openPane();
     if (state.wait === "style" && /^[a-f]$/.test(low)) {
       pickStyle(low);
@@ -582,8 +585,8 @@ export function makeTerminal(host: TerminalHost) {
         say(t.intro);
         for (const item of Object.values(t.help)) {
           line(
-            `<span class="mk"> </span><span class="id">${escape(item.name)}</span><span class="tx">${escape(item.text)}</span>`,
-            "step",
+            `<span class="vault-mk"> </span><span class="vault-id">${escape(item.name)}</span><span class="vault-tx">${escape(item.text)}</span>`,
+            "vault-step",
           );
         }
         break;
@@ -593,7 +596,7 @@ export function makeTerminal(host: TerminalHost) {
       case "open":
       case "cat": {
         const id = parts[1] ?? "";
-        if (host.go(id)) say(fill(t.opened, host.titleOf(id)), "ok");
+        if (host.go(id)) say(fill(t.opened, host.titleOf(id)), "vault-ok");
         else say(fill(t.noFile, id));
         break;
       }
@@ -612,10 +615,10 @@ export function makeTerminal(host: TerminalHost) {
         host.go("rules");
         break;
       case "critic":
-        for (const text of t.critic.split("\n")) line(escape(text), "dim");
+        for (const text of t.critic.split("\n")) line(escape(text), "vault-dim");
         break;
       case "audit":
-        for (const text of t.audit.split("\n")) line(escape(text), "dim");
+        for (const text of t.audit.split("\n")) line(escape(text), "vault-dim");
         break;
       case "run":
         session.remove(RUN_KEY);
@@ -645,7 +648,7 @@ export function makeTerminal(host: TerminalHost) {
         if (state.wait) say(fill(t.waitingFor, state.wait === "stop" ? "stop-review" : "style"));
         else if (state.i >= RUN.length) say(t.nothing);
         else {
-          say(fill(t.resumed, state.phase), "ok");
+          say(fill(t.resumed, state.phase), "vault-ok");
           resume();
         }
         break;
@@ -718,7 +721,7 @@ export function makeTerminal(host: TerminalHost) {
   chips.addEventListener(
     "click",
     (event) => {
-      const chip = (event.target as Element).closest<HTMLElement>(".chip");
+      const chip = (event.target as Element).closest<HTMLElement>(".vault-chip");
       if (chip?.dataset.value) command(chip.dataset.value);
     },
     { signal },
