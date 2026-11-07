@@ -121,7 +121,7 @@ export function completion(value: string, noteIds: readonly string[]) {
   return COMMANDS.find((command) => command.startsWith(value)) ?? "";
 }
 
-function escape(text: string) {
+function escapeHtml(text: string) {
   return text.replace(
     /[&<>]/g,
     (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[char] ?? char,
@@ -229,7 +229,10 @@ export function makeTerminal(host: TerminalHost) {
     return node;
   }
   const say = (text: string, kind = "vault-dim") => {
-    line(`<span class="vault-mk">${kind === "vault-ok" ? "✓" : "·"}</span>${escape(text)}`, kind);
+    line(
+      `<span class="vault-mk">${kind === "vault-ok" ? "✓" : "·"}</span>${escapeHtml(text)}`,
+      kind,
+    );
   };
 
   function setNow(html: string, asking = false) {
@@ -310,9 +313,9 @@ export function makeTerminal(host: TerminalHost) {
   async function runStep(step: { s: string; file?: string; also?: string }) {
     const text = t.steps[stepKey(step.s)] ?? "";
     state.phase = step.s;
-    setNow(`<b>${step.s}</b> ${escape(text)}`);
+    setNow(`<b>${step.s}</b> ${escapeHtml(text)}`);
     const node = line(
-      `<span class="vault-mk">·</span><span class="vault-id">${step.s}</span><span class="vault-tx">${escape(text)}</span>`,
+      `<span class="vault-mk">·</span><span class="vault-id">${step.s}</span><span class="vault-tx">${escapeHtml(text)}</span>`,
       "vault-step vault-dim",
     );
     await sleep(fast() ? 0 : 420 + Math.random() * 380);
@@ -322,7 +325,7 @@ export function makeTerminal(host: TerminalHost) {
       make(step.file);
       find(".vault-tx", node).insertAdjacentHTML(
         "beforeend",
-        `  <a data-note="${step.file}" href="#${step.file}">${escape(host.titleOf(step.file))}</a>`,
+        `  <a data-note="${step.file}" href="#${step.file}">${escapeHtml(host.titleOf(step.file))}</a>`,
       );
     }
     if (step.also) make(step.also);
@@ -380,8 +383,8 @@ export function makeTerminal(host: TerminalHost) {
   async function ask(kind: "style" | "stop") {
     state.wait = kind;
     const question = kind === "style" ? t.askStyle : t.askStop;
-    line(`<span class="vault-mk">?</span>${escape(question)}`, "vault-ask");
-    setNow(escape(kind === "style" ? t.askStyle : t.askStopShort), true);
+    line(`<span class="vault-mk">?</span>${escapeHtml(question)}`, "vault-ask");
+    setNow(escapeHtml(kind === "style" ? t.askStyle : t.askStopShort), true);
     setChips(kind === "style" ? styleChips() : stopChips());
     let timer = 0;
     const settle = () => {
@@ -428,7 +431,7 @@ export function makeTerminal(host: TerminalHost) {
       const text = byReplay
         ? fill(t.autoChosen, look.toUpperCase())
         : fill(t.chosen, look.toUpperCase(), name);
-      line(`<span class="vault-mk">›</span>${escape(text)}`, byReplay ? "vault-dim" : "");
+      line(`<span class="vault-mk">›</span>${escapeHtml(text)}`, byReplay ? "vault-dim" : "");
       say(t.alone);
       answer();
     } else if (state.i > ASK_STYLE) {
@@ -443,7 +446,7 @@ export function makeTerminal(host: TerminalHost) {
     for (const list of all("#rules ul[data-list]", root)) {
       const item = element("li");
       item.dataset.new = "";
-      item.innerHTML = `<code>${remark.id}</code> ${escape(remark.line)}`;
+      item.innerHTML = `<code>${remark.id}</code> ${escapeHtml(remark.line)}`;
       list.prepend(item);
     }
     for (const node of all('#tree [data-note="rules"] .vault-nav-count', root)) {
@@ -453,14 +456,14 @@ export function makeTerminal(host: TerminalHost) {
 
   async function editsScene(remark: Remark, added: boolean) {
     state.phase = "edits";
-    setNow(`<b>edits</b> ${escape(remark.quote)}`);
-    line(`<span class="vault-mk">›</span>«${escape(remark.quote)}»`);
+    setNow(`<b>edits</b> ${escapeHtml(remark.quote)}`);
+    line(`<span class="vault-mk">›</span>«${escapeHtml(remark.quote)}»`);
     await sleep(fast() ? 0 : 700);
     say(remark.what);
     await sleep(fast() ? 0 : 700);
     if (added) addRule(remark);
     line(
-      `<span class="vault-mk">✓</span><a data-note="rules" href="#rules">${remark.id}</a>  ${escape(remark.line)}`,
+      `<span class="vault-mk">✓</span><a data-note="rules" href="#rules">${remark.id}</a>  ${escapeHtml(remark.line)}`,
       "vault-ok",
     );
     graph.pulse("checklists");
@@ -488,8 +491,8 @@ export function makeTerminal(host: TerminalHost) {
       } else if ("ask" in step) {
         await ask(step.ask);
       } else {
-        line(`<span class="vault-mk">✓</span>${escape(t[step.fin])}`, "vault-done");
-        setNow(`<b>${escape(t[step.fin])}</b>`);
+        line(`<span class="vault-mk">✓</span>${escapeHtml(t[step.fin])}`, "vault-done");
+        setNow(`<b>${escapeHtml(t[step.fin])}</b>`);
         await sleep(fast() ? 0 : 1200);
       }
       // Leaving the page cuts the step's wait short: it is not done, so the run keeps its place.
@@ -505,7 +508,7 @@ export function makeTerminal(host: TerminalHost) {
       persist();
       paintAuto();
       setChips(baseChips());
-      setNow(`<b>${escape(t.closed)}</b>`);
+      setNow(`<b>${escapeHtml(t.closed)}</b>`);
     }
   }
 
@@ -566,8 +569,8 @@ export function makeTerminal(host: TerminalHost) {
     ghost.textContent = hit && hit !== input.value ? hit : "";
   }
 
-  const history: string[] = [];
-  let historyAt = 0;
+  const pastCommands: string[] = [];
+  let pastAt = 0;
 
   /** The reader has taken the terminal: from now on its log is read out as it grows. */
   function listen() {
@@ -581,7 +584,7 @@ export function makeTerminal(host: TerminalHost) {
     const parts = low.split(/\s+/);
     const name = parts[0] ?? "";
     const rest = value.slice(name.length).trim();
-    line(`<span class="vault-p">$</span> ${escape(value)}`, "vault-cmd");
+    line(`<span class="vault-p">$</span> ${escapeHtml(value)}`, "vault-cmd");
     openPane();
     if (state.wait === "style" && isLook(low)) {
       pickStyle(low);
@@ -600,7 +603,7 @@ export function makeTerminal(host: TerminalHost) {
         say(t.intro);
         for (const item of Object.values(t.help)) {
           line(
-            `<span class="vault-mk"> </span><span class="vault-id">${escape(item.name)}</span><span class="vault-tx">${escape(item.text)}</span>`,
+            `<span class="vault-mk"> </span><span class="vault-id">${escapeHtml(item.name)}</span><span class="vault-tx">${escapeHtml(item.text)}</span>`,
             "vault-step",
           );
         }
@@ -630,10 +633,10 @@ export function makeTerminal(host: TerminalHost) {
         host.go("rules");
         break;
       case "critic":
-        for (const text of t.critic.split("\n")) line(escape(text), "vault-dim");
+        for (const text of t.critic.split("\n")) line(escapeHtml(text), "vault-dim");
         break;
       case "audit":
-        for (const text of t.audit.split("\n")) line(escape(text), "vault-dim");
+        for (const text of t.audit.split("\n")) line(escapeHtml(text), "vault-dim");
         break;
       case "run":
         session.remove(RUN_KEY);
@@ -701,15 +704,15 @@ export function makeTerminal(host: TerminalHost) {
           input.value = hit;
           paintGhost();
         }
-      } else if (event.key === "ArrowUp" && history.length > 0) {
+      } else if (event.key === "ArrowUp" && pastCommands.length > 0) {
         event.preventDefault();
-        historyAt = Math.max(0, historyAt - 1);
-        input.value = history[historyAt] ?? "";
+        pastAt = Math.max(0, pastAt - 1);
+        input.value = pastCommands[pastAt] ?? "";
         paintGhost();
-      } else if (event.key === "ArrowDown" && history.length > 0) {
+      } else if (event.key === "ArrowDown" && pastCommands.length > 0) {
         event.preventDefault();
-        historyAt = Math.min(history.length, historyAt + 1);
-        input.value = history[historyAt] ?? "";
+        pastAt = Math.min(pastCommands.length, pastAt + 1);
+        input.value = pastCommands[pastAt] ?? "";
         paintGhost();
       } else if (event.key === "l" && event.ctrlKey) {
         event.preventDefault();
@@ -726,8 +729,8 @@ export function makeTerminal(host: TerminalHost) {
       input.value = "";
       paintGhost();
       if (value) {
-        history.push(value);
-        historyAt = history.length;
+        pastCommands.push(value);
+        pastAt = pastCommands.length;
         command(value);
       }
     },
@@ -755,7 +758,7 @@ export function makeTerminal(host: TerminalHost) {
   function start() {
     const saved = parseSaved(session.get(RUN_KEY));
     for (const node of all("[data-run-status]", root)) node.textContent = t.notStarted;
-    setNow(escape(t.notStarted));
+    setNow(escapeHtml(t.notStarted));
     setChips(baseChips());
     paintAuto();
     pickStyle(saved?.style ?? DEFAULT_LOOK);
@@ -773,12 +776,12 @@ export function makeTerminal(host: TerminalHost) {
         state.auto = false;
         state.i = RUN.length;
         say(t.nothing);
-        setNow(`<b>${escape(t.closed)}</b>`);
+        setNow(`<b>${escapeHtml(t.closed)}</b>`);
       } else {
         state.auto = false;
         state.target = state.i;
         say(fill(t.broke, state.phase));
-        setNow(escape(fill(t.broke, state.phase)));
+        setNow(escapeHtml(fill(t.broke, state.phase)));
       }
       paintAuto();
       setChips(baseChips());
