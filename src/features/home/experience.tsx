@@ -75,7 +75,7 @@ export function Experience() {
     fact: t(`rows.${row.key}.fact`),
     more:
       "path" in row
-        ? { href: localizedPath(locale, row.path), label: t("rows.team.link") }
+        ? { href: localizedPath(locale, row.path), label: t(`rows.${row.key}.link`) }
         : undefined,
   }));
   const education: Line[] = [
