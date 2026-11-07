@@ -1707,9 +1707,15 @@
   color: var(--muted);
 }
 
+/*
+ * Tailwind's `outline` utility shares this name and rings the pane with a pixel of currentColor.
+ * The ring is written out here, so it stays when the class takes the vault's prefix.
+ */
 .outline {
   display: grid;
   gap: 2px;
+  outline-style: solid;
+  outline-width: 1px;
 }
 
 .outline a {
