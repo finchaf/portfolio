@@ -1352,11 +1352,8 @@ a.pora-window-row:focus-visible {
   border: 1px solid var(--line);
   border-radius: 0.9375rem;
   background: var(--raised);
-  box-shadow: var(--shade);
   cursor: zoom-in;
-  transition:
-    translate 150ms ease,
-    box-shadow 150ms ease;
+  transition: translate 150ms ease;
 }
 
 .pora-window-picture img {
@@ -1384,7 +1381,6 @@ a.pora-window-row:focus-visible {
   padding: 0.4375rem;
   border-radius: 0.625rem;
   background: var(--card);
-  box-shadow: var(--shade);
   color: var(--ink);
   opacity: 0;
   transition: opacity 150ms ease;
