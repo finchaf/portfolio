@@ -3,16 +3,24 @@
  * ribbon, 13-pixel navigation, a 700-pixel line. The colours are the theme's. The page scrolls as a
  * page and the panes hold on with `sticky`, so a phone, the footer and the Back button stay ordinary.
  */
+
+/*
+ * The app's washes sit on the root, not on the vault: the quick switcher stands beside the vault
+ * and a menu opens on <body>, and both paint with them.
+ */
+:root:has([data-world="flow"]) {
+  --hover: color-mix(in srgb, var(--ink) 6.7%, transparent);
+  --active: color-mix(in srgb, var(--ink) 11%, transparent);
+  --faint: light-dark(#ababab, #666666);
+  --code: color-mix(in srgb, var(--ink) 4.5%, var(--page));
+}
+
 .vault {
   --bar: 0px;
   --header-row: 40px;
   --dock-left: 296px;
   --dock-right: 296px;
   --term-height: 15rem;
-  --hover: color-mix(in srgb, var(--ink) 6.7%, transparent);
-  --active: color-mix(in srgb, var(--ink) 11%, transparent);
-  --faint: light-dark(#ababab, #666666);
-  --code: color-mix(in srgb, var(--ink) 4.5%, var(--page));
   position: relative;
   color: var(--ink);
   font-family: var(--sans);

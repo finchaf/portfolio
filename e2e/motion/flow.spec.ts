@@ -4,6 +4,7 @@ import { expect, test, type Page } from "@playwright/test";
 
 test.describe("the Flow vault", () => {
   const FLOW = "/ru/flow";
+  const TRANSPARENT = "rgba(0, 0, 0, 0)";
 
   /** The vault's script has started: it takes the scroll over from the browser. */
   const started = (page: Page) =>
@@ -64,6 +65,22 @@ test.describe("the Flow vault", () => {
     });
     await expect(page.locator(".capsule-surface")).toBeHidden();
     await expect(page.locator("[data-capsule]")).toHaveCSS("top", "0px");
+  });
+
+  test("lights the switcher's choice and a menu's row under the pointer", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(FLOW);
+    await started(page);
+    await page.keyboard.press("Control+k");
+    await expect(page.locator("#prompt-list li[data-selected]")).not.toHaveCSS(
+      "background-color",
+      TRANSPARENT,
+    );
+    await page.keyboard.press("Escape");
+    await page.locator('[data-action="settings-menu"]').click();
+    const row = page.locator(".menu-item").first();
+    await row.hover();
+    await expect(row).not.toHaveCSS("background-color", TRANSPARENT);
   });
 
   test("sizes the graph's canvas to the pane", async ({ page }) => {
